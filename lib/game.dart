@@ -1,0 +1,344 @@
+import 'dart:math';
+
+import 'package:SaufApp/drinking.dart';
+import 'package:SaufApp/text_widget.dart';
+import 'package:SaufApp/types.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:show_up_animation/show_up_animation.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'file.dart';
+import 'player.dart';
+
+class BasicGame extends StatefulWidget {
+  final String title = "Test Title";
+
+  final Color primaryColor = Colors.blue;
+  final Color secondaryColor = Colors.yellow;
+  final int drinkingDisplay = 2;
+
+  final GameType type = GameType.UNDEFINED;
+
+  final List<Player> players;
+  final int difficulty;
+
+  final bool showSolutionButton = false;
+
+  final String mainTitle = "This is a placeholder title.";
+  final String solutionText = "This is a placeholder solution.";
+
+  final List drinking = new List();
+  final String text;
+
+  final List<Player> selectedPlayer = new List<Player>();
+
+  @mustCallSuper
+  BasicGame(this.players, this.difficulty, this.text) {
+    List<dynamic> resp = Drinking.generateRandomAmount(difficulty);
+    this.drinking..add(resp[0])..add(resp[1]);
+    this.selectedPlayer.add(players[Random.secure().nextInt(players.length)]);
+  }
+
+  @override
+  State<StatefulWidget> createState() => new BasicGameState();
+}
+
+class BasicGameState extends State<BasicGame> {
+  bool showSolution = false;
+  bool showAds = false;
+
+  Widget adInsert;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  String generateMessage() {
+    switch (widget.type) {
+      case GameType.NEVER_HAVE_I_EVER:
+        {
+          return "neverHaveIEverExplanation".tr();
+        }
+      case GameType.GUESS:
+        {
+          return "guessingExplanation".tr();
+        }
+      case GameType.GUESS_THE_SONG:
+        {
+          return "guessTheSongExplanation".tr();
+        }
+      case GameType.OPINION:
+        {
+          return "wouldYouRatherExplanation".tr();
+        }
+      case GameType.QUIZ:
+        {
+          return "bigBrainQuizExplanation".tr();
+        }
+      case GameType.TRUTH:
+        {
+          return "truthOrDareExplanation".tr();
+        }
+      case GameType.WHO_WOULD_RATHER:
+        {
+          return "whoWouldRatherExplanation".tr();
+        }
+      default:
+        return "";
+    }
+  }
+
+  void displayExitDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          backgroundColor: widget.primaryColor,
+          title: Text("exitTitle",
+              style: GoogleFonts.caveatBrush(
+                textStyle: TextStyle(color: Colors.black),
+                fontWeight: FontWeight.w800,
+                fontSize: 30,
+              )).tr(),
+          content: Text(
+            "exitDescription",
+            style: GoogleFonts.caveatBrush(
+              textStyle: TextStyle(color: Colors.black),
+              fontSize: 25,
+            ),
+          ).tr(),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text(
+                "exit",
+                style:
+                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
+              ).tr(),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+                Navigator.of(context).pop(true);
+              },
+            ),
+            FlatButton(
+              child: new Text("goOn".tr(),
+                  style: GoogleFonts.caveatBrush(
+                      color: Colors.black, fontSize: 20)),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool> displayExitDialogWrapper(BuildContext context) {
+    displayExitDialog(context);
+    return Future.value(true);
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      elevation: 0,
+      // centerTitle: true,
+      iconTheme: IconThemeData(color: Colors.black),
+      leading: IconButton(
+        onPressed: () {
+          displayExitDialog(context);
+        },
+        icon: Icon(Icons.clear),
+      ),
+      title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text(
+          widget.title.tr(),
+          style: GoogleFonts.caveatBrush(
+              color: Colors.black, fontSize: 40, fontWeight: FontWeight.w600),
+        ),
+      ]),
+      backgroundColor: widget.primaryColor,
+    );
+  }
+
+  Widget buildTop() {
+    return widget.showSolutionButton
+        ? buildWithSolution()
+        : buildWithoutSolution();
+  }
+
+  Widget buildWithSolution() {
+    return Column(
+      children: <Widget>[
+        Expanded(flex: 3, child: buildWithoutSolution()),
+        Expanded(
+          flex: 1,
+          child: Center(
+            child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: !this.showSolution
+                    ? ShowUpAnimation(
+                        child: MaterialButton(
+                          onPressed: () {
+                            setState(() {
+                              this.showSolution = true;
+                            });
+                          },
+                          color: widget.secondaryColor,
+                          child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text(
+                              "gameShowSolution",
+                              style: GoogleFonts.caveatBrush(
+                                  color: Colors.black,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.w600),
+                            ).tr(),
+                          ),
+                        ),
+                      )
+                    : FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          widget.solutionText,
+                          style: GoogleFonts.caveatBrush(
+                              color: Colors.black,
+                              fontSize: 300,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildWithoutSolution() {
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Container(
+        child: Center(child: TextWidget(widget.mainTitle)),
+      ),
+    );
+  }
+
+  Widget buildBottom() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        widget.drinkingDisplay > 0
+            ? Expanded(
+                // Middle part, which shows punishment
+                flex: 1,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 10, 5, 10),
+                  child: MaterialButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return new AlertDialog(
+                            title: Text(
+                              "explanation",
+                              style: GoogleFonts.caveatBrush(
+                                  color: Colors.black,
+                                  fontSize: 45,
+                                  fontWeight: FontWeight.w700),
+                            ).tr(),
+                            backgroundColor: widget.secondaryColor,
+                            content: Text(
+                              generateMessage(),
+                              style: GoogleFonts.caveatBrush(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            actions: <Widget>[
+                              // usually buttons at the bottom of the dialog
+                              FlatButton(
+                                child: new Text(
+                                  "close",
+                                  style: GoogleFonts.caveatBrush(
+                                      color: Colors.black, fontSize: 20),
+                                ).tr(),
+                                onPressed: () {
+                                  Navigator.of(context).pop(true);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    color: widget.secondaryColor,
+                    child: DrinkingDisplay(
+                        widget.drinking[0], widget.drinking[1], Colors.black),
+                  ),
+                ),
+              )
+            : Expanded(
+                flex: 1,
+                child: Container(),
+              ),
+        Expanded(
+          flex: 2,
+          child: Container(),
+        ),
+        Expanded(
+          // Right part, next button
+          flex: 1,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
+            child: MaterialButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              color: widget.secondaryColor,
+              //minWidth: 120,
+              height: 5000,
+              child: FittedBox(
+                fit: BoxFit.fitHeight,
+                child: Text(
+                  "next",
+                  style: GoogleFonts.caveatBrush(
+                      color: Colors.black,
+                      fontSize: 40,
+                      fontWeight: FontWeight.w600),
+                ).tr(),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    /*SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);*/
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    return WillPopScope(
+      onWillPop: () => displayExitDialogWrapper(context),
+      child: Scaffold(
+        appBar: buildAppBar(),
+        body: Container(
+          color: widget.primaryColor,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 4,
+                child: buildTop(),
+              ),
+              Expanded(
+                flex: 1,
+                child: buildBottom(),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,29 @@
+language: generic
+
+before_install:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+    brew update;
+    brew install --HEAD usbmuxd;
+    brew unlink usbmuxd;
+    brew link usbmuxd;
+    brew install --HEAD libimobiledevice;
+    brew install ideviceinstaller;
+    brew install ios-deploy;
+    git clone https://github.com/flutter/flutter.git -b beta --depth 1;
+    fi
+  - if ["$TRAVIS_OS_NAME" = "linux"]; then echo "test"; fi
+
+
+cache:
+  directories:
+    - $HOME/.pub-cache
+
+jobs:
+  include:
+    - os: linux
+      dist: trusty
+    - os: osx
+      osx_image: xcode11.5
+
+script:
+    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then flutter/bin/flutter build ios --debug --no-codesign; fi;

@@ -1,0 +1,725 @@
+import 'dart:convert';
+import 'dart:math';
+import 'package:SaufApp/ad.dart';
+import 'package:SaufApp/challenges.dart';
+import 'package:SaufApp/guess_the_song.dart';
+import 'package:SaufApp/never_have_i_ever.dart';
+import 'package:SaufApp/player.dart';
+import 'package:SaufApp/quiz.dart';
+import 'package:SaufApp/setting.dart';
+import 'package:SaufApp/shapes.dart';
+import 'package:SaufApp/spotify_api.dart';
+import 'package:SaufApp/truth_or_dare.dart';
+import 'package:SaufApp/types.dart';
+import 'package:SaufApp/who_would_rather.dart';
+import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'guessing.dart';
+import 'opinion.dart';
+import 'file.dart';
+
+class Difficulty extends StatefulWidget {
+  static const int EASY = 0;
+  static const int MIDDLE = 1;
+  static const int HARD = 2;
+
+  final List<Player> players;
+  final int rounds;
+
+  final List<GameType> enabledGames;
+
+  const Difficulty(this.players, this.rounds, this.enabledGames);
+
+  @override
+  State<StatefulWidget> createState() => new DifficultyState();
+}
+
+class Game {
+  dynamic function;
+  GameType type;
+
+  Game(this.function, this.type);
+}
+
+class DifficultyState extends State<Difficulty> {
+  int difficulty = Difficulty.EASY;
+  int displayState =
+      1; // 1 Difficulty Selection, 2 Loading indicator, 3 Just Orange
+  List<Game> gamePlan = new List<Game>();
+  Map<GameType, List> texts = new Map<GameType, List>();
+  Map<GameType, int> maxTexts = new Map<GameType, int>();
+
+  @override
+  void initState() {
+    super.initState();
+    filterAvailableGames();
+    availableGamesBackup = availableGames.toList();
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+  }
+
+  final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+      keywords: ["trinken", "drinking", "alkohol", "alcohol"],
+      childDirected: false,
+      nonPersonalizedAds: false,
+      testDevices: []);
+
+  BannerAd bannerAd;
+
+  @override
+  void dispose() {
+    if (bannerAd != null) {
+      bannerAd.dispose().then((value) => bannerAd = null);
+    }
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
+    super.dispose();
+  }
+
+  void filterAvailableGames() {
+    for (List aGame in this.availableGames.toList()) {
+      if (!widget.enabledGames.contains(aGame[1])) {
+        this.availableGames.remove(aGame);
+      }
+    }
+  }
+
+  List<List> availableGames = [
+    [
+      (players, difficulty, message) =>
+          NeverHaveIEver(players, difficulty, message),
+      GameType.NEVER_HAVE_I_EVER
+    ],
+    [
+      (players, difficulty, message) => Quiz(players, difficulty, message),
+      GameType.QUIZ
+    ],
+    [
+      (players, difficulty, message) => Opinion(players, difficulty, message),
+      GameType.OPINION
+    ],
+    [
+      (players, difficulty, message) => Guessing(players, difficulty, message),
+      GameType.GUESS
+    ],
+    [
+      (players, difficulty, message) =>
+          Challenges(players, difficulty, message),
+      GameType.CHALLENGES
+    ],
+    [
+      (players, difficulty, message) =>
+          GuessTheSong(players, difficulty, JsonEncoder().convert(message)),
+      GameType.GUESS_THE_SONG
+    ],
+    [
+      (players, difficulty, message) =>
+          TruthOrDare(players, difficulty, message),
+      GameType.TRUTH
+    ],
+    [
+      (players, difficulty, message) =>
+          WhoWouldRather(players, difficulty, message),
+      GameType.WHO_WOULD_RATHER
+    ]
+  ];
+
+  List<List> availableGamesBackup;
+
+  Future<void> generateNormalPlan() async {
+    while (this.gamePlan.length < widget.rounds) {
+      Function gameType;
+      List game;
+      availableGames = availableGames
+          .where((element) => this.texts[element[1]].isNotEmpty)
+          .toList();
+      if (this.texts.isEmpty) {
+        await populateTextsMap();
+      }
+      do {
+        if (this.availableGames.isEmpty) {
+          return;
+        }
+        dynamic aa = this
+            .availableGames
+            .where((element) => this.texts[element[1]].isNotEmpty)
+            .toList();
+        game = aa[Random.secure().nextInt(this
+            .availableGames
+            .where((element) => this.texts[element[1]].isNotEmpty)
+            .toList()
+            .length)];
+        gameType = game[0];
+        if (game[1] == GameType.TRUTH) {
+          int count = countOccurrencesOfSpecificGameInMap(gameType);
+          if (count == this.maxTexts[game[1]] ||
+              count >= maxTexts[GameType.TRUTH] ||
+              count >= maxTexts[GameType.DARE]) {
+            gameType = null; // provoke a rerun, because no texts are remaining
+            this.availableGames.remove(game);
+          }
+        } else {
+          if (countOccurrencesOfSpecificGameInMap(gameType) ==
+              this.maxTexts[game[1]]) {
+            gameType = null; // provoke a rerun, because no texts are remaining
+            this.availableGames.remove(game);
+          }
+        }
+      } while ((gameType ==
+                  (this.gamePlan.length > 0
+                      ? this.gamePlan[this.gamePlan.length - 1].function
+                      : null) &&
+              this.availableGames.length > 1) ||
+          gameType == null);
+      this.gamePlan.add(Game(gameType, game[1]));
+    }
+    // this.gamePlan.shuffle(); // Reshuffle the complete plan for good measure
+    // or don't
+  }
+
+  Future<List<List<String>>> buildSpotify(List<String> playlistUrls) async {
+    List<List<String>> response = new List<List<String>>();
+    Spotify spotify = Spotify();
+    for (String url in playlistUrls) {
+      String playlistId = Spotify.getIdFromUrl(url);
+      List<List<String>> playlistResponse =
+          await spotify.getPlaylist(playlistId);
+      for (List<String> track in playlistResponse) {
+        if (!response.contains(track)) {
+          response.add(track);
+        }
+      }
+    }
+    return response;
+  }
+
+  Future<void> populateTextsMap() async {
+    int selectedModes = (await SharedPreferences.getInstance())
+            .getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ??
+        SettingsState.BOTH;
+    availableGames = availableGamesBackup.toList();
+    for (List game in availableGames) {
+      GameType gameType = game[1];
+      if (gameType == GameType.GUESS_THE_SONG) {
+        ConnectivityResult connectivityResult =
+            await Connectivity().checkConnectivity();
+        if (connectivityResult != ConnectivityResult.none) {
+          List<String> urls = [];
+          if (selectedModes == SettingsState.ONLY_INCLUDED ||
+              selectedModes == SettingsState.BOTH) {
+            urls.addAll(await getIncludedFiles(gameType, context));
+          }
+          if (selectedModes == SettingsState.ONLY_CUSTOM ||
+              selectedModes == SettingsState.BOTH) {
+            urls.addAll(await getLocalFiles(gameType));
+          }
+          texts[gameType] = await buildSpotify(urls);
+        } else {
+          Fluttertoast.showToast(
+              msg: "Rate den Song wurde deaktiviert, da du über keine "
+                  "Internetverbindung verfügst.",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM);
+          this.texts[gameType] = [];
+        }
+        continue;
+      }
+      if (gameType == GameType.TRUTH) {
+        texts[GameType.TRUTH] = [];
+        texts[GameType.DARE] = [];
+
+        if (selectedModes == SettingsState.ONLY_INCLUDED ||
+            selectedModes == SettingsState.BOTH) {
+          texts[GameType.TRUTH]
+              .addAll(await getIncludedFiles(GameType.TRUTH, context));
+          texts[GameType.DARE]
+              .addAll(await getIncludedFiles(GameType.DARE, context));
+        }
+        if (selectedModes == SettingsState.ONLY_CUSTOM ||
+            selectedModes == SettingsState.BOTH) {
+          texts[GameType.TRUTH].addAll(await getLocalFiles(GameType.TRUTH));
+          texts[GameType.DARE].addAll(await getLocalFiles(GameType.DARE));
+        }
+        continue;
+      }
+
+      texts[gameType] = [];
+      if (selectedModes == SettingsState.ONLY_INCLUDED ||
+          selectedModes == SettingsState.BOTH) {
+        texts[gameType].addAll(await getIncludedFiles(gameType, context));
+      }
+      if (selectedModes == SettingsState.ONLY_CUSTOM ||
+          selectedModes == SettingsState.BOTH) {
+        texts[gameType].addAll(await getLocalFiles(gameType));
+      }
+    }
+    for (GameType gameType in texts.keys) {
+      // Shuffle the items in the list
+      // to prevent similar rounds from occurring
+      texts[gameType].shuffle();
+      maxTexts[gameType] = texts[gameType].length;
+    }
+  }
+
+  Future<void> fulfillNormalPlan() async {
+    setState(() {
+      this.displayState = 3;
+    });
+
+    bool ads = await shouldShowAds();
+
+    if (ads) {
+      bannerAd = new BannerAd(
+          adUnitId: BannerAd.testAdUnitId,
+          size: AdSize.banner,
+          targetingInfo: targetingInfo);
+
+      try {
+        bannerAd.load().then((value) async {
+          /// Prevent the banner ad from overlaying on buttons
+          if (bannerAd.size.width <= context.size.width ~/ 2) {
+            if (bannerAd == null) {
+              return;
+            }
+            if (!mounted) {
+              bannerAd.dispose();
+              bannerAd = null;
+            } else {
+              await bannerAd.show(anchorOffset: 8);
+              if (!mounted && bannerAd != null) {
+                bannerAd.dispose();
+                bannerAd = null;
+              }
+            }
+          }
+        });
+
+        /// This PlatformException is thrown when no ad was loaded
+        /// so it can be simply ignored
+      } on PlatformException {}
+    }
+
+    bool shouldContinue = false;
+    do {
+      if (gamePlan.isEmpty) {
+        await generateNormalPlan();
+      }
+      bool result;
+      for (Game game in gamePlan) {
+        if (texts.values.where((element) => element.isNotEmpty).isEmpty) {
+          await populateTextsMap();
+        }
+        dynamic randomlyChosenText;
+        if (game.type == GameType.TRUTH &&
+            texts[GameType.TRUTH].length > 0 &&
+            texts[GameType.DARE].length > 0) {
+          String randomTextTruth = texts[GameType.TRUTH]
+              [Random.secure().nextInt(texts[GameType.TRUTH].length)];
+
+          String randomTextDare = texts[GameType.DARE]
+              [Random.secure().nextInt(texts[GameType.DARE].length)];
+
+          texts[GameType.TRUTH].remove(randomTextTruth);
+          texts[GameType.DARE].remove(randomTextDare);
+
+          randomlyChosenText =
+              json.encode({"truth": randomTextTruth, "dare": randomTextDare});
+        } else {
+          randomlyChosenText = texts[game.type]
+              [Random.secure().nextInt(texts[game.type].length)];
+          texts[game.type].remove(randomlyChosenText);
+        }
+
+        result = await Navigator.of(context).push(PageRouteBuilder(
+          pageBuilder: (c, a1, a2) =>
+              game.function(widget.players, difficulty, randomlyChosenText),
+          transitionsBuilder: (c, anim, a2, child) {
+            if (anim.status == AnimationStatus.reverse) {
+              return SlideTransition(
+                position:
+                    Tween<Offset>(begin: Offset(0.0, 0), end: Offset(0.0, -1))
+                        .animate(a2),
+                child: child,
+              );
+            }
+            return SlideTransition(
+              position:
+                  Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
+                      .animate(anim),
+              child: child,
+            );
+          },
+          transitionDuration: Duration(milliseconds: 200),
+        ));
+        if (result == null) {
+          /*
+          This shouldn't happen, this only happens, if some unexpected things
+          happen inside a game, this only catches here to dispose the difficulty
+          correctly and make the bannerAd disappear.
+           */
+          Fluttertoast.showToast(msg: "An unexpected Error occured.");
+          Navigator.of(context).pop(false);
+          return;
+        }
+        if (result) {
+          break;
+        }
+      }
+      if (result == null) {
+        // TODO: This occures only if a game launches without loading any texts.
+        Navigator.of(context).pop(false);
+        return;
+      }
+      if (!result) {
+        await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                    title: Text("goOnTitle",
+                        style: GoogleFonts.caveatBrush(
+                          textStyle: TextStyle(color: Colors.black),
+                          fontWeight: FontWeight.w800,
+                          fontSize: 30,
+                        )).tr(),
+                    content: Text(
+                      "goOnDescription",
+                      style: GoogleFonts.caveatBrush(
+                        textStyle: TextStyle(color: Colors.black),
+                        fontSize: 25,
+                      ),
+                    ).tr(),
+                    backgroundColor: Colors.deepOrange,
+                    actions: <Widget>[
+                      // usually buttons at the bottom of the dialog
+                      FlatButton(
+                        child: new Text(
+                          "exit",
+                          style: GoogleFonts.caveatBrush(
+                              color: Colors.black, fontSize: 20),
+                        ).tr(),
+                        onPressed: () {
+                          shouldContinue = false;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      FlatButton(
+                        child: new Text(
+                          "goOn",
+                          style: GoogleFonts.caveatBrush(
+                              color: Colors.black, fontSize: 20),
+                        ).tr(),
+                        onPressed: () {
+                          shouldContinue = true;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]).build(context));
+      }
+    } while (shouldContinue);
+    if (ads) {
+      try {
+        bannerAd.dispose();
+        bannerAd = null;
+      } catch (e) {}
+    }
+
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    this.displayState = 1;
+    setState(() {});
+
+    Navigator.of(context).pop();
+  }
+
+  int countOccurrencesOfSpecificGameInMap(Function gameType) {
+    int count = 0;
+    for (Game game in this.gamePlan) {
+      if (game.function == gameType) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  selectDifficulty(int selectedDifficulty) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
+    this.difficulty = selectedDifficulty;
+    this.displayState = 2;
+    setState(() {});
+    populateTextsMap().then(
+        (value) => generateNormalPlan().then((value) => fulfillNormalPlan()));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return this.displayState == 1
+        ? LayoutBuilder(
+            builder: (context, c) {
+              double calcDegree =
+                  (atan((c.maxHeight * 0.5 * 0.1) / c.maxWidth) * 180) / pi;
+              double distanceOffset =
+                  (c.maxWidth * sin((calcDegree * pi / 180))) /
+                      sin(((90 - calcDegree) * pi) / 180);
+
+              return Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
+                  backgroundColor: Colors.yellow,
+                  title: Text(
+                    "selectDifficulty",
+                    style: GoogleFonts.caveatBrush(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600),
+                  ).tr(),
+                  iconTheme: IconThemeData(color: Colors.black),
+                ),
+                backgroundColor: Colors.black,
+                body: ColumnSuper(
+                  innerDistance: distanceOffset * -1 + 3,
+                  children: <Widget>[
+                    CustomPaint(
+                      painter: TopPainter(calcDegree, Colors.yellow),
+                      child: Container(
+                        height: c.maxHeight / 3 - distanceOffset / 2,
+                        width: c.maxWidth,
+                        child: Material(
+                          color: Colors.transparent,
+                          shape: TopShapePainter(calcDegree),
+                          child: InkWell(
+                            customBorder: TopShapePainter(calcDegree),
+                            onTap: () => selectDifficulty(Difficulty.EASY),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "assets/image/beer_easy.png",
+                                      height: c.maxHeight * (1 / 6),
+                                    ),
+                                    Transform.rotate(
+                                      angle: calcDegree * pi / 170 * -1,
+                                      child: SizedBox(
+                                        width: c.maxWidth * 0.66 - 16,
+                                        height: c.maxHeight * 0.33 -
+                                            distanceOffset * 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Expanded(
+                                                flex: 3,
+                                                child: FittedBox(
+                                                  fit: BoxFit.fitHeight,
+                                                  child: Text(
+                                                    "difficultyLow",
+                                                    style:
+                                                        GoogleFonts.caveatBrush(
+                                                            fontSize: 300),
+                                                  ).tr(),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: FittedBox(
+                                                  fit: BoxFit.contain,
+                                                  child: Text(
+                                                    "difficultyLowDescription",
+                                                    style:
+                                                        GoogleFonts.caveatBrush(
+                                                            fontSize: 300),
+                                                  ).tr(),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    CustomPaint(
+                      painter: MiddlePainter(calcDegree, Colors.orange),
+                      child: Container(
+                        height: c.maxHeight / 3 + distanceOffset / 2 - 6,
+                        width: c.maxWidth,
+                        child: Material(
+                          color: Colors.transparent,
+                          shape: MiddleShapePainter(0, calcDegree),
+                          child: InkWell(
+                            onTap: () => selectDifficulty(Difficulty.MIDDLE),
+                            customBorder: MiddleShapePainter(0, calcDegree),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "assets/image/beer_middle.png",
+                                      height: c.maxHeight * (1 / 6),
+                                    ),
+                                    Transform.rotate(
+                                      angle: calcDegree * pi / 180 * -1,
+                                      child: SizedBox(
+                                        width: c.maxWidth * 0.66 - 16,
+                                        height: c.maxHeight * 0.33 -
+                                            distanceOffset * 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Expanded(
+                                                flex: 3,
+                                                child: FittedBox(
+                                                  fit: BoxFit.contain,
+                                                  child: Text(
+                                                    "difficultyMed",
+                                                    style:
+                                                        GoogleFonts.caveatBrush(
+                                                            fontSize: 300),
+                                                  ).tr(),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: FittedBox(
+                                                  fit: BoxFit.contain,
+                                                  child: Text(
+                                                    "difficultyMedDescription",
+                                                    style:
+                                                        GoogleFonts.caveatBrush(
+                                                            fontSize: 300),
+                                                  ).tr(),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    CustomPaint(
+                      painter: BottomPainter(calcDegree, Colors.red),
+                      child: Container(
+                        height: c.maxHeight / 3,
+                        width: c.maxWidth,
+                        child: Material(
+                          color: Colors.transparent,
+                          shape: BottomShapePainter(0, calcDegree),
+                          child: InkWell(
+                            onTap: () => selectDifficulty(Difficulty.HARD),
+                            customBorder: BottomShapePainter(0, calcDegree),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(
+                                        "assets/image/beer_hard.png",
+                                        height: c.maxHeight * (1 / 6),
+                                      ),
+                                    ),
+                                    Transform.rotate(
+                                      angle: calcDegree * pi / 180 * -1,
+                                      child: SizedBox(
+                                        width: c.maxWidth * 0.63 - 20,
+                                        height: c.maxHeight * 0.33 -
+                                            distanceOffset * 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Expanded(
+                                                flex: 3,
+                                                child: FittedBox(
+                                                  fit: BoxFit.contain,
+                                                  child: Text(
+                                                    "difficultyHigh",
+                                                    style:
+                                                        GoogleFonts.caveatBrush(
+                                                            fontSize: 300),
+                                                  ).tr(),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: FittedBox(
+                                                  fit: BoxFit.contain,
+                                                  child: Text(
+                                                    "difficultyHighDescription",
+                                                    style:
+                                                        GoogleFonts.caveatBrush(
+                                                            fontSize: 300),
+                                                  ).tr(),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          )
+        : this.displayState == 2
+            ? Container(
+                color: Colors.yellow.shade900,
+                child: Center(
+                  child: SpinKitFadingCircle(
+                    color: Colors.black,
+                  ),
+                ),
+              )
+            : Container(
+                color: Colors.yellow.shade900,
+              );
+  }
+}

@@ -1,0 +1,99 @@
+Wer zuerst 10 Liegestütze macht, darf %amountbeer verteilen.
+Wer zuerst 10 Kniebeugen macht, darf %amountbeer verteilen.
+Wer zuerst 10 Sit-ups macht, darf %amountbeer verteilen.
+Spielt, ich packe meinen Koffer! %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer.
+%player darf jetzt nur noch mit der linken Hand trinken (für 4 Runden). Bei Verstoß, trinke %amountbeer.
+%player darf jetzt nur noch mit der rechten Hand trinken (für 4 Runden). Bei Verstoß, trinke %amountbeer.
+%player darf jetzt nur noch auf Englisch reden (für 4 Runden). Bei Verstoß, trinke %amountbeer.
+%player darf nicht mehr reden (für 4 Runden). Bei Verstoß, trinke %amountbeer.
+%player muss jetzt immer mittrinken, wenn jemand anderes trinkt (für 3 Runden). Viel Glück bro!
+%player spielt gegen seinen gegenüber Stere-Stein-Papier!
+Wenn %player jemandem in die Augen guckt, muss er %amountbeer trinken (für 3 Runden)!
+Wer %player in die Augen guckt, muss %amountbeer trinken (für 3 Runden)!
+%player, zitiere ein Filmzitat. Wer es zuerst errät, darf %amountbeer verteilen!
+%player, singe ein Song vor. Wer den Song zuerst errät, darf %amountbeer verteilen!
+%player, summe ein Song vor. Wer den Song zuerst errät, darf %amountbeer verteilen!
+%player, mache einen Promi nach. Wer den Promi zuerst errät, darf %amountbeer verteilen!
+%player, mache eine Person aus der Runde nach. Wer die Person zuerst errät, darf %amountbeer verteilen!
+%player, stelle eine Sportart pantomimisch nach. Wer die Sportart zuerst errät, darf %amountbeer verteilen!
+%player, stelle ein Instrument pantomimisch dar. Wer das Instrument zuerst errät, darf %amountbeer verteilen!
+Die Person, die die besten Noten hat/hatte trinkt %amountbeer.
+Wer ist am dümmsten in der Runde. Entscheidet! Der Verlierer muss seine Dummheit mit %amountbeer bekämpfen!
+Wer jünger als 18 ist, meldet seinen Alkoholismus sofort ans Ordnungsamt. Spaß, trinkt %amountbeer!
+Macht 5 Kniebeugen und trinkt nach jedem 1 Schluck.
+Derjenige mit dem vollsten Getränk muss dieses wegexen. Trink mal schneller bro!
+Trinkt pro Kleidungstück ein Schluck (z. B. Sockenpaare zählen als 2)!
+%player verteilt so viele Schlücke, wie Singles mitspielen.
+%player spielt Armdrücken gegen sein Gegenüber. Der Verlierer trinkt %amountbeer und meldet sich im Fittnessstudio an, du Lauch!
+Alle trinken 1 Schluck und lesen ihre letzte versandte Nachricht laut vor (mit Kontext, wenn nötig). Wer sich nicht traut, trinkt %amountshot.
+Nennt Modemarken! Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer. %player beginnt. Dein Kopf platzt offenbar nicht Guccisandalen, mein Freund!
+Nennt Automarken! Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer. %player beginnt. Wie es ausschaut, fährst du keinen Babawagen.
+Nennt Biermarken! Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer. %player beginnt.
+Nennt Handymarken! Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer. %player beginnt.
+Nennt Regisseure! Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer. %player beginnt.
+Wenn jemand alle 7 antiken Weltwunder aufsagen kann, exen alle anderen ihr Getränk. Respekt, bro!
+%player darf so viele Schlücke verteilen, wie er/sie/es Inselstaaten aufsagen kann. Wenn du keinen kennst, exe dein Getränk und guck dir mal einen Atlas an.
+%player darf so viele Schlücke verteilen, wie er/sie/es Staaten in den USA nennen kann. Wenn du keinen kennst, exe dein Getränk und guck dir mal einen Atlas an.
+%player darf so viele Schlücke verteilen, wie er/sie/es Hauptstädte in Afrika nennen kann. Wenn du keinen kennst, trink %amountbeer Getränk und guck dir mal einen Atlas an.
+%player darf so viele Schlücke verteilen, wie er/sie/es Ozeane nennen kann. Wenn du keinen kennst, trink exe dein Getränk und guck dir mal einen Atlas an.
+%player nenne die 3 Stadtstaaten Deutschlands! Sonst trink 3 Schlücke.
+%player spiele dein letztes gehörtes Lied ab. Wenn die Mehrheit der Mitspieler, das Lied nicht mag, trinke %amountbeer.
+Der erste der die Füße von %player berührt, verteilt %amountbeer. Es gibt keine seltsamen Fetische.
+Wer noch nie Star Wars gesehen hat ext sein Getränk und überdenkt seine Lebensentscheidungen.
+Wer mal BioShock gespielt hat, ist ein Ehrenmann und darf jemanden sein Getränk exen lassen.
+Die Person mit den meisten Piercings, darf pro Piercing ein Schluck verteilen.
+Wer das teuerste Outfit hat, darf 2 Schlücke verteilen, das Hypebeast.
+%player nennt eine Serie, die er guckt/geguckt hat. Jeder, der diese mal gesehen hat muss %amountbeer trinken.
+%player wählt das nächste Lied. Alle die es feiern, trinken %amountbeer.
+Derjenige der das längste Palindrom kennt (Wörter die genauso vorwärts, wie rückwärts sind z. B. Otto), darf pro Buchstaben des Palindroms einen Schluck verteilen. soos.
+Der mit dem ältesten Handymodell, darf %amountbeer verteilen.
+Alle die kleiner als %player sind, trinken %amountbeer.
+%player ist verflucht. Mache nach jedem Schluck einen Dab (3 Runden)!
+Die Person mit den kürzesten Haaren verteilt %amountbeer. Bei einer Glatze verteile %amountshot.
+Zeige die letzten 5 Fotos, die du geschossen hast. Wenn du dich nicht traust, trinke %amountbeer.
+Personen die älter als %player sind, trinken die Differenz (max. 5 damit ihr nicht draufgeht).
+Pro spanisches Lied das %player kennt, darf %player einen Schluck verteilen.
+Pro Bundeskanzler den %player kennt, darf %player einen Schluck verteilen.
+Wer als letzte auf der Toilette war, trinkt %amountbeer, damit die Person sie gleich wieder benutzen kann.
+%player, nenne Nobelpreisträger. Pro richtige Antwort darfst du einen Schluck verteilen. Wenn du keinen kennst, trinke %amountbeer.
+%player, nenne Oscarpreisträger. Pro richtige Antwort darfst du einen Schluck verteilen. Wenn du keinen kennst, trinke %amountbeer.
+Nenne Exzellenzuniversitäten in Deutschland. Pro richtige Antwort darfst du einen Schluck verteilen. Wenn du keine kennst, werde bitte exzellent und trinke 3 Schlücke.
+Nenne die Nachkommastellen von Pi. Pro Nachkommastelle verteile einen Schluck. Wenn du keine weißt, ist es nicht schlimm, weil du sowas nie im Leben brauchen wirst.
+%player nenne die Schwachstelle von Achilles. Wenn du sie nicht kennst, trinke 4 Schlücke.
+Jeder, der ein Handy von Apple hat, trinkt %amountbeer, ihr Bonzen.
+%player darf so viele Schlücke verteilen, wie er Internetbrowser aufsagen kann. Wenn du keinen kennst, trinke %amountshot.
+Jeder der studiert, oder studiert hat, trinkt %amountbeer.
+Jeder der etwas von Nintendo besaß, trinkt 1 Schluck für Mario.
+Nennt deutsche Rapperinnen! %player beginnt. Wer etwas wiederholt oder nach 10 Sekunden es nicht weiß, trinkt %amountbeer.
+Nennt Wörter mit 3 Buchstaben hintereinander (z. B.Nussschale). %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer.
+Nennt Nudelsorten. %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer.
+Nennt Fastfood-Restaurants. %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer.
+Legt eure Handys, einschaltet und mit Ton, in die Mitte (außer das Spielerhandy natürlich). Die Person, dessen Handy zuerst klingelt/vibriert, trinkt %amountshot.
+Der nächste der auf dein Handy guckt (außer das Spielerhandy natürlich), muss %amountshot trinken und seine Handysucht in den Griff kriegen.
+Jeder schreibt auf WhatsApp, der Person, mit der er am längsten nicht geschrieben hat. Wer sich nicht traut, trinkt %amountshot. Man muss schließlich seine Kontakte pflegen, oder?
+%player trinkt pro Handyspiel auf deinem Handy einen Schluck.
+Nennt Programmiersprachen. %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer.
+%player darf so viele Schlücke verteilen, wie er/sie/es Länder in der ehemaligen UdSSR nennen kann. Wenn du keinen kennst, trink %amountbeer Getränk und guck dir mal einen Atlas an.
+%player darf so viele Schlücke verteilen, wie er/sie/es Nachnamen von Mitspielern nennen kann. Pro falschen Nachnamen trinke selber einen Schluck.
+Nennt Pornoseiten, %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer. Rule 34 und so.
+Nennt Pornostars, %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer.
+Nennt Zeitungsnamen, %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer.
+Nennt Filme mit Leonardo di Caprio, %player beginnt. Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer.
+Alle Paare dürfen sich für den Rest des Spiels nicht mehr küssen. Pro Verstoß trinken beide %amountbeer. Hört auf die anderen daran zu erinnern, das sie Single sind.
+Trinkt 1 Schluck, pro Geschlechtspartner den ihr hattet. Interessant, wie viel ihr so trinkt, ihr Playboys/Playgirls.
+Alle Raucher trinken %amountshot und lassen so eine scheiße demnächst sein.
+Wer ist die schönste Person unter euch? Stimmt ab! Das Model darf %amountbeer trinken.
+%player nenne alle Planeten in unserem Sonnensystem. Verteile pro richtigen Planet einen Schluck. Wenn du alle kennst, muss jeder noch einen Shot trinken. Wenn du keinen kennst, exe dein Glas und überleg mal, auf welchen Planeten du wohl wohnst.
+%player, imitiere 5 Sekunden lang einen Affen oder trink %amountbeer.
+Alle die über 80 kg wiegen, melden sich demnächst im Fitnessstudio an und exen ihr Getränk.
+Wenn deine Beine nicht rasiert sind, trinke %amountbeer. Ich rasier dich mit Shampoo.
+Trinke einen Schluck, pro Vokal in deinem Vornamen.
+Die Person mit dem dicksten Arsch trinkt %amountbeer. Bestimmt bequem gerade zu sitzen, oder?
+Die Person mit der größten Oberweite trinkt %amountbeer. Wenn diese Person männlich ist, raten wir dir ein bisschen Sport zu unternehmen und dein Getränk wezugexen.
+Jeder der seine Nase mit seiner Zunge berühren kann, darf %amountbeer verteilen. Was du mit dieser Zunge wohl sonst noch kannst?
+%player muss einen Bodyshot (Shot vom Bauchnabel) von seinem gegenüber trinken. Wenn du dich nicht traust, trinke 2 Shots.
+Die Person mit der meisten Schminke, trinkt %amountbeer.
+Alle Christen trinke %amountbeer. Amen.
+Alle Muslime trinken nichts, weil Alkohol haram ist amk.
+%player trinke %amountbeer, wenn du findest, das jemand mitspielt, der absolut unwitzig ist. Nicht jeder kann so witzig sein, wie die Developer dieser App.
+%player darf so viele Schlücke verteilen, wie er Fehler in der Theorieprüfung beim Führerschein hatte. Wenn du keinen Führerschein hast, exe dein Glas.
