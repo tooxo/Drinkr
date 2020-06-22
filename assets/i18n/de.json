@@ -17,15 +17,15 @@
 
   "selectDifficulty": "Schwierigkeit wählen",
   "difficultyLow": "Wenig",
-  "difficultyLowDescription": "Strafen: 1 - 2 Schlucke | keine Shots",
+  "difficultyLowDescription": "Strafen: 1 - 2 Schluck(e) | keine Shots",
   "difficultyMed": "Normal",
   "difficultyMedDescription": "Strafen: 2 - 3 Schlucke | 1 Shot",
   "difficultyHigh": "Absturz",
-  "difficultyHighDescription": "Strafen: 3 - 5 Schlucke | 1 - 2 Shots",
+  "difficultyHighDescription": "Strafen: 3 - 5 Schlucke | 1 - 2 Shot(s)",
 
-  "customNoGameSelected": "Kein Spieln wurde ausgewählt.",
+  "customNoGameSelected": "Kein Spiel wurde ausgewählt.",
   "customNoGameSelectedDescription": "Bitte wähle mindestens ein Spiel aus.",
-  "customTitle": "Wähle deine Spielmodi aus",
+  "customTitle": "Wähle deine Spielmodi",
 
   "truthOrDare": "Wahrheit oder Pflicht",
   "truthOrDareExplanation": "Wenn du dich nicht traust, trink!",

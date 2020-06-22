@@ -37,7 +37,7 @@ void main() {
     path: 'assets/i18n',
     // fallbackLocale: Locale('en', 'US'),
     useOnlyLangCode: true,
-    preloaderColor: Colors.yellow.shade900,
+    preloaderColor: Color.fromRGBO(255, 111, 0, 1),
     child: MyApp(),
   ));
 }
@@ -87,7 +87,7 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Colors.yellow.shade900,
+      backgroundColor: Color.fromRGBO(255, 111, 0, 1),
       body: FlatButton(
           onPressed: () {
             if (this.t.isActive) {
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow.shade900,
+      backgroundColor: Color.fromRGBO(255, 111, 0, 1),
       body: LayoutBuilder(builder: (context, boxConstraints) {
         double calcDegree = (atan((boxConstraints.maxHeight * 0.5 * 0.1) /
                     boxConstraints.maxWidth) *
