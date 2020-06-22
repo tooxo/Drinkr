@@ -44,14 +44,14 @@ Future<bool> showInterstitialAd(BuildContext buildContext) async {
           builder: (BuildContext context) {
             return new AlertDialog(
               backgroundColor: Colors.green.shade700,
-              title: Text("Erfolg",
+              title: Text("Werbung deaktiviert",
                   style: GoogleFonts.caveatBrush(
                     textStyle: TextStyle(color: Colors.black),
                     fontWeight: FontWeight.w800,
                     fontSize: 30,
                   )),
               content: Text(
-                "Du kannst nun die nächste Stunde in der App werbefrei genießen. Vielen Dank.",
+                "Du kannst die nächste Stunde in der App werbefrei verbringen.\nVielen Dank bro.",
                 style: GoogleFonts.caveatBrush(
                   textStyle: TextStyle(color: Colors.black),
                   fontSize: 25,
@@ -80,14 +80,14 @@ Future<bool> showInterstitialAd(BuildContext buildContext) async {
           builder: (BuildContext context) {
             return new AlertDialog(
               backgroundColor: Colors.deepOrange,
-              title: Text("Fehler.",
+              title: Text("Fehler",
                   style: GoogleFonts.caveatBrush(
                     textStyle: TextStyle(color: Colors.black),
                     fontWeight: FontWeight.w800,
                     fontSize: 30,
                   )),
               content: Text(
-                "Du musst das Video bis zum Ende ansehen.",
+                "Du musst das Video bis zum Ende anschauen! Nix da überspringen!",
                 style: GoogleFonts.caveatBrush(
                   textStyle: TextStyle(color: Colors.black),
                   fontSize: 25,
@@ -126,14 +126,14 @@ Future<bool> showInterstitialAd(BuildContext buildContext) async {
         builder: (BuildContext context) {
           return new AlertDialog(
             backgroundColor: Colors.deepOrange,
-            title: Text("Error",
+            title: Text("Keine Videos mehr :(",
                 style: GoogleFonts.caveatBrush(
                   textStyle: TextStyle(color: Colors.black),
                   fontWeight: FontWeight.w800,
                   fontSize: 30,
                 )),
             content: Text(
-              "Momentan sind keine Videos verfügbar. Versuch es später nochmal.",
+              "Momentan sind keine Videos mehr verfügbar. Versuch es später nochmal.",
               style: GoogleFonts.caveatBrush(
                 textStyle: TextStyle(color: Colors.black),
                 fontSize: 25,

@@ -11,8 +11,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'file.dart';
+import 'file.dart';
 import 'name_select.dart';
 import 'player.dart';
+import 'setting.dart';
+import 'setting.dart';
+import 'types.dart';
 
 class Custom extends StatefulWidget {
   @override
@@ -23,6 +28,7 @@ const String SAVED_CUSTOM_SETTING = "SAVED_CUSTOM_SETTING";
 
 class CustomState extends State<StatefulWidget> {
   Map<GameType, bool> selectedItems = new Map();
+  Map<GameType, bool> itemActivated = new Map();
 
   Future<void> loadSave() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
@@ -59,10 +65,27 @@ class CustomState extends State<StatefulWidget> {
   @override
   void initState() {
     super.initState();
+
     for (GameType type in GameType.values) {
       if ([GameType.UNDEFINED, GameType.DARE].contains(type)) continue;
       selectedItems[type] = true;
+      itemActivated[type] = true;
     }
+
+    SharedPreferences.getInstance().then((sp) async {
+      if (sp.getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ==
+          SettingsState.ONLY_CUSTOM) {
+        for (GameType type in itemActivated.keys) {
+          int number = await getNumberOfTextsLocal(enabledGames: [type]);
+          if (number == 0) {
+            itemActivated[type] = false;
+            selectedItems[type] = false;
+          }
+
+        }
+        setState(() {});
+      }
+    });
 
     loadSave().then((value) => setState(() {}));
   }
@@ -228,16 +251,26 @@ class CustomState extends State<StatefulWidget> {
                                             checkColor: Colors.black,
                                             focusColor: Colors.yellow.shade900,
                                             activeColor: Colors.yellow.shade900,
-                                            onChanged: (newValue) {
-                                              setState(() {
-                                                selectedItems[selectedItems.keys
-                                                        .elementAt(i)] =
-                                                    !selectedItems[selectedItems
-                                                        .keys
-                                                        .elementAt(i)];
-                                              });
-                                              saveSave();
-                                            })),
+                                            onChanged: !this
+                                                    .itemActivated
+                                                    .values
+                                                    .elementAt(i)
+                                                ? null
+                                                : (newValue) {
+                                                    setState(() {
+                                                      selectedItems[
+                                                              selectedItems.keys
+                                                                  .elementAt(
+                                                                      i)] =
+                                                          !selectedItems[
+                                                              selectedItems.keys
+                                                                  .elementAt(
+                                                                      i)];
+                                                    });
+                                                    saveSave();
+                                                  },
+                                        
+                                        )),
                                   )
                                 ]),
                           ),

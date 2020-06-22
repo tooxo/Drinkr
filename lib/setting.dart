@@ -141,7 +141,7 @@ class SettingsState extends State<Settings> {
                 CustomPaint(
                   painter: MiddlePainter(calcDegree, Colors.orangeAccent),
                   child: Container(
-                    height: 150,
+                    height: 175,
                     width: c.maxWidth,
                     decoration: ShapeDecoration(
                         shape: MiddleShapePainter(0, calcDegree)),
@@ -182,7 +182,7 @@ class SettingsState extends State<Settings> {
                 CustomPaint(
                   painter: MiddlePainter(calcDegree, Colors.yellow.shade900),
                   child: Container(
-                    height: 150,
+                    height: 175,
                     width: c.maxWidth,
                     decoration: ShapeDecoration(
                         shape: MiddleShapePainter(0, calcDegree)),
@@ -221,7 +221,7 @@ class SettingsState extends State<Settings> {
                 CustomPaint(
                   painter: MiddlePainter(calcDegree, Colors.orangeAccent),
                   child: Container(
-                    height: 150,
+                    height: 175,
                     width: c.maxWidth,
                     decoration: ShapeDecoration(
                         shape: MiddleShapePainter(0, calcDegree)),
@@ -261,7 +261,7 @@ class SettingsState extends State<Settings> {
                 CustomPaint(
                   painter: MiddlePainter(calcDegree, Colors.yellow.shade900),
                   child: Container(
-                    height: 150,
+                    height: 175,
                     width: c.maxWidth,
                     decoration: ShapeDecoration(
                         shape: MiddleShapePainter(0, calcDegree)),
@@ -301,7 +301,7 @@ class SettingsState extends State<Settings> {
                 CustomPaint(
                   painter: BottomPainter(calcDegree, Colors.orangeAccent),
                   child: Container(
-                    height: 150,
+                    height: 175,
                     width: c.maxWidth,
                     decoration: ShapeDecoration(
                         shape: BottomShapePainter(0, calcDegree)),

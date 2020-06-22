@@ -158,7 +158,7 @@ class WhoWouldRatherType extends TypeClass<BaseType> {
   String get translatedTitle => "whoWouldRather".tr();
   String filePrefix = "wwr";
 
-  bool hasSolution = true;
+  bool hasSolution = false;
   GameType type = GameType.WHO_WOULD_RATHER;
 
   String get text1 => "whoWouldRatherText1".tr();

@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'file.dart';
+import 'types.dart';
 
 class WordCustomization extends StatefulWidget {
   @override
@@ -120,20 +121,35 @@ class WordCustomizationState extends State<WordCustomization> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, c) {
-        double calcDegree =
-            (atan((c.maxHeight * 0.5 * 0.1) / c.maxWidth) * 180) / pi;
-        double distanceOffset = (c.maxWidth * sin((calcDegree * pi / 180))) /
-            sin(((90 - calcDegree) * pi) / 180);
-
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.yellow.shade900,
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.yellow.shade900,
+        title: Center(
+          child: Padding(
+            padding: EdgeInsets.only(right: 50.0),
+            child: Text(
+              "Eigene Fragen",
+              style: GoogleFonts.caveatBrush(
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600),
+              ),
+            ).tr(),
           ),
-          resizeToAvoidBottomInset: false,
-          body: ColumnSuper(
-            innerDistance: distanceOffset * -1,
+        ),
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      resizeToAvoidBottomInset: false,
+      body: LayoutBuilder(
+        builder: (context, c) {
+          double calcDegree =
+              (atan((c.maxHeight * 0.5 * 0.1) / c.maxWidth) * 180) / pi;
+          double distanceOffset = (c.maxWidth * sin((calcDegree * pi / 180))) /
+              sin(((90 - calcDegree) * pi) / 180);
+          return ColumnSuper(
+            innerDistance: distanceOffset * -1 + 3,
             children: <Widget>[
               CustomPaint(
                 painter: TopPainter(calcDegree, Colors.yellow.shade900),
@@ -145,10 +161,10 @@ class WordCustomizationState extends State<WordCustomization> {
               CustomPaint(
                 painter: BottomPainter(calcDegree, Colors.orangeAccent),
                 child: Container(
-                  height: 0.95 * c.maxHeight - distanceOffset,
+                  height: 0.95 * c.maxHeight + distanceOffset - 3,
                   width: c.maxWidth,
                   child: SizedBox(
-                    height: 0.95 * c.maxHeight - distanceOffset,
+                    height: 0.95 * c.maxHeight + distanceOffset - 3,
                     width: c.maxWidth,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -167,8 +183,9 @@ class WordCustomizationState extends State<WordCustomization> {
                                             fontSize: 30),
                                       )
                                     : Container(
-                                        height:
-                                            0.95 * c.maxHeight - distanceOffset,
+                                        height: 0.95 * c.maxHeight +
+                                            distanceOffset -
+                                            3,
                                         width: c.maxWidth,
                                         child: ClipPath(
                                           clipper: BottomClipper(calcDegree),
@@ -272,204 +289,194 @@ class WordCustomizationState extends State<WordCustomization> {
                 ),
               ),
             ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
-            ),
-            onPressed: () => showDialog(
-                context: context,
-                builder: (context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    backgroundColor: Colors.deepOrange,
-                    child: StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) =>
-                          SingleChildScrollView(
-                        child: Container(
-                          height: 400,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 30),
-                            child: Column(
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
+        onPressed: () => showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                backgroundColor: Colors.deepOrange,
+                child: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) =>
+                      SingleChildScrollView(
+                    child: Container(
+                      height: 400,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(
+                              child: Form(
+                                key: _formKeyBig,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "Hinzufügen",
+                                      style:
+                                          GoogleFonts.caveatBrush(fontSize: 40),
+                                    ),
+                                    Divider(
+                                      thickness: 2,
+                                    ),
+                                    Form(
+                                      key: _formKeyField1,
+                                      child: TextFormField(
+                                        style: GoogleFonts.caveatBrush(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        validator: (txt) {
+                                          if (getSelectedType() ==
+                                              GameType.GUESS_THE_SONG) {
+                                            Spotify.getIdFromUrl(txt) == null
+                                                // ignore: unnecessary_statements
+                                                ? "Invalid Url"
+                                                // ignore: unnecessary_statements
+                                                : null;
+                                          }
+                                          return txt.length == 0
+                                              ? "Required."
+                                              : null;
+                                        },
+                                        decoration: InputDecoration(
+                                            hintText: gameTypeToGameTypeClass(
+                                                    getSelectedType())
+                                                .text1),
+                                        keyboardType: TextInputType.multiline,
+                                        maxLines: 3,
+                                        maxLength: 250,
+                                        maxLengthEnforced: true,
+                                        onChanged: (newVal) {
+                                          tf1Value = newVal;
+                                          _formKeyField1.currentState
+                                              .validate();
+                                        },
+                                      ),
+                                    ),
+                                    Divider(),
+                                    Form(
+                                      key: _formKeyField2,
+                                      child: TextFormField(
+                                        style: GoogleFonts.caveatBrush(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        validator: (txt) {
+                                          if (!gameTypeToGameTypeClass(
+                                                  getSelectedType())
+                                              .hasSolution) {
+                                            return null;
+                                          }
+                                          return txt.length == 0
+                                              ? "Required."
+                                              : null;
+                                        },
+                                        decoration: InputDecoration(
+                                            hintText: gameTypeToGameTypeClass(
+                                                    getSelectedType())
+                                                .text2),
+                                        enabled: gameTypeToGameTypeClass(
+                                                getSelectedType())
+                                            .hasSolution,
+                                        keyboardType: TextInputType.multiline,
+                                        maxLines: 3,
+                                        maxLength: 60,
+                                        maxLengthEnforced: true,
+                                        onChanged: (newVal) {
+                                          tf2Value = newVal;
+                                          _formKeyField2.currentState
+                                              .validate();
+                                        },
+                                      ),
+                                    ),
+                                    DropdownButton<String>(
+                                      items: <String>[
+                                        for (GameType type in GameType.values
+                                            .where((element) =>
+                                                element != GameType.UNDEFINED))
+                                          gameTypeToGameTypeClass(type)
+                                              .translatedTitle
+                                      ].map((String value) {
+                                        return new DropdownMenuItem<String>(
+                                          value: value,
+                                          child: new Text(
+                                            value,
+                                            style: GoogleFonts.caveatBrush(
+                                                color: Colors.black),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (newValue) {
+                                        dropdownValue = newValue;
+                                        setState(() {});
+                                      },
+                                      dropdownColor: Colors.deepOrange,
+                                      value: dropdownValue,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Row(
                               children: <Widget>[
                                 Expanded(
-                                  child: Form(
-                                    key: _formKeyBig,
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          "Hinzufügen",
-                                          style: GoogleFonts.caveatBrush(
-                                              fontSize: 40),
-                                        ),
-                                        Divider(
-                                          thickness: 2,
-                                        ),
-                                        Form(
-                                          key: _formKeyField1,
-                                          child: TextFormField(
-                                            style: GoogleFonts.caveatBrush(
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            validator: (txt) {
+                                  child: FlatButton.icon(
+                                      label:
+                                          Text(buttonEnabled ? "ADD" : "WAIT")
+                                              .tr(),
+                                      icon: Icon(buttonEnabled
+                                          ? Icons.add
+                                          : Icons.cached),
+                                      onPressed: this.buttonEnabled
+                                          ? () async {
                                               if (getSelectedType() ==
                                                   GameType.GUESS_THE_SONG) {
-                                                Spotify.getIdFromUrl(txt) ==
-                                                        null
-                                                    // ignore: unnecessary_statements
-                                                    ? "Invalid Url"
-                                                    // ignore: unnecessary_statements
-                                                    : null;
+                                                this.buttonEnabled = false;
                                               }
-                                              return txt.length == 0
-                                                  ? "Required."
-                                                  : null;
-                                            },
-                                            decoration: InputDecoration(
-                                                hintText:
+                                              if (_formKeyBig.currentState
+                                                      .validate() &&
+                                                  _formKeyField1.currentState
+                                                      .validate() &&
+                                                  _formKeyField2.currentState
+                                                      .validate() &&
+                                                  await spotifyCheckerWrapper()) {
+                                                String thingToAppend = tf1Value;
+
+                                                if (tf2Value.length > 0 &&
                                                     gameTypeToGameTypeClass(
                                                             getSelectedType())
-                                                        .text1),
-                                            keyboardType:
-                                                TextInputType.multiline,
-                                            maxLines: 3,
-                                            maxLength: 250,
-                                            maxLengthEnforced: true,
-                                            onChanged: (newVal) {
-                                              tf1Value = newVal;
-                                              _formKeyField1.currentState
-                                                  .validate();
-                                            },
-                                          ),
-                                        ),
-                                        Divider(),
-                                        Form(
-                                          key: _formKeyField2,
-                                          child: TextFormField(
-                                            style: GoogleFonts.caveatBrush(
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            validator: (txt) {
-                                              if (!gameTypeToGameTypeClass(
-                                                      getSelectedType())
-                                                  .hasSolution) {
-                                                return null;
-                                              }
-                                              return txt.length == 0
-                                                  ? "Required."
-                                                  : null;
-                                            },
-                                            decoration: InputDecoration(
-                                                hintText:
-                                                    gameTypeToGameTypeClass(
-                                                            getSelectedType())
-                                                        .text2),
-                                            enabled: gameTypeToGameTypeClass(
-                                                    getSelectedType())
-                                                .hasSolution,
-                                            keyboardType:
-                                                TextInputType.multiline,
-                                            maxLines: 3,
-                                            maxLength: 60,
-                                            maxLengthEnforced: true,
-                                            onChanged: (newVal) {
-                                              tf2Value = newVal;
-                                              _formKeyField2.currentState
-                                                  .validate();
-                                            },
-                                          ),
-                                        ),
-                                        DropdownButton<String>(
-                                          items: <String>[
-                                            for (GameType type in GameType
-                                                .values
-                                                .where((element) =>
-                                                    element !=
-                                                    GameType.UNDEFINED))
-                                              gameTypeToGameTypeClass(type)
-                                                  .translatedTitle
-                                          ].map((String value) {
-                                            return new DropdownMenuItem<String>(
-                                              value: value,
-                                              child: new Text(
-                                                value,
-                                                style: GoogleFonts.caveatBrush(
-                                                    color: Colors.black),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (newValue) {
-                                            dropdownValue = newValue;
-                                            setState(() {});
-                                          },
-                                          dropdownColor: Colors.deepOrange,
-                                          value: dropdownValue,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: FlatButton.icon(
-                                          label: Text(buttonEnabled
-                                                  ? "ADD"
-                                                  : "WAIT")
-                                              .tr(),
-                                          icon: Icon(buttonEnabled
-                                              ? Icons.add
-                                              : Icons.cached),
-                                          onPressed: this.buttonEnabled
-                                              ? () async {
-                                                  if (getSelectedType() ==
-                                                      GameType.GUESS_THE_SONG) {
-                                                    this.buttonEnabled = false;
-                                                  }
-                                                  if (_formKeyBig.currentState
-                                                          .validate() &&
-                                                      _formKeyField1
-                                                          .currentState
-                                                          .validate() &&
-                                                      _formKeyField2
-                                                          .currentState
-                                                          .validate() &&
-                                                      await spotifyCheckerWrapper()) {
-                                                    String thingToAppend =
-                                                        tf1Value;
-
-                                                    if (tf2Value.length > 0) {
-                                                      thingToAppend +=
-                                                          ";$tf2Value";
-                                                    }
-
-                                                    await appendCustomLines(
-                                                        [thingToAppend],
-                                                        getSelectedType());
-
-                                                    Navigator.of(context)
-                                                        .pop(true);
-                                                    this.reloadTexts();
-                                                  }
-                                                  buttonEnabled = true;
+                                                        .hasSolution) {
+                                                  thingToAppend += ";$tf2Value";
                                                 }
-                                              : null),
-                                    )
-                                  ],
+
+                                                await appendCustomLines(
+                                                    [thingToAppend],
+                                                    getSelectedType());
+
+                                                Navigator.of(context).pop(true);
+                                                this.reloadTexts();
+                                              }
+                                              buttonEnabled = true;
+                                            }
+                                          : null),
                                 )
                               ],
-                            ),
-                          ),
+                            )
+                          ],
                         ),
                       ),
                     ),
-                  ).build(context);
-                }),
-          ),
-        );
-      },
+                  ),
+                ),
+              ).build(context);
+            }),
+      ),
     );
   }
 }
