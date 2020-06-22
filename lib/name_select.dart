@@ -179,9 +179,6 @@ class NameSelectState extends State<NameSelect> {
           double distanceOffset = (c.maxWidth * sin((calcDegree * pi / 180))) /
               sin(((90 - calcDegree) * pi) / 180);
 
-          double h1 = c.maxHeight;
-          double h2 = MediaQuery.of(context).size.height;
-
           return ColumnSuper(
             innerDistance: distanceOffset * -1 + 3,
             separatorOnTop: true,
