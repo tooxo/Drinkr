@@ -31,6 +31,8 @@ class SettingsState extends State<Settings> {
   static const int BOTH = 1;
   static const int ONLY_CUSTOM = 2;
 
+
+
   SharedPreferences sp;
 
   int sliderState = 1;
@@ -66,7 +68,7 @@ class SettingsState extends State<Settings> {
         return Scaffold(
           backgroundColor: Colors.black,
           appBar: AppBar(
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Color.fromRGBO(255, 111, 0, 1),
             title: Center(
               child: Padding(
                 padding: EdgeInsets.only(right: 50.0),
@@ -88,7 +90,7 @@ class SettingsState extends State<Settings> {
               innerDistance: distanceOffset * -1 + 3,
               children: <Widget>[
                 CustomPaint(
-                  painter: TopPainter(calcDegree, Colors.yellow.shade900),
+                  painter: TopPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                   child: Container(
                     height: 175,
                     child: SizedBox.expand(
@@ -100,8 +102,8 @@ class SettingsState extends State<Settings> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Aktivierte Texte",
-                                style: GoogleFonts.caveatBrush(fontSize: 25),
+                                "Aktivierte Fragen",
+                                style: GoogleFonts.caveatBrush(fontSize: 30),
                               ),
                               SizedBox(
                                 height: 50,
@@ -139,7 +141,7 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
                 CustomPaint(
-                  painter: MiddlePainter(calcDegree, Colors.orangeAccent),
+                  painter: MiddlePainter(calcDegree, Colors.deepOrange),
                   child: Container(
                     height: 175,
                     width: c.maxWidth,
@@ -180,7 +182,7 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
                 CustomPaint(
-                  painter: MiddlePainter(calcDegree, Colors.yellow.shade900),
+                  painter: MiddlePainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                   child: Container(
                     height: 175,
                     width: c.maxWidth,
@@ -219,7 +221,7 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
                 CustomPaint(
-                  painter: MiddlePainter(calcDegree, Colors.orangeAccent),
+                  painter: MiddlePainter(calcDegree, Colors.deepOrange),
                   child: Container(
                     height: 175,
                     width: c.maxWidth,
@@ -259,7 +261,7 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
                 CustomPaint(
-                  painter: MiddlePainter(calcDegree, Colors.yellow.shade900),
+                  painter: MiddlePainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                   child: Container(
                     height: 175,
                     width: c.maxWidth,
@@ -299,7 +301,7 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
                 CustomPaint(
-                  painter: BottomPainter(calcDegree, Colors.orangeAccent),
+                  painter: BottomPainter(calcDegree, Colors.deepOrange),
                   child: Container(
                     height: 175,
                     width: c.maxWidth,
@@ -351,7 +353,7 @@ class SettingsState extends State<Settings> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return Scaffold(
-        backgroundColor: Colors.yellow.shade900,
+        backgroundColor: Color.fromRGBO(255, 111, 0, 1),
         appBar: AppBar(
           backgroundColor: Colors.deepOrange,
           title: Center(

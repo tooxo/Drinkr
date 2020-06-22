@@ -124,7 +124,7 @@ class WordCustomizationState extends State<WordCustomization> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.yellow.shade900,
+        backgroundColor: Color.fromRGBO(255, 111, 0, 1),
         title: Center(
           child: Padding(
             padding: EdgeInsets.only(right: 50.0),
@@ -152,14 +152,14 @@ class WordCustomizationState extends State<WordCustomization> {
             innerDistance: distanceOffset * -1 + 3,
             children: <Widget>[
               CustomPaint(
-                painter: TopPainter(calcDegree, Colors.yellow.shade900),
+                painter: TopPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                 child: Container(
                   height: 0.05 * c.maxHeight,
                   width: c.maxWidth,
                 ),
               ),
               CustomPaint(
-                painter: BottomPainter(calcDegree, Colors.orangeAccent),
+                painter: BottomPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                 child: Container(
                   height: 0.95 * c.maxHeight + distanceOffset - 3,
                   width: c.maxWidth,

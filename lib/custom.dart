@@ -81,7 +81,6 @@ class CustomState extends State<StatefulWidget> {
             itemActivated[type] = false;
             selectedItems[type] = false;
           }
-
         }
         setState(() {});
       }
@@ -156,17 +155,17 @@ class CustomState extends State<StatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.yellow.shade900,
+          backgroundColor:   Color.fromRGBO(255, 111, 0, 1),
           iconTheme: IconThemeData(color: Colors.black),
           title: Center(
             child: Padding(
               padding: EdgeInsets.only(right: 50.0),
               child: Text(
-                "nameSelectTitle",
+                "customTitle",
                 style: GoogleFonts.caveatBrush(
                   textStyle: TextStyle(
                       color: Colors.black,
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.w600),
                 ),
               ).tr(),
@@ -186,7 +185,8 @@ class CustomState extends State<StatefulWidget> {
               innerDistance: distanceOffset * -1 + 3,
               children: <Widget>[
                 CustomPaint(
-                  painter: TopPainter(calcDegree, Colors.yellow.shade900),
+                  painter:
+                      TopPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                   child: Container(
                     height: c.maxHeight * 0.05,
                     width: c.maxWidth,
@@ -245,31 +245,29 @@ class CustomState extends State<StatefulWidget> {
                                     child: Transform.scale(
                                         scale: 2,
                                         child: Checkbox(
-                                            value: selectedItems[selectedItems
-                                                .keys
-                                                .elementAt(i)],
-                                            checkColor: Colors.black,
-                                            focusColor: Colors.yellow.shade900,
-                                            activeColor: Colors.yellow.shade900,
-                                            onChanged: !this
-                                                    .itemActivated
-                                                    .values
-                                                    .elementAt(i)
-                                                ? null
-                                                : (newValue) {
-                                                    setState(() {
-                                                      selectedItems[
-                                                              selectedItems.keys
-                                                                  .elementAt(
-                                                                      i)] =
-                                                          !selectedItems[
-                                                              selectedItems.keys
-                                                                  .elementAt(
-                                                                      i)];
-                                                    });
-                                                    saveSave();
-                                                  },
-                                        
+                                          value: selectedItems[
+                                              selectedItems.keys.elementAt(i)],
+                                          checkColor: Colors.black,
+                                          focusColor:
+                                              Color.fromRGBO(255, 111, 0, 1),
+                                          activeColor:
+                                              Color.fromRGBO(255, 111, 0, 1),
+                                          onChanged: !this
+                                                  .itemActivated
+                                                  .values
+                                                  .elementAt(i)
+                                              ? null
+                                              : (newValue) {
+                                                  setState(() {
+                                                    selectedItems[selectedItems
+                                                            .keys
+                                                            .elementAt(i)] =
+                                                        !selectedItems[
+                                                            selectedItems.keys
+                                                                .elementAt(i)];
+                                                  });
+                                                  saveSave();
+                                                },
                                         )),
                                   )
                                 ]),
@@ -283,7 +281,8 @@ class CustomState extends State<StatefulWidget> {
                   ),
                 ),
                 CustomPaint(
-                  painter: BottomPainter(calcDegree, Colors.yellow.shade900),
+                  painter:
+                      BottomPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                   child: Container(
                     width: c.maxWidth,
                     height: c.maxHeight * 0.2,

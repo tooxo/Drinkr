@@ -477,7 +477,7 @@ class DifficultyState extends State<Difficulty> {
               return Scaffold(
                 appBar: AppBar(
                   centerTitle: true,
-                  backgroundColor: Colors.yellow,
+                  backgroundColor: Color.fromRGBO(255, 111, 0, 1),
                   title: Text(
                     "selectDifficulty",
                     style: GoogleFonts.caveatBrush(
@@ -711,7 +711,7 @@ class DifficultyState extends State<Difficulty> {
           )
         : this.displayState == 2
             ? Container(
-                color: Colors.yellow.shade900,
+                color: Color.fromRGBO(255, 111, 0, 1),
                 child: Center(
                   child: SpinKitFadingCircle(
                     color: Colors.black,
@@ -719,7 +719,7 @@ class DifficultyState extends State<Difficulty> {
                 ),
               )
             : Container(
-                color: Colors.yellow.shade900,
+                color: Color.fromRGBO(255, 111, 0, 1),
               );
   }
 }

@@ -8,7 +8,7 @@ class Sprache extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return Scaffold(
-      backgroundColor: Colors.yellow.shade900,
+      backgroundColor: Color.fromRGBO(255, 111, 0, 1),
       appBar: AppBar(
         backgroundColor: Colors.orange.shade900,
         centerTitle: true,
