@@ -68,6 +68,7 @@ jobs:
         - git tag TRAVIS_TAG
       script:
         - flutter/bin/flutter build ios --debug --no-codesign
+        - cat ios/Podfile
       before_cache:
         - brew cleanup
       deploy:
