@@ -11,7 +11,7 @@ jobs:
         - ANDROID_SDK_TOOLS=commandlinetools-linux-6200805_latest.zip
       before_install:
         - sudo apt update
-        - echo "${KEYSTORE_BASE64} | base64 -d > release.keystore
+        - echo ${KEYSTORE_BASE64} | base64 -d > release.keystore
         - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
         - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
         - export PATH=$PATH:$HOME/sdk/tools/bin
