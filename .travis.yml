@@ -23,6 +23,8 @@ jobs:
       script:
         - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
         - flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+      after_script:
+        - dir -R $ANDROID_HOME
       before_deploy:
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
         - git tag TRAVIS_TAG
