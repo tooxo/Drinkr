@@ -45,3 +45,6 @@ app.*.map.json
 # pubspec
 pubspec.lock
 ./pubspec.lock
+
+*.keystore
+android/key.properties
