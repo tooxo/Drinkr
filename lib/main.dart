@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'dart:math';
 
 import 'package:SaufApp/ad.dart';
-import 'package:SaufApp/licenses.dart';
 import 'package:SaufApp/setting.dart';
 import 'package:SaufApp/shapes.dart';
 import 'package:SaufApp/types.dart';

@@ -141,7 +141,6 @@ class NameSelectState extends State<NameSelect> {
             );
           },
         );
-
         return;
       }
       this.players.add(new Player(this.player1));
@@ -173,6 +172,7 @@ class NameSelectState extends State<NameSelect> {
             ),
           ),
         ),
+        resizeToAvoidBottomInset: false,
         body: LayoutBuilder(builder: (context, c) {
           double calcDegree =
               (atan((c.maxHeight * 0.5 * 0.1) / c.maxWidth) * 180) / pi;

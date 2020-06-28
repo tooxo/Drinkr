@@ -373,6 +373,7 @@ class DifficultyState extends State<Difficulty> {
           Navigator.of(context).pop(false);
           return;
         }
+        result = result || gamePlan.isEmpty;
         if (result) {
           break;
         }

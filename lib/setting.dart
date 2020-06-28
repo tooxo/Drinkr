@@ -10,7 +10,6 @@ import 'package:app_review/app_review.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -31,8 +30,6 @@ class SettingsState extends State<Settings> {
   static const int BOTH = 1;
   static const int ONLY_CUSTOM = 2;
 
-
-
   SharedPreferences sp;
 
   int sliderState = 1;
@@ -52,7 +49,11 @@ class SettingsState extends State<Settings> {
 
   void updateCustomQuestionsAvailable() async {
     customQuestionsAvailable = await getNumberOfTextsLocal() > 0;
-    key.currentState.setState(() {});
+    if (!customQuestionsAvailable && sliderState == ONLY_CUSTOM) {
+      sliderState = BOTH;
+      await sp.setInt(SETTING_INCLUSION_OF_QUESTIONS, BOTH);
+    }
+    key.currentState..setIndex(sliderState)..setState(() {});
   }
 
   final GlobalKey<ToggleSwitchState> key = GlobalKey<ToggleSwitchState>();
@@ -90,7 +91,8 @@ class SettingsState extends State<Settings> {
               innerDistance: distanceOffset * -1 + 3,
               children: <Widget>[
                 CustomPaint(
-                  painter: TopPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
+                  painter:
+                      TopPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                   child: Container(
                     height: 175,
                     child: SizedBox.expand(
@@ -151,9 +153,11 @@ class SettingsState extends State<Settings> {
                       color: Colors.transparent,
                       shape: MiddleShapePainter(0, calcDegree),
                       child: InkWell(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => WordCustomization())),
+                        onTap: () => Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (context) => WordCustomization()))
+                            .then((value) =>
+                                this.updateCustomQuestionsAvailable()),
                         customBorder: MiddleShapePainter(0, calcDegree),
                         child: Container(
                           margin: EdgeInsets.only(
@@ -182,7 +186,8 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
                 CustomPaint(
-                  painter: MiddlePainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
+                  painter:
+                      MiddlePainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                   child: Container(
                     height: 175,
                     width: c.maxWidth,
@@ -261,7 +266,8 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
                 CustomPaint(
-                  painter: MiddlePainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
+                  painter:
+                      MiddlePainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                   child: Container(
                     height: 175,
                     width: c.maxWidth,
@@ -316,7 +322,8 @@ class SettingsState extends State<Settings> {
                                 builder: (context) => Licenses())),
                         customBorder: BottomShapePainter(0, calcDegree),
                         child: Container(
-                          margin: EdgeInsets.only(top: distanceOffset, bottom: distanceOffset),
+                          margin: EdgeInsets.only(
+                              top: distanceOffset, bottom: distanceOffset),
                           child: Transform.rotate(
                             //angle: calcDegree * pi / 180 * -1,
                             angle: 0,
@@ -346,139 +353,5 @@ class SettingsState extends State<Settings> {
         );
       },
     );
-  }
-
-  @override
-  Widget build2(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    return Scaffold(
-        backgroundColor: Color.fromRGBO(255, 111, 0, 1),
-        appBar: AppBar(
-          backgroundColor: Colors.deepOrange,
-          title: Center(
-            child: Padding(
-              padding: EdgeInsets.only(right: 50.0),
-              child: Text(
-                "settings",
-                style: GoogleFonts.caveatBrush(
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600),
-                ),
-              ).tr(),
-            ),
-          ),
-          iconTheme: IconThemeData(color: Colors.black),
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Aktivierte Fragen",
-                          style: GoogleFonts.caveatBrush(fontSize: 35),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        child: ToggleSwitch(
-                          key: key,
-                          minWidth: 120,
-                          minHeight: null,
-                          initialLabelIndex: sliderState,
-                          activeBgColor: Colors.deepOrange,
-                          activeTextColor: Colors.black,
-                          inactiveBgColor: Colors.orangeAccent,
-                          inactiveTextColor: Colors.black,
-                          labels: ['Only Included', 'Both', 'Only Custom'],
-                          onToggle: (index) async {
-                            if (index == 2 && !customQuestionsAvailable) {
-                              return false;
-                            }
-                            sp.setInt(SETTING_INCLUSION_OF_QUESTIONS, index);
-                            return true;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  MaterialButton(
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text('language',
-                          style: GoogleFonts.caveatBrush(
-                            textStyle:
-                                TextStyle(color: Colors.black, fontSize: 450),
-                          )).tr(),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                      side: BorderSide(color: Colors.black),
-                    ),
-                    onPressed: () =>
-                        Fluttertoast.showToast(msg: "Coming soon..."),
-                  ),
-                  MaterialButton(
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text('rate',
-                            style: GoogleFonts.caveatBrush(
-                              textStyle:
-                                  TextStyle(color: Colors.black, fontSize: 450),
-                            )).tr(),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9),
-                        side: BorderSide(color: Colors.black),
-                      ),
-                      onPressed: () =>
-                          AppReview.requestReview.then((value) => {})),
-                  MaterialButton(
-                    onPressed: () => Navigator.of(context)
-                        .push(MaterialPageRoute(
-                            builder: (context) => WordCustomization()))
-                        .then((value) => this.updateCustomQuestionsAvailable()),
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text('feedback',
-                          style: GoogleFonts.caveatBrush(
-                            textStyle:
-                                TextStyle(color: Colors.black, fontSize: 450),
-                          )).tr(),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                      side: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  MaterialButton(
-                    onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => WordCustomization())),
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text('Eigene Fragen',
-                          style: GoogleFonts.caveatBrush(
-                            textStyle:
-                                TextStyle(color: Colors.black, fontSize: 450),
-                          )).tr(),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                      side: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                ]),
-          ),
-        ));
   }
 }
