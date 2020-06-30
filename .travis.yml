@@ -103,6 +103,6 @@ jobs:
         api_key: "$GITHUB_OAUTH"
         file:
           - build/ios/iphoneos/app.ipa
-        cleanup: false
+        skip_cleanup: true
         on:
           branch: master
