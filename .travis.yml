@@ -81,7 +81,9 @@ jobs:
         - ln -s ../Runner.app
         - cd ..
         - zip -r app.ipa Payload
-        # Sign the app
+        # Reopen the keychain because it probably closed in build time
+        - security unlock-keychain -p "chainPassword" build.keychain
+        # Add Signature
         - codesign -vfs "SaufApp" app.ipa --keychain "build.keychain"
         # Verify Signature
         - codesign -dv --verbose=4 app.ipa
