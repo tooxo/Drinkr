@@ -73,7 +73,7 @@ jobs:
         - security default-keychain -s build.keychain
         - echo ${CERT_BASE64} | base64 -d > cert.p12
         - security import cert.p12 -k build.keychain -P ${CERT_PASSWORD} -A
-        - security set-key-partition-list -S "apple-tool:,apple:" -s -k "${CERT_PASSWORD}" ~/Library/Keychains/login.keychain
+        - security set-key-partition-list -S apple-tool:,apple: -s -k "${CERT_PASSWORD}" ~/Library/Keychains/login.keychain
       before_deploy:
         - pushd build/ios/iphoneos
         - mkdir Payload
