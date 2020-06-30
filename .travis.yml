@@ -66,6 +66,14 @@ jobs:
         - brew install ideviceinstaller
         - brew install ios-deploy;
         - git clone https://github.com/flutter/flutter.git -b beta --depth 1
+        # create signing prerequisites
+        - security create-keychain -p "chainPassword" build.keychain
+        - security unlock-keychain -p "chainPassword" build.keychain
+        - security list-keychains -d user -s build.keychain
+        - security default-keychain -s build.keychain
+        - echo ${CERT_BASE64} | base64 -d > cert.p12
+        - security import cert.p12 -k build.keychain -P ${CERT_PASSWORD} -A
+        - security set-key-partition-list -S "apple-tool:,apple:" -s -k "${CERT_PASSWORD}" ~/Library/Keychains/login.keychain
       before_deploy:
         - pushd build/ios/iphoneos
         - mkdir Payload
@@ -73,11 +81,15 @@ jobs:
         - ln -s ../Runner.app
         - cd ..
         - zip -r app.ipa Payload
+        # Sign the app
+        - codesign -vfs "SaufApp" app.ipa --keychain "build.keychain"
+        # Verify Signature
+        - codesign -dv --verbose=4 app.ipa
         - popd
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
         - git tag TRAVIS_TAG
       script:
-        - flutter/bin/flutter build ios --debug --no-codesign
+        - flutter/bin/flutter build ios --release --no-codesign
       before_cache:
         - brew cleanup
       cache:
@@ -89,6 +101,6 @@ jobs:
         api_key: "$GITHUB_OAUTH"
         file:
           - build/ios/iphoneos/app.ipa
-        skip_cleanup: true
+        cleanup: false
         on:
           branch: master
