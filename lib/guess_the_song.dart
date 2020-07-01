@@ -75,7 +75,8 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
     if (state < 1 && state > 0) {
       setState(() {
         if (audioPlayer.state == AudioPlayerState.PAUSED) {
-          audioPlayer.play(widget.mainTitle);
+          // audioPlayer.play(widget.mainTitle);
+          audioPlayer.resume();
         } else {
           audioPlayer.pause();
         }
