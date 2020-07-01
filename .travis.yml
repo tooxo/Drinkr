@@ -78,7 +78,7 @@ jobs:
         - pushd build/ios/iphoneos
         - mkdir Payload
         - cd Payload
-        - ln -s ../Runner.app
+        - ln -s ../SaufApp.app
         - cd ..
         - zip -r app.ipa Payload
         # Reopen the keychain because it probably closed in build time
