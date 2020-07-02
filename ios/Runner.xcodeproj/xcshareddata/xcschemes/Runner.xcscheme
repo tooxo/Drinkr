@@ -64,6 +64,10 @@
             argument = "-allowProvisioningUpdates"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "allowProvisioningUpdates"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
