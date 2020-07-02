@@ -11,7 +11,7 @@ jobs:
         - ANDROID_SDK_TOOLS=commandlinetools-linux-6200805_latest.zip
       before_install:
         - sudo apt update
-        - echo ${KEYSTORE_BASE64} | base64 -d > release.keystore
+        - echo ${ANDROID_BASE64} | base64 -d > release.keystore
         - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
         - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
         - export PATH=$PATH:$HOME/sdk/tools/bin
@@ -30,9 +30,9 @@ jobs:
         - zipalign -v -p 4 build/app/outputs/apk/release/app-x86_64-release.apk ./x86_64-unsigned.apk
         - zipalign -v -p 4 build/app/outputs/bundle/release/app-release.aab ./bundle-unsigned.aab
         # sign all the apks and bundles
-        - apksigner sign -v --ks-pass pass:${KEYSTORE_PASS} --ks release.keystore --ks-key-alias android --out armeabi-v7a-signed.apk armeabi-v7a-unsigned.apk
-        - apksigner sign -v --ks-pass pass:${KEYSTORE_PASS} --ks release.keystore --ks-key-alias android --out arm64-v8a-signed.apk arm64-v8a-unsigned.apk
-        - apksigner sign -v --ks-pass pass:${KEYSTORE_PASS} --ks release.keystore --ks-key-alias android --out x86_64-signed.apk x86_64-unsigned.apk
+        - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out armeabi-v7a-signed.apk armeabi-v7a-unsigned.apk
+        - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out arm64-v8a-signed.apk arm64-v8a-unsigned.apk
+        - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out x86_64-signed.apk x86_64-unsigned.apk
         # TODO: Add signing to bundle with jarsigner
       before_deploy:
         - zip unsigned.zip armeabi-v7a-unsigned.apk arm64-v8a-unsigned.apk x86_64-unsigned.apk
@@ -67,14 +67,14 @@ jobs:
         - brew install ios-deploy;
         - git clone https://github.com/flutter/flutter.git -b beta --depth 1
         # create signing prerequisites
-        #- security create-keychain -p "chainPassword" build.keychain
-        #- security unlock-keychain -p "chainPassword" build.keychain
-        #- security list-keychains -d user -s build.keychain
-        #- security default-keychain -s build.keychain
-        #- echo ${CERT_BASE64} | base64 -d > cert.p12
-        #- security import cert.p12 -k build.keychain -P ${CERT_PASSWORD} -A
-        #- security set-key-partition-list -S "apple-tool:,apple:" -s -k "chainPassword" build.keychain
-        #- security set-keychain-settings -u build.keychain
+        - security create-keychain -p "chainPassword" build.keychain
+        - security unlock-keychain -p "chainPassword" build.keychain
+        - security list-keychains -d user -s build.keychain
+        - security default-keychain -s build.keychain
+        - echo ${APPLE_BASE64} | base64 -d > cert.p12
+        - security import cert.p12 -k build.keychain -P ${APPLE_PASSWORD} -A
+        - security set-key-partition-list -S "apple-tool:,apple:" -s -k "chainPassword" build.keychain
+        - security set-keychain-settings -u build.keychain
       before_deploy:
         - pushd build/ios/iphoneos
         - mkdir Payload
@@ -92,7 +92,7 @@ jobs:
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
         - git tag TRAVIS_TAG
       script:
-        - flutter/bin/flutter build ios --release --no-codesign
+        - flutter/bin/flutter build ios --release # --no-codesign
       before_cache:
         - brew cleanup
       cache:
