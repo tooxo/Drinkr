@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'file.dart';
 import 'player.dart';
 
 class BasicGame extends StatefulWidget {
@@ -26,8 +25,8 @@ class BasicGame extends StatefulWidget {
 
   final bool showSolutionButton = false;
 
-  final String mainTitle = "This is a placeholder title.";
-  final String solutionText = "This is a placeholder solution.";
+  final String mainTitle = "Error";
+  final String solutionText = "Error";
 
   final List drinking = new List();
   final String text;
@@ -160,7 +159,14 @@ class BasicGameState extends State<BasicGame> {
               color: Colors.black, fontSize: 40, fontWeight: FontWeight.w600),
         ),
       ]),
+      /*Text(
+        widget.title.tr(),
+        style: GoogleFonts.caveatBrush(
+            fontSize: 40, color: Colors.black, fontWeight: FontWeight.w600),
+      ),
+      centerTitle: true,*/
       backgroundColor: widget.primaryColor,
+
     );
   }
 
@@ -178,38 +184,45 @@ class BasicGameState extends State<BasicGame> {
           flex: 1,
           child: Center(
             child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: !this.showSolution
-                    ? ShowUpAnimation(
-                        child: MaterialButton(
-                          onPressed: () {
-                            setState(() {
-                              this.showSolution = true;
-                            });
-                          },
-                          color: widget.secondaryColor,
-                          child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Text(
-                              "gameShowSolution",
-                              style: GoogleFonts.caveatBrush(
-                                  color: Colors.black,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w600),
-                            ).tr(),
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: !this.showSolution
+                  ? ShowUpAnimation(
+                      child: MaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            this.showSolution = true;
+                          });
+                        },
+                        color: widget.secondaryColor,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            "gameShowSolution",
+                            style: GoogleFonts.caveatBrush(
+                                color: Colors.black,
+                                fontSize: 40,
+                                fontWeight: FontWeight.w600),
+                          ).tr(),
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Container(
+                          // fit: BoxFit.fitHeight,
+                          child: Text(
+                            widget.solutionText,
+                            style: GoogleFonts.caveatBrush(
+                                color: Colors.black,
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
-                      )
-                    : FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(
-                          widget.solutionText,
-                          style: GoogleFonts.caveatBrush(
-                              color: Colors.black,
-                              fontSize: 300,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      )),
+                      ),
+                    ),
+            ),
           ),
         ),
       ],

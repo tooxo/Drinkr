@@ -342,6 +342,31 @@ class DifficultyState extends State<Difficulty> {
           texts[game.type].remove(randomlyChosenText);
         }
 
+        /*
+        Test if the text is valid to prevent errors presenting
+         */
+
+        try {
+          if (randomlyChosenText.toString().trim() == "") throw new Exception();
+
+          if (game.type == GameType.TRUTH) {
+            dynamic jsonEncoded = json.decode(randomlyChosenText);
+            if (!jsonEncoded.keys.contains("truth") ||
+                !jsonEncoded.keys.contains("dare")) {
+              throw new Exception();
+            }
+          }
+          if (gameTypeToGameTypeClass(game.type).hasSolution) {
+            String split1 = randomlyChosenText.split(";")[0];
+            String split2 = randomlyChosenText.split(";")[1];
+
+            if (split1.trim() == "" || split2.trim() == "")
+              throw new Exception();
+          }
+        } catch (exc) {
+          continue;
+        }
+
         result = await Navigator.of(context).push(PageRouteBuilder(
           pageBuilder: (c, a1, a2) =>
               game.function(widget.players, difficulty, randomlyChosenText),
