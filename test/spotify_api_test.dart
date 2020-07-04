@@ -31,11 +31,8 @@ void main() {
     }
   });
   test("test spotify playlist extraction", () async {
-      expect(
-          (await Spotify().getPlaylist("37i9dQZEVXbMDoHDwVN2tF")).length, 50
-      );
-      expect(
-          (await Spotify().getPlaylist("71Oc23mUiQmiM3SNYkmvV1")).length, 200
-      );
+    expect((await Spotify().getPlaylist("37i9dQZEVXbMDoHDwVN2tF")).length, 50);
+    expect((await Spotify().getPlaylist("71Oc23mUiQmiM3SNYkmvV1")).length > 190,
+        true);
   });
 }
