@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:SaufApp/difficulty.dart';
+import 'package:SaufApp/menus/difficulty.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

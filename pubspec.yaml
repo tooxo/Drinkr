@@ -38,6 +38,8 @@ dependencies:
   app_review: ^1.1.2
   assorted_layout_widgets: ^1.1.1
   draggable_scrollbar: ^0.0.4
+  circular_reveal_animation: ^1.1.5
+  html: ^0.14.0+3
 
   flutter:
     sdk: flutter

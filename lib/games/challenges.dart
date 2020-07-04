@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:SaufApp/game.dart';
-import 'package:SaufApp/player.dart';
+import 'package:SaufApp/games/game.dart';
+import 'package:SaufApp/utils/player.dart';
 import 'package:flutter/material.dart';
 
-import 'drinking.dart';
+import '../utils/drinking.dart';
 
 class Challenges extends BasicGame {
   final Color primaryColor = Color.fromRGBO(0, 150, 136, 1);

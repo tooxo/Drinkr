@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:SaufApp/ad.dart';
-import 'package:SaufApp/challenges.dart';
-import 'package:SaufApp/guess_the_song.dart';
-import 'package:SaufApp/never_have_i_ever.dart';
-import 'package:SaufApp/player.dart';
-import 'package:SaufApp/quiz.dart';
-import 'package:SaufApp/setting.dart';
-import 'package:SaufApp/shapes.dart';
-import 'package:SaufApp/spotify_api.dart';
-import 'package:SaufApp/truth_or_dare.dart';
-import 'package:SaufApp/types.dart';
-import 'package:SaufApp/who_would_rather.dart';
+import 'package:SaufApp/utils/ad.dart';
+import 'package:SaufApp/games/challenges.dart';
+import 'package:SaufApp/games/guess_the_song.dart';
+import 'package:SaufApp/games/never_have_i_ever.dart';
+import 'package:SaufApp/utils/player.dart';
+import 'package:SaufApp/games/quiz.dart';
+import 'package:SaufApp/menus/setting.dart';
+import 'package:SaufApp/utils/shapes.dart';
+import 'package:SaufApp/utils/spotify_api.dart';
+import 'package:SaufApp/games/truth_or_dare.dart';
+import 'package:SaufApp/utils/types.dart';
+import 'package:SaufApp/games/who_would_rather.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_admob/firebase_admob.dart';
@@ -23,9 +23,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'guessing.dart';
-import 'opinion.dart';
-import 'file.dart';
+import '../games/guessing.dart';
+import '../games/opinion.dart';
+import '../utils/file.dart';
 
 class Difficulty extends StatefulWidget {
   static const int EASY = 0;

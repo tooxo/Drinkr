@@ -27,7 +27,7 @@ Future<void> deactivateAds() async {
 
 class NoAdLoadedException implements Exception {}
 
-Future<bool> showInterstitialAd(BuildContext buildContext) async {
+Future<void> showInterstitialAd(BuildContext buildContext) async {
   await RewardedVideoAd.instance.load(
       adUnitId: RewardedVideoAd.testAdUnitId,
       targetingInfo: MobileAdTargetingInfo());

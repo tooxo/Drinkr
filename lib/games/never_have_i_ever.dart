@@ -1,7 +1,7 @@
-import 'package:SaufApp/game.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/games/game.dart';
+import 'package:SaufApp/utils/types.dart';
 import 'package:flutter/material.dart';
-import 'player.dart';
+import '../utils/player.dart';
 
 class NeverHaveIEver extends BasicGame {
   final String title = "neverHaveIEver";

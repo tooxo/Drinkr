@@ -30,7 +30,7 @@
   "truthOrDare": "Wahrheit oder Pflicht",
   "truthOrDareExplanation": "Wenn du dich nicht traust, trink!",
 
-  "neverHaveIEver": "Never have I ever",
+  "neverHaveIEver": "Ich hab' noch nie...",
   "neverHaveIEverExplanation": "Wer es schonmal gemacht hat, muss trinken!",
 
   "bigBrainQuiz": "Big Brain Quiz",
@@ -103,5 +103,7 @@
   "whoWouldRatherText1": "Würdest du eher...?",
   "whoWouldRatherText2": "Deaktiviert",
 
-  "about": "Über Uns / Lizenzen"
+  "about": "Über Uns / Lizenzen",
+
+  "noConnection": "Du verfügst über keine Internetverbindung."
 }

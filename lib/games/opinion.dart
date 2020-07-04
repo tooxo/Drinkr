@@ -1,7 +1,6 @@
-import 'package:SaufApp/game.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/games/game.dart';
+import 'package:SaufApp/utils/types.dart';
 import 'package:flutter/material.dart';
-import 'file.dart';
 
 class Opinion extends BasicGame {
   final String title = "wouldYouRather";

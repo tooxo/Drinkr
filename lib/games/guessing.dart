@@ -1,5 +1,5 @@
-import 'package:SaufApp/game.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/games/game.dart';
+import 'package:SaufApp/utils/types.dart';
 import 'package:flutter/material.dart';
 
 class Guessing extends BasicGame {

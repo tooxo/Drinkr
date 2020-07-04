@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:SaufApp/game.dart';
-import 'package:SaufApp/text_widget.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/games/game.dart';
+import 'package:SaufApp/widgets/text_widget.dart';
+import 'package:SaufApp/utils/types.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'player.dart';
+import '../utils/player.dart';
 
 class TruthOrDare extends BasicGame {
   final String title = "truthOrDare";

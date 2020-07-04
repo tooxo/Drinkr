@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 import 'dart:math';
 
-import 'package:SaufApp/ad.dart';
-import 'package:SaufApp/setting.dart';
-import 'package:SaufApp/shapes.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/utils/ad.dart';
+import 'package:SaufApp/menus/setting.dart';
+import 'package:SaufApp/utils/shapes.dart';
+import 'package:SaufApp/utils/types.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_admob/firebase_admob.dart';
@@ -14,8 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'custom.dart';
-import 'name_select.dart';
+import 'menus/custom.dart';
+import 'menus/name_select.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {

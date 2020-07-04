@@ -1,15 +1,16 @@
 import 'dart:math';
 
-import 'package:SaufApp/drinking.dart';
-import 'package:SaufApp/text_widget.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/utils/drinking.dart';
+import 'package:SaufApp/widgets/text_widget.dart';
+import 'package:SaufApp/utils/types.dart';
+import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'player.dart';
+import '../utils/player.dart';
 
 class BasicGame extends StatefulWidget {
   final String title = "Test Title";
@@ -44,15 +45,20 @@ class BasicGame extends StatefulWidget {
   State<StatefulWidget> createState() => new BasicGameState();
 }
 
-class BasicGameState extends State<BasicGame> {
+class BasicGameState extends State<BasicGame>
+    with SingleTickerProviderStateMixin {
   bool showSolution = false;
-  bool showAds = false;
 
-  Widget adInsert;
+  AnimationController animationController;
+  Animation<double> animation;
 
   @override
   void initState() {
     super.initState();
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
+    animation =
+        CurvedAnimation(parent: animationController, curve: Curves.easeIn);
   }
 
   String generateMessage() {
@@ -166,7 +172,6 @@ class BasicGameState extends State<BasicGame> {
       ),
       centerTitle: true,*/
       backgroundColor: widget.primaryColor,
-
     );
   }
 
@@ -176,7 +181,7 @@ class BasicGameState extends State<BasicGame> {
         : buildWithoutSolution();
   }
 
-  Widget buildWithSolution() {
+  Widget buildWithSolution2() {
     return Column(
       children: <Widget>[
         Expanded(flex: 3, child: buildWithoutSolution()),
@@ -222,6 +227,69 @@ class BasicGameState extends State<BasicGame> {
                         ),
                       ),
                     ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildWithSolution() {
+    return Column(
+      children: <Widget>[
+        Expanded(flex: 3, child: buildWithoutSolution()),
+        Expanded(
+          flex: 1,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CircularRevealAnimation(
+                    animation: animation,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Container(
+                          // fit: BoxFit.fitHeight,
+                          child: Text(
+                            widget.solutionText,
+                            style: GoogleFonts.caveatBrush(
+                                color: Colors.black,
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  this.showSolution
+                      ? Container()
+                      : ShowUpAnimation(
+                          child: MaterialButton(
+                            onPressed: () {
+                              setState(() {
+                                this.showSolution = true;
+                                animationController.forward();
+                              });
+                            },
+                            color: widget.secondaryColor,
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                "gameShowSolution",
+                                style: GoogleFonts.caveatBrush(
+                                    color: Colors.black,
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w600),
+                              ).tr(),
+                            ),
+                          ),
+                        ),
+                ],
+              ),
             ),
           ),
         ),

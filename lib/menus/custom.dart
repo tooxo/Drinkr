@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:SaufApp/difficulty.dart';
-import 'package:SaufApp/shapes.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/menus/difficulty.dart';
+import 'package:SaufApp/utils/shapes.dart';
+import 'package:SaufApp/utils/types.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +11,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'file.dart';
-import 'file.dart';
+import '../utils/file.dart';
 import 'name_select.dart';
-import 'player.dart';
+import '../utils/player.dart';
 import 'setting.dart';
-import 'setting.dart';
-import 'types.dart';
+import '../utils/types.dart';
 
 class Custom extends StatefulWidget {
   @override

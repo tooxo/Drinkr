@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:SaufApp/game.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/games/game.dart';
+import 'package:SaufApp/utils/types.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:show_up_animation/show_up_animation.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-import 'player.dart';
+import '../utils/player.dart';
 
 class GuessTheSong extends BasicGame {
   final bool showSolutionButton = true;
@@ -68,9 +71,15 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
     }
   }
 
-  void buttonClick() {
+  void buttonClick() async {
     if (state == 0 || state == 1) {
-      audioPlayer.play(widget.mainTitle);
+      ConnectivityResult result = await Connectivity().checkConnectivity();
+      if (result != ConnectivityResult.none) {
+        audioPlayer.play(widget.mainTitle);
+      } else {
+        Fluttertoast.showToast(
+            msg: "noConnection".tr(), toastLength: Toast.LENGTH_SHORT);
+      }
     }
     if (state < 1 && state > 0) {
       setState(() {

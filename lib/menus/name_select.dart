@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:SaufApp/difficulty.dart';
-import 'package:SaufApp/shapes.dart';
-import 'package:SaufApp/types.dart';
+import 'package:SaufApp/menus/difficulty.dart';
+import 'package:SaufApp/utils/shapes.dart';
+import 'package:SaufApp/utils/types.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'player.dart';
+import '../utils/player.dart';
 
 class NameSelect extends StatefulWidget {
   final List<GameType> enabledGames;

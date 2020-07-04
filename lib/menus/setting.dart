@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:SaufApp/ad.dart';
-import 'package:SaufApp/file.dart';
-import 'package:SaufApp/licenses.dart';
-import 'package:SaufApp/shapes.dart';
-import 'package:SaufApp/toggle_switch.dart';
-import 'package:SaufApp/word_customization.dart';
+import 'package:SaufApp/utils/ad.dart';
+import 'package:SaufApp/utils/file.dart';
+import 'package:SaufApp/menus/licenses.dart';
+import 'package:SaufApp/utils/shapes.dart';
+import 'package:SaufApp/widgets/toggle_switch.dart';
+import 'package:SaufApp/menus/word_customization.dart';
 import 'package:app_review/app_review.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
