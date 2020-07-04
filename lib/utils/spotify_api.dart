@@ -47,10 +47,12 @@ class Spotify {
   }
 
   /// Pulls a playlist from Spotify
-  Future<List<List<String>>> getPlaylist(String playlistId) async {
+  Future<List<List<String>>> getPlaylist(String playlistId,
+      {useCache: true}) async {
     List<List<String>> trackList = new List<List<String>>();
 
-    SqLite database = await SqLite().open();
+    SqLite database;
+    if (useCache) database = await SqLite().open();
 
     /// Start with pulling the embed web page, because spotify is shit.
 
@@ -111,8 +113,9 @@ class Spotify {
           /// Documented here: https://github.com/spotify/web-api/issues/148
 
           if (track["track"]["preview_url"] == null) {
-            String previewFromDatabase =
-                await database.getFromSpotifyCache(track["track"]["id"]);
+            String previewFromDatabase = useCache
+                ? await database.getFromSpotifyCache(track["track"]["id"])
+                : null;
 
             if (previewFromDatabase != null) {
               song = [
@@ -152,7 +155,7 @@ class Spotify {
         url = jsonResponse["next"];
       } while (jsonResponse.containsKey("more"));
     }
-    database.putBulkInSpotifyCache(trackList);
+    if (useCache) database.putBulkInSpotifyCache(trackList);
     /*database
         .putBulkInSpotifyCache(trackList)
         .then((value) async => await database.close());*/
