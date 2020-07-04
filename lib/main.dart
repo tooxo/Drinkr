@@ -17,6 +17,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'menus/custom.dart';
 import 'menus/name_select.dart';
 
+
+/// this is used to create a "no-ad" version, if set to false.
+/// the seemingly random variable naming is used to identify it
+/// during build with tools like unix's sed.
+const bool ADS_ENABLED_BUQF1EVY = true;
+
 void main() {
   LicenseRegistry.addLicense(() async* {
     final licenseGFont = await rootBundle.loadString("assets/licenses/OFL.txt");

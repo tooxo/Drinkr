@@ -1,3 +1,4 @@
+import 'package:SaufApp/main.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +29,7 @@ Future<void> deactivateAds() async {
 class NoAdLoadedException implements Exception {}
 
 Future<void> showInterstitialAd(BuildContext buildContext) async {
+  if (!ADS_ENABLED_BUQF1EVY) return;
   await RewardedVideoAd.instance.load(
       adUnitId: RewardedVideoAd.testAdUnitId,
       targetingInfo: MobileAdTargetingInfo());

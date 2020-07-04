@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:SaufApp/main.dart';
 import 'package:SaufApp/utils/ad.dart';
 import 'package:SaufApp/games/challenges.dart';
 import 'package:SaufApp/games/guess_the_song.dart';
@@ -280,7 +281,7 @@ class DifficultyState extends State<Difficulty> {
 
     bool ads = await shouldShowAds();
 
-    if (ads) {
+    if (ads && ADS_ENABLED_BUQF1EVY) {
       bannerAd = new BannerAd(
           adUnitId: BannerAd.testAdUnitId,
           size: AdSize.banner,
