@@ -5,8 +5,7 @@ jobs:
       if: branch = master
       dist: bionic
       language: java
-      jdk:
-        - oraclejdk11
+      jdk: oraclejdk11
       env:
         - ANDROID_SDK_TOOLS=commandlinetools-linux-6200805_latest.zip
       before_install:
@@ -107,3 +106,14 @@ jobs:
         skip_cleanup: true
         on:
           branch: master
+    - os: linux
+      name: unit_tests
+      dist: bionic
+      language: generic
+      before_install:
+        - sudo apt update
+        - git clone https://github.com/flutter/flutter.git -b beta --depth 1
+        - export PATH=$PATH:$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin
+        - flutter doctor
+      script:
+        - flutter test

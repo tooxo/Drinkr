@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../spotify_api.dart';
+import '../lib/utils/spotify_api.dart';
 
 void main() {
   test("test playlist id extraction by regex usage", () {
@@ -33,6 +33,9 @@ void main() {
   test("test spotify playlist extraction", () async {
       expect(
           (await Spotify().getPlaylist("37i9dQZEVXbMDoHDwVN2tF")).length, 50
+      );
+      expect(
+          (await Spotify().getPlaylist("71Oc23mUiQmiM3SNYkmvV1")).length, 200
       );
   });
 }
