@@ -38,14 +38,16 @@ jobs:
         - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out armeabi-v7a-signed.apk armeabi-v7a-unsigned.apk
         - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out arm64-v8a-signed.apk arm64-v8a-unsigned.apk
         - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out x86_64-signed.apk x86_64-unsigned.apk
-        # TODO: Add signing to bundle with jarsigner
+        - cp bundle-unsigned.aab bundle-signed.aab
+        - zip --delete bundle-signed.aab "META-INF/*"
+        - jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore release.keystore -storepass ${ANDROID_PASSWORD} bundle-signed.aab android
         # add a "no-ad" version and sign it
         - sed -i "s|const bool ADS_ENABLED_BUQF1EVY = true;|const bool ADS_ENABLED_BUQF1EVY = false;|g" ./lib/main.dart
         - flutter build apk --target-platform android-arm,android-arm64,android-x64
         - zipalign -v -p 4 build/app/outputs/apk/release/app-release.apk ./fat-noad-unsigned.apk
         - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out fat-noad-signed.apk fat-noad-unsigned.apk
       before_deploy:
-        - zip unsigned.zip armeabi-v7a-unsigned.apk arm64-v8a-unsigned.apk x86_64-unsigned.apk fat-noad-unsigned.apk
+        - zip unsigned.zip armeabi-v7a-unsigned.apk arm64-v8a-unsigned.apk x86_64-unsigned.apk fat-noad-unsigned.apk bundle-unsigned.aab
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
         - git tag TRAVIS_TAG
       #cache:
@@ -58,7 +60,7 @@ jobs:
           - armeabi-v7a-signed.apk
           - arm64-v8a-signed.apk
           - x86_64-signed.apk
-          - bundle-unsigned.aab
+          - bundle-signed.aab
           - fat-noad-signed.apk
           - unsigned.zip
         skip_cleanup: true

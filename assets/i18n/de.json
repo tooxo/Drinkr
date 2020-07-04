@@ -105,5 +105,6 @@
 
   "about": "Über Uns / Lizenzen",
 
-  "noConnection": "Du verfügst über keine Internetverbindung."
+  "noConnection": "Du verfügst über keine Internetverbindung.",
+  "spotifyLongLoad": "lange ladezeit spotify ladezeit"
 }

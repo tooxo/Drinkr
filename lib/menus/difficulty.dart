@@ -202,6 +202,9 @@ class DifficultyState extends State<Difficulty> {
           response.add(track);
         }
       }
+      setState(() {
+        linearProgress++;
+      });
     }
     return response;
   }
@@ -211,6 +214,9 @@ class DifficultyState extends State<Difficulty> {
             .getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ??
         SettingsState.BOTH;
     availableGames = availableGamesBackup.toList();
+    setState(() {
+      linearMax += availableGames.length;
+    });
     for (List game in availableGames) {
       GameType gameType = game[1];
       if (gameType == GameType.GUESS_THE_SONG) {
@@ -226,6 +232,10 @@ class DifficultyState extends State<Difficulty> {
               selectedModes == SettingsState.BOTH) {
             urls.addAll(await getLocalFiles(gameType));
           }
+          setState(() {
+            linearMax += urls.length;
+          });
+
           texts[gameType] = await buildSpotify(urls);
         } else {
           Fluttertoast.showToast(
@@ -237,6 +247,7 @@ class DifficultyState extends State<Difficulty> {
         }
         continue;
       }
+
       if (gameType == GameType.TRUTH) {
         texts[GameType.TRUTH] = [];
         texts[GameType.DARE] = [];
@@ -265,6 +276,9 @@ class DifficultyState extends State<Difficulty> {
           selectedModes == SettingsState.BOTH) {
         texts[gameType].addAll(await getLocalFiles(gameType));
       }
+      setState(() {
+        linearProgress++;
+      });
     }
     for (GameType gameType in texts.keys) {
       // Shuffle the items in the list
@@ -272,6 +286,9 @@ class DifficultyState extends State<Difficulty> {
       texts[gameType].shuffle();
       maxTexts[gameType] = texts[gameType].length;
     }
+    setState(() {
+      linearProgress = linearMax;
+    });
   }
 
   Future<void> fulfillNormalPlan() async {
@@ -493,6 +510,9 @@ class DifficultyState extends State<Difficulty> {
     populateTextsMap().then(
         (value) => generateNormalPlan().then((value) => fulfillNormalPlan()));
   }
+
+  int linearProgress = 1;
+  int linearMax = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -741,12 +761,54 @@ class DifficultyState extends State<Difficulty> {
             },
           )
         : this.displayState == 2
-            ? Container(
-                color: Color.fromRGBO(255, 111, 0, 1),
-                child: Center(
-                  child: SpinKitFadingCircle(
-                    color: Colors.black,
-                  ),
+            ? Scaffold(
+                backgroundColor: Color.fromRGBO(255, 111, 0, 1),
+                body: Stack(
+                  children: [
+                    Center(
+                      child: SpinKitFadingCircle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Center(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                "spotifyLongLoad",
+                                style: GoogleFonts.caveatBrush(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                ),
+                              ).tr(),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SizedBox(
+                              height: 12,
+                              child: LinearProgressIndicator(
+                                value: linearProgress / linearMax,
+                                backgroundColor: Colors.yellow.shade900,
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    Colors.red),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               )
             : Container(

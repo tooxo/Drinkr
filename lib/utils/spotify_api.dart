@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:SaufApp/utils/sqlite.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
@@ -49,6 +50,8 @@ class Spotify {
   Future<List<List<String>>> getPlaylist(String playlistId) async {
     List<List<String>> trackList = new List<List<String>>();
 
+    SqLite database = await SqLite().open();
+
     /// Start with pulling the embed web page, because spotify is shit.
 
     http.Response embedPlaylistResponse =
@@ -59,9 +62,13 @@ class Spotify {
 
     dynamic decodedEmbedPage = jsonDecode(rawJson);
     for (Map<dynamic, dynamic> track in decodedEmbedPage["tracks"]["items"]) {
+      if (track["track"]["preview_url"] != null) {
+        track["track"]["preview_url"].replaceAll("\\/", "/");
+      }
       List<String> song = [
         track["track"]["artists"][0]["name"] + " - " + track["track"]["name"],
-        track["track"]["preview_url"]
+        track["track"]["preview_url"],
+        track["track"]["id"]
       ];
       if (!song.contains(null)) {
         trackList.add(song);
@@ -93,7 +100,8 @@ class Spotify {
             track["track"]["artists"][0]["name"] +
                 " - " +
                 track["track"]["name"],
-            track["track"]["preview_url"]
+            track["track"]["preview_url"],
+            track["track"]["id"]
           ];
 
           /// this fixes a weird error with spotify returning null as
@@ -103,21 +111,38 @@ class Spotify {
           /// Documented here: https://github.com/spotify/web-api/issues/148
 
           if (track["track"]["preview_url"] == null) {
-            try {
-              String trackId = track["track"]["id"];
-              http.Response embedResponse = await http.get(
-                "https://open.spotify.com/embed/track/$trackId",
-              );
-              String previewUrl =
-                  RegExp(REGEX_EMBED).firstMatch(embedResponse.body).group(1);
+            String previewFromDatabase =
+                await database.getFromSpotifyCache(track["track"]["id"]);
+
+            if (previewFromDatabase != null) {
               song = [
                 track["track"]["artists"][0]["name"] +
                     " - " +
                     track["track"]["name"],
-                previewUrl
+                previewFromDatabase,
+                track["track"]["id"]
               ];
-            } catch (ignored) {
-              song = [null, null];
+            } else {
+              try {
+                String trackId = track["track"]["id"];
+                http.Response embedResponse = await http.get(
+                  "https://open.spotify.com/embed/track/$trackId",
+                );
+                String previewUrl =
+                    RegExp(REGEX_EMBED).firstMatch(embedResponse.body).group(1);
+                if (previewUrl != null) {
+                  previewUrl.replaceAll("\\/", "/");
+                }
+                song = [
+                  track["track"]["artists"][0]["name"] +
+                      " - " +
+                      track["track"]["name"],
+                  previewUrl,
+                  track["track"]["id"]
+                ];
+              } catch (ignored) {
+                song = [null, null];
+              }
             }
           }
           if (!song.contains(null)) {
@@ -127,6 +152,10 @@ class Spotify {
         url = jsonResponse["next"];
       } while (jsonResponse.containsKey("more"));
     }
+    database.putBulkInSpotifyCache(trackList);
+    /*database
+        .putBulkInSpotifyCache(trackList)
+        .then((value) async => await database.close());*/
     return trackList;
   }
 }
