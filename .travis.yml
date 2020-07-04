@@ -73,10 +73,10 @@ jobs:
         - git clone https://github.com/flutter/flutter.git -b beta --depth 1
         # replace the test environment with "real keys"
         - echo "$APPLE_GOOGLESERVICES_PLIST_BASE64" | base64 -d > ./ios/Runner/GoogleService-Info.plist
-        - sed -i "s|ca-app-pub-3940256099942544~3347511713|$APPLE_ADMOB_APPID|g" ./ios/Info.plist
-        - sed -i "s|ca-app-pub-3940256099942544~3347511713|$APPLE_ADMOB_APPID|g" ./lib/main.dart
-        - sed -i "s|RewardedVideoAd.testAdUnitId|\"$APPLE_REWARDED_ID\"|g" ./lib/utils/ad.dart
-        - sed -i "s|BannerAd.testAdUnitId|\"$APPLE_BANNER_ID\"|g" ./lib/menus/difficulty.dart
+        - sed -i .bak "s|ca-app-pub-3940256099942544~3347511713|$APPLE_ADMOB_APPID|g" ./ios/Info.plist
+        - sed -i .bak "s|ca-app-pub-3940256099942544~3347511713|$APPLE_ADMOB_APPID|g" ./lib/main.dart
+        - sed -i .bak "s|RewardedVideoAd.testAdUnitId|\"$APPLE_REWARDED_ID\"|g" ./lib/utils/ad.dart
+        - sed -i .bak "s|BannerAd.testAdUnitId|\"$APPLE_BANNER_ID\"|g" ./lib/menus/difficulty.dart
         # create signing prerequisites
         #- security create-keychain -p "chainPassword" build.keychain
         #- security unlock-keychain -p "chainPassword" build.keychain
@@ -120,6 +120,7 @@ jobs:
           branch: master
     - os: linux
       name: unit_tests
+      if: branch = master
       dist: bionic
       language: generic
       before_install:
