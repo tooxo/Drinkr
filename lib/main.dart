@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
       title: 'Saufapp',
       theme: ThemeData(
@@ -110,6 +111,7 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({
     Key key,
   }) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -132,7 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
     bool value = await shouldShowAds();
     if (value) {
       if (init) {
-        await FirebaseAdMob.instance.initialize(appId: FirebaseAdMob.testAppId);
+        await FirebaseAdMob.instance
+            .initialize(appId: "ca-app-pub-3940256099942544~3347511713");
       }
       this.showAd = true;
     } else {
