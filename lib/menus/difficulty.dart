@@ -178,7 +178,7 @@ class DifficultyState extends State<Difficulty> {
           }
         }
       } while ((gameType ==
-                  (this.gamePlan.length > 0
+                  (this.gamePlan.isNotEmpty
                       ? this.gamePlan[this.gamePlan.length - 1].function
                       : null) &&
               this.availableGames.length > 1) ||
@@ -308,7 +308,11 @@ class DifficultyState extends State<Difficulty> {
 
         /// This PlatformException is thrown when no ad was loaded
         /// so it can be simply ignored
-      } on PlatformException {}
+      } on PlatformException {
+        // ignored
+      } catch (_) {
+        // fallback for all other things that could happen while loading ads
+      }
     }
 
     bool shouldContinue = false;
@@ -323,8 +327,8 @@ class DifficultyState extends State<Difficulty> {
         }
         dynamic randomlyChosenText;
         if (game.type == GameType.TRUTH &&
-            texts[GameType.TRUTH].length > 0 &&
-            texts[GameType.DARE].length > 0) {
+            texts[GameType.TRUTH].isNotEmpty &&
+            texts[GameType.DARE].isNotEmpty) {
           String randomTextTruth = texts[GameType.TRUTH]
               [Random.secure().nextInt(texts[GameType.TRUTH].length)];
 
@@ -457,7 +461,7 @@ class DifficultyState extends State<Difficulty> {
       try {
         bannerAd.dispose();
         bannerAd = null;
-      } catch (e) {}
+      } catch (_) {}
     }
 
     SystemChrome.setPreferredOrientations(

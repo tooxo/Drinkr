@@ -40,7 +40,7 @@ class WordCustomizationState extends State<WordCustomization> {
           return e;
         }).toList();
       }*/
-      if (locals.length > 0) {
+      if (locals.isNotEmpty) {
         textsToDisplay[type] = locals.toList();
       }
     }
@@ -69,13 +69,13 @@ class WordCustomizationState extends State<WordCustomization> {
   Color getColor({reverse: false}) {
     if (reverse) {
       for (GameType type in textsToDisplay.keys.toList().reversed) {
-        if (textsToDisplay[type].length != 0) {
+        if (textsToDisplay[type].isNotEmpty) {
           return gameTypeToGameTypeClass(type).primaryColor;
         }
       }
     } else {
       for (GameType type in textsToDisplay.keys.toList()) {
-        if (textsToDisplay[type].length != 0) {
+        if (textsToDisplay[type].isNotEmpty) {
           return gameTypeToGameTypeClass(type).primaryColor;
         }
       }
@@ -176,7 +176,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                       color: Colors.black,
                                     ),
                                   )
-                                : textsToDisplay?.length == 0
+                                : textsToDisplay.isEmpty
                                     ? Text(
                                         "No Custom texts added.",
                                         style: GoogleFonts.caveatBrush(
@@ -200,8 +200,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                                 ),
                                                 for (GameType type
                                                     in textsToDisplay.keys)
-                                                  textsToDisplay[type].length >
-                                                          0
+                                                  textsToDisplay[type].isNotEmpty
                                                       ? Container(
                                                           width: c.maxWidth,
                                                           color:
@@ -448,7 +447,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                                   await spotifyCheckerWrapper()) {
                                                 String thingToAppend = tf1Value;
 
-                                                if (tf2Value.length > 0 &&
+                                                if (tf2Value.isNotEmpty &&
                                                     gameTypeToGameTypeClass(
                                                             getSelectedType())
                                                         .hasSolution) {

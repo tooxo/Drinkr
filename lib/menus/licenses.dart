@@ -100,7 +100,7 @@ class LicensesState extends State<Licenses> {
                   "Licenses",
                   style: GoogleFonts.caveatBrush(fontSize: 30),
                 ),
-                itemMap.length == 0
+                itemMap.isEmpty
                     ? SpinKitFadingCircle(
                         color: Colors.black,
                       )

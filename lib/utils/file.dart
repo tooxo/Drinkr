@@ -126,7 +126,7 @@ Future<bool> appendCustomLines(
   File file = File((await _localPath) + "/customFiles/$typeString.custom.txt");
 
   // Create file, if not already there
-  if (!(await file.exists())) {
+  if (!file.existsSync()) {
     await file.create(recursive: true);
   }
 
@@ -152,7 +152,7 @@ Future<bool> removeCustomLines(
   File file = File((await _localPath) + "/customFiles/$typeString.custom.txt");
 
   // If the file does not exist, there is nothing to delete --'
-  if (!(await file.exists())) {
+  if (!file.existsSync()) {
     return false;
   }
 
@@ -181,7 +181,7 @@ Future<bool> addBlacklistedLines(
   File file =
       File((await _localPath) + "/blacklistFiles/$typeString.blacklist.txt");
 
-  if (!(await file.exists())) {
+  if (!file.existsSync()) {
     return false;
   }
 
@@ -206,7 +206,7 @@ Future<bool> removeBlacklistedLines(
       File((await _localPath) + "/blacklistFiles/$typeString.blacklist.txt");
 
   // If the file does not exist, there is nothing to delete --'
-  if (!(await file.exists())) {
+  if (!file.existsSync()) {
     return false;
   }
 

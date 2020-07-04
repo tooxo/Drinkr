@@ -1,6 +1,6 @@
 # SaufApp
 
-![Travis (.com)](https://img.shields.io/travis/com/tooxo/SaufAppFlutter?style=for-the-badge) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/tooxo/SaufAppFlutter?style=for-the-badge) ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/tooxo/SaufAppFlutter?style=for-the-badge)
+[![Travis (.com)](https://img.shields.io/travis/com/tooxo/SaufAppFlutter?style=for-the-badge)](https://travis-ci.com/github/tooxo/SaufAppFlutter) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/tooxo/SaufAppFlutter?style=for-the-badge)](https://github.com/tooxo/SaufAppFlutter/releases/latest) [![Codefactor Rating](https://img.shields.io/codefactor/grade/github/tooxo/SaufAppFlutter?style=for-the-badge)](https://www.codefactor.io/repository/github/tooxo/saufappflutter)
 
 ## Installing / Testing the app
 

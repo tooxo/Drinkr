@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
+
+@immutable
 class Player {
-  bool gender; // == Is Man?
-  String _name;
+  final bool gender = true; // == Is Man?
+  final String _name;
 
-  int difficulty; // Not implemented.
+  final int difficulty = 0; // Not implemented.
 
-  Player(String name) {
-    this._name = name;
-  }
+  Player(this._name);
 
   get name {
     return this._name;
