@@ -72,12 +72,12 @@ jobs:
       osx_image: xcode11.5
       before_install:
         - brew update
-        - brew install --HEAD usbmuxd
+        - brew install usbmuxd #--HEAD
         - brew unlink usbmuxd
         - brew link usbmuxd
-        - brew install --HEAD libimobiledevice
+        - brew install libimobiledevice #--HEAD
         - brew install ideviceinstaller
-        - brew install ios-deploy;
+        - brew install ios-deploy
         - git clone https://github.com/flutter/flutter.git -b beta --depth 1
         # create signing prerequisites
         #- security create-keychain -p "chainPassword" build.keychain
@@ -95,24 +95,34 @@ jobs:
         - sed -i .bak "s|ca-app-pub-3940256099942544~3347511713|$APPLE_ADMOB_APPID|g" ./lib/main.dart
         - sed -i .bak "s|RewardedVideoAd.testAdUnitId|\"$APPLE_REWARDED_ID\"|g" ./lib/utils/ad.dart
         - sed -i .bak "s|BannerAd.testAdUnitId|\"$APPLE_BANNER_ID\"|g" ./lib/menus/difficulty.dart
+        - mkdir normal noads
       before_deploy:
-        - pushd build/ios/iphoneos
-        - mkdir Payload
-        - cd Payload
+        - cd normal
+        - mkdir Payload && cd Payload
         - ln -s ../SaufApp.app
         - cd ..
         - zip -r app.ipa Payload
+        - cd ..
+        - cd noads
+        - mkdir Payload && cd Payload
+        - ln -s ../SaufApp.app
+        - cd ..
+        - zip -r app-noads.ipa Payload
+        - cd ..
         # Reopen the keychain because it probably closed in build time
         #- security unlock-keychain -p "chainPassword" build.keychain
         # Add Signature
         #- codesign -vfs "SaufApp" app.ipa --keychain "build.keychain"
         # Verify Signature
         #- codesign -dv --verbose=4 app.ipa
-        - popd
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
         - git tag TRAVIS_TAG
       script:
         - flutter/bin/flutter build ios --release --no-codesign
+        - mv -R build/ios/iphoneos/SaufApp.app ./normal/SaufApp.app
+        - sed -i .bak "s|const bool ADS_ENABLED_BUQF1EVY = true;|const bool ADS_ENABLED_BUQF1EVY = false;|g" ./lib/main.dart
+        - flutter/bin/flutter build ios --release --no-codesign
+        - mv -R build/ios/iphoneos/SaufApp.app ./noads/SaufApp.app
       before_cache:
         - brew cleanup
       cache:
@@ -123,7 +133,8 @@ jobs:
         provider: releases
         api_key: "$GITHUB_OAUTH"
         file:
-          - build/ios/iphoneos/app.ipa
+          - normal/app.ipa
+          - noads/app-noads.ipa
         skip_cleanup: true
         on:
           branch: master
