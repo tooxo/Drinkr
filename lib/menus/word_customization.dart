@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:SaufApp/utils/networking.dart';
 import 'package:SaufApp/utils/shapes.dart';
 import 'package:SaufApp/utils/spotify_api.dart';
 import 'package:SaufApp/utils/types.dart';
@@ -104,7 +105,7 @@ class WordCustomizationState extends State<WordCustomization> {
   Future<bool> spotifyCheckerWrapper() async {
     if (getSelectedType() == GameType.GUESS_THE_SONG) {
       Connectivity c = new Connectivity();
-      if ((await c.checkConnectivity()) == ConnectivityResult.none) {
+      if (!(await checkConnection())) {
         return true;
       }
       if (await Spotify.playlistExists(tf1Value)) {

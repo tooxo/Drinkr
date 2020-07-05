@@ -5,12 +5,14 @@ import 'package:SaufApp/utils/ad.dart';
 import 'package:SaufApp/games/challenges.dart';
 import 'package:SaufApp/games/guess_the_song.dart';
 import 'package:SaufApp/games/never_have_i_ever.dart';
+import 'package:SaufApp/utils/networking.dart';
 import 'package:SaufApp/utils/player.dart';
 import 'package:SaufApp/games/quiz.dart';
 import 'package:SaufApp/menus/setting.dart';
 import 'package:SaufApp/utils/shapes.dart';
 import 'package:SaufApp/utils/spotify_api.dart';
 import 'package:SaufApp/games/truth_or_dare.dart';
+import 'package:SaufApp/utils/sqlite.dart';
 import 'package:SaufApp/utils/types.dart';
 import 'package:SaufApp/games/who_would_rather.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
@@ -220,9 +222,7 @@ class DifficultyState extends State<Difficulty> {
     for (List game in availableGames) {
       GameType gameType = game[1];
       if (gameType == GameType.GUESS_THE_SONG) {
-        ConnectivityResult connectivityResult =
-            await Connectivity().checkConnectivity();
-        if (connectivityResult != ConnectivityResult.none) {
+        if (await checkConnection()) {
           List<String> urls = [];
           if (selectedModes == SettingsState.ONLY_INCLUDED ||
               selectedModes == SettingsState.BOTH) {
@@ -237,6 +237,14 @@ class DifficultyState extends State<Difficulty> {
           });
 
           texts[gameType] = await buildSpotify(urls);
+          SqLite database = await SqLite().open();
+          Spotify spotify = Spotify();
+          dynamic missingSongs =
+              texts[GameType.GUESS_THE_SONG].where((e) => e.contains(null));
+          texts[GameType.GUESS_THE_SONG]
+              .removeWhere((element) => element.contains(null));
+          missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]
+              .add(await spotify.fillMissingPreviewUrls(e, database)));
         } else {
           Fluttertoast.showToast(
               msg: "Rate den Song wurde deaktiviert, da du über keine "
@@ -359,9 +367,13 @@ class DifficultyState extends State<Difficulty> {
           randomlyChosenText =
               json.encode({"truth": randomTextTruth, "dare": randomTextDare});
         } else {
-          randomlyChosenText = texts[game.type]
-              [Random.secure().nextInt(texts[game.type].length)];
-          texts[game.type].remove(randomlyChosenText);
+          try {
+            randomlyChosenText = texts[game.type]
+                [Random.secure().nextInt(texts[game.type].length)];
+            texts[game.type].remove(randomlyChosenText);
+          } on IndexError {
+            continue;
+          }
         }
 
         /*
@@ -773,12 +785,13 @@ class DifficultyState extends State<Difficulty> {
                     Column(
                       children: [
                         Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: Container(),
                         ),
                         Expanded(
                           flex: 1,
-                          child: Center(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
                             child: Material(
                               color: Colors.transparent,
                               child: Text(

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:SaufApp/games/game.dart';
+import 'package:SaufApp/utils/networking.dart';
 import 'package:SaufApp/utils/types.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:connectivity/connectivity.dart';
@@ -73,8 +74,7 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
 
   void buttonClick() async {
     if (state == 0 || state == 1) {
-      ConnectivityResult result = await Connectivity().checkConnectivity();
-      if (result != ConnectivityResult.none) {
+      if (!(await checkConnection())) {
         audioPlayer.play(widget.mainTitle);
       } else {
         Fluttertoast.showToast(

@@ -1,4 +1,4 @@
-package com.example.SaufApp
+package com.tooxo.SaufApp
 
 import io.flutter.embedding.android.FlutterActivity
 

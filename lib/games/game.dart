@@ -158,19 +158,22 @@ class BasicGameState extends State<BasicGame>
         },
         icon: Icon(Icons.clear),
       ),
-      title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      title: /*Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Text(
-          widget.title.tr(),
+          //widget.title,
+          "this is the title",
           style: GoogleFonts.caveatBrush(
               color: Colors.black, fontSize: 40, fontWeight: FontWeight.w600),
-        ),
-      ]),
-      /*Text(
-        widget.title.tr(),
+        ).tr(),
+      ]),*/
+      Text(
+        // widget.title.tr(),
+        widget.title,
         style: GoogleFonts.caveatBrush(
             fontSize: 40, color: Colors.black, fontWeight: FontWeight.w600),
-      ),
-      centerTitle: true,*/
+          textAlign: TextAlign.center,
+      ).tr(),
+      centerTitle: true,
       backgroundColor: widget.primaryColor,
     );
   }
