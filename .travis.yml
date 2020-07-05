@@ -119,10 +119,10 @@ jobs:
         - git tag TRAVIS_TAG
       script:
         - flutter/bin/flutter build ios --release --no-codesign
-        - mv -R build/ios/iphoneos/SaufApp.app ./normal/SaufApp.app
+        - mv build/ios/iphoneos/SaufApp.app ./normal/SaufApp.app
         - sed -i .bak "s|const bool ADS_ENABLED_BUQF1EVY = true;|const bool ADS_ENABLED_BUQF1EVY = false;|g" ./lib/main.dart
         - flutter/bin/flutter build ios --release --no-codesign
-        - mv -R build/ios/iphoneos/SaufApp.app ./noads/SaufApp.app
+        - mv build/ios/iphoneos/SaufApp.app ./noads/SaufApp.app
       before_cache:
         - brew cleanup
       cache:
