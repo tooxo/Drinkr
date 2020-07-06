@@ -84,7 +84,7 @@ class Spotify {
     //  if (decodedEmbedPage["tracks"]["total"] > 100) {
     String token = await generateAuthKey();
     String url =
-        "https://api.spotify.com/v1/playlists/$playlistId/tracks?limit=100&offset=100";
+        "https://api.spotify.com/v1/playlists/$playlistId/tracks?limit=100&offset=0";
 
     Map<dynamic, dynamic> jsonResponse;
     do {
@@ -113,7 +113,7 @@ class Spotify {
         // }
       }
       url = jsonResponse["next"];
-    } while (jsonResponse.containsKey("more"));
+    } while (jsonResponse["next"] != null);
     //}
     if (useCache) database.putBulkInSpotifyCache(trackList);
     return trackList;
