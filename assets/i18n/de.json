@@ -2,19 +2,15 @@
   "mainMenuTitle": "SaufApp",
   "mainMenuButtonNormal": "NORMAL",
   "mainMenuButtonCustom": "CUSTOM",
-
   "close": "Schließen",
-
   "duplicatedNameTitle": "Doppelter Name",
   "duplicatedNameDescription": "Namen dürfen nicht doppelt vorkommen.",
-
   "nameSelectTitle": "Wer spielt mit?",
   "nameInput": "Hier Namen eingeben",
   "nameTooFewPlayers": "Zu wenig Spieler",
   "nameTooFewPlayersDescription": "Es müssen mindestens 2 Namen eingetragen sein.\nTipp: Such dir ein paar Freunde.",
   "nameTooManyPlayers": "Zu viele Spieler",
   "nameTooManyPlayersDescriptions": "Es sind nur maximal 12 Spieler erlaubt. \nTipp: Bei zu vielen Spielern, bildet Teams untereinander.",
-
   "selectDifficulty": "Schwierigkeit wählen",
   "difficultyLow": "Wenig",
   "difficultyLowDescription": "Strafen: 1 - 2 Schluck(e) | keine Shots",
@@ -22,45 +18,30 @@
   "difficultyMedDescription": "Strafen: 2 - 3 Schlucke | 1 Shot",
   "difficultyHigh": "Absturz",
   "difficultyHighDescription": "Strafen: 3 - 5 Schlucke | 1 - 2 Shot(s)",
-
   "customNoGameSelected": "Kein Spiel wurde ausgewählt.",
   "customNoGameSelectedDescription": "Bitte wähle mindestens ein Spiel aus.",
   "customTitle": "Wähle deine Spielmodi",
-
   "truthOrDare": "Wahrheit oder Pflicht",
   "truthOrDareExplanation": "Wenn du dich nicht traust, trink!",
-
   "neverHaveIEver": "Ich hab' noch nie...",
   "neverHaveIEverExplanation": "Wer es schonmal gemacht hat, muss trinken!",
-
   "bigBrainQuiz": "Big Brain Quiz",
   "bigBrainQuizExplanation": "Wenn du es weißt dann verteil, sonst trink es selber!",
-
   "challenges": "Challenges",
-
   "guessing": "Schätzfragen",
   "guessingExplanation": "Wer am nächsten an der Lösung ist, darf verteilen!",
-
   "wouldYouRather": "Entweder ... oder ...? ",
   "wouldYouRatherExplanation": "Die Minderzahl muss trinken!",
-
   "guessTheSong": "Rate den Song",
   "guessTheSongExplanation": "Wer das Lied zuerst errät, darf verteilen!",
-
   "whoWouldRather": "Wer würde eher...?",
   "whoWouldRatherExplanation": "Zeigt auf die Person, die es am ehesten machen würde. Die Person muss dann trinken!",
-
-
   "startGame": "Spiel starten",
-
   "gameShowSolution": "Lösung anzeigen",
-
   "exitTitle": "Spiel beenden?",
   "exitDescription": "Bist du sicher, das du das aktuelle Spiel beenden willst?",
   "exit": "Beenden",
-
   "goOn": "Weiterspielen",
-
   "explanation": "Erklärung",
   "next": "Weiter",
   "settings": "Einstellungen",
@@ -69,42 +50,35 @@
   "feedback": "Fragen/Bugs/Ideen",
   "truth": "Wahrheit",
   "dare": "Pflicht",
-
   "goOnTitle": "Weiterspielen?",
   "goOnDescription": "Du hast schon 100 Fragen gespielt! Willst du noch weiterspielen?",
-
   "illegalName": "Name nicht erlaubt",
   "illegalNameDescription": "Bitte benutze einen anderen Namen.",
-
   "quizText1": "Frage:",
   "quizText2": "Antwort:",
-
   "truthText1": "Wahrheit",
   "truthText2": "Deaktiviert",
-
   "dareText1": "Pflicht",
   "dareText2": "Deaktiviert",
-
   "neverHaveIEverText1": "Ich hab' noch nie...",
   "neverHaveIEverText2": "Deaktiviert",
-
   "opinionText1": "Entweder ... oder ...?",
   "opinionText2": "Deaktiviert",
-
   "guessingText1": "Schätzfrage",
   "guessingText2": "Antwort",
-
   "challengesText1": "Challenge",
   "challengesText2": "Du kannst die Variablen %player, %amountbeer und %amountshots nutzen.",
-
   "guessTheSongText1": "Spotify Playlist URL",
   "guessTheSongText2": "Deaktiviert",
-
   "whoWouldRatherText1": "Würdest du eher...?",
   "whoWouldRatherText2": "Deaktiviert",
-
   "about": "Über Uns / Lizenzen",
-
   "noConnection": "Du verfügst über keine Internetverbindung.",
-  "spotifyLongLoad": "lange ladezeit spotify ladezeit"
+  "spotifyLongLoad": "lange ladezeit spotify ladezeit",
+  "adsNoVideosTitle": "Keine Videos mehr :(",
+  "adsNoVideosDescription": "Momentan sind keine Videos mehr verfügbar. Versuch es später nochmal.",
+  "error": "Fehler",
+  "adVideoAbortDescription": "Du musst das Video bis zum Ende anschauen! Nix da überspringen!",
+  "adSuccessTitle": "Werbung deaktiviert",
+  "adSuccessDescription": "Du kannst die nächste Stunde in der App werbefrei verbringen.\nVielen Dank bro."
 }

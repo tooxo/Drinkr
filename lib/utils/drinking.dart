@@ -100,7 +100,7 @@ class DrinkingDisplay extends StatelessWidget {
   final int amount;
   final Color tintColor;
 
-  static const _kFontFam = 'Main';
+  static const _kFontFam = 'Icons';
   static const _kFontPkg = null;
 
   static const IconData beer_outline =

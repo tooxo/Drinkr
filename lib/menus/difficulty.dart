@@ -16,7 +16,6 @@ import 'package:SaufApp/utils/sqlite.dart';
 import 'package:SaufApp/utils/types.dart';
 import 'package:SaufApp/games/who_would_rather.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -246,7 +245,7 @@ class DifficultyState extends State<Difficulty> {
           missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]
               .add(await spotify.fillMissingPreviewUrls(e, database)));
         } else {
-          Fluttertoast.showToast(
+          FlutterToast.showToast(
               msg: "Rate den Song wurde deaktiviert, da du über keine "
                   "Internetverbindung verfügst.",
               toastLength: Toast.LENGTH_LONG,
@@ -428,7 +427,7 @@ class DifficultyState extends State<Difficulty> {
           happen inside a game, this only catches here to dispose the difficulty
           correctly and make the bannerAd disappear.
            */
-          Fluttertoast.showToast(msg: "An unexpected Error occured.");
+          FlutterToast.showToast(msg: "An unexpected Error occured.");
           Navigator.of(context).pop(false);
           return;
         }

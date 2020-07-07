@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Licenses extends StatefulWidget {
   @override
@@ -62,17 +63,17 @@ class LicensesState extends State<Licenses> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  height: 300,
+                  height: 400,
                   width: MediaQuery.of(context).size.width,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: Column(
                       children: <Widget>[
                         Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: Image.asset("assets/image/cutebeer.png")),
                         Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -87,6 +88,32 @@ class LicensesState extends State<Licenses> {
                                       "Created By Artjom Zakoyan and Till Schulte",
                                       style: GoogleFonts.caveatBrush(
                                           fontSize: 18)),
+                                ),
+                                Container(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  height: 40,
+                                  width: double.infinity,
+                                  child: FlatButton.icon(
+                                    onPressed: () async {
+                                      const url =
+                                          "https://github.com/tooxo/SaufAppFlutter";
+                                      if (await canLaunch(url)) {
+                                        await launch(url);
+                                      }
+                                    },
+                                    icon: Icon(
+                                      IconData(0xe802,
+                                          fontFamily: "Icons",
+                                          fontPackage: null),
+                                    ),
+                                    label: Text(
+                                      "GitHub",
+                                      style:
+                                          GoogleFonts.caveatBrush(fontSize: 25),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),

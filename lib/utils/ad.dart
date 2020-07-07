@@ -3,6 +3,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 const String ADS_SETTING = "SHOULD_SHOW_ADS_SETTINGS";
 const String ADS_SETTINGS_PERMANENT = "DEACTIVATE_ADS_PERMANENTLY";
@@ -46,27 +47,27 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
           builder: (BuildContext context) {
             return new AlertDialog(
               backgroundColor: Colors.green.shade700,
-              title: Text("Werbung deaktiviert",
+              title: Text("adSuccessTitle",
                   style: GoogleFonts.caveatBrush(
                     textStyle: TextStyle(color: Colors.black),
                     fontWeight: FontWeight.w800,
                     fontSize: 30,
-                  )),
+                  )).tr(),
               content: Text(
-                "Du kannst die nächste Stunde in der App werbefrei verbringen.\nVielen Dank bro.",
+                "adSuccessDescription",
                 style: GoogleFonts.caveatBrush(
                   textStyle: TextStyle(color: Colors.black),
                   fontSize: 25,
                 ),
-              ),
+              ).tr(),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 FlatButton(
                   child: new Text(
-                    "Schließen",
+                    "close",
                     style: GoogleFonts.caveatBrush(
                         color: Colors.black, fontSize: 20),
-                  ),
+                  ).tr(),
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
@@ -82,26 +83,28 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
           builder: (BuildContext context) {
             return new AlertDialog(
               backgroundColor: Colors.deepOrange,
-              title: Text("Fehler",
-                  style: GoogleFonts.caveatBrush(
-                    textStyle: TextStyle(color: Colors.black),
-                    fontWeight: FontWeight.w800,
-                    fontSize: 30,
-                  )),
+              title: Text(
+                "error",
+                style: GoogleFonts.caveatBrush(
+                  textStyle: TextStyle(color: Colors.black),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                ),
+              ).tr(),
               content: Text(
-                "Du musst das Video bis zum Ende anschauen! Nix da überspringen!",
+                "adVideoAbortDescription",
                 style: GoogleFonts.caveatBrush(
                   textStyle: TextStyle(color: Colors.black),
                   fontSize: 25,
                 ),
-              ),
+              ).tr(),
               actions: <Widget>[
                 FlatButton(
                   child: new Text(
-                    "Schließen",
+                    "close",
                     style: GoogleFonts.caveatBrush(
                         color: Colors.black, fontSize: 20),
-                  ),
+                  ).tr(),
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
@@ -128,27 +131,27 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
         builder: (BuildContext context) {
           return new AlertDialog(
             backgroundColor: Colors.deepOrange,
-            title: Text("Keine Videos mehr :(",
+            title: Text("adsNoVideosTitle",
                 style: GoogleFonts.caveatBrush(
                   textStyle: TextStyle(color: Colors.black),
                   fontWeight: FontWeight.w800,
                   fontSize: 30,
-                )),
+                )).tr(),
             content: Text(
-              "Momentan sind keine Videos mehr verfügbar. Versuch es später nochmal.",
+              "adsNoVideosDescription",
               style: GoogleFonts.caveatBrush(
                 textStyle: TextStyle(color: Colors.black),
                 fontSize: 25,
               ),
-            ),
+            ).tr(),
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
               FlatButton(
                 child: new Text(
-                  "Schließen",
+                  "close",
                   style: GoogleFonts.caveatBrush(
                       color: Colors.black, fontSize: 20),
-                ),
+                ).tr(),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },

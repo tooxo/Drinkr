@@ -5,7 +5,6 @@ import 'package:SaufApp/utils/shapes.dart';
 import 'package:SaufApp/utils/spotify_api.dart';
 import 'package:SaufApp/utils/types.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -104,14 +103,13 @@ class WordCustomizationState extends State<WordCustomization> {
 
   Future<bool> spotifyCheckerWrapper() async {
     if (getSelectedType() == GameType.GUESS_THE_SONG) {
-      Connectivity c = new Connectivity();
       if (!(await checkConnection())) {
         return true;
       }
       if (await Spotify.playlistExists(tf1Value)) {
         return true;
       } else {
-        Fluttertoast.showToast(
+        FlutterToast.showToast(
             msg:
                 "Diese Spotify Playlist konnte nicht gefunden werden. Prüfe ob die Playlist öffentlich ist.");
         return false;
