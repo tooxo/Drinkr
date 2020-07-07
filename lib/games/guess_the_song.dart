@@ -76,7 +76,7 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
       if (await checkConnection()) {
         audioPlayer.play(widget.mainTitle);
       } else {
-        FlutterToast.showToast(
+        Fluttertoast.showToast(
             msg: "noConnection".tr(), toastLength: Toast.LENGTH_SHORT);
       }
     }

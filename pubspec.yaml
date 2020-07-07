@@ -32,7 +32,7 @@ dependencies:
   http: ^0.12.1
   connectivity: ^0.4.8+6
   flutter_spinkit: ^4.1.2
-  fluttertoast: ^5.0.1
+  fluttertoast: 4.0.0
   shared_preferences: ^0.5.7+3
   firebase_admob: ^0.9.3+2
   app_review: ^1.1.2

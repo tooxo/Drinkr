@@ -109,7 +109,7 @@ class WordCustomizationState extends State<WordCustomization> {
       if (await Spotify.playlistExists(tf1Value)) {
         return true;
       } else {
-        FlutterToast.showToast(
+        Fluttertoast.showToast(
             msg:
                 "Diese Spotify Playlist konnte nicht gefunden werden. Prüfe ob die Playlist öffentlich ist.");
         return false;

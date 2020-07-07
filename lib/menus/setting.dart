@@ -237,7 +237,7 @@ class SettingsState extends State<Settings> {
                       shape: MiddleShapePainter(0, calcDegree),
                       child: InkWell(
                         onTap: () =>
-                            FlutterToast.showToast(msg: "Coming soon..."),
+                            Fluttertoast.showToast(msg: "Coming soon..."),
                         customBorder: MiddleShapePainter(0, calcDegree),
                         child: Container(
                           margin: EdgeInsets.only(

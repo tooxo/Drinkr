@@ -245,7 +245,7 @@ class DifficultyState extends State<Difficulty> {
           missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]
               .add(await spotify.fillMissingPreviewUrls(e, database)));
         } else {
-          FlutterToast.showToast(
+          Fluttertoast.showToast(
               msg: "Rate den Song wurde deaktiviert, da du über keine "
                   "Internetverbindung verfügst.",
               toastLength: Toast.LENGTH_LONG,
@@ -427,7 +427,7 @@ class DifficultyState extends State<Difficulty> {
           happen inside a game, this only catches here to dispose the difficulty
           correctly and make the bannerAd disappear.
            */
-          FlutterToast.showToast(msg: "An unexpected Error occured.");
+          Fluttertoast.showToast(msg: "An unexpected Error occured.");
           Navigator.of(context).pop(false);
           return;
         }
