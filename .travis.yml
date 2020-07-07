@@ -27,8 +27,8 @@ jobs:
         - sed -i "s|RewardedVideoAd.testAdUnitId|\"$ANDROID_REWARDED_ID\"|g" ./lib/utils/ad.dart
         - sed -i "s|BannerAd.testAdUnitId|\"$ANDROID_BANNER_ID\"|g" ./lib/menus/difficulty.dart
       script:
-        - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
-        - flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+        - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --build-number "$TRAVIS_BUILD_NUMBER"
+        - flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-number "$TRAVIS_BUILD_NUMBER"
         # zipalign all the apks and bundles
         - zipalign -v -p 4 build/app/outputs/apk/release/app-armeabi-v7a-release.apk ./armeabi-v7a-unsigned.apk
         - zipalign -v -p 4 build/app/outputs/apk/release/app-arm64-v8a-release.apk ./arm64-v8a-unsigned.apk
@@ -43,7 +43,7 @@ jobs:
         - jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore release.keystore -storepass ${ANDROID_PASSWORD} bundle-signed.aab android
         # add a "no-ad" version and sign it
         - sed -i "s|const bool ADS_ENABLED_BUQF1EVY = true;|const bool ADS_ENABLED_BUQF1EVY = false;|g" ./lib/main.dart
-        - flutter build apk --target-platform android-arm,android-arm64,android-x64
+        - flutter build apk --target-platform android-arm,android-arm64,android-x64 --build-number "$TRAVIS_BUILD_NUMBER"
         - zipalign -v -p 4 build/app/outputs/apk/release/app-release.apk ./fat-noad-unsigned.apk
         - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out fat-noad-signed.apk fat-noad-unsigned.apk
       before_deploy:
@@ -118,10 +118,10 @@ jobs:
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
         - git tag TRAVIS_TAG
       script:
-        - flutter/bin/flutter build ios --release --no-codesign
+        - flutter/bin/flutter build ios --release --no-codesign --build-number "$TRAVIS_BUILD_NUMBER"
         - mv build/ios/iphoneos/SaufApp.app ./normal/SaufApp.app
         - sed -i .bak "s|const bool ADS_ENABLED_BUQF1EVY = true;|const bool ADS_ENABLED_BUQF1EVY = false;|g" ./lib/main.dart
-        - flutter/bin/flutter build ios --release --no-codesign
+        - flutter/bin/flutter build ios --release --no-codesign --build-number "$TRAVIS_BUILD_NUMBER"
         - mv build/ios/iphoneos/SaufApp.app ./noads/SaufApp.app
       before_cache:
         - brew cleanup
