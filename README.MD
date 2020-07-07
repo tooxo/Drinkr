@@ -25,7 +25,7 @@ Download the latest release from the releases tab on the right.
 3. Have fun
 
 ##### iOS
-When
+
 1. Download the app.ipa from the Releases.
 2. The app is not signed as it is provided here. You need to sign it via your developer keys or external application, for example [`AltStore`](https://altstore.io/) (no Jailbreak required) or [`AppSyncUnified`](https://cydia.akemi.ai/?page/net.angelxwind.appsyncunified) (Jailbreak required).
 3. Have fun.
