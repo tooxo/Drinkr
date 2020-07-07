@@ -1,30 +1,12 @@
 import 'dart:math';
 
 import 'package:SaufApp/menus/difficulty.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Drinking {
   int amount = 0;
   bool shot = false;
-
-  /// Formats a string to the given parameters
-  static String formatString(int amount, bool isShot, bool chug) {
-    if (isShot && amount > 1) {
-      return "$amount shots";
-    } else if (isShot && amount <= 1) {
-      return "$amount shot";
-    } else if (!isShot && amount > 1) {
-      return "$amount Schlücke";
-    } else if (!isShot && amount <= 1) {
-      return "$amount Schluck";
-    } else if (chug && !isShot) {
-      return "Exe dein Getränk";
-    } else {
-      return "";
-    }
-  }
 
   /// Returns a random amount of sips according to the given [difficulty]
   static int getDrinkAmountBeer(int difficulty) {
@@ -65,7 +47,6 @@ class Drinking {
     return false;
   }
 
-
   static List generateRandomAmount(int difficulty) {
     bool _isShot = Drinking.isShot(difficulty);
     if (_isShot) {
@@ -73,25 +54,6 @@ class Drinking {
     } else {
       return [false, getDrinkAmountBeer(difficulty)];
     }
-  }
-
-  static String betterStringFunctionByTillFuckYouArte(List l) {
-    bool isShot = l[0];
-    int amount = l[1];
-    String drinkString;
-    if (isShot && amount == 1) {
-      drinkString = "Shot";
-    }
-    if (isShot && amount != 1) {
-      drinkString = "Shots";
-    }
-    if (!isShot && amount == 1) {
-      drinkString = "Schluck";
-    }
-    if (!isShot && amount != 1) {
-      drinkString = "Schlücke";
-    }
-    return "$amount $drinkString";
   }
 }
 
@@ -112,28 +74,30 @@ class DrinkingDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery.of(context).orientation == Orientation.landscape ? Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        FittedBox(
-          child: Text(
-            amount.toString() + "×",
-            style:
-                GoogleFonts.caveatBrush(fontSize: 5000, color: this.tintColor),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 8, 8, 8.0),
-          child: FittedBox(
-            child: Icon(
-              this.isShot ? shot_glass : beer_outline,
-              size: 5000,
-              color: this.tintColor,
-            ),
-          ),
-        )
-      ],
-    ): Container();
+    return MediaQuery.of(context).orientation == Orientation.landscape
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              FittedBox(
+                child: Text(
+                  amount.toString() + "×", // Unicode Multiply Sign
+                  style: GoogleFonts.caveatBrush(
+                      fontSize: 5000, color: this.tintColor),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8, 8, 8.0),
+                child: FittedBox(
+                  child: Icon(
+                    this.isShot ? shot_glass : beer_outline,
+                    size: 5000,
+                    color: this.tintColor,
+                  ),
+                ),
+              )
+            ],
+          )
+        : Container();
   }
 }

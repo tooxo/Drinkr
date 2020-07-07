@@ -48,27 +48,12 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    if (this.durationSubscription != null) {
-      this.durationSubscription.cancel();
-    }
-
-    if (this.stateSubscription != null) {
-      this.stateSubscription.cancel();
-    }
-
+    this.durationSubscription?.cancel();
+    this.stateSubscription?.cancel();
     this.audioPlayer.stop();
 
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      setState(() {
-        this.audioPlayer.pause();
-      });
-    }
   }
 
   void buttonClick() async {
@@ -85,12 +70,16 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
         if (audioPlayer.state == AudioPlayerState.PAUSED) {
           // audioPlayer.play(widget.mainTitle);
           audioPlayer.resume();
+          audioPlayer.state = AudioPlayerState.PLAYING;
         } else {
           audioPlayer.pause();
+          audioPlayer.state = AudioPlayerState.PAUSED;
         }
       });
     }
   }
+
+  int songDuration;
 
   @override
   void initState() {
@@ -99,7 +88,10 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
     audioPlayer = new AudioPlayer();
     this.durationSubscription =
         audioPlayer.onAudioPositionChanged.listen((pos) async {
-      this.state = pos.inMilliseconds / await audioPlayer.getDuration();
+      if (songDuration == null) {
+        songDuration = await audioPlayer.getDuration();
+      }
+      this.state = pos.inMilliseconds / songDuration;
       if (mounted) {
         setState(() {});
       }
@@ -111,7 +103,9 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
         });
       }
     }, onError: (msg) {
-      // TODO: Show Error Message!
+      Fluttertoast.showToast(
+          msg: "An unexpected Error occurred.",
+          toastLength: Toast.LENGTH_SHORT);
       this.state = 1;
       setState(() {});
     });
