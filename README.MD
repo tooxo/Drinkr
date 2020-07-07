@@ -25,7 +25,7 @@ Download the latest release from the releases tab on the right.
 3. Have fun
 
 ##### iOS
-
+When
 1. Download the app.ipa from the Releases.
 2. The app is not signed as it is provided here. You need to sign it via your developer keys or external application, for example [`AltStore`](https://altstore.io/) (no Jailbreak required) or [`AppSyncUnified`](https://cydia.akemi.ai/?page/net.angelxwind.appsyncunified) (Jailbreak required).
 3. Have fun.
@@ -36,6 +36,6 @@ Download the latest release from the releases tab on the right.
 2. Clone the repository via git or download it via the `Code` button on the top-left of the page.
 3. Extract the .zip file and open a terminal there
 4. Install
-4.1 Android: type `flutter build apk`. When the program is done it will return a path to the file built.
-4.2 iOS (only on mac): type `flutter build ios --no-codesign`. When the program is done it will return a path to the file built.
+   1. Android: type `flutter build apk`. When the program is done it will return a path to the file built.
+   2. iOS (only on mac): type `flutter build ios --no-codesign`. When the program is done it will return a path to the file built.
 5. Install it on your device as explained above.
