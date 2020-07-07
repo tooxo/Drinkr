@@ -104,7 +104,7 @@ class LicensesState extends State<Licenses> {
                                       }
                                     },
                                     icon: Icon(
-                                      IconData(0xe802,
+                                       const IconData(0xe802,
                                           fontFamily: "Icons",
                                           fontPackage: null),
                                     ),
