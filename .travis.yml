@@ -70,15 +70,17 @@ jobs:
       name: apple
       if: branch = master
       osx_image: xcode11.5
+      addons:
+        homebrew:
+          packages:
+            - usbmuxd
+            - libimobiledevice
+            - ideviceinstaller
+            - ios-deploy
       before_install:
-        - brew update
-        - brew install usbmuxd #--HEAD
         - brew unlink usbmuxd
         - brew link usbmuxd
-        - brew install libimobiledevice #--HEAD
-        - brew install ideviceinstaller
-        - brew install ios-deploy
-        - git clone https://github.com/flutter/flutter.git -b beta --depth 1
+        - git clone https://github.com/flutter/flutter.git -b stable --depth 1
         # create signing prerequisites
         #- security create-keychain -p "chainPassword" build.keychain
         #- security unlock-keychain -p "chainPassword" build.keychain
