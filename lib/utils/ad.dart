@@ -16,18 +16,13 @@ Future<bool> shouldShowAds() async {
   DateTime lastDate = DateTime.fromMillisecondsSinceEpoch(lastMillisSinceEpoch);
   DateTime nowDate = DateTime.now();
 
-  if (nowDate.difference(lastDate).inMinutes < 60) {
-    return false;
-  }
-  return true;
+  return nowDate.difference(lastDate).inMinutes > 60 || !ADS_ENABLED_BUQF1EVY;
 }
 
 Future<void> deactivateAds() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   await preferences.setInt(ADS_SETTING, DateTime.now().millisecondsSinceEpoch);
 }
-
-class NoAdLoadedException implements Exception {}
 
 Future<void> showInterstitialAd(BuildContext buildContext) async {
   if (!ADS_ENABLED_BUQF1EVY) return;

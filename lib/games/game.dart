@@ -150,7 +150,6 @@ class BasicGameState extends State<BasicGame>
   AppBar buildAppBar() {
     return AppBar(
       elevation: 0,
-      // centerTitle: true,
       iconTheme: IconThemeData(color: Colors.black),
       leading: IconButton(
         onPressed: () {
@@ -158,21 +157,31 @@ class BasicGameState extends State<BasicGame>
         },
         icon: Icon(Icons.clear),
       ),
-      title: /*Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(
-          //widget.title,
-          "this is the title",
-          style: GoogleFonts.caveatBrush(
-              color: Colors.black, fontSize: 40, fontWeight: FontWeight.w600),
-        ).tr(),
-      ]),*/
-      Text(
-        // widget.title.tr(),
-        widget.title,
-        style: GoogleFonts.caveatBrush(
-            fontSize: 40, color: Colors.black, fontWeight: FontWeight.w600),
-          textAlign: TextAlign.center,
-      ).tr(),
+
+      /// A very bad fix for an error, which is caused by navigation buttons
+      /// still "taking up space" even if they are not visible to the end user,
+      /// two different approaches are used to display the text at least approx.
+      /// in the centre of the screen. Definitely FIXME
+      title: max(MediaQuery.of(context).viewPadding.right,
+                  MediaQuery.of(context).viewPadding.left) ==
+              0.0
+          ? Text(
+              widget.title,
+              style: GoogleFonts.caveatBrush(
+                  fontSize: 40,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ).tr()
+          : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                widget.title,
+                style: GoogleFonts.caveatBrush(
+                    color: Colors.black,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600),
+              ).tr(),
+            ]),
       centerTitle: true,
       backgroundColor: widget.primaryColor,
     );
