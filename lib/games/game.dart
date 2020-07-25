@@ -4,7 +4,6 @@ import 'package:SaufApp/utils/drinking.dart';
 import 'package:SaufApp/widgets/text_widget.dart';
 import 'package:SaufApp/utils/types.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';

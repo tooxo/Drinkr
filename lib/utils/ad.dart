@@ -7,6 +7,8 @@ import 'package:easy_localization/easy_localization.dart';
 
 const String ADS_SETTING = "SHOULD_SHOW_ADS_SETTINGS";
 const String ADS_SETTINGS_PERMANENT = "DEACTIVATE_ADS_PERMANENTLY";
+const String AD_DIALOG_SETTING = "SHOULD_SHOW_AD_DIALOG_SETTING";
+const String LAST_AD_DISPLAY = "LAST_TIME_AD_WAS_DISPLAYED_STORE";
 
 Future<bool> shouldShowAds() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -17,6 +19,70 @@ Future<bool> shouldShowAds() async {
   DateTime nowDate = DateTime.now();
 
   return nowDate.difference(lastDate).inMinutes > 60 || !ADS_ENABLED_BUQF1EVY;
+}
+
+Future<bool> shouldShowAdDialog() async {
+  if (!ADS_ENABLED_BUQF1EVY) return false;
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  if (preferences.getBool(AD_DIALOG_SETTING) ?? true) {
+    DateTime millisSinceLastShow = DateTime.fromMillisecondsSinceEpoch(
+        preferences.getInt(LAST_AD_DISPLAY) ?? 0);
+    DateTime currentTime = DateTime.now();
+    if (currentTime.difference(millisSinceLastShow) > Duration(days: 1)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void showAdDialog(BuildContext context) async {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          backgroundColor: Colors.green.shade600,
+          title: Text(
+            "mainAdDialogTitle",
+            style: GoogleFonts.caveatBrush(
+              textStyle: TextStyle(color: Colors.black),
+              fontWeight: FontWeight.w800,
+              fontSize: 30,
+            ),
+          ).tr(),
+          content: Text(
+            "mainAdDialogDescription",
+            style: GoogleFonts.caveatBrush(
+              textStyle: TextStyle(color: Colors.black),
+              fontSize: 25,
+            ),
+          ).tr(),
+          actions: <Widget>[
+            FlatButton(
+              child: new Text(
+                "ok",
+                style:
+                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
+              ).tr(),
+              onPressed: () {
+                showInterstitialAd(context);
+                Navigator.of(context).pop(true);
+              },
+            ),
+            FlatButton(
+              child: new Text(
+                "notAgain",
+                style:
+                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
+              ).tr(),
+              onPressed: () async {
+                (await SharedPreferences.getInstance())
+                    .setBool(AD_DIALOG_SETTING, false);
+                Navigator.of(context).pop(true);
+              },
+            )
+          ],
+        );
+      });
 }
 
 Future<void> deactivateAds() async {

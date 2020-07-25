@@ -80,5 +80,9 @@
   "error": "Fehler",
   "adVideoAbortDescription": "Du musst das Video bis zum Ende anschauen! Nix da überspringen!",
   "adSuccessTitle": "Werbung deaktiviert",
-  "adSuccessDescription": "Du kannst die nächste Stunde in der App werbefrei verbringen.\nVielen Dank bro."
+  "adSuccessDescription": "Du kannst die nächste Stunde in der App werbefrei verbringen.\nVielen Dank bro.",
+  "mainAdDialogTitle": "Werbung entfernen?",
+  "mainAdDialogDescription": "Möchtest du dir ein kurzes Video ansehen, um für 1 Stunde die Werbung zu entfernen?\n\nTipp: Du kannst dies auch jederzeit in den Einstellungen tun.",
+  "ok": "Gerne!",
+  "notAgain": "Frag das nie wieder!"
 }
