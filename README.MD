@@ -1,4 +1,4 @@
-# SaufApp
+# BoozeBuddy
 
 [![Travis (.com)](https://img.shields.io/travis/com/tooxo/SaufAppFlutter?style=for-the-badge)](https://travis-ci.com/github/tooxo/SaufAppFlutter) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/tooxo/SaufAppFlutter?style=for-the-badge)](https://github.com/tooxo/SaufAppFlutter/releases/latest) [![Codefactor Rating](https://img.shields.io/codefactor/grade/github/tooxo/SaufAppFlutter?style=for-the-badge)](https://www.codefactor.io/repository/github/tooxo/saufappflutter)
 

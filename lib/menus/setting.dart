@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:SaufApp/utils/ad.dart';
-import 'package:SaufApp/utils/file.dart';
-import 'package:SaufApp/menus/licenses.dart';
-import 'package:SaufApp/utils/shapes.dart';
-import 'package:SaufApp/widgets/toggle_switch.dart';
-import 'package:SaufApp/menus/word_customization.dart';
+import 'package:BoozeBuddy/utils/ad.dart';
+import 'package:BoozeBuddy/utils/file.dart';
+import 'package:BoozeBuddy/menus/licenses.dart';
+import 'package:BoozeBuddy/utils/shapes.dart';
+import 'package:BoozeBuddy/widgets/toggle_switch.dart';
+import 'package:BoozeBuddy/menus/word_customization.dart';
 import 'package:app_review/app_review.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
@@ -104,9 +104,9 @@ class SettingsState extends State<Settings> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Aktivierte Fragen",
+                                "selectedQuestions",
                                 style: GoogleFonts.caveatBrush(fontSize: 30),
-                              ),
+                              ).tr(),
                               SizedBox(
                                 height: 50,
                                 width: MediaQuery.of(context).size.width,
@@ -171,11 +171,11 @@ class SettingsState extends State<Settings> {
                                 child: FittedBox(
                                   fit: BoxFit.contain,
                                   child: Text(
-                                    "Eigene Fragen hinzufügen",
+                                    "addCustomQuestions",
                                     textAlign: TextAlign.center,
                                     style:
                                         GoogleFonts.caveatBrush(fontSize: 300),
-                                  ),
+                                  ).tr(),
                                 ),
                               ),
                             ),
@@ -211,11 +211,11 @@ class SettingsState extends State<Settings> {
                                 child: FittedBox(
                                   fit: BoxFit.contain,
                                   child: Text(
-                                    "Werbung Deaktivieren",
+                                    "disableAds",
                                     textAlign: TextAlign.center,
                                     style:
                                         GoogleFonts.caveatBrush(fontSize: 300),
-                                  ),
+                                  ).tr(),
                                 ),
                               ),
                             ),
@@ -251,11 +251,11 @@ class SettingsState extends State<Settings> {
                                 child: FittedBox(
                                   fit: BoxFit.contain,
                                   child: Text(
-                                    "Sprache Ändern",
+                                    "language",
                                     textAlign: TextAlign.center,
                                     style:
                                         GoogleFonts.caveatBrush(fontSize: 300),
-                                  ),
+                                  ).tr(),
                                 ),
                               ),
                             ),
@@ -292,11 +292,11 @@ class SettingsState extends State<Settings> {
                                 child: FittedBox(
                                   fit: BoxFit.contain,
                                   child: Text(
-                                    "Bewerten",
+                                    "rate",
                                     textAlign: TextAlign.center,
                                     style:
                                         GoogleFonts.caveatBrush(fontSize: 300),
-                                  ),
+                                  ).tr(),
                                 ),
                               ),
                             ),

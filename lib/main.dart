@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 import 'dart:math';
 
-import 'package:SaufApp/utils/ad.dart';
-import 'package:SaufApp/menus/setting.dart';
-import 'package:SaufApp/utils/shapes.dart';
-import 'package:SaufApp/utils/types.dart';
+import 'package:BoozeBuddy/utils/ad.dart';
+import 'package:BoozeBuddy/menus/setting.dart';
+import 'package:BoozeBuddy/utils/shapes.dart';
+import 'package:BoozeBuddy/utils/types.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_admob/firebase_admob.dart';
@@ -37,11 +37,11 @@ void main() {
     });
     runApp(EasyLocalization(
         supportedLocales: [
-            // Locale('en', 'US'),
+            Locale('en', 'US'),
             Locale('de', 'DE')
         ],
         path: 'assets/i18n',
-        // fallbackLocale: Locale('en', 'US'),
+        fallbackLocale: Locale('en', 'US'),
         useOnlyLangCode: true,
         preloaderColor: Color.fromRGBO(255, 111, 0, 1),
         child: MyApp(),
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         SystemChrome.setPreferredOrientations(
             [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
         return MaterialApp(
-            title: 'Saufapp',
+            title: 'BoozeBuddy',
             theme: ThemeData(
                 primarySwatch: Colors.deepOrange,
                 visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -104,13 +104,13 @@ class SplashScreenState extends State<SplashScreen> {
                 },
                 child: Center(
                     child: Text(
-                        "Gehe verantwortungsvoll mit Alkohol um. Wir übernehmen keine Haftung, also übertreibt es nicht!",
+                        "splash",
                         style: GoogleFonts.caveatBrush(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 35),
                         ),
                         textAlign: TextAlign.center,
-                    ))),
+                    ).tr())),
         );
     }
 }
@@ -218,7 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                     ),
                                                                 ).tr(),
                                                                 Text(
-                                                                    "Starte direkt ins Spiel!",
+                                                                    "startNow",
                                                                     style: GoogleFonts
                                                                         .caveatBrush(
                                                                         fontSize: 500,
@@ -283,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                     ],
                                                                 ),
                                                                 Text(
-                                                                    "Spiel nach deinen eigenen Regeln!",
+                                                                    "ownRules",
                                                                     style: GoogleFonts
                                                                         .caveatBrush(
                                                                         fontSize: 500),

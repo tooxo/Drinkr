@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:SaufApp/games/game.dart';
-import 'package:SaufApp/widgets/text_widget.dart';
-import 'package:SaufApp/utils/types.dart';
+import 'package:BoozeBuddy/games/game.dart';
+import 'package:BoozeBuddy/widgets/text_widget.dart';
+import 'package:BoozeBuddy/utils/types.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:show_up_animation/show_up_animation.dart';
@@ -65,12 +65,12 @@ class TruthOrDareState extends BasicGameState {
                                 },
                                 child: FittedBox(
                                   child: Text(
-                                    "Wahrheit",
+                                    "truth",
                                     style: GoogleFonts.caveatBrush(
                                       textStyle: TextStyle(color: Colors.black),
                                       fontSize: 450,
                                     ),
-                                  ),
+                                  ).tr(),
                                 ),
                               ),
                             ),
@@ -94,12 +94,12 @@ class TruthOrDareState extends BasicGameState {
                                 },
                                 child: FittedBox(
                                   child: Text(
-                                    "Pflicht",
+                                    "dare",
                                     style: GoogleFonts.caveatBrush(
                                       textStyle: TextStyle(color: Colors.black),
                                       fontSize: 450,
                                     ),
-                                  ),
+                                  ).tr(),
                                 ),
                               ),
                             ),

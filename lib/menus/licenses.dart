@@ -79,7 +79,7 @@ class LicensesState extends State<Licenses> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  "SaufApp",
+                                  "BoozeBuddy",
                                   style: GoogleFonts.caveatBrush(fontSize: 60),
                                 ),
                                 FittedBox(
@@ -98,7 +98,7 @@ class LicensesState extends State<Licenses> {
                                   child: FlatButton.icon(
                                     onPressed: () async {
                                       const url =
-                                          "https://github.com/tooxo/SaufAppFlutter";
+                                          "https://github.com/tooxo/BoozeBuddyFlutter";
                                       if (await canLaunch(url)) {
                                         await launch(url);
                                       }

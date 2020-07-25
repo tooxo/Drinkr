@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:SaufApp/utils/networking.dart';
-import 'package:SaufApp/utils/shapes.dart';
-import 'package:SaufApp/utils/spotify_api.dart';
-import 'package:SaufApp/utils/types.dart';
+import 'package:BoozeBuddy/utils/networking.dart';
+import 'package:BoozeBuddy/utils/shapes.dart';
+import 'package:BoozeBuddy/utils/spotify_api.dart';
+import 'package:BoozeBuddy/utils/types.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -111,7 +111,7 @@ class WordCustomizationState extends State<WordCustomization> {
       } else {
         Fluttertoast.showToast(
             msg:
-                "Diese Spotify Playlist konnte nicht gefunden werden. Prüfe ob die Playlist öffentlich ist.");
+                "spotifyGenericError".tr());
         return false;
       }
     }
@@ -128,7 +128,7 @@ class WordCustomizationState extends State<WordCustomization> {
           child: Padding(
             padding: EdgeInsets.only(right: 50.0),
             child: Text(
-              "Eigene Fragen",
+              "customQuestions",
               style: GoogleFonts.caveatBrush(
                 textStyle: TextStyle(
                     color: Colors.black,
@@ -177,10 +177,10 @@ class WordCustomizationState extends State<WordCustomization> {
                                   )
                                 : textsToDisplay.isEmpty
                                     ? Text(
-                                        "No Custom texts added.",
+                                        "noCustomTexts",
                                         style: GoogleFonts.caveatBrush(
                                             fontSize: 30),
-                                      )
+                                      ).tr()
                                     : Container(
                                         height: 0.95 * c.maxHeight +
                                             distanceOffset -
@@ -261,7 +261,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                                                                   splashColor: Colors.blue,
                                                                                   highlightColor: Colors.blue,
                                                                                   icon: Icon(Icons.delete),
-                                                                                  tooltip: "Delete",
+                                                                                  tooltip: "delete".tr(),
                                                                                 ))))
                                                                       ],
                                                                     ),
@@ -317,10 +317,10 @@ class WordCustomizationState extends State<WordCustomization> {
                                 child: Column(
                                   children: <Widget>[
                                     Text(
-                                      "Hinzufügen",
+                                      "add",
                                       style:
                                           GoogleFonts.caveatBrush(fontSize: 40),
-                                    ),
+                                    ).tr(),
                                     Divider(
                                       thickness: 2,
                                     ),
@@ -335,12 +335,12 @@ class WordCustomizationState extends State<WordCustomization> {
                                               GameType.GUESS_THE_SONG) {
                                             Spotify.getIdFromUrl(txt) == null
                                                 // ignore: unnecessary_statements
-                                                ? "Invalid Url"
+                                                ? "invalidUrl".tr()
                                                 // ignore: unnecessary_statements
                                                 : null;
                                           }
                                           return txt.length == 0
-                                              ? "Required."
+                                              ? "required".tr()
                                               : null;
                                         },
                                         decoration: InputDecoration(
@@ -372,7 +372,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                             return null;
                                           }
                                           return txt.length == 0
-                                              ? "Required."
+                                              ? "required".tr()
                                               : null;
                                         },
                                         decoration: InputDecoration(
@@ -426,7 +426,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                 Expanded(
                                   child: FlatButton.icon(
                                       label:
-                                          Text(buttonEnabled ? "ADD" : "WAIT")
+                                          Text(buttonEnabled ? "add" : "wait")
                                               .tr(),
                                       icon: Icon(buttonEnabled
                                           ? Icons.add

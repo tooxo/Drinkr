@@ -1,5 +1,5 @@
 {
-  "mainMenuTitle": "SaufApp",
+  "mainMenuTitle": "BoozeBuddy",
   "mainMenuButtonNormal": "NORMAL",
   "mainMenuButtonCustom": "CUSTOM",
   "close": "Schließen",
@@ -74,7 +74,7 @@
   "whoWouldRatherText2": "Deaktiviert",
   "about": "Über Uns / Lizenzen",
   "noConnection": "Du verfügst über keine Internetverbindung.",
-  "spotifyLongLoad": "lange ladezeit spotify ladezeit",
+  "spotifyLongLoad": "Der Ladevorgang von Spotify Playlists kann manchmal länger dauern.",
   "adsNoVideosTitle": "Keine Videos mehr :(",
   "adsNoVideosDescription": "Momentan sind keine Videos mehr verfügbar. Versuch es später nochmal.",
   "error": "Fehler",
@@ -84,5 +84,21 @@
   "mainAdDialogTitle": "Werbung entfernen?",
   "mainAdDialogDescription": "Möchtest du dir ein kurzes Video ansehen, um für 1 Stunde die Werbung zu entfernen?\n\nTipp: Du kannst dies auch jederzeit in den Einstellungen tun.",
   "ok": "Gerne!",
-  "notAgain": "Frag das nie wieder!"
+  "notAgain": "Frag das nie wieder!",
+  "splash": "Gehe verantwortungsvoll mit Alkohol um. Wir übernehmen keine Haftung, also übertreibt es nicht!",
+  "startNow": "Starte direkt ins Spiel!",
+  "ownRules": "Spiel nach deinen eigenen Regeln!",
+  "changeLang": "Sprache ändern",
+  "disableAds": "Werbung Deaktivieren",
+  "addCustomQuestions": "Eigene Fragen hinzufügen",
+  "selectedQuestions": "Aktivierte Fragen",
+
+  "customQuestions": "Eigene Fragen",
+  "noCustomTexts":"No Custom texts added.",
+  "delete": "Löschen",
+  "add": "Hinzufügen",
+  "invalidUrl": "Ungültige Url",
+  "required": "Benötigt",
+  "wait": "Warten",
+  "spotifyGenericError": "Diese Spotify Playlist konnte nicht gefunden werden. Prüfe ob die Playlist öffentlich ist."
 }

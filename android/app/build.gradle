@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.tooxo.SaufApp"
+        applicationId "com.tooxo.BoozeBuddy"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()

@@ -1,4 +1,4 @@
-package com.tooxo.SaufApp
+package com.tooxo.BoozeBuddy
 
 import io.flutter.embedding.android.FlutterActivity
 

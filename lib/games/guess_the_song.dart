@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:SaufApp/games/game.dart';
-import 'package:SaufApp/utils/networking.dart';
-import 'package:SaufApp/utils/types.dart';
+import 'package:BoozeBuddy/games/game.dart';
+import 'package:BoozeBuddy/utils/networking.dart';
+import 'package:BoozeBuddy/utils/types.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

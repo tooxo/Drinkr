@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:SaufApp/utils/drinking.dart';
-import 'package:SaufApp/widgets/text_widget.dart';
-import 'package:SaufApp/utils/types.dart';
+import 'package:BoozeBuddy/utils/drinking.dart';
+import 'package:BoozeBuddy/widgets/text_widget.dart';
+import 'package:BoozeBuddy/utils/types.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

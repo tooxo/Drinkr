@@ -1,20 +1,20 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:SaufApp/main.dart';
-import 'package:SaufApp/utils/ad.dart';
-import 'package:SaufApp/games/challenges.dart';
-import 'package:SaufApp/games/guess_the_song.dart';
-import 'package:SaufApp/games/never_have_i_ever.dart';
-import 'package:SaufApp/utils/networking.dart';
-import 'package:SaufApp/utils/player.dart';
-import 'package:SaufApp/games/quiz.dart';
-import 'package:SaufApp/menus/setting.dart';
-import 'package:SaufApp/utils/shapes.dart';
-import 'package:SaufApp/utils/spotify_api.dart';
-import 'package:SaufApp/games/truth_or_dare.dart';
-import 'package:SaufApp/utils/sqlite.dart';
-import 'package:SaufApp/utils/types.dart';
-import 'package:SaufApp/games/who_would_rather.dart';
+import 'package:BoozeBuddy/main.dart';
+import 'package:BoozeBuddy/utils/ad.dart';
+import 'package:BoozeBuddy/games/challenges.dart';
+import 'package:BoozeBuddy/games/guess_the_song.dart';
+import 'package:BoozeBuddy/games/never_have_i_ever.dart';
+import 'package:BoozeBuddy/utils/networking.dart';
+import 'package:BoozeBuddy/utils/player.dart';
+import 'package:BoozeBuddy/games/quiz.dart';
+import 'package:BoozeBuddy/menus/setting.dart';
+import 'package:BoozeBuddy/utils/shapes.dart';
+import 'package:BoozeBuddy/utils/spotify_api.dart';
+import 'package:BoozeBuddy/games/truth_or_dare.dart';
+import 'package:BoozeBuddy/utils/sqlite.dart';
+import 'package:BoozeBuddy/utils/types.dart';
+import 'package:BoozeBuddy/games/who_would_rather.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
@@ -324,8 +324,10 @@ class DifficultyState extends State<Difficulty> {
             } else {
               await bannerAd.show(anchorOffset: 8);
               if (!mounted && bannerAd != null) {
-                bannerAd.dispose();
-                bannerAd = null;
+                try {
+                  bannerAd.dispose();
+                  bannerAd = null;
+                } on AssertionError {}
               }
             }
           }

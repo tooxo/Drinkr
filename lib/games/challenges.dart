@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:SaufApp/games/game.dart';
-import 'package:SaufApp/utils/player.dart';
+import 'package:BoozeBuddy/games/game.dart';
+import 'package:BoozeBuddy/utils/player.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/drinking.dart';

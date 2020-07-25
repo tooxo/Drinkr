@@ -1,4 +1,4 @@
-name: SaufApp
+name: BoozeBuddy
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -73,6 +73,7 @@ flutter:
   assets:
     - assets/text/
     - assets/text/de/
+    - assets/text/en/
     - assets/image/
     - google_fonts/
     - assets/i18n/

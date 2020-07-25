@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:SaufApp/utils/types.dart';
+import 'package:BoozeBuddy/utils/types.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 

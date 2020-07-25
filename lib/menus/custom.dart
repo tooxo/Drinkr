@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:SaufApp/menus/difficulty.dart';
-import 'package:SaufApp/utils/shapes.dart';
-import 'package:SaufApp/utils/types.dart';
+import 'package:BoozeBuddy/menus/difficulty.dart';
+import 'package:BoozeBuddy/utils/shapes.dart';
+import 'package:BoozeBuddy/utils/types.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
