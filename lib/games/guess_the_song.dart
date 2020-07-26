@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:BoozeBuddy/games/game.dart';
-import 'package:BoozeBuddy/utils/networking.dart';
-import 'package:BoozeBuddy/utils/types.dart';
+import 'package:Drinkr/games/game.dart';
+import 'package:Drinkr/utils/networking.dart';
+import 'package:Drinkr/utils/types.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

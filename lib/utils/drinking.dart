@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:BoozeBuddy/menus/difficulty.dart';
+import 'package:Drinkr/menus/difficulty.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

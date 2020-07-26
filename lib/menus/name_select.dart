@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:BoozeBuddy/menus/difficulty.dart';
-import 'package:BoozeBuddy/utils/shapes.dart';
-import 'package:BoozeBuddy/utils/types.dart';
+import 'package:Drinkr/menus/difficulty.dart';
+import 'package:Drinkr/utils/shapes.dart';
+import 'package:Drinkr/utils/types.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

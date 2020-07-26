@@ -101,30 +101,30 @@ jobs:
       before_deploy:
         - cd normal
         - mkdir Payload && cd Payload
-        - ln -s ../BoozeBuddy.app
+        - ln -s ../Drinkr.app
         - cd ..
         - zip -r app.ipa Payload
         - cd ..
         - cd noads
         - mkdir Payload && cd Payload
-        - ln -s ../BoozeBuddy.app
+        - ln -s ../Drinkr.app
         - cd ..
         - zip -r app-noads.ipa Payload
         - cd ..
         # Reopen the keychain because it probably closed in build time
         #- security unlock-keychain -p "chainPassword" build.keychain
         # Add Signature
-        #- codesign -vfs "BoozeBuddy" app.ipa --keychain "build.keychain"
+        #- codesign -vfs "Drinkr" app.ipa --keychain "build.keychain"
         # Verify Signature
         #- codesign -dv --verbose=4 app.ipa
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
         - git tag TRAVIS_TAG
       script:
         - flutter/bin/flutter build ios --release --no-codesign --build-number "$TRAVIS_BUILD_NUMBER"
-        - mv build/ios/iphoneos/BoozeBuddy.app ./normal/BoozeBuddy.app
+        - mv build/ios/iphoneos/Drinkr.app ./normal/Drinkr.app
         - sed -i .bak "s|const bool ADS_ENABLED_BUQF1EVY = true;|const bool ADS_ENABLED_BUQF1EVY = false;|g" ./lib/main.dart
         - flutter/bin/flutter build ios --release --no-codesign --build-number "$TRAVIS_BUILD_NUMBER"
-        - mv build/ios/iphoneos/BoozeBuddy.app ./noads/BoozeBuddy.app
+        - mv build/ios/iphoneos/Drinkr.app ./noads/Drinkr.app
       before_cache:
         - brew cleanup
       cache:

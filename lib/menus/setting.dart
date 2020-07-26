@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:BoozeBuddy/utils/ad.dart';
-import 'package:BoozeBuddy/utils/file.dart';
-import 'package:BoozeBuddy/menus/licenses.dart';
-import 'package:BoozeBuddy/utils/shapes.dart';
-import 'package:BoozeBuddy/widgets/toggle_switch.dart';
-import 'package:BoozeBuddy/menus/word_customization.dart';
+import 'package:Drinkr/utils/ad.dart';
+import 'package:Drinkr/utils/file.dart';
+import 'package:Drinkr/menus/licenses.dart';
+import 'package:Drinkr/utils/shapes.dart';
+import 'package:Drinkr/widgets/toggle_switch.dart';
+import 'package:Drinkr/menus/word_customization.dart';
 import 'package:app_review/app_review.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';

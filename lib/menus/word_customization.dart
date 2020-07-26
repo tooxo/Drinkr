@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:BoozeBuddy/utils/networking.dart';
-import 'package:BoozeBuddy/utils/shapes.dart';
-import 'package:BoozeBuddy/utils/spotify_api.dart';
-import 'package:BoozeBuddy/utils/types.dart';
+import 'package:Drinkr/utils/networking.dart';
+import 'package:Drinkr/utils/shapes.dart';
+import 'package:Drinkr/utils/spotify_api.dart';
+import 'package:Drinkr/utils/types.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';

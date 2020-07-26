@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:BoozeBuddy/games/game.dart';
-import 'package:BoozeBuddy/widgets/text_widget.dart';
-import 'package:BoozeBuddy/utils/types.dart';
+import 'package:Drinkr/games/game.dart';
+import 'package:Drinkr/widgets/text_widget.dart';
+import 'package:Drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:show_up_animation/show_up_animation.dart';

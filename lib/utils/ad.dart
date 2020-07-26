@@ -1,4 +1,4 @@
-import 'package:BoozeBuddy/main.dart';
+import 'package:Drinkr/main.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

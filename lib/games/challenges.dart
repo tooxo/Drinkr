@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:BoozeBuddy/games/game.dart';
-import 'package:BoozeBuddy/utils/player.dart';
+import 'package:Drinkr/games/game.dart';
+import 'package:Drinkr/utils/player.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/drinking.dart';

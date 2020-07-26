@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 import 'dart:math';
 
-import 'package:BoozeBuddy/utils/ad.dart';
-import 'package:BoozeBuddy/menus/setting.dart';
-import 'package:BoozeBuddy/utils/shapes.dart';
-import 'package:BoozeBuddy/utils/types.dart';
+import 'package:Drinkr/utils/ad.dart';
+import 'package:Drinkr/menus/setting.dart';
+import 'package:Drinkr/utils/shapes.dart';
+import 'package:Drinkr/utils/types.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_admob/firebase_admob.dart';
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         SystemChrome.setPreferredOrientations(
             [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
         return MaterialApp(
-            title: 'BoozeBuddy',
+            title: 'Drinkr',
             theme: ThemeData(
                 primarySwatch: Colors.deepOrange,
                 visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -1,6 +1,6 @@
-import 'package:BoozeBuddy/games/game.dart';
-import 'package:BoozeBuddy/utils/player.dart';
-import 'package:BoozeBuddy/utils/types.dart';
+import 'package:Drinkr/games/game.dart';
+import 'package:Drinkr/utils/player.dart';
+import 'package:Drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
 
 class Quiz extends BasicGame {

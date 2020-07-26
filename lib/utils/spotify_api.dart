@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:BoozeBuddy/utils/sqlite.dart';
+import 'package:Drinkr/utils/sqlite.dart';
 import 'package:http/http.dart' as http;
 
 class Spotify {
