@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:Drinkr/games/game.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../utils/drinking.dart';
 
@@ -31,9 +32,9 @@ class Challenges extends BasicGame {
     }
     int amountBeer = Drinking.getDrinkAmountBeer(difficulty);
     if (amountBeer > 1) {
-      raw = raw.replaceAll("%amountbeer", "$amountBeer Schlucke");
+      raw = raw.replaceAll("%amountbeer", "$amountBeer " + "sips".tr());
     } else {
-      raw = raw.replaceAll("%amountbeer", "$amountBeer Schluck");
+      raw = raw.replaceAll("%amountbeer", "$amountBeer " + "sip".tr());
     }
     return raw;
   }

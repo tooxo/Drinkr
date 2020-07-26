@@ -10,7 +10,7 @@ If you look into %player's eyes, you have to drink %amountbeer (for 3 rounds)!
 %player, sing a song. Whoever guesses the song first gets to distribute %amountbeer!
 %player, hum a song. First guess who gets the song gets to give out %amountbeer!
 %player, do a celebrity impersonation. Whoever guesses the song first gets %amountbeer!
-%player, imitate a person from the round. Whoever guesses the person first, gets to give out %amountbeer!
+%player, imitate a person of the round. Whoever guesses the person first, gets to give out %amountbeer!
 %player, mime a sport. Whoever guesses the sport first gets to distribute %amountbeer!
 %player, pantomime an instrument. Whoever guesses the instrument first gets to distribute %amountbeer!
 The person who has/had the best marks drinks %amountbeer.

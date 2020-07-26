@@ -1,7 +1,7 @@
 The "London Eye" is a landmark of England. What is it?;A Ferris wheel
 Near which big city is the famous university "Harvard"?;Boston
 In which building does the US President live?;White House
-In which ocean are the Galapagos Islands?;Pacific Ocean
+In which ocean are the Galápagos Islands?;Pacific Ocean
 What state is Beverly Hills in?;California.
 In which major German city can you find the district of Wedding?;Berlin
 East Germany was abbreviated as GDR. What was the abbreviation of West Germany?;BRD
@@ -9,13 +9,12 @@ Of which country is Bucharest the capital?;Romania
 What city was called Leningrad during the Soviet period?;St. Petersburg
 What is the largest state in the USA?;Alaska
 Where is the city of Melbourne?;Australia
-Where is the highest building in the world, which is 828m high?;Dubai
+Where is the highest building in the world, which is 828 meters high?;Dubai
 Charlie Sheen often appeared in the gossip press in 2011 after he was thrown out of the TV series "Two and a Half Men". Who replaced him?;Ashton Kutcher
 Michael Schumacher had a serious accident at the end of 2013. What was he injured in?;Skiing
 Which company developed Diablo 3?;Blizzard
 What is the name of the smartphone game in which the player cuts up fruit with a sword?;Fruit Ninja
 How many atoms does a water molecule consist of?;3
-The three states of aggregation are solid, liquid and gaseous. What is also called the fourth state of matter?;Plasma
 What substance is added to water in swimming pools?;Chlorine
 Which value on the pH scale is the most basic?;14
 Which value on the pH scale is the most acidic?;0
@@ -36,19 +35,16 @@ In which country are "pelmeni" often consumed?;Russia
 In which city was the Weißwurst developed?;Munich
 What is a "kielbasa"?;A sausage
 What do you get if you mix egg yolk, oil, salt, pepper, a little mustard and vinegar?;mayonnaise
-In which huge empire was Julius Caesar a general?;Roman Empire
-Which number corresponds to the Roman XCIX?;99
+In which huge empire was Julius Caesar an emperor?;Roman Empire
 In which part of the body is the retina located?;Eye
 In which part of the body is the pupil located?;Eye
 In which organ is cholesterol produced?;Liver
 Migraine is a chronic disease: What suffering does a person suffer from?;Headaches
 What is mitosis?;Cell division.
 What is taphephobia?;Fear of being buried alive.
-What colour is the international vaccination card?;Yellow
 What is the name of a known nerve poison that is also used in cosmetic surgery?;Botox
 What do you call it when a person has no desire for sex and physical intimacy?;Asexuality
-What does the "H" in the abbreviation of the physical disorder ADHS stand for?;Hyperactivity
-What are you afraid of if you suffer from hippopotomonstrosesquipedaliophobia?;Of long words (Bisschen Paradox ngl)
+What are you afraid of if you suffer from hippopotomonstrosesquipedaliophobia?;Of long words
 What did Alexander Grahamm Bell invent?;The Telephone
 The spacecraft of which country landed first on Venus?;Soviet Union
 Modern TV sets have a so-called LCD screen. What does LCD stand for?;Liquid Crystal Display
@@ -57,11 +53,10 @@ What does the VCR format "VHS" mean?;Video Home System
 What does the abbreviation "CD" mean?;Compact Disc
 What does the abbreviation "FPS" mean in connection with film or video recordings and graphic computer applications?;Frames per second
 What resolution does a so-called Full HD TV have?;1920 x 1080
-Which invention is available in the variants Ottto, Wankel or Stirling?;Engine
+Which invention is available in the variants Otto, Wankel or Stirling?;Engine
 Which invention was revolutionary for blasting and was invented by the Swede Alfred Nobel?;Dynamite
 Which company is behind the Linux-based operating system "Android";Google
 Which company was founded in the 1970s by Steve Wozniak, Steve Jobs and Ronald Wayne?;Apple
-What do you call a common tool for opening doors (no, it is not the key)?;Dietrich
 What do you call an organism that consists of both biological tissue and synthetic elements?;Cyborg
 What is the abbreviation for the European Space Agency?;ESA
 On what surface do you play curling?;Ice

@@ -11,7 +11,6 @@ From which animal is the hair for a violin bow?;Horse
 What is the name of the fish to be found?;Nemo
 Who shoots faster than his shadow?;Lucky Luke
 Who fell into the magic potion as a little child?;Obelix
-What is the name of the national coach of the German team?;Joachim Löw
 How many strings does a violin have?;4
 What is a dromedary?;A one-humped camel
 What bird lays its eggs in other birds' nests?;Cuckoo
@@ -20,11 +19,10 @@ What weapon comes back when you throw it?;Boomerang
 What's agent 007's name?;James Bond.
 How many arms does a squid have?;8
 What did the Egyptians call their king?;Pharaoh
-What do you call the Egyptian writing?;Hieroglyphics
-What's the name of the Indian tribe after which a hairstyle is named?;Iroquois
+What does one call the Egyptian writing?;Hieroglyphics
 What are the names of the Eskimos' sled dogs?;Huskies
 What's the name of the ball in hockey?;Puck
-What colour is produced when red and yellow are mixed?;Orange
+What color is produced when red and yellow are mixed?;Orange
 What's the smallest bird's name?;Hummingbird
 Where are the smallest bones in the body?;in the Ear
 In which city of Palestine was Jesus born?;Bethlehem

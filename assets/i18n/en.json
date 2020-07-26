@@ -92,11 +92,13 @@
   "addCustomQuestions": "Add Custom Questions",
   "selectedQuestions": "Selected Questions",
   "customQuestions": "Custom Questions",
-  "noCustomTexts":"No Custom texts added.",
+  "noCustomTexts": "No Custom texts added.",
   "delete": "Delete",
   "add": "Add",
   "invalidUrl": "Invalid Url",
   "required": "Required",
   "wait": "Wait",
-  "spotifyGenericError": "This Spotify Playlist could not be found. Make sure the playlist is public."
+  "spotifyGenericError": "This Spotify Playlist could not be found. Make sure the playlist is public.",
+  "sip": "Sip",
+  "sips": "Sips"
 }

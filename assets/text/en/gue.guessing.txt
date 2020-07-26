@@ -1,19 +1,19 @@
 How heavy is our earth (in tons)?;5.975 trillion tons.
 How many M&Ms fit in a Smart (two-seater)?;7 million M&Ms.
-The Ikea catalogue is published worldwide with a issue count of...?;203 million copies.
+The Ikea catalog is published worldwide with an issue count of...?;203 million copies.
 How high is the Eiffel Tower (meters)?;324 meters.
 How fast do snowflakes sink to earth (in km/h)?;1.8 km/h.
 How large is the area of forest that is cut down and disappears worldwide per minute (in football fields)?;20 football fields.
 How many hours of video material are uploaded to YouTube per minute?;400 hours of video material.
 At what speed does the ISS fly around the Earth (in km/h)?;28,000 km/h.
-How many litres of water does an ordinary bathtub hold?;120 litres.
+How many liters of water does an ordinary bathtub hold?;120 liters.
 How many languages are spoken in the world?;6500 languages.
-How long does it take sound to travel one kilometre (in minutes/seconds)?;3 seconds.
+How long does it take sound to travel one kilometer (in minutes/seconds)?;3 seconds.
 How many feathers does an adult swan have?;25,000.
 How long would it take someone to count up to a billion?;80 years
 How many notches are in a golf ball?;336.
 In the course of a 60-year life, a man has an average erection during sleep for how long?;5 years.
-An adult human being has 206 bones - but how many are we born with?;301 bones.
+An adult human being has 206 bones — but how many are we born with?;301 bones.
 How many photos were uploaded to Facebook during the New Year's Eve weekend 2011/2012?;750 million.
 How long is the sexual organ of the 15 cm long banana snail?;Approx. 80 cm (wtf?).
 How long does a person have to scream continuously to heat a cup of coffee with the energy produced?;8 1/2 years.
@@ -29,17 +29,17 @@ The most expensive book in the world was auctioned for how many US dollars?;30.8
 How many wing beats does a hummingbird make approximately per second?; approximately 50.
 How many dog breeds are there?;about 800 dog breeds.
 How many pigs are slaughtered worldwide approximately every year?;360 million.
-How many different species of fish are there on earth?;about 28 000
+How many species of fish are there on earth?;about 28 000
 How long does it take the light from the sun to the earth?;About 8 minutes.
 How many people have lived and died on earth so far?;about 110 billion.
 How many calories are burned per hour on average during sex?;about 300 calories.
-How fast is a category 1 hurricane in kilometres per hour?;119 km/h.
+How fast is a category 1 hurricane in kilometers per hour?;119 km/h.
 What is the water content of cucumbers (in percent)?;approx. 95 %.
 What is the maximum swimming speed of dolphins;approx. 55 km/h.
-How many litres of water are lost daily when a tap drips?;approx. 100 litres
+How many liters of water are lost daily when a tap drips?;approx. 100 liters
 What percentage of water is contained in a carrot?;approx. 65
 How deep can penguins dive at most?;approx. 500 m
-How many litres of beer are drunk per capita per year in Germany?;100 litres (hm)
+How many liters of beer are drunk per capita per year in Germany?;100 liters (hm)
 How many letters does the Hawaiian alphabet have?;12 letters
 How many months have 28 days?;all (are you lost?)
 How long is a mile (in meters)?;About 1609,344 meters.
@@ -55,7 +55,7 @@ How long was the longest earthworm ever found?;6.7 m
 Up to how many bees live in a beehive?;50 000 bees
 How many people are bitten by snakes every year?;2.5 million
 How many people die annually from snake bites?;approx. 100 000
-How many litres of water can elephants absorb through their trunks?;approx. 9 litres
+How many liters of water can elephants absorb through their trunks?;approx. 9 liters
 How high can pumas jump?; 5 m
 What percentage of all living creatures live in the sea?;approx. 90
 How old can a Greenland shark become?;approx. 400 years
@@ -63,7 +63,7 @@ How old can an Iceland shell become?;approx. 500 years
 How old can the Antarctic giant sponge become?;approx. 10 000 years
 How many mites live in a normal mattress?;about 6 million (Sleep well!)
 How long does an ostrich egg need until it is cooked?;ca. 40 min
-Up to what distance can dolphins hear under water?;24 km
+Up to what distance can dolphins hear underwater?;24 km
 How many brains does a leech have?;32
 How many eyes does a leech have?;10
 How many teeth does a leech have?;240
@@ -77,11 +77,11 @@ What percentage of calcium does a human being consist of?;1.5 percent
 What percentage of chlorine does a human being consist of?;1 percent
 What percentage of phosphorus does the human body consist of?;1 percent
 What percentage of potassium does a human being consist of?;0.25 percent
-What percentage of sulphur does the human being consist of?;0.2 percent
+What percentage of sulfur does the human being consist of?;0.2 percent
 To what percentage are humans genetically similar to chimpanzees?;98.6 percent
 What is the bite force of the masticatory muscle (kilogram)?;80 kg
 How many muscles do we move in a French kiss?; 34 muscles
-How many litres of air does a person breathe in per minute at rest?;approx. 6 litres
+How many liters of air does a person breathe in per minute at rest?;approx. 6 liters
 Up to how fast is the air that is accelerated when you cough?;up to 480 km/h
 How many degrees Celsius are women's tears warmer than men's tears?;0.5° Celsius
 What is the average height of a newborn child in Germany?;51 cm
@@ -93,8 +93,8 @@ How long do white blood cells live?;13 days
 How long do red blood cells live?;120 days.
 How often do children laugh on average per day?;400 times
 How often do adults laugh on average per day?;20 times (sad)
-How many bacteria live on a "brushed" tooth?;100 000
-How many different bones does the human skull consist of?;22
+How many bacteria live on a “brushed” tooth?;100 000
+How many bones does the human skull consist of?;22
 How many bacteria does the human body contain?;39 trillion
 What is the average nutritional value of a person (kilocalories)?;125,822 kilocalories (cannibals get their money's worth)
 How long is the digestive tract of a person?;9 m

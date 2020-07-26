@@ -100,5 +100,7 @@
   "invalidUrl": "Ungültige Url",
   "required": "Benötigt",
   "wait": "Warten",
-  "spotifyGenericError": "Diese Spotify Playlist konnte nicht gefunden werden. Prüfe ob die Playlist öffentlich ist."
+  "spotifyGenericError": "Diese Spotify Playlist konnte nicht gefunden werden. Prüfe ob die Playlist öffentlich ist.",
+  "sip": "Schluck",
+  "sips": "Schlucke"
 }
