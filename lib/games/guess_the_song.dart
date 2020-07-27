@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:http/http.dart' as http;
 import 'package:Drinkr/games/game.dart';
 import 'package:Drinkr/utils/networking.dart';
 import 'package:Drinkr/utils/types.dart';
+import 'package:Drinkr/widgets/audio_visualization.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -35,9 +37,9 @@ class GuessTheSong extends BasicGame {
   String get solutionText => JsonDecoder().convert(text)[0];
 }
 
-class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
+class GuessTheSongState extends BasicGameState
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   bool showSolution = false;
-  double state = 0;
   AudioPlayer audioPlayer;
 
   // ignore: cancel_subscriptions
@@ -51,13 +53,14 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
     this.durationSubscription?.cancel();
     this.stateSubscription?.cancel();
     this.audioPlayer.stop();
+    _controller.dispose();
 
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   void buttonClick() async {
-    if (state == 0 || state == 1) {
+    if (_target == 0 || _target == 1) {
       if (await checkConnection()) {
         audioPlayer.play(widget.mainTitle);
       } else {
@@ -65,10 +68,9 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
             msg: "noConnection".tr(), toastLength: Toast.LENGTH_SHORT);
       }
     }
-    if (state < 1 && state > 0) {
+    if (_target < 1 && _target > 0) {
       setState(() {
         if (audioPlayer.state == AudioPlayerState.PAUSED) {
-          // audioPlayer.play(widget.mainTitle);
           audioPlayer.resume();
           audioPlayer.state = AudioPlayerState.PLAYING;
         } else {
@@ -81,67 +83,94 @@ class GuessTheSongState extends BasicGameState with WidgetsBindingObserver {
 
   int songDuration;
 
+  AnimationController _controller;
+  Tween<double> _tween;
+  Animation<double> _animation;
+  double _target = 0.0;
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+
+    _controller =
+        AnimationController(duration: Duration(milliseconds: 150), vsync: this);
+    _tween = Tween(begin: _target, end: _target);
+    _animation = _tween.animate(
+      CurvedAnimation(
+        curve: Curves.easeInOut,
+        parent: _controller,
+      ),
+    );
+
     audioPlayer = new AudioPlayer();
     this.durationSubscription =
         audioPlayer.onAudioPositionChanged.listen((pos) async {
       if (songDuration == null) {
         songDuration = await audioPlayer.getDuration();
       }
-      this.state = pos.inMilliseconds / songDuration;
-      if (mounted) {
-        setState(() {});
-      }
+      _updateBar(pos.inMilliseconds / songDuration);
     });
     this.stateSubscription = audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == AudioPlayerState.COMPLETED) {
-        setState(() {
-          this.state = 1;
-        });
+        _updateBar(1);
       }
     }, onError: (msg) {
       Fluttertoast.showToast(
           msg: "An unexpected Error occurred.",
           toastLength: Toast.LENGTH_SHORT);
-      this.state = 1;
-      setState(() {});
+      _updateBar(1);
     });
+  }
+
+  Future<SoundData> loadVisData() async {
+    return SoundData((await http.get("https://s.chulte.de/app_api/?id=" +
+            widget.mainTitle.split("/").last))
+        .body);
+  }
+
+  void _updateBar(double newValue) {
+    _target = newValue;
+    _tween.begin = _tween.end;
+    _controller.reset();
+    _tween.end = newValue;
+    _controller.forward();
   }
 
   @override
   Widget buildWithoutSolution() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(50.0),
-        child: ShowUpAnimation(
-          child: Transform.scale(
-            scale: 2,
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                CircularProgressIndicator(
-                  value: state,
-                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
-                  backgroundColor: Colors.black.withAlpha(80),
-                ),
-                IconButton(
-                  onPressed: buttonClick,
-                  icon: Icon(
-                    state == 1
-                        ? Icons.replay
-                        : state == 0
-                            ? Icons.play_arrow
-                            : this.audioPlayer.state == AudioPlayerState.PAUSED
-                                ? Icons.play_arrow
-                                : Icons.pause,
-                    color: Colors.black,
+    return Padding(
+      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+      child: ShowUpAnimation(
+        child: Center(
+          child: FutureBuilder<SoundData>(
+            future: loadVisData(),
+            builder:
+                (BuildContext context, AsyncSnapshot<SoundData> snapshot) {
+              if (snapshot.hasData) {
+                return InkWell(
+                  onTap: buttonClick,
+                  child: ClipPath(
+                    clipper: WaveformClipper(snapshot.data),
+                    clipBehavior: Clip.hardEdge,
+                    child: SizedBox.expand(
+                      child: AnimatedBuilder(
+                        animation: _animation,
+                        builder: (context, child) => LinearProgressIndicator(
+                          value: _animation.value,
+                          valueColor:
+                              AlwaysStoppedAnimation(Colors.grey.shade900),
+                          backgroundColor: widget.secondaryColor,
+                        ),
+                      ),
+                    ),
                   ),
-                )
-              ],
-            ),
+                );
+              }
+              return SpinKitCircle(
+                color: widget.secondaryColor,
+              );
+            },
           ),
         ),
       ),
