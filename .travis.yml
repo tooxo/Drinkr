@@ -21,12 +21,12 @@ jobs:
         - git clone https://github.com/flutter/flutter.git -b beta --depth 1
         - export PATH=$PATH:$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/build-tools/28.0.3/
         - flutter doctor
-        - sudo rvm remove ruby && sudo rvm install ruby
-        - sudo gem install bundle fastlane
+        - sudo gem install bundle fastlane rubygems-update
+        - sudo gem update --system
         - bundle update
         - echo ${PLAY_JSON_BASE64} | base64 -d > play.json
         - fastlane supply init --json-key play.json --track alpha
-        - yes | fastlane add_plugin discord_notifier
+        - yes | fastlane install_plugins
       before_script:
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/AndroidManifest.xml
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/res/values/strings.xml
