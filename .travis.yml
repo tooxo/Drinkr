@@ -20,6 +20,10 @@ jobs:
         - git clone https://github.com/flutter/flutter.git -b beta --depth 1
         - export PATH=$PATH:$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/build-tools/28.0.3/
         - flutter doctor
+        - sudo gem install fastlane
+        - echo ${PLAY_JSON} > play.json
+        - fastlane supply init --json-key play.json --track alpha
+        - fastlane add_plugin discord_notifier
       before_script:
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/AndroidManifest.xml
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/res/values/strings.xml
@@ -46,6 +50,7 @@ jobs:
         - flutter build apk --target-platform android-arm,android-arm64,android-x64 --build-number "$TRAVIS_BUILD_NUMBER"
         - zipalign -v -p 4 build/app/outputs/apk/release/app-release.apk ./fat-noad-unsigned.apk
         - apksigner sign -v --ks-pass pass:${ANDROID_PASSWORD} --ks release.keystore --ks-key-alias android --out fat-noad-signed.apk fat-noad-unsigned.apk
+        - fastlane android alpha
       before_deploy:
         - zip unsigned.zip armeabi-v7a-unsigned.apk arm64-v8a-unsigned.apk x86_64-unsigned.apk fat-noad-unsigned.apk bundle-unsigned.aab
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
