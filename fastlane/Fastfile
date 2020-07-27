@@ -18,7 +18,7 @@ default_platform(:android)
 platform :android do
   desc "Upload a new build to google play"
   lane :alpha do
-    upload_to_play_store(track: "alpha", aab: "bundle-signed.aab", json_key:"play.json")
+    upload_to_play_store(track: "alpha", aab: "bundle-signed.aab", json_key:"play.json", skip_upload_apk: true)
     discord_notifier(
         webhook_url: ENV["DISCORD_WEBHOOK"],
         title: "New Alpha Deployment",
