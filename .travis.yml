@@ -24,7 +24,7 @@ jobs:
         - sudo gem install fastlane
         - echo ${PLAY_JSON_BASE64} | base64 -d > play.json
         - fastlane supply init --json-key play.json --track alpha
-        - fastlane add_plugin discord_notifier
+        - yes | fastlane add_plugin discord_notifier
       before_script:
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/AndroidManifest.xml
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/res/values/strings.xml
