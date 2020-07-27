@@ -10,6 +10,7 @@ jobs:
         - ANDROID_SDK_TOOLS=commandlinetools-linux-6200805_latest.zip
       before_install:
         - sudo apt update
+        - sudo apt install ruby-dev -y --no-install-recommends
         - echo ${ANDROID_BASE64} | base64 -d > release.keystore
         - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
         - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
