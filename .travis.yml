@@ -25,7 +25,7 @@ jobs:
         - sudo gem update --system
         - bundle update
         - echo ${PLAY_JSON_BASE64} | base64 -d > play.json
-        - fastlane supply init --json-key play.json --track alpha --skip-uploading-changelogs
+        - fastlane supply init --json-key play.json --track alpha --skip_upload_changelogs true
         - yes | fastlane install_plugins
       before_script:
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/AndroidManifest.xml
