@@ -23,6 +23,7 @@ class SoundData {
     for (int i = 0; i < temp.length; i++) {
       data.add(temp[i] as int);
     }
+    print("");
   }
 
   Size savedSize;
@@ -48,9 +49,9 @@ class SoundData {
     for (var _i = 0, _len = samples.length; _i < _len; _i++) {
       var d = samples[_i];
       if (_i % 2 != 0) {
-        minPoints.add(middle - middle * d);
+        minPoints.add(d.toDouble());
       } else {
-        maxPoints.add(middle - middle * d);
+        maxPoints.add(d.toDouble());
       }
     }
 

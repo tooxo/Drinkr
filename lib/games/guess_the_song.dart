@@ -1,5 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+import 'package:Drinkr/utils/file.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:Drinkr/games/game.dart';
@@ -11,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:audiowaveformFlutter/audiowaveformFlutter.dart';
 
 import '../utils/player.dart';
 
@@ -48,12 +53,19 @@ class GuessTheSongState extends BasicGameState
   // ignore: cancel_subscriptions
   StreamSubscription<AudioPlayerState> stateSubscription;
 
+  File f;
+
   @override
   void dispose() {
     this.durationSubscription?.cancel();
     this.stateSubscription?.cancel();
     this.audioPlayer.stop();
     _controller.dispose();
+    if (f != null) {
+      if (f.existsSync()) {
+        f.deleteSync();
+      }
+    }
 
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -62,22 +74,20 @@ class GuessTheSongState extends BasicGameState
   void buttonClick() async {
     if (_target == 0 || _target == 1) {
       if (await checkConnection()) {
-        audioPlayer.play(widget.mainTitle);
+        audioPlayer.play(f.path, isLocal: true);
       } else {
         Fluttertoast.showToast(
             msg: "noConnection".tr(), toastLength: Toast.LENGTH_SHORT);
       }
     }
     if (_target < 1 && _target > 0) {
-      setState(() {
-        if (audioPlayer.state == AudioPlayerState.PAUSED) {
-          audioPlayer.resume();
-          audioPlayer.state = AudioPlayerState.PLAYING;
-        } else {
-          audioPlayer.pause();
-          audioPlayer.state = AudioPlayerState.PAUSED;
-        }
-      });
+      if (audioPlayer.state == AudioPlayerState.PAUSED) {
+        audioPlayer.resume();
+        audioPlayer.state = AudioPlayerState.PLAYING;
+      } else {
+        audioPlayer.pause();
+        audioPlayer.state = AudioPlayerState.PAUSED;
+      }
     }
   }
 
@@ -87,6 +97,8 @@ class GuessTheSongState extends BasicGameState
   Tween<double> _tween;
   Animation<double> _animation;
   double _target = 0.0;
+
+
 
   @override
   void initState() {
@@ -123,10 +135,20 @@ class GuessTheSongState extends BasicGameState
     });
   }
 
+  static const _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  Random _rnd = Random();
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
   Future<SoundData> loadVisData() async {
-    return SoundData((await http.get("https://s.chulte.de/app_api/?id=" +
-            widget.mainTitle.split("/").last))
-        .body);
+    f = await createTemporaryFile(getRandomString(32) + ".mp3");
+
+    http.Response response = await http.get(widget.mainTitle);
+    await f.writeAsBytes(response.bodyBytes);
+
+    return SoundData(await compute(AudiowaveformFlutter.audioWaveForm, f.path));
   }
 
   void _updateBar(double newValue) {
@@ -145,8 +167,7 @@ class GuessTheSongState extends BasicGameState
         child: Center(
           child: FutureBuilder<SoundData>(
             future: loadVisData(),
-            builder:
-                (BuildContext context, AsyncSnapshot<SoundData> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<SoundData> snapshot) {
               if (snapshot.hasData) {
                 return InkWell(
                   onTap: buttonClick,
@@ -166,6 +187,9 @@ class GuessTheSongState extends BasicGameState
                     ),
                   ),
                 );
+              }
+              if (snapshot.hasError) {
+                printWarning(snapshot.error);
               }
               return SpinKitCircle(
                 color: widget.secondaryColor,

@@ -227,3 +227,7 @@ Future<bool> removeBlacklistedLines(
   await file.writeAsString(fileContentString);
   return true;
 }
+
+Future<File> createTemporaryFile(String fileName) async {
+  return await File(await _localPath + "/" + fileName).create();
+}
