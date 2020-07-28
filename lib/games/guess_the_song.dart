@@ -98,8 +98,6 @@ class GuessTheSongState extends BasicGameState
   Animation<double> _animation;
   double _target = 0.0;
 
-
-
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
