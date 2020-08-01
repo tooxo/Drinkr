@@ -28,6 +28,7 @@ jobs:
         - fastlane supply init --json-key play.json --track alpha
         - yes | fastlane install_plugins
       before_script:
+        - echo ${GOOGLE_SERVICES_JSON_BASE64} | base64 -d > android/app/google-services.json
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/AndroidManifest.xml
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/res/values/strings.xml
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./lib/main.dart
