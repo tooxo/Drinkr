@@ -305,7 +305,7 @@ class DifficultyState extends State<Difficulty> {
 
     bool ads = await shouldShowAds();
 
-    if (ads && ADS_ENABLED_BUQF1EVY) {
+    if (ads) {
       bannerAd = new BannerAd(
           adUnitId: BannerAd.testAdUnitId,
           size: AdSize.banner,
