@@ -29,7 +29,7 @@ platform :android do
 end
 
 lane :publishLintingErrors do
-   if (File.file?("hastebin.txt")) then
+   if (File.size?("hastebin.txt") && File.size?("linting_results.txt")) then
           file = File.open "hastebin.txt"
           data = JSON.load file
           discord_notifier(
