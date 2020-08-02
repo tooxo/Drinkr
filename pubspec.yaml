@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^5.4.11
   audiowaveformFlutter:
     git: "https://github.com/tooxo/audioWaveFormFlutter.git"
+    ref: "bf790891ccc8b8e52504dbff996e835d12da3da9"
   flutter:
     sdk: flutter
   splashscreen:
