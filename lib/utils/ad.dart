@@ -11,6 +11,7 @@ const String AD_DIALOG_SETTING = "SHOULD_SHOW_AD_DIALOG_SETTING";
 const String LAST_AD_DISPLAY = "LAST_TIME_AD_WAS_DISPLAYED_STORE";
 
 Future<bool> shouldShowAds() async {
+  if (!ADS_ENABLED_BUQF1EVY) return false;
   SharedPreferences preferences = await SharedPreferences.getInstance();
   int lastMillisSinceEpoch = preferences.getInt(ADS_SETTING) != null
       ? preferences.getInt(ADS_SETTING)
@@ -18,7 +19,7 @@ Future<bool> shouldShowAds() async {
   DateTime lastDate = DateTime.fromMillisecondsSinceEpoch(lastMillisSinceEpoch);
   DateTime nowDate = DateTime.now();
 
-  return nowDate.difference(lastDate).inMinutes > 60 || !ADS_ENABLED_BUQF1EVY;
+  return nowDate.difference(lastDate).inMinutes > 60;
 }
 
 Future<bool> shouldShowAdDialog() async {

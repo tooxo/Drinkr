@@ -35,8 +35,8 @@ jobs:
         - sed -i "s|RewardedVideoAd.testAdUnitId|\"$ANDROID_REWARDED_ID\"|g" ./lib/utils/ad.dart
         - sed -i "s|BannerAd.testAdUnitId|\"$ANDROID_BANNER_ID\"|g" ./lib/menus/difficulty.dart
       script:
-        - flutter analyze --no-preamble --no-congratulate > linting_results.txt
-        - curl -XPOST 'https://hastebin.com/documents' --upload-file linting_results.txt > hastebin.txt && fastlane publishLintingErrors
+        - flutter analyze --no-preamble --no-congratulate > linting_results.txt || echo ""
+        - curl -XPOST 'https://hastebin.com/documents' --upload-file linting_results.txt > hastebin.txt && fastlane publishLintingErrors || echo ""
         - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --build-number "$TRAVIS_BUILD_NUMBER"
         - flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-number "$TRAVIS_BUILD_NUMBER"
         # zipalign all the apks and bundles
