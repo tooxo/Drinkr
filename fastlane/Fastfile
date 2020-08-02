@@ -29,14 +29,14 @@ platform :android do
 end
 
 lane :publishLintingErrors do
-   if (File.file?("hastebin.txt")) do
-       file = File.open "hastebin.txt"
-       data = JSON.load file
-       discord_notifier(
-           webhook_url: ENV["DISCORD_WEBHOOK"],
-           title: "Linting Errors",
-           description: "The Dart linter found problems with the code. See results here: https://hastebin.com/"+data["key"],
-           success: false
-       )
+   if (File.file?("hastebin.txt")) then
+          file = File.open "hastebin.txt"
+          data = JSON.load file
+          discord_notifier(
+              webhook_url: ENV["DISCORD_WEBHOOK"],
+              title: "Linting Errors",
+              description: "The Dart linter found problems with the code. See results here: https://hastebin.com/"+data["key"],
+              success: false
+          )
    end
 end
