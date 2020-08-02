@@ -35,7 +35,7 @@ jobs:
         - sed -i "s|RewardedVideoAd.testAdUnitId|\"$ANDROID_REWARDED_ID\"|g" ./lib/utils/ad.dart
         - sed -i "s|BannerAd.testAdUnitId|\"$ANDROID_BANNER_ID\"|g" ./lib/menus/difficulty.dart
       script:
-        - flutter analyze --write=linting_results.txt
+        - flutter analyze > linting_results.txt
         - if [[ $? -eq 1 ]] curl -XPOST 'https://hastebin.com/documents' --upload-file linting_results.txt > hastebin.txt
         - fastlane publishLintingErrors
         - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --build-number "$TRAVIS_BUILD_NUMBER"
