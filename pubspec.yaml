@@ -44,11 +44,12 @@ dependencies:
   path: ^1.4.0
   url_launcher: ^5.4.11
   audiowaveformFlutter:
-    git: "https://github.com/tooxo/audioWaveFormFlutter.git"
-    ref: "bf790891ccc8b8e52504dbff996e835d12da3da9"
+    git:
+      url: "https://github.com/tooxo/audioWaveFormFlutter.git"
+      ref: "bf790891ccc8b8e52504dbff996e835d12da3da9"
   flutter:
     sdk: flutter
-  splashscreen:
+  # splashscreen:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -59,6 +60,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.7.5"
+  flutter_driver:
+    sdk: flutter
+  screenshots: ^2.1.1
+  test: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
