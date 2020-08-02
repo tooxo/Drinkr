@@ -12,18 +12,28 @@ class SoundData {
   List<int> data;
 
   SoundData(String jsonData) {
-    dynamic jsonObject = json.decode(jsonData);
+    assert (false);
+    assert(jsonData != null);
+    assert(jsonData != "{}");
+    dynamic jsonObject;
+    try {
+      jsonObject = json.decode(jsonData);
+    } on FormatException {
+      throw new Exception("Error while parsing.");
+    }
     channels = jsonObject["channels"];
     sampleRate = jsonObject["sample_rate"];
     samplesPerPixel = jsonObject["samples_per_pixel"];
     bits = jsonObject["bits"];
     length = jsonObject["length"];
     List<dynamic> temp = jsonObject["data"];
+    if (temp == null) {
+      print("");
+    }
     data = List<int>();
     for (int i = 0; i < temp.length; i++) {
       data.add(temp[i] as int);
     }
-    print("");
   }
 
   Size savedSize;

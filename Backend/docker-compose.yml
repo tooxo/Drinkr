@@ -1,9 +1,0 @@
-version: "2.4"
-
-services:
-  handler:
-      build: .
-      command: python server.py
-      working_dir: /home/src
-      ports:
-      - 3000:3000
