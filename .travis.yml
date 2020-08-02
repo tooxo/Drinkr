@@ -59,9 +59,6 @@ jobs:
         - zip unsigned.zip armeabi-v7a-unsigned.apk arm64-v8a-unsigned.apk x86_64-unsigned.apk fat-noad-unsigned.apk bundle-unsigned.aab
         - export TRAVIS_TAG="$TRAVIS_BUILD_NUMBER"
         - git tag TRAVIS_TAG
-      #cache:
-      #  directories:
-      #    - ${ANDROID_HOME}
       deploy:
         provider: releases
         api_key: "$GITHUB_OAUTH"

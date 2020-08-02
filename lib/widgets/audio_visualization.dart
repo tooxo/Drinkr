@@ -12,7 +12,6 @@ class SoundData {
   List<int> data;
 
   SoundData(String jsonData) {
-    assert (false);
     assert(jsonData != null);
     assert(jsonData != "{}");
     dynamic jsonObject;
@@ -27,9 +26,6 @@ class SoundData {
     bits = jsonObject["bits"];
     length = jsonObject["length"];
     List<dynamic> temp = jsonObject["data"];
-    if (temp == null) {
-      print("");
-    }
     data = List<int>();
     for (int i = 0; i < temp.length; i++) {
       data.add(temp[i] as int);

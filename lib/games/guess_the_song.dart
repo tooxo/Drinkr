@@ -187,7 +187,8 @@ class GuessTheSongState extends BasicGameState
                 );
               }
               if (snapshot.hasError) {
-                printWarning(snapshot.error);
+                print(snapshot.error.toString());
+                return Text("An Error has occurred.");
               }
               return SpinKitCircle(
                 color: widget.secondaryColor,
