@@ -10,7 +10,7 @@ jobs:
         - ANDROID_SDK_TOOLS=commandlinetools-linux-6200805_latest.zip
       before_install:
         - sudo apt update
-        - sudo apt install ruby-dev libsodium-dev -y --no-install-recommends
+        - sudo apt install ruby-dev libsodium-dev curl -y --no-install-recommends
         - echo ${ANDROID_BASE64} | base64 -d > release.keystore
         - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
         - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
@@ -35,6 +35,9 @@ jobs:
         - sed -i "s|RewardedVideoAd.testAdUnitId|\"$ANDROID_REWARDED_ID\"|g" ./lib/utils/ad.dart
         - sed -i "s|BannerAd.testAdUnitId|\"$ANDROID_BANNER_ID\"|g" ./lib/menus/difficulty.dart
       script:
+        - flutter analyze --write=linting_results.txt
+        - if [[ $? -eq 1 ]] curl -XPOST 'https://hastebin.com/documents' --upload-file linting_results.txt > hastebin.txt
+        - fastlane publishLintingErrors
         - flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --build-number "$TRAVIS_BUILD_NUMBER"
         - flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-number "$TRAVIS_BUILD_NUMBER"
         # zipalign all the apks and bundles
