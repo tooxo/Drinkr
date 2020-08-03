@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:Drinkr/main.dart';
 import 'package:Drinkr/utils/ad.dart';
 import 'package:Drinkr/games/challenges.dart';
 import 'package:Drinkr/games/guess_the_song.dart';
@@ -23,6 +22,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../games/guessing.dart';
@@ -42,7 +42,7 @@ class Difficulty extends StatefulWidget {
   const Difficulty(this.players, this.rounds, this.enabledGames);
 
   @override
-  State<StatefulWidget> createState() => new DifficultyState();
+  State<StatefulWidget> createState() => DifficultyState();
 }
 
 class Game {
@@ -56,9 +56,9 @@ class DifficultyState extends State<Difficulty> {
   int difficulty = Difficulty.EASY;
   int displayState =
       1; // 1 Difficulty Selection, 2 Loading indicator, 3 Just Orange
-  List<Game> gamePlan = new List<Game>();
-  Map<GameType, List> texts = new Map<GameType, List>();
-  Map<GameType, int> maxTexts = new Map<GameType, int>();
+  List<Game> gamePlan = List<Game>();
+  Map<GameType, List> texts = Map<GameType, List>();
+  Map<GameType, int> maxTexts = Map<GameType, int>();
 
   @override
   void initState() {
@@ -192,7 +192,7 @@ class DifficultyState extends State<Difficulty> {
   }
 
   Future<List<List<String>>> buildSpotify(List<String> playlistUrls) async {
-    List<List<String>> response = new List<List<String>>();
+    List<List<String>> response = List<List<String>>();
     Spotify spotify = Spotify();
     for (String url in playlistUrls) {
       String playlistId = Spotify.getIdFromUrl(url);
@@ -245,7 +245,7 @@ class DifficultyState extends State<Difficulty> {
           missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]
               .add(await spotify.fillMissingPreviewUrls(e, database)));
         } else {
-          Fluttertoast.showToast(
+          await Fluttertoast.showToast(
               msg: "Rate den Song wurde deaktiviert, da du über keine "
                   "Internetverbindung verfügst.",
               toastLength: Toast.LENGTH_LONG,
@@ -306,32 +306,32 @@ class DifficultyState extends State<Difficulty> {
     bool ads = await shouldShowAds();
 
     if (ads) {
-      bannerAd = new BannerAd(
+      bannerAd = BannerAd(
           adUnitId: BannerAd.testAdUnitId,
           size: AdSize.banner,
           targetingInfo: targetingInfo);
 
       try {
-        bannerAd.load().then((value) async {
+        unawaited(bannerAd.load().then((value) async {
           /// Prevent the banner ad from overlaying on buttons
           if (bannerAd.size.width <= context.size.width ~/ 2) {
             if (bannerAd == null) {
               return;
             }
             if (!mounted) {
-              bannerAd.dispose();
+              unawaited(bannerAd.dispose());
               bannerAd = null;
             } else {
               await bannerAd.show(anchorOffset: 8);
               if (!mounted && bannerAd != null) {
                 try {
-                  bannerAd.dispose();
+                  unawaited(bannerAd.dispose());
                   bannerAd = null;
-                } on AssertionError {}
+                } on AssertionError catch (_){}
               }
             }
           }
-        });
+        }));
 
         /// This PlatformException is thrown when no ad was loaded
         /// so it can be simply ignored
@@ -382,21 +382,22 @@ class DifficultyState extends State<Difficulty> {
          */
 
         try {
-          if (randomlyChosenText.toString().trim() == "") throw new Exception();
+          if (randomlyChosenText.toString().trim() == "") throw Exception();
 
           if (game.type == GameType.TRUTH) {
             dynamic jsonEncoded = json.decode(randomlyChosenText);
             if (!jsonEncoded.keys.contains("truth") ||
                 !jsonEncoded.keys.contains("dare")) {
-              throw new Exception();
+              throw Exception();
             }
           }
           if (gameTypeToGameTypeClass(game.type).hasSolution) {
             String split1 = randomlyChosenText.split(";")[0];
             String split2 = randomlyChosenText.split(";")[1];
 
-            if (split1.trim() == "" || split2.trim() == "")
-              throw new Exception();
+            if (split1.trim() == "" || split2.trim() == "") {
+              throw Exception();
+            }
           }
         } catch (exc) {
           continue;
@@ -429,7 +430,7 @@ class DifficultyState extends State<Difficulty> {
           happen inside a game, this only catches here to dispose the difficulty
           correctly and make the bannerAd disappear.
            */
-          Fluttertoast.showToast(msg: "An unexpected Error occured.");
+          await Fluttertoast.showToast(msg: "An unexpected Error occured.");
           Navigator.of(context).pop(false);
           return;
         }
@@ -464,7 +465,7 @@ class DifficultyState extends State<Difficulty> {
                     actions: <Widget>[
                       // usually buttons at the bottom of the dialog
                       FlatButton(
-                        child: new Text(
+                        child: Text(
                           "exit",
                           style: GoogleFonts.caveatBrush(
                               color: Colors.black, fontSize: 20),
@@ -475,7 +476,7 @@ class DifficultyState extends State<Difficulty> {
                         },
                       ),
                       FlatButton(
-                        child: new Text(
+                        child: Text(
                           "goOn",
                           style: GoogleFonts.caveatBrush(
                               color: Colors.black, fontSize: 20),
@@ -490,14 +491,14 @@ class DifficultyState extends State<Difficulty> {
     } while (shouldContinue);
     if (ads) {
       try {
-        bannerAd.dispose();
+        await bannerAd.dispose();
         bannerAd = null;
       } catch (_) {}
     }
 
-    SystemChrome.setPreferredOrientations(
+    await SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     this.displayState = 1;
     setState(() {});
 
@@ -814,7 +815,7 @@ class DifficultyState extends State<Difficulty> {
                               child: LinearProgressIndicator(
                                 value: linearProgress / linearMax,
                                 backgroundColor: Colors.yellow.shade900,
-                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                valueColor: AlwaysStoppedAnimation<Color>(
                                     Colors.red),
                               ),
                             ),

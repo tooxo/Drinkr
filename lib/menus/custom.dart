@@ -19,14 +19,14 @@ import '../utils/types.dart';
 
 class Custom extends StatefulWidget {
   @override
-  CustomState createState() => new CustomState();
+  CustomState createState() => CustomState();
 }
 
 const String SAVED_CUSTOM_SETTING = "SAVED_CUSTOM_SETTING";
 
 class CustomState extends State<StatefulWidget> {
-  Map<GameType, bool> selectedItems = new Map();
-  Map<GameType, bool> itemActivated = new Map();
+  Map<GameType, bool> selectedItems = Map();
+  Map<GameType, bool> itemActivated = Map();
 
   Future<void> loadSave() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
@@ -95,7 +95,7 @@ class CustomState extends State<StatefulWidget> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return new AlertDialog(
+          return AlertDialog(
             backgroundColor: Colors.deepOrange,
             title: Text("customNoGameSelected",
                 style: GoogleFonts.caveatBrush(
@@ -113,7 +113,7 @@ class CustomState extends State<StatefulWidget> {
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
               FlatButton(
-                child: new Text(
+                child: Text(
                   "close",
                   style: GoogleFonts.caveatBrush(
                       color: Colors.black, fontSize: 20),
@@ -147,7 +147,7 @@ class CustomState extends State<StatefulWidget> {
     }
   }
 
-  ScrollController _scrollControl = new ScrollController();
+  ScrollController _scrollControl = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +224,7 @@ class CustomState extends State<StatefulWidget> {
                                           });
                                           saveSave();
                                         },
-                                        child: new Text(
+                                        child: Text(
                                           selectedItems.keys.elementAt(i) ==
                                                   GameType.TRUTH
                                               ? "truthOrDare".tr()

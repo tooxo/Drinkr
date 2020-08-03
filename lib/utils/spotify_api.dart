@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Drinkr/utils/sqlite.dart';
 import 'package:http/http.dart' as http;
+import 'package:pedantic/pedantic.dart';
 
 class Spotify {
   // can reasonably dumped here, the key is nothing important and not used
@@ -19,7 +20,7 @@ class Spotify {
   DateTime lastKeyRequest;
 
   static String getIdFromUrl(String url) {
-    RegExp regExp = new RegExp(REGEX_PLAYLIST);
+    RegExp regExp = RegExp(REGEX_PLAYLIST);
     return regExp.firstMatch(url)?.group(5);
   }
 
@@ -47,8 +48,8 @@ class Spotify {
 
   /// Pulls a playlist from Spotify
   Future<List<List<String>>> getPlaylist(String playlistId,
-      {useCache: true}) async {
-    List<List<String>> trackList = new List<List<String>>();
+      {useCache = true}) async {
+    List<List<String>> trackList = List<List<String>>();
 
     SqLite database;
     if (useCache) database = await SqLite().open();
@@ -114,13 +115,13 @@ class Spotify {
       url = jsonResponse["next"];
     } while (jsonResponse["next"] != null);
     //}
-    if (useCache) database.putBulkInSpotifyCache(trackList);
+    if (useCache) unawaited(database.putBulkInSpotifyCache(trackList));
     return trackList;
   }
 
   Future<List<String>> fillMissingPreviewUrls(
       List<String> track, SqLite database,
-      {useCache: true}) async {
+      {useCache = true}) async {
     /// this fixes a weird error with spotify returning null as
     /// the preview url, although they have a preview available
     /// this also multiplies the time a playlist gets extracted by factor 50

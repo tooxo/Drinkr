@@ -11,9 +11,9 @@ class Licenses extends StatefulWidget {
 }
 
 class LicensesState extends State<Licenses> {
-  List<List<String>> items = new List<List<String>>();
+  List<List<String>> items = List<List<String>>();
   Map<String, List<List<String>>> itemMap =
-      new Map<String, List<List<String>>>();
+      Map<String, List<List<String>>>();
 
   void populateItems() async {
     await LicenseRegistry.licenses.forEach((license) {
@@ -21,7 +21,7 @@ class LicensesState extends State<Licenses> {
       appendable.add(license.packages.join(", "));
       for (String package in license.packages) {
         if (!itemMap.containsKey(package)) {
-          itemMap[package] = new List<List<String>>();
+          itemMap[package] = List<List<String>>();
         }
         itemMap[package].add(
             license.paragraphs.map((paragraph) => paragraph.text).toList());
@@ -41,7 +41,7 @@ class LicensesState extends State<Licenses> {
     populateItems();
   }
 
-  ScrollController controller = new ScrollController();
+  ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {

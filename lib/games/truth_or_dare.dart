@@ -26,7 +26,7 @@ class TruthOrDare extends BasicGame {
   String get mainTitle => text;
 
   @override
-  State<StatefulWidget> createState() => new TruthOrDareState();
+  State<StatefulWidget> createState() => TruthOrDareState();
 }
 
 class TruthOrDareState extends BasicGameState {

@@ -28,10 +28,10 @@ class BasicGame extends StatefulWidget {
   final String mainTitle = "Error";
   final String solutionText = "Error";
 
-  final List drinking = new List();
+  final List drinking = List();
   final String text;
 
-  final List<Player> selectedPlayer = new List<Player>();
+  final List<Player> selectedPlayer = List<Player>();
 
   @mustCallSuper
   BasicGame(this.players, this.difficulty, this.text) {
@@ -41,7 +41,7 @@ class BasicGame extends StatefulWidget {
   }
 
   @override
-  State<StatefulWidget> createState() => new BasicGameState();
+  State<StatefulWidget> createState() => BasicGameState();
 }
 
 class BasicGameState extends State<BasicGame>
@@ -99,7 +99,7 @@ class BasicGameState extends State<BasicGame>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return new AlertDialog(
+        return AlertDialog(
           backgroundColor: widget.primaryColor,
           title: Text("exitTitle",
               style: GoogleFonts.caveatBrush(
@@ -117,7 +117,7 @@ class BasicGameState extends State<BasicGame>
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             FlatButton(
-              child: new Text(
+              child: Text(
                 "exit",
                 style:
                     GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
@@ -128,7 +128,7 @@ class BasicGameState extends State<BasicGame>
               },
             ),
             FlatButton(
-              child: new Text("goOn".tr(),
+              child: Text("goOn".tr(),
                   style: GoogleFonts.caveatBrush(
                       color: Colors.black, fontSize: 20)),
               onPressed: () {
@@ -332,7 +332,7 @@ class BasicGameState extends State<BasicGame>
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return new AlertDialog(
+                          return AlertDialog(
                             title: Text(
                               "explanation",
                               style: GoogleFonts.caveatBrush(
@@ -351,7 +351,7 @@ class BasicGameState extends State<BasicGame>
                             actions: <Widget>[
                               // usually buttons at the bottom of the dialog
                               FlatButton(
-                                child: new Text(
+                                child: Text(
                                   "close",
                                   style: GoogleFonts.caveatBrush(
                                       color: Colors.black, fontSize: 20),

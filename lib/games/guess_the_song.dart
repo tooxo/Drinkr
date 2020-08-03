@@ -33,7 +33,7 @@ class GuessTheSong extends BasicGame {
       : super(players, difficulty, text);
 
   @override
-  State<StatefulWidget> createState() => new GuessTheSongState();
+  State<StatefulWidget> createState() => GuessTheSongState();
 
   @override
   String get mainTitle => JsonDecoder().convert(text)[1];
@@ -74,18 +74,18 @@ class GuessTheSongState extends BasicGameState
   void buttonClick() async {
     if (_target == 0 || _target == 1) {
       if (await checkConnection()) {
-        audioPlayer.play(f.path, isLocal: true);
+        await audioPlayer.play(f.path, isLocal: true);
       } else {
-        Fluttertoast.showToast(
+        await Fluttertoast.showToast(
             msg: "noConnection".tr(), toastLength: Toast.LENGTH_SHORT);
       }
     }
     if (_target < 1 && _target > 0) {
       if (audioPlayer.state == AudioPlayerState.PAUSED) {
-        audioPlayer.resume();
+        await audioPlayer.resume();
         audioPlayer.state = AudioPlayerState.PLAYING;
       } else {
-        audioPlayer.pause();
+        await audioPlayer.pause();
         audioPlayer.state = AudioPlayerState.PAUSED;
       }
     }
@@ -113,7 +113,7 @@ class GuessTheSongState extends BasicGameState
       ),
     );
 
-    audioPlayer = new AudioPlayer();
+    audioPlayer = AudioPlayer();
     this.durationSubscription =
         audioPlayer.onAudioPositionChanged.listen((pos) async {
       if (songDuration == null) {

@@ -37,10 +37,10 @@ Future<bool> shouldShowAdDialog() async {
 }
 
 void showAdDialog(BuildContext context) async {
-  showDialog(
+  await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return new AlertDialog(
+        return AlertDialog(
           backgroundColor: Colors.green.shade600,
           title: Text(
             "mainAdDialogTitle",
@@ -59,7 +59,7 @@ void showAdDialog(BuildContext context) async {
           ).tr(),
           actions: <Widget>[
             FlatButton(
-              child: new Text(
+              child: Text(
                 "ok",
                 style:
                     GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
@@ -70,13 +70,13 @@ void showAdDialog(BuildContext context) async {
               },
             ),
             FlatButton(
-              child: new Text(
+              child: Text(
                 "notAgain",
                 style:
                     GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
               ).tr(),
               onPressed: () async {
-                (await SharedPreferences.getInstance())
+                await (await SharedPreferences.getInstance())
                     .setBool(AD_DIALOG_SETTING, false);
                 Navigator.of(context).pop(true);
               },
@@ -107,7 +107,7 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
       showDialog(
           context: buildContext,
           builder: (BuildContext context) {
-            return new AlertDialog(
+            return AlertDialog(
               backgroundColor: Colors.green.shade700,
               title: Text("adSuccessTitle",
                   style: GoogleFonts.caveatBrush(
@@ -125,7 +125,7 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 FlatButton(
-                  child: new Text(
+                  child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
                         color: Colors.black, fontSize: 20),
@@ -143,7 +143,7 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
         showDialog(
           context: buildContext,
           builder: (BuildContext context) {
-            return new AlertDialog(
+            return AlertDialog(
               backgroundColor: Colors.deepOrange,
               title: Text(
                 "error",
@@ -162,7 +162,7 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
               ).tr(),
               actions: <Widget>[
                 FlatButton(
-                  child: new Text(
+                  child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
                         color: Colors.black, fontSize: 20),
@@ -188,10 +188,10 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
     try {
       await RewardedVideoAd.instance.show();
     } catch (platformException) {
-      showDialog(
+      await showDialog(
         context: buildContext,
         builder: (BuildContext context) {
-          return new AlertDialog(
+          return AlertDialog(
             backgroundColor: Colors.deepOrange,
             title: Text("adsNoVideosTitle",
                 style: GoogleFonts.caveatBrush(
@@ -209,7 +209,7 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
               FlatButton(
-                child: new Text(
+                child: Text(
                   "close",
                   style: GoogleFonts.caveatBrush(
                       color: Colors.black, fontSize: 20),

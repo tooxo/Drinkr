@@ -17,12 +17,12 @@ import '../utils/types.dart';
 
 class WordCustomization extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new WordCustomizationState();
+  State<StatefulWidget> createState() => WordCustomizationState();
 }
 
 class WordCustomizationState extends State<WordCustomization> {
   Map<GameType, List<String>> textsToDisplay =
-      new Map<GameType, List<String>>();
+      Map<GameType, List<String>>();
   bool init = false;
   List<GameType> enabledGameTypes = GameType.values;
 
@@ -66,7 +66,7 @@ class WordCustomizationState extends State<WordCustomization> {
     setState(() {});
   }
 
-  Color getColor({reverse: false}) {
+  Color getColor({reverse = false}) {
     if (reverse) {
       for (GameType type in textsToDisplay.keys.toList().reversed) {
         if (textsToDisplay[type].isNotEmpty) {
@@ -109,7 +109,7 @@ class WordCustomizationState extends State<WordCustomization> {
       if (await Spotify.playlistExists(tf1Value)) {
         return true;
       } else {
-        Fluttertoast.showToast(
+        await Fluttertoast.showToast(
             msg:
                 "spotifyGenericError".tr());
         return false;
@@ -339,7 +339,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                                 // ignore: unnecessary_statements
                                                 : null;
                                           }
-                                          return txt.length == 0
+                                          return txt.isEmpty
                                               ? "required".tr()
                                               : null;
                                         },
@@ -371,7 +371,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                               .hasSolution) {
                                             return null;
                                           }
-                                          return txt.length == 0
+                                          return txt.isEmpty
                                               ? "required".tr()
                                               : null;
                                         },
@@ -401,9 +401,9 @@ class WordCustomizationState extends State<WordCustomization> {
                                           gameTypeToGameTypeClass(type)
                                               .translatedTitle
                                       ].map((String value) {
-                                        return new DropdownMenuItem<String>(
+                                        return DropdownMenuItem<String>(
                                           value: value,
-                                          child: new Text(
+                                          child: Text(
                                             value,
                                             style: GoogleFonts.caveatBrush(
                                                 color: Colors.black),

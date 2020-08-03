@@ -62,7 +62,7 @@ class TopShapePainter extends ShapeBorder {
 
   @override
   void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {
-    Paint paint = new Paint()
+    Paint paint = Paint()
       ..color = Colors.transparent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
@@ -174,7 +174,7 @@ class MiddleShapePainter extends ShapeBorder {
 
   @override
   void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {
-    Paint paint = new Paint()
+    Paint paint = Paint()
       ..color = Colors.transparent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
@@ -246,7 +246,7 @@ class DividerPainter extends ShapeBorder {
 
   @override
   void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {
-    Paint paint = new Paint()
+    Paint paint = Paint()
       ..color = Colors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5;

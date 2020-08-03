@@ -25,7 +25,7 @@ Future<Map<String, dynamic>> _parseManifest(BuildContext context) async {
 
 /// Get a list of all FilePaths in local Documents.
 Future<List<String>> _getLocalFiles() async {
-  Directory documents = new Directory(await _localPath);
+  Directory documents = Directory(await _localPath);
   List<String> filePaths = List<String>();
   dynamic test = await documents
       .list(recursive: true, followLinks: false)

@@ -18,7 +18,7 @@ class SoundData {
     try {
       jsonObject = json.decode(jsonData);
     } on FormatException {
-      throw new Exception("Error while parsing.");
+      throw Exception("Error while parsing.");
     }
     channels = jsonObject["channels"];
     sampleRate = jsonObject["sample_rate"];
@@ -35,7 +35,7 @@ class SoundData {
   Size savedSize;
   Path savedPath;
 
-  Path path(Size size, {drawRect: false}) {
+  Path path(Size size, {drawRect = false}) {
     if (size == savedSize && savedPath != null) {
       return savedPath;
     }
@@ -44,7 +44,7 @@ class SoundData {
     return savedPath;
   }
 
-  Path _path(List<int> samples, Size size, {drawRect: false}) {
+  Path _path(List<int> samples, Size size, {drawRect = false}) {
     final middle = size.height / 2;
 
     List<double> minPoints = [];

@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new SettingsState();
+  State<StatefulWidget> createState() => SettingsState();
 }
 
 // TODO FIXME Add all items to translation
@@ -129,7 +129,7 @@ class SettingsState extends State<Settings> {
                                         !customQuestionsAvailable) {
                                       return false;
                                     }
-                                    sp.setInt(
+                                    await sp.setInt(
                                         SETTING_INCLUSION_OF_QUESTIONS, index);
                                     return true;
                                   },

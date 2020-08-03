@@ -22,13 +22,13 @@ class NameSelect extends StatefulWidget {
   final Color secondaryColor = Color.fromRGBO(255, 111, 0, 1);
 
   @override
-  State<StatefulWidget> createState() => new NameSelectState();
+  State<StatefulWidget> createState() => NameSelectState();
 }
 
 class NameSelectState extends State<NameSelect> {
   String player1 = "";
-  List<Player> players = new List<Player>();
-  TextEditingController textEditingController = new TextEditingController();
+  List<Player> players = List<Player>();
+  TextEditingController textEditingController = TextEditingController();
   double sliderState = 100;
   double maxRounds = 1000;
   int divisions = 1;
@@ -49,7 +49,7 @@ class NameSelectState extends State<NameSelect> {
 
   Future<void> setPlayers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    List<String> playerNames = new List<String>();
+    List<String> playerNames = List<String>();
     for (Player p in this.players) {
       playerNames.add(p.toString());
     }
@@ -65,7 +65,7 @@ class NameSelectState extends State<NameSelect> {
   static String illegalNames =
       r"^ +$"; //only backspaces = illegal wie Minderheiten
 
-  RegExp regExp = new RegExp(illegalNames);
+  RegExp regExp = RegExp(illegalNames);
 
   void buttonPress() {
     if (this.player1.isNotEmpty) {
@@ -73,7 +73,7 @@ class NameSelectState extends State<NameSelect> {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return new AlertDialog(
+            return AlertDialog(
               backgroundColor: Colors.deepOrange,
               title: Text("illegalName",
                   style: GoogleFonts.caveatBrush(
@@ -91,7 +91,7 @@ class NameSelectState extends State<NameSelect> {
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 FlatButton(
-                  child: new Text(
+                  child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
                         color: Colors.black, fontSize: 20),
@@ -110,7 +110,7 @@ class NameSelectState extends State<NameSelect> {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return new AlertDialog(
+            return AlertDialog(
               backgroundColor: Colors.deepOrange,
               title: Text("duplicatedNameTitle",
                   style: GoogleFonts.caveatBrush(
@@ -128,7 +128,7 @@ class NameSelectState extends State<NameSelect> {
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 FlatButton(
-                  child: new Text(
+                  child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
                         color: Colors.black, fontSize: 20),
@@ -143,7 +143,7 @@ class NameSelectState extends State<NameSelect> {
         );
         return;
       }
-      this.players.add(new Player(this.player1));
+      this.players.add(Player(this.player1));
       this.textEditingController.clear();
       this.player1 = "";
       setPlayers();
@@ -210,10 +210,10 @@ class NameSelectState extends State<NameSelect> {
                               hintStyle: GoogleFonts.caveatBrush(
                                 fontSize: 20,
                               ),
-                              enabledBorder: new UnderlineInputBorder(
+                              enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
-                              focusedBorder: new UnderlineInputBorder(
+                              focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                               suffixIcon: Transform.scale(
@@ -324,7 +324,7 @@ class NameSelectState extends State<NameSelect> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return new AlertDialog(
+                                return AlertDialog(
                                   backgroundColor: Colors.deepOrange,
                                   title: Text("nameTooFewPlayers",
                                       style: GoogleFonts.caveatBrush(
@@ -343,7 +343,7 @@ class NameSelectState extends State<NameSelect> {
                                   actions: <Widget>[
                                     // usually buttons at the bottom of the dialog
                                     FlatButton(
-                                      child: new Text(
+                                      child: Text(
                                         "close".tr(),
                                         style: GoogleFonts.caveatBrush(
                                             color: Colors.black, fontSize: 20),
@@ -360,7 +360,7 @@ class NameSelectState extends State<NameSelect> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return new AlertDialog(
+                                return AlertDialog(
                                   backgroundColor: Colors.deepOrange,
                                   title: Text("nameTooManyPlayers",
                                       style: GoogleFonts.caveatBrush(
@@ -379,7 +379,7 @@ class NameSelectState extends State<NameSelect> {
                                   actions: <Widget>[
                                     // usually buttons at the bottom of the dialog
                                     FlatButton(
-                                      child: new Text(
+                                      child: Text(
                                         "close",
                                         style: GoogleFonts.caveatBrush(
                                             fontSize: 20, color: Colors.black),
