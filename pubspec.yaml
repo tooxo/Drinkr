@@ -35,7 +35,7 @@ dependencies:
   # firebase_admob: ^0.9.3+2
   google_mobile_ads: ^0.12.1+1
   app_review: ^1.1.2
-  assorted_layout_widgets: ^1.1.1
+  assorted_layout_widgets: ^4.0.7
   draggable_scrollbar: ^0.0.4
   circular_reveal_animation: ^1.1.5
   html: ^0.14.0+3
