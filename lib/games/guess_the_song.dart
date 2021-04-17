@@ -187,8 +187,19 @@ class GuessTheSongState extends BasicGameState
                 );
               }
               if (snapshot.hasError) {
-                print(snapshot.error.toString());
-                return Text("An Error has occurred.");
+                return IconButton(
+                  onPressed: buttonClick,
+                  icon: Icon(
+                    _target == 1
+                        ? Icons.replay
+                        : _target == 0
+                            ? Icons.play_arrow
+                            : this.audioPlayer.state == AudioPlayerState.PAUSED
+                                ? Icons.play_arrow
+                                : Icons.pause,
+                    color: Colors.black,
+                  ),
+                );
               }
               return SpinKitCircle(
                 color: widget.secondaryColor,

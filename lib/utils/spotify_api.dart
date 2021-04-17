@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pedantic/pedantic.dart';
 
 class Spotify {
-  // can reasonably dumped here, the key is nothing important and not used
+  // can reasonably be dumped here, the key is nothing important and not used
   // anywhere else. stealing it would be useless and completely harmless
   String authString =
       "YTU2OWEwZDczMjEwNGYyOTkyYmFiNTA4Y2YyNzhmNzY6MGQ0ZDhhOGQ2NTc0NDVhOThlN2Y3N2FlNmI1MzgyODk=";
@@ -136,16 +136,21 @@ class Spotify {
     } else {
       try {
         String trackId = track[2];
+
+        /// Load the Embed Page via normal http page request
         http.Response embedResponse = await http.get(
           "https://open.spotify.com/embed/track/$trackId",
         );
+
+        /// Extract the preview url via regex
         String previewUrl =
             RegExp(REGEX_EMBED).firstMatch(embedResponse.body).group(1);
         if (previewUrl != null) {
+          /// Un-Escape the url
           previewUrl = previewUrl.replaceAll("\\/", "/");
         }
         track[1] = previewUrl;
-      } catch (ignored) {
+      } catch (_) {
         return [null, null, null];
       }
     }

@@ -192,58 +192,6 @@ class BasicGameState extends State<BasicGame>
         : buildWithoutSolution();
   }
 
-  Widget buildWithSolution2() {
-    return Column(
-      children: <Widget>[
-        Expanded(flex: 3, child: buildWithoutSolution()),
-        Expanded(
-          flex: 1,
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: !this.showSolution
-                  ? ShowUpAnimation(
-                      child: MaterialButton(
-                        onPressed: () {
-                          setState(() {
-                            this.showSolution = true;
-                          });
-                        },
-                        color: widget.secondaryColor,
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Text(
-                            "gameShowSolution",
-                            style: GoogleFonts.caveatBrush(
-                                color: Colors.black,
-                                fontSize: 40,
-                                fontWeight: FontWeight.w600),
-                          ).tr(),
-                        ),
-                      ),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Container(
-                          // fit: BoxFit.fitHeight,
-                          child: Text(
-                            widget.solutionText,
-                            style: GoogleFonts.caveatBrush(
-                                color: Colors.black,
-                                fontSize: 25,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                    ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget buildWithSolution() {
     return Column(

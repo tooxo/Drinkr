@@ -32,7 +32,7 @@ jobs:
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/AndroidManifest.xml
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./android/app/src/main/res/values/strings.xml
         - sed -i "s|ca-app-pub-3940256099942544~3347511713|$ANDROID_ADMOB_APPID|g" ./lib/main.dart
-        - sed -i "s|RewardedVideoAd.testAdUnitId|\"$ANDROID_REWARDED_ID\"|g" ./lib/utils/ad.dart
+        - sed -i "s|RewardedAd.testAdUnitId|\"$ANDROID_REWARDED_ID\"|g" ./lib/utils/ad.dart
         - sed -i "s|BannerAd.testAdUnitId|\"$ANDROID_BANNER_ID\"|g" ./lib/menus/difficulty.dart
       script:
         - flutter analyze --no-preamble --no-congratulate > linting_results.txt || echo ""
@@ -103,7 +103,7 @@ jobs:
         - echo "$APPLE_GOOGLESERVICES_PLIST_BASE64" | base64 -d > ./ios/Runner/GoogleService-Info.plist
         - sed -i .bak "s|ca-app-pub-3940256099942544~3347511713|$APPLE_ADMOB_APPID|g" ./ios/Runner/Info.plist
         - sed -i .bak "s|ca-app-pub-3940256099942544~3347511713|$APPLE_ADMOB_APPID|g" ./lib/main.dart
-        - sed -i .bak "s|RewardedVideoAd.testAdUnitId|\"$APPLE_REWARDED_ID\"|g" ./lib/utils/ad.dart
+        - sed -i .bak "s|RewardedAd.testAdUnitId|\"$APPLE_REWARDED_ID\"|g" ./lib/utils/ad.dart
         - sed -i .bak "s|BannerAd.testAdUnitId|\"$APPLE_BANNER_ID\"|g" ./lib/menus/difficulty.dart
         - mkdir normal noads
       before_deploy:

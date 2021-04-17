@@ -15,13 +15,13 @@ import 'package:Drinkr/utils/sqlite.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:Drinkr/games/who_would_rather.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -70,11 +70,11 @@ class DifficultyState extends State<Difficulty> {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
 
-  final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-      keywords: ["trinken", "drinking", "alkohol", "alcohol"],
-      childDirected: false,
-      nonPersonalizedAds: false,
-      testDevices: []);
+  final AdRequest targetingInfo = AdRequest(
+    keywords: ["trinken", "drinking", "alkohol", "alcohol"],
+    nonPersonalizedAds: false,
+    testDevices: [],
+  );
 
   BannerAd bannerAd;
 
@@ -306,12 +306,23 @@ class DifficultyState extends State<Difficulty> {
     bool ads = await shouldShowAds();
 
     if (ads) {
+      AdListener listener = AdListener(onAdLoaded: (Ad ad) async {
+        if (bannerAd.size.width <= context.size.width ~/ 2) {
+          if (bannerAd = null) return;
+          if (!mounted) {
+            unawaited(bannerAd.dispose());
+            bannerAd = null;
+          } else {}
+        }
+      });
       bannerAd = BannerAd(
-          adUnitId: BannerAd.testAdUnitId,
-          size: AdSize.banner,
-          targetingInfo: targetingInfo);
+        adUnitId: BannerAd.testAdUnitId,
+        size: AdSize.banner,
+        request: targetingInfo,
+        listener: listener,
+      );
 
-      try {
+      /*try {
         unawaited(bannerAd.load().then((value) async {
           /// Prevent the banner ad from overlaying on buttons
           if (bannerAd.size.width <= context.size.width ~/ 2) {
@@ -327,7 +338,7 @@ class DifficultyState extends State<Difficulty> {
                 try {
                   unawaited(bannerAd.dispose());
                   bannerAd = null;
-                } on AssertionError catch (_){}
+                } on AssertionError catch (_) {}
               }
             }
           }
@@ -340,169 +351,170 @@ class DifficultyState extends State<Difficulty> {
       } catch (_) {
         // fallback for all other things that could happen while loading ads
       }
-    }
+    }*/
 
-    bool shouldContinue = false;
-    do {
-      if (gamePlan.isEmpty) {
-        await generateNormalPlan();
-      }
-      bool result;
-      for (Game game in gamePlan) {
-        if (texts.values.where((element) => element.isNotEmpty).isEmpty) {
-          await populateTextsMap();
+      bool shouldContinue = false;
+      do {
+        if (gamePlan.isEmpty) {
+          await generateNormalPlan();
         }
-        dynamic randomlyChosenText;
-        if (game.type == GameType.TRUTH &&
-            texts[GameType.TRUTH].isNotEmpty &&
-            texts[GameType.DARE].isNotEmpty) {
-          String randomTextTruth = texts[GameType.TRUTH]
-              [Random.secure().nextInt(texts[GameType.TRUTH].length)];
-
-          String randomTextDare = texts[GameType.DARE]
-              [Random.secure().nextInt(texts[GameType.DARE].length)];
-
-          texts[GameType.TRUTH].remove(randomTextTruth);
-          texts[GameType.DARE].remove(randomTextDare);
-
-          randomlyChosenText =
-              json.encode({"truth": randomTextTruth, "dare": randomTextDare});
-        } else {
-          try {
-            randomlyChosenText = texts[game.type]
-                [Random.secure().nextInt(texts[game.type].length)];
-            texts[game.type].remove(randomlyChosenText);
-          } on IndexError {
-            continue;
+        bool result;
+        for (Game game in gamePlan) {
+          if (texts.values.where((element) => element.isNotEmpty).isEmpty) {
+            await populateTextsMap();
           }
-        }
+          dynamic randomlyChosenText;
+          if (game.type == GameType.TRUTH &&
+              texts[GameType.TRUTH].isNotEmpty &&
+              texts[GameType.DARE].isNotEmpty) {
+            String randomTextTruth = texts[GameType.TRUTH]
+                [Random.secure().nextInt(texts[GameType.TRUTH].length)];
 
-        /*
+            String randomTextDare = texts[GameType.DARE]
+                [Random.secure().nextInt(texts[GameType.DARE].length)];
+
+            texts[GameType.TRUTH].remove(randomTextTruth);
+            texts[GameType.DARE].remove(randomTextDare);
+
+            randomlyChosenText =
+                json.encode({"truth": randomTextTruth, "dare": randomTextDare});
+          } else {
+            try {
+              randomlyChosenText = texts[game.type]
+                  [Random.secure().nextInt(texts[game.type].length)];
+              texts[game.type].remove(randomlyChosenText);
+            } on IndexError {
+              continue;
+            }
+          }
+
+          /*
         Test if the text is valid to prevent errors presenting
          */
 
-        try {
-          if (randomlyChosenText.toString().trim() == "") throw Exception();
+          try {
+            if (randomlyChosenText.toString().trim() == "") throw Exception();
 
-          if (game.type == GameType.TRUTH) {
-            dynamic jsonEncoded = json.decode(randomlyChosenText);
-            if (!jsonEncoded.keys.contains("truth") ||
-                !jsonEncoded.keys.contains("dare")) {
-              throw Exception();
+            if (game.type == GameType.TRUTH) {
+              dynamic jsonEncoded = json.decode(randomlyChosenText);
+              if (!jsonEncoded.keys.contains("truth") ||
+                  !jsonEncoded.keys.contains("dare")) {
+                throw Exception();
+              }
             }
-          }
-          if (gameTypeToGameTypeClass(game.type).hasSolution) {
-            String split1 = randomlyChosenText.split(";")[0];
-            String split2 = randomlyChosenText.split(";")[1];
+            if (gameTypeToGameTypeClass(game.type).hasSolution) {
+              String split1 = randomlyChosenText.split(";")[0];
+              String split2 = randomlyChosenText.split(";")[1];
 
-            if (split1.trim() == "" || split2.trim() == "") {
-              throw Exception();
+              if (split1.trim() == "" || split2.trim() == "") {
+                throw Exception();
+              }
             }
+          } catch (exc) {
+            continue;
           }
-        } catch (exc) {
-          continue;
-        }
 
-        result = await Navigator.of(context).push(PageRouteBuilder(
-          pageBuilder: (c, a1, a2) =>
-              game.function(widget.players, difficulty, randomlyChosenText),
-          transitionsBuilder: (c, anim, a2, child) {
-            if (anim.status == AnimationStatus.reverse) {
+          result = await Navigator.of(context).push(PageRouteBuilder(
+            pageBuilder: (c, a1, a2) =>
+                game.function(widget.players, difficulty, randomlyChosenText),
+            transitionsBuilder: (c, anim, a2, child) {
+              if (anim.status == AnimationStatus.reverse) {
+                return SlideTransition(
+                  position:
+                      Tween<Offset>(begin: Offset(0.0, 0), end: Offset(0.0, -1))
+                          .animate(a2),
+                  child: child,
+                );
+              }
               return SlideTransition(
-                position:
-                    Tween<Offset>(begin: Offset(0.0, 0), end: Offset(0.0, -1))
-                        .animate(a2),
+                position: Tween<Offset>(
+                        begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
+                    .animate(anim),
                 child: child,
               );
-            }
-            return SlideTransition(
-              position:
-                  Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
-                      .animate(anim),
-              child: child,
-            );
-          },
-          transitionDuration: Duration(milliseconds: 200),
-        ));
-        if (result == null) {
-          /*
+            },
+            transitionDuration: Duration(milliseconds: 200),
+          ));
+          if (result == null) {
+            /*
           This shouldn't happen, this only happens, if some unexpected things
           happen inside a game, this only catches here to dispose the difficulty
           correctly and make the bannerAd disappear.
            */
-          await Fluttertoast.showToast(msg: "An unexpected Error occured.");
+            await Fluttertoast.showToast(msg: "An unexpected Error occured.");
+            Navigator.of(context).pop(false);
+            return;
+          }
+          result = result || gamePlan.isEmpty;
+          if (result) {
+            break;
+          }
+        }
+        if (result == null) {
+          // TODO: This occures only if a game launches without loading any texts.
           Navigator.of(context).pop(false);
           return;
         }
-        result = result || gamePlan.isEmpty;
-        if (result) {
-          break;
-        }
-      }
-      if (result == null) {
-        // TODO: This occures only if a game launches without loading any texts.
-        Navigator.of(context).pop(false);
-        return;
-      }
-      if (!result) {
-        await showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                    title: Text("goOnTitle",
+        if (!result) {
+          await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                      title: Text("goOnTitle",
+                          style: GoogleFonts.caveatBrush(
+                            textStyle: TextStyle(color: Colors.black),
+                            fontWeight: FontWeight.w800,
+                            fontSize: 30,
+                          )).tr(),
+                      content: Text(
+                        "goOnDescription",
                         style: GoogleFonts.caveatBrush(
                           textStyle: TextStyle(color: Colors.black),
-                          fontWeight: FontWeight.w800,
-                          fontSize: 30,
-                        )).tr(),
-                    content: Text(
-                      "goOnDescription",
-                      style: GoogleFonts.caveatBrush(
-                        textStyle: TextStyle(color: Colors.black),
-                        fontSize: 25,
-                      ),
-                    ).tr(),
-                    backgroundColor: Colors.deepOrange,
-                    actions: <Widget>[
-                      // usually buttons at the bottom of the dialog
-                      FlatButton(
-                        child: Text(
-                          "exit",
-                          style: GoogleFonts.caveatBrush(
-                              color: Colors.black, fontSize: 20),
-                        ).tr(),
-                        onPressed: () {
-                          shouldContinue = false;
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      FlatButton(
-                        child: Text(
-                          "goOn",
-                          style: GoogleFonts.caveatBrush(
-                              color: Colors.black, fontSize: 20),
-                        ).tr(),
-                        onPressed: () {
-                          shouldContinue = true;
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ]).build(context));
+                          fontSize: 25,
+                        ),
+                      ).tr(),
+                      backgroundColor: Colors.deepOrange,
+                      actions: <Widget>[
+                        // usually buttons at the bottom of the dialog
+                        FlatButton(
+                          child: Text(
+                            "exit",
+                            style: GoogleFonts.caveatBrush(
+                                color: Colors.black, fontSize: 20),
+                          ).tr(),
+                          onPressed: () {
+                            shouldContinue = false;
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          child: Text(
+                            "goOn",
+                            style: GoogleFonts.caveatBrush(
+                                color: Colors.black, fontSize: 20),
+                          ).tr(),
+                          onPressed: () {
+                            shouldContinue = true;
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]).build(context));
+        }
+      } while (shouldContinue);
+      if (ads) {
+        try {
+          await bannerAd.dispose();
+          bannerAd = null;
+        } catch (_) {}
       }
-    } while (shouldContinue);
-    if (ads) {
-      try {
-        await bannerAd.dispose();
-        bannerAd = null;
-      } catch (_) {}
+
+      await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+      await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+      this.displayState = 1;
+      setState(() {});
+
+      Navigator.of(context).pop();
     }
-
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    this.displayState = 1;
-    setState(() {});
-
-    Navigator.of(context).pop();
   }
 
   int countOccurrencesOfSpecificGameInMap(Function gameType) {
@@ -815,8 +827,8 @@ class DifficultyState extends State<Difficulty> {
                               child: LinearProgressIndicator(
                                 value: linearProgress / linearMax,
                                 backgroundColor: Colors.yellow.shade900,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.red),
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.red),
                               ),
                             ),
                           ),

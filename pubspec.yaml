@@ -26,15 +26,14 @@ dependencies:
   path_provider: ^1.6.9
   show_up_animation: ^1.0.1
   animated_text_kit: ^2.1.0
-  #audioplayer: 0.8.1
-  #audioplayer_web: 0.7.1
   audioplayers: ^0.15.1
   http: ^0.12.1
   connectivity: ^0.4.8+6
   flutter_spinkit: ^4.1.2
   fluttertoast: 4.0.0
   shared_preferences: ^0.5.7+3
-  firebase_admob: ^0.9.3+2
+  # firebase_admob: ^0.9.3+2
+  google_mobile_ads: ^0.12.1+1
   app_review: ^1.1.2
   assorted_layout_widgets: ^1.1.1
   draggable_scrollbar: ^0.0.4
@@ -62,7 +61,7 @@ dev_dependencies:
   flutter_launcher_icons: "^0.7.5"
   flutter_driver:
     sdk: flutter
-  screenshots: ^2.1.1
+  screenshots: any
   test: any
 
 # For information on the generic Dart part of this file, see the

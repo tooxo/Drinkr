@@ -8,11 +8,11 @@ import 'package:Drinkr/utils/shapes.dart';
 import 'package:Drinkr/utils/types.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'menus/custom.dart';
@@ -146,8 +146,10 @@ class _MyHomePageState extends State<MyHomePage> {
     bool value = await shouldShowAds();
     if (value) {
       if (init) {
-        await FirebaseAdMob.instance
-            .initialize(appId: "ca-app-pub-3940256099942544~3347511713");
+        await WidgetsFlutterBinding.ensureInitialized();
+        // await FirebaseAdmob.instance
+        //    .initialize(appId: "ca-app-pub-3940256099942544~3347511713");
+        await MobileAds.instance.initialize();
       }
       this.showAd = true;
     } else {

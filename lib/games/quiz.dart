@@ -18,7 +18,7 @@ class Quiz extends BasicGame {
 
   @override
   String get mainTitle =>
-      selectedPlayer[0].name + ": " + this.text.split(";")[0];
+      selectedPlayer[0].name + " – " + this.text.split(";")[0];
 
   @override
   String get solutionText => this.text.split(";")[1];

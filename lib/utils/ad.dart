@@ -1,7 +1,7 @@
 import 'package:Drinkr/main.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -93,114 +93,22 @@ Future<void> deactivateAds() async {
 
 Future<void> showInterstitialAd(BuildContext buildContext) async {
   if (!ADS_ENABLED_BUQF1EVY) return;
-  await RewardedVideoAd.instance.load(
-      adUnitId: RewardedVideoAd.testAdUnitId,
-      targetingInfo: MobileAdTargetingInfo());
-
-  bool rewarded = false;
-
-  RewardedVideoAd.instance.listener =
-      (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
-    if (event == RewardedVideoAdEvent.rewarded) {
-      rewarded = true;
-      deactivateAds();
-      showDialog(
-          context: buildContext,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Colors.green.shade700,
-              title: Text("adSuccessTitle",
-                  style: GoogleFonts.caveatBrush(
-                    textStyle: TextStyle(color: Colors.black),
-                    fontWeight: FontWeight.w800,
-                    fontSize: 30,
-                  )).tr(),
-              content: Text(
-                "adSuccessDescription",
-                style: GoogleFonts.caveatBrush(
-                  textStyle: TextStyle(color: Colors.black),
-                  fontSize: 25,
-                ),
-              ).tr(),
-              actions: <Widget>[
-                // usually buttons at the bottom of the dialog
-                FlatButton(
-                  child: Text(
-                    "close",
-                    style: GoogleFonts.caveatBrush(
-                        color: Colors.black, fontSize: 20),
-                  ).tr(),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            );
-          });
-    }
-    if (event == RewardedVideoAdEvent.closed) {
-      if (!rewarded) {
-        showDialog(
-          context: buildContext,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Colors.deepOrange,
-              title: Text(
-                "error",
-                style: GoogleFonts.caveatBrush(
-                  textStyle: TextStyle(color: Colors.black),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                ),
-              ).tr(),
-              content: Text(
-                "adVideoAbortDescription",
-                style: GoogleFonts.caveatBrush(
-                  textStyle: TextStyle(color: Colors.black),
-                  fontSize: 25,
-                ),
-              ).tr(),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(
-                    "close",
-                    style: GoogleFonts.caveatBrush(
-                        color: Colors.black, fontSize: 20),
-                  ).tr(),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-    }
-  };
-
-  try {
-    await RewardedVideoAd.instance.show();
-  } catch (platformException) {
-    await RewardedVideoAd.instance.load(
-        adUnitId: RewardedVideoAd.testAdUnitId,
-        targetingInfo: MobileAdTargetingInfo());
-    try {
-      await RewardedVideoAd.instance.show();
-    } catch (platformException) {
-      await showDialog(
+  final AdListener listener = AdListener(onRewardedAdUserEarnedReward:
+      (RewardedAd rewardedAd, RewardItem rewardItem) async {
+    await deactivateAds();
+    await showDialog(
         context: buildContext,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.deepOrange,
-            title: Text("adsNoVideosTitle",
+            backgroundColor: Colors.green.shade700,
+            title: Text("adSuccessTitle",
                 style: GoogleFonts.caveatBrush(
                   textStyle: TextStyle(color: Colors.black),
                   fontWeight: FontWeight.w800,
                   fontSize: 30,
                 )).tr(),
             content: Text(
-              "adsNoVideosDescription",
+              "adSuccessDescription",
               style: GoogleFonts.caveatBrush(
                 textStyle: TextStyle(color: Colors.black),
                 fontSize: 25,
@@ -220,8 +128,85 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
               ),
             ],
           );
-        },
-      );
-    }
-  }
+        });
+  }, onAdClosed: (Ad ad) async {
+    await showDialog(
+      context: buildContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.deepOrange,
+          title: Text(
+            "error",
+            style: GoogleFonts.caveatBrush(
+              textStyle: TextStyle(color: Colors.black),
+              fontWeight: FontWeight.w800,
+              fontSize: 30,
+            ),
+          ).tr(),
+          content: Text(
+            "adVideoAbortDescription",
+            style: GoogleFonts.caveatBrush(
+              textStyle: TextStyle(color: Colors.black),
+              fontSize: 25,
+            ),
+          ).tr(),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                "close",
+                style:
+                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
+              ).tr(),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }, onAdFailedToLoad: (Ad ad, LoadAdError loadAdError) async {
+    await showDialog(
+      context: buildContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.deepOrange,
+          title: Text("adsNoVideosTitle",
+              style: GoogleFonts.caveatBrush(
+                textStyle: TextStyle(color: Colors.black),
+                fontWeight: FontWeight.w800,
+                fontSize: 30,
+              )).tr(),
+          content: Text(
+            "adsNoVideosDescription",
+            style: GoogleFonts.caveatBrush(
+              textStyle: TextStyle(color: Colors.black),
+              fontSize: 25,
+            ),
+          ).tr(),
+          actions: <Widget>[
+// usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text(
+                "close",
+                style:
+                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
+              ).tr(),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  });
+
+  final RewardedAd rewardedAd = RewardedAd(
+      adUnitId: RewardedAd.testAdUnitId,
+      listener: listener,
+      request: AdRequest());
+
+  await rewardedAd.load();
+  if (await rewardedAd.isLoaded()) await rewardedAd.show();
 }
