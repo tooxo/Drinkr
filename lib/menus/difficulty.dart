@@ -542,304 +542,168 @@ class DifficultyState extends State<Difficulty> {
 
   @override
   Widget build(BuildContext context) {
-    return this.displayState == 1
-        ? LayoutBuilder(
-            builder: (context, c) {
-              double calcDegree =
-                  (atan((c.maxHeight * 0.5 * 0.1) / c.maxWidth) * 180) / pi;
-              double distanceOffset =
-                  (c.maxWidth * sin((calcDegree * pi / 180))) /
-                      sin(((90 - calcDegree) * pi) / 180);
-
-              return Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  backgroundColor: Color.fromRGBO(255, 111, 0, 1),
-                  title: Text(
-                    "selectDifficulty",
-                    style: GoogleFonts.caveatBrush(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600),
-                  ).tr(),
-                  iconTheme: IconThemeData(color: Colors.black),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+        title: Text(
+          "selectDifficulty",
+          style: GoogleFonts.nunito(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+        ).tr(),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+      body: Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            Center(
+              child: GestureDetector(
+                onTap: () => selectDifficulty(Difficulty.EASY),
+                child: Container(
+                  color: Color.fromRGBO(21, 21, 21, 1),
+                  child: Container(
+                    height: 180,
+                    width: 350.0,
+                    decoration: BoxDecoration(
+                        color: Colors.orangeAccent,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.8),
+                            blurRadius: 8,
+                            offset: Offset(2, 10), // changes position of shadow
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Leicht",
+                            style: GoogleFonts.nunito(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w800),
+                          ).tr(),
+                          Text(
+                            "Strafen 1-2 Schluck(e) | keine Shots",
+                            style: GoogleFonts.nunito(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                          ).tr(),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                backgroundColor: Colors.black,
-                body: ColumnSuper(
-                  innerDistance: distanceOffset * -1 + 3,
-                  children: <Widget>[
-                    CustomPaint(
-                      painter: TopPainter(calcDegree, Colors.yellow),
-                      child: Container(
-                        height: c.maxHeight / 3 - distanceOffset / 2,
-                        width: c.maxWidth,
-                        child: Material(
-                          color: Colors.transparent,
-                          shape: TopShapePainter(calcDegree),
-                          child: InkWell(
-                            customBorder: TopShapePainter(calcDegree),
-                            onTap: () => selectDifficulty(Difficulty.EASY),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "assets/image/beer_easy.png",
-                                      height: c.maxHeight * (1 / 6),
-                                    ),
-                                    Transform.rotate(
-                                      angle: calcDegree * pi / 170 * -1,
-                                      child: SizedBox(
-                                        width: c.maxWidth * 0.66 - 16,
-                                        height: c.maxHeight * 0.33 -
-                                            distanceOffset * 2,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 3,
-                                                child: FittedBox(
-                                                  fit: BoxFit.fitHeight,
-                                                  child: Text(
-                                                    "difficultyLow",
-                                                    style:
-                                                        GoogleFonts.caveatBrush(
-                                                            fontSize: 300),
-                                                  ).tr(),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 1,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text(
-                                                    "difficultyLowDescription",
-                                                    style:
-                                                        GoogleFonts.caveatBrush(
-                                                            fontSize: 300),
-                                                  ).tr(),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Center(
+                child: GestureDetector(
+                  onTap: () => selectDifficulty(Difficulty.MIDDLE),
+                  child: Container(
+                    color: Color.fromRGBO(21, 21, 21, 1),
+                    child: Container(
+                      height: 180,
+                      width: 350.0,
+                      decoration: BoxDecoration(
+                          color: Colors.orange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                                  Offset(2, 10), // changes position of shadow
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    CustomPaint(
-                      painter: MiddlePainter(calcDegree, Colors.orange),
-                      child: Container(
-                        height: c.maxHeight / 3 + distanceOffset / 2 - 6,
-                        width: c.maxWidth,
-                        child: Material(
-                          color: Colors.transparent,
-                          shape: MiddleShapePainter(0, calcDegree),
-                          child: InkWell(
-                            onTap: () => selectDifficulty(Difficulty.MIDDLE),
-                            customBorder: MiddleShapePainter(0, calcDegree),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "assets/image/beer_middle.png",
-                                      height: c.maxHeight * (1 / 6),
-                                    ),
-                                    Transform.rotate(
-                                      angle: calcDegree * pi / 180 * -1,
-                                      child: SizedBox(
-                                        width: c.maxWidth * 0.66 - 16,
-                                        height: c.maxHeight * 0.33 -
-                                            distanceOffset * 2,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 3,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text(
-                                                    "difficultyMed",
-                                                    style:
-                                                        GoogleFonts.caveatBrush(
-                                                            fontSize: 300),
-                                                  ).tr(),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 1,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text(
-                                                    "difficultyMedDescription",
-                                                    style:
-                                                        GoogleFonts.caveatBrush(
-                                                            fontSize: 300),
-                                                  ).tr(),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    CustomPaint(
-                      painter: BottomPainter(calcDegree, Colors.red),
-                      child: Container(
-                        height: c.maxHeight / 3,
-                        width: c.maxWidth,
-                        child: Material(
-                          color: Colors.transparent,
-                          shape: BottomShapePainter(0, calcDegree),
-                          child: InkWell(
-                            onTap: () => selectDifficulty(Difficulty.HARD),
-                            customBorder: BottomShapePainter(0, calcDegree),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset(
-                                        "assets/image/beer_hard.png",
-                                        height: c.maxHeight * (1 / 6),
-                                      ),
-                                    ),
-                                    Transform.rotate(
-                                      angle: calcDegree * pi / 180 * -1,
-                                      child: SizedBox(
-                                        width: c.maxWidth * 0.63 - 20,
-                                        height: c.maxHeight * 0.33 -
-                                            distanceOffset * 2,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 3,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text(
-                                                    "difficultyHigh",
-                                                    style:
-                                                        GoogleFonts.caveatBrush(
-                                                            fontSize: 300),
-                                                  ).tr(),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 1,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text(
-                                                    "difficultyHighDescription",
-                                                    style:
-                                                        GoogleFonts.caveatBrush(
-                                                            fontSize: 300),
-                                                  ).tr(),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-          )
-        : this.displayState == 2
-            ? Scaffold(
-                backgroundColor: Color.fromRGBO(255, 111, 0, 1),
-                body: Stack(
-                  children: [
-                    Center(
-                      child: SpinKitFadingCircle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Container(),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                "spotifyLongLoad",
-                                style: GoogleFonts.caveatBrush(
-                                  color: Colors.black,
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Normal",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w800),
+                            ).tr(),
+                            Text(
+                              "Strafen 1-2 Schluck(e) | keine Shots",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
                                   fontSize: 15,
-                                ),
-                              ).tr(),
-                            ),
-                          ),
+                                  fontWeight: FontWeight.w600),
+                            ).tr(),
+                          ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: SizedBox(
-                              height: 12,
-                              child: LinearProgressIndicator(
-                                value: linearProgress / linearMax,
-                                backgroundColor: Colors.yellow.shade900,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.red),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                      ),
+                    ),
+                  ),
                 ),
-              )
-            : Container(
-                color: Color.fromRGBO(255, 111, 0, 1),
-              );
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Center(
+                child: GestureDetector(
+                  onTap: () => selectDifficulty(Difficulty.HARD),
+                  child: Container(
+                    color: Color.fromRGBO(21, 21, 21, 1),
+                    child: Container(
+                      height: 180,
+                      width: 350.0,
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                                  Offset(2, 10), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Absturz",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w800),
+                            ).tr(),
+                            Text(
+                              "Strafen 1-2 Schluck(e) | keine Shots",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ).tr(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          size: 25,
+        ),
+      ),
+    );
   }
 }
