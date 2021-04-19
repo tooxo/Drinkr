@@ -21,8 +21,9 @@ import '../utils/player.dart';
 
 class GuessTheSong extends BasicGame {
   final bool showSolutionButton = true;
-  final Color primaryColor = Color.fromRGBO(46, 125, 50, 1);
-  final Color secondaryColor = Color.fromRGBO(96, 173, 94, 1);
+
+  final Color backgroundColor1 = Color.fromRGBO(25, 99, 0, 1);
+  final Color backgroundColor2 = Color.fromRGBO(34, 130, 1, 1);
 
   final GameType type = GameType.GUESS_THE_SONG;
 
@@ -179,7 +180,7 @@ class GuessTheSongState extends BasicGameState
                           value: _animation.value,
                           valueColor:
                               AlwaysStoppedAnimation(Colors.grey.shade900),
-                          backgroundColor: widget.secondaryColor,
+                          backgroundColor: widget.buttonColor,
                         ),
                       ),
                     ),
@@ -197,12 +198,12 @@ class GuessTheSongState extends BasicGameState
                             : this.audioPlayer.state == AudioPlayerState.PAUSED
                                 ? Icons.play_arrow
                                 : Icons.pause,
-                    color: Colors.black,
+                    color: widget.textColor,
                   ),
                 );
               }
               return SpinKitCircle(
-                color: widget.secondaryColor,
+                color: widget.textColor, // FIXME add correct spinner color
               );
             },
           ),

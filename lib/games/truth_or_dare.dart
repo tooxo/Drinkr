@@ -12,8 +12,8 @@ import '../utils/player.dart';
 class TruthOrDare extends BasicGame {
   final String title = "truthOrDare";
 
-  final Color primaryColor = Color.fromRGBO(255, 23, 68, 1);
-  final Color secondaryColor = Color.fromRGBO(255, 89, 104, 1);
+  final Color backgroundColor1 = Color.fromRGBO(129, 13, 13, 1);
+  final Color backgroundColor2 = Color.fromRGBO(207, 12, 12, 1);
 
   final GameType type = GameType.TRUTH;
 
@@ -29,6 +29,11 @@ class TruthOrDare extends BasicGame {
   State<StatefulWidget> createState() => TruthOrDareState();
 }
 
+const _kFontFam = 'Icons';
+const _kFontPkg = null;
+const IconData dice =
+    IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+
 class TruthOrDareState extends BasicGameState {
   bool truth = false;
   bool showSolution = false;
@@ -42,14 +47,17 @@ class TruthOrDareState extends BasicGameState {
               children: <Widget>[
                 Expanded(
                   flex: 1,
-                  child: TextWidget(widget.selectedPlayer[0].name),
+                  child: TextWidget(
+                    widget.selectedPlayer[0].name,
+                    textColor: widget.textColor,
+                  ),
                 ),
                 Expanded(
                   flex: 4,
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Padding(
                           padding: const EdgeInsets.only(
                               left: 32, right: 32, top: 10),
@@ -57,18 +65,21 @@ class TruthOrDareState extends BasicGameState {
                             child: ShowUpAnimation(
                               offset: 0,
                               child: MaterialButton(
-                                color: widget.secondaryColor,
+                                color: widget.buttonColor,
                                 onPressed: () {
                                   showSolution = true;
                                   truth = true;
                                   setState(() {});
                                 },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24)),
                                 child: FittedBox(
                                   child: Text(
                                     "truth",
-                                    style: GoogleFonts.caveatBrush(
-                                      textStyle: TextStyle(color: Colors.black),
-                                      fontSize: 450,
+                                    style: GoogleFonts.nunito(
+                                      textStyle:
+                                          TextStyle(color: widget.textColor),
+                                      fontSize: 45,
                                     ),
                                   ).tr(),
                                 ),
@@ -77,8 +88,22 @@ class TruthOrDareState extends BasicGameState {
                           ),
                         ),
                       ),
+                      /*Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10,
+                                        ),
+                                        child: Center(
+                                            child: IconButton(
+                                                icon: Icon(dice),
+                                                color: widget.buttonColor,
+                                            )
+                                        ),
+                                    ),
+                                ),*/
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Padding(
                           padding: const EdgeInsets.only(
                               left: 32, right: 32, top: 10),
@@ -86,18 +111,21 @@ class TruthOrDareState extends BasicGameState {
                             child: ShowUpAnimation(
                               offset: 0,
                               child: MaterialButton(
-                                color: widget.secondaryColor,
+                                color: widget.buttonColor,
                                 onPressed: () {
                                   showSolution = true;
                                   truth = false;
                                   setState(() {});
                                 },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24)),
                                 child: FittedBox(
                                   child: Text(
                                     "dare",
-                                    style: GoogleFonts.caveatBrush(
-                                      textStyle: TextStyle(color: Colors.black),
-                                      fontSize: 450,
+                                    style: GoogleFonts.nunito(
+                                      textStyle:
+                                          TextStyle(color: widget.textColor),
+                                      fontSize: 45,
                                     ),
                                   ).tr(),
                                 ),

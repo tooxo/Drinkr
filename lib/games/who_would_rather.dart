@@ -6,8 +6,9 @@ import '../utils/player.dart';
 class WhoWouldRather extends BasicGame {
   final String title = "whoWouldRather";
   final GameType type = GameType.WHO_WOULD_RATHER;
-  final Color primaryColor = Color.fromRGBO(255, 0, 98, 1);
-  final Color secondaryColor = Color.fromRGBO(255, 92, 143, 1);
+
+  final Color backgroundColor1 = Color.fromRGBO(57, 13, 129, 1);
+  final Color backgroundColor2 = Color.fromRGBO(129, 18, 124, 1);
 
   final int drinkingDisplay = 1;
 

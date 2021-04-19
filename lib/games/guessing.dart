@@ -3,8 +3,8 @@ import 'package:Drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
 
 class Guessing extends BasicGame {
-  final Color primaryColor = Color.fromRGBO(156, 39, 176, 1);
-  final Color secondaryColor = Color.fromRGBO(208, 92, 227, 1);
+  final Color backgroundColor1 = Color.fromRGBO(64, 13, 129, 1);
+  final Color backgroundColor2 = Color.fromRGBO(105, 13, 222, 1);
 
   final String title = "guessing";
 

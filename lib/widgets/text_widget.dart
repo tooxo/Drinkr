@@ -5,8 +5,9 @@ import 'package:show_up_animation/show_up_animation.dart';
 
 class TextWidget extends StatelessWidget {
   final String displayedText;
+  final Color textColor;
 
-  const TextWidget(this.displayedText);
+  const TextWidget(this.displayedText, {this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +16,10 @@ class TextWidget extends StatelessWidget {
         delayStart: Duration(seconds: 0),
         child: AutoSizeText(
           '''$displayedText''',
-          style: GoogleFonts.caveatBrush(
-              color: Colors.black, fontSize: 1000, fontWeight: FontWeight.w600),
+          style: GoogleFonts.nunito(
+              color: this.textColor,
+              fontSize: 1000,
+              fontWeight: FontWeight.w600),
           maxLines: 5,
           textAlign: TextAlign.center,
           maxFontSize: 60,

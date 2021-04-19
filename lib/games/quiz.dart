@@ -4,8 +4,8 @@ import 'package:Drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
 
 class Quiz extends BasicGame {
-  final Color primaryColor = Color.fromRGBO(2, 119, 189, 1);
-  final Color secondaryColor = Color.fromRGBO(88, 165, 240, 1);
+  final Color backgroundColor1 = Color.fromRGBO(13, 66, 129, 1);
+  final Color backgroundColor2 = Color.fromRGBO(13, 108, 129, 1);
 
   final bool showSolutionButton = true;
 

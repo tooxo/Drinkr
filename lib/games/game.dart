@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:Drinkr/utils/drinking.dart';
+import 'package:Drinkr/widgets/gradient.dart';
 import 'package:Drinkr/widgets/text_widget.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
@@ -14,8 +16,11 @@ import '../utils/player.dart';
 class BasicGame extends StatefulWidget {
   final String title = "Test Title";
 
-  final Color primaryColor = Colors.blue;
-  final Color secondaryColor = Colors.yellow;
+  final Color textColor = Colors.white;
+  final Color buttonColor = Color.fromRGBO(255, 255, 255, .3);
+  final Color backgroundColor1 = Colors.blue;
+  final Color backgroundColor2 = Colors.orange;
+
   final int drinkingDisplay = 2;
 
   final GameType type = GameType.UNDEFINED;
@@ -99,43 +104,49 @@ class BasicGameState extends State<BasicGame>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: widget.primaryColor,
-          title: Text("exitTitle",
-              style: GoogleFonts.caveatBrush(
-                textStyle: TextStyle(color: Colors.black),
-                fontWeight: FontWeight.w800,
-                fontSize: 30,
-              )).tr(),
-          content: Text(
-            "exitDescription",
-            style: GoogleFonts.caveatBrush(
-              textStyle: TextStyle(color: Colors.black),
-              fontSize: 25,
-            ),
-          ).tr(),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            FlatButton(
-              child: Text(
-                "exit",
-                style:
-                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
-              ).tr(),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-                Navigator.of(context).pop(true);
-              },
-            ),
-            FlatButton(
-              child: Text("goOn".tr(),
-                  style: GoogleFonts.caveatBrush(
-                      color: Colors.black, fontSize: 20)),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: AlertDialog(
+            backgroundColor: widget.backgroundColor2,
+            // FIXME add good color
+            title: Text("exitTitle",
+                style: GoogleFonts.nunito(
+                  textStyle: TextStyle(color: widget.textColor),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                )).tr(),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            content: Text(
+              "exitDescription",
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(color: widget.textColor),
+                fontSize: 25,
+              ),
+            ).tr(),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              FlatButton(
+                child: Text(
+                  "exit",
+                  style:
+                      GoogleFonts.nunito(color: widget.textColor, fontSize: 20),
+                ).tr(),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                  Navigator.of(context).pop(true);
+                },
+              ),
+              FlatButton(
+                child: Text("goOn".tr(),
+                    style: GoogleFonts.nunito(
+                        color: widget.textColor, fontSize: 20)),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          ),
         );
       },
     );
@@ -149,7 +160,7 @@ class BasicGameState extends State<BasicGame>
   AppBar buildAppBar() {
     return AppBar(
       elevation: 0,
-      iconTheme: IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(color: Colors.white),
       leading: IconButton(
         onPressed: () {
           displayExitDialog(context);
@@ -166,23 +177,28 @@ class BasicGameState extends State<BasicGame>
               0.0
           ? Text(
               widget.title,
-              style: GoogleFonts.caveatBrush(
-                  fontSize: 40,
-                  color: Colors.black,
+              style: GoogleFonts.nunito(
+                  fontSize: 28,
+                  color: widget.textColor,
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ).tr()
           : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 widget.title,
-                style: GoogleFonts.caveatBrush(
-                    color: Colors.black,
-                    fontSize: 40,
+                style: GoogleFonts.nunito(
+                    color: widget.textColor,
+                    fontSize: 28,
                     fontWeight: FontWeight.w600),
               ).tr(),
             ]),
       centerTitle: true,
-      backgroundColor: widget.primaryColor,
+      flexibleSpace: TwoColorGradient(
+        color1: widget.backgroundColor1,
+        color2: widget.backgroundColor2,
+        direction: GradientDirection.HORIZONTAL,
+      ),
+      // backgroundColor: Colors.green, // FIXME add fade
     );
   }
 
@@ -191,7 +207,6 @@ class BasicGameState extends State<BasicGame>
         ? buildWithSolution()
         : buildWithoutSolution();
   }
-
 
   Widget buildWithSolution() {
     return Column(
@@ -215,8 +230,8 @@ class BasicGameState extends State<BasicGame>
                           // fit: BoxFit.fitHeight,
                           child: Text(
                             widget.solutionText,
-                            style: GoogleFonts.caveatBrush(
-                                color: Colors.black,
+                            style: GoogleFonts.nunito(
+                                color: widget.textColor,
                                 fontSize: 25,
                                 fontWeight: FontWeight.w600),
                           ),
@@ -234,13 +249,16 @@ class BasicGameState extends State<BasicGame>
                                 animationController.forward();
                               });
                             },
-                            color: widget.secondaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            color: widget.buttonColor,
                             child: FittedBox(
                               fit: BoxFit.contain,
                               child: Text(
                                 "gameShowSolution",
-                                style: GoogleFonts.caveatBrush(
-                                    color: Colors.black,
+                                style: GoogleFonts.nunito(
+                                    color: widget.textColor,
                                     fontSize: 40,
                                     fontWeight: FontWeight.w600),
                               ).tr(),
@@ -260,7 +278,11 @@ class BasicGameState extends State<BasicGame>
     return Padding(
       padding: EdgeInsets.all(20),
       child: Container(
-        child: Center(child: TextWidget(widget.mainTitle)),
+        child: Center(
+            child: TextWidget(
+          widget.mainTitle,
+          textColor: widget.textColor,
+        )),
       ),
     );
   }
@@ -284,15 +306,16 @@ class BasicGameState extends State<BasicGame>
                             title: Text(
                               "explanation",
                               style: GoogleFonts.caveatBrush(
-                                  color: Colors.black,
+                                  color: widget.textColor,
                                   fontSize: 45,
                                   fontWeight: FontWeight.w700),
                             ).tr(),
-                            backgroundColor: widget.secondaryColor,
+                            backgroundColor:
+                                widget.buttonColor, // Fixme add correct color
                             content: Text(
                               generateMessage(),
                               style: GoogleFonts.caveatBrush(
-                                  color: Colors.black,
+                                  color: widget.textColor,
                                   fontSize: 30,
                                   fontWeight: FontWeight.w700),
                             ),
@@ -302,7 +325,7 @@ class BasicGameState extends State<BasicGame>
                                 child: Text(
                                   "close",
                                   style: GoogleFonts.caveatBrush(
-                                      color: Colors.black, fontSize: 20),
+                                      color: widget.textColor, fontSize: 20),
                                 ).tr(),
                                 onPressed: () {
                                   Navigator.of(context).pop(true);
@@ -313,9 +336,15 @@ class BasicGameState extends State<BasicGame>
                         },
                       );
                     },
-                    color: widget.secondaryColor,
-                    child: DrinkingDisplay(
-                        widget.drinking[0], widget.drinking[1], Colors.black),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    color: widget.buttonColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DrinkingDisplay(widget.drinking[0],
+                          widget.drinking[1], widget.textColor),
+                    ),
                   ),
                 ),
               )
@@ -334,16 +363,19 @@ class BasicGameState extends State<BasicGame>
             padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
             child: MaterialButton(
               onPressed: () => Navigator.of(context).pop(false),
-              color: widget.secondaryColor,
+              color: widget.buttonColor,
               //minWidth: 120,
               height: 5000,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
               child: FittedBox(
                 fit: BoxFit.fitHeight,
                 child: Text(
                   "next",
-                  style: GoogleFonts.caveatBrush(
-                      color: Colors.black,
-                      fontSize: 40,
+                  style: GoogleFonts.nunito(
+                      color: widget.textColor,
+                      fontSize: 30,
                       fontWeight: FontWeight.w600),
                 ).tr(),
               ),
@@ -363,16 +395,17 @@ class BasicGameState extends State<BasicGame>
       onWillPop: () => displayExitDialogWrapper(context),
       child: Scaffold(
         appBar: buildAppBar(),
-        body: Container(
-          color: widget.primaryColor,
+        body: TwoColorGradient(
+          color1: widget.backgroundColor1,
+          color2: widget.backgroundColor2,
           child: Column(
             children: <Widget>[
               Expanded(
-                flex: 4,
+                flex: 6,
                 child: buildTop(),
               ),
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: buildBottom(),
               )
             ],

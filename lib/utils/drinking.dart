@@ -82,7 +82,7 @@ class DrinkingDisplay extends StatelessWidget {
               FittedBox(
                 child: Text(
                   amount.toString() + "×", // Unicode Multiply Sign
-                  style: GoogleFonts.caveatBrush(
+                  style: GoogleFonts.nunito(
                       fontSize: 5000, color: this.tintColor),
                 ),
               ),
