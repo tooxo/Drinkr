@@ -152,166 +152,108 @@ class CustomState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor:   Color.fromRGBO(255, 111, 0, 1),
-          iconTheme: IconThemeData(color: Colors.black),
-          title: Center(
-            child: Padding(
-              padding: EdgeInsets.only(right: 50.0),
-              child: Text(
-                "customTitle",
-                style: GoogleFonts.caveatBrush(
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w600),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+        title: Text(
+          "customTitle",
+          style: GoogleFonts.nunito(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+        ).tr(),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+      body: Padding(
+        padding: EdgeInsets.only(top: 40),
+        child: ListView.builder(
+          controller: _scrollControl,
+          itemCount: selectedItems.length,
+          itemBuilder: (c, i) => Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Expanded(
+                flex: 4,
+                child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedItems[selectedItems.keys.elementAt(i)] =
+                            !selectedItems[selectedItems.keys.elementAt(i)];
+                      });
+                      saveSave();
+                    },
+                    child: Text(
+                      selectedItems.keys.elementAt(i) == GameType.TRUTH
+                          ? "truthOrDare".tr()
+                          : gameTypeToGameTypeClass(
+                                  selectedItems.keys.elementAt(i))
+                              .translatedTitle,
+                      style: GoogleFonts.nunito(
+                          textStyle:
+                              TextStyle(color: Colors.white, fontSize: 25)),
+                    )),
+              ),
+              Expanded(
+                flex: 1,
+                child: Transform.scale(
+                    scale: 2,
+                    child: Checkbox(
+                      value: selectedItems[selectedItems.keys.elementAt(i)],
+                      focusColor: Colors.black,
+                      checkColor: Colors.black,
+                      activeColor: Colors.deepOrange,
+                      onChanged: !this.itemActivated.values.elementAt(i)
+                          ? null
+                          : (newValue) {
+                              setState(() {
+                                selectedItems[selectedItems.keys.elementAt(i)] =
+                                    !selectedItems[
+                                        selectedItems.keys.elementAt(i)];
+                              });
+                              saveSave();
+                            },
+                    )),
+              ),
+            ]),
+          ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(left: 20, right: 20, bottom: 50),
+        child: GestureDetector(
+          onTap: () => confirm(),
+          child: Container(
+            color: Color.fromRGBO(21, 21, 21, 1),
+            child: Container(
+              height: 80,
+              width: 350.0,
+              decoration: BoxDecoration(
+                  color: Colors.deepOrange,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.8),
+                      blurRadius: 8,
+                      offset: Offset(2, 10), // changes position of shadow
+                    ),
+                  ],
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "startGame",
+                      style: GoogleFonts.nunito(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w800),
+                    ).tr(),
+                  ],
                 ),
-              ).tr(),
+              ),
             ),
           ),
         ),
-        backgroundColor: Colors.black,
-        body: LayoutBuilder(
-          builder: (context, c) {
-            double calcDegree =
-                (atan((c.maxHeight * 0.5 * 0.1) / c.maxWidth) * 180) / pi;
-            double distanceOffset =
-                (c.maxWidth * sin((calcDegree * pi / 180))) /
-                    sin(((90 - calcDegree) * pi) / 180);
-
-            return ColumnSuper(
-              innerDistance: distanceOffset * -1 + 3,
-              children: <Widget>[
-                CustomPaint(
-                  painter:
-                      TopPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
-                  child: Container(
-                    height: c.maxHeight * 0.05,
-                    width: c.maxWidth,
-                  ),
-                ),
-                CustomPaint(
-                  painter: MiddlePainter(calcDegree, Colors.deepOrange),
-                  child: Container(
-                    height: c.maxHeight * 0.85 - 6,
-                    width: c.maxWidth,
-                    child: ClipPath(
-                      clipper: MiddleClipper(calcDegree),
-                      child: DraggableScrollbar.rrect(
-                        alwaysVisibleScrollThumb: true,
-                        backgroundColor: Colors.black,
-                        controller: _scrollControl,
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(
-                              top: distanceOffset, bottom: distanceOffset),
-                          controller: _scrollControl,
-                          itemCount: selectedItems.length,
-                          itemBuilder: (c, i) => Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 4,
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            selectedItems[selectedItems.keys
-                                                    .elementAt(i)] =
-                                                !selectedItems[selectedItems
-                                                    .keys
-                                                    .elementAt(i)];
-                                          });
-                                          saveSave();
-                                        },
-                                        child: Text(
-                                          selectedItems.keys.elementAt(i) ==
-                                                  GameType.TRUTH
-                                              ? "truthOrDare".tr()
-                                              : gameTypeToGameTypeClass(
-                                                      selectedItems.keys
-                                                          .elementAt(i))
-                                                  .translatedTitle,
-                                          style: GoogleFonts.caveatBrush(
-                                              textStyle: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 30)),
-                                        )),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Transform.scale(
-                                        scale: 2,
-                                        child: Checkbox(
-                                          value: selectedItems[
-                                              selectedItems.keys.elementAt(i)],
-                                          checkColor: Colors.black,
-                                          focusColor:
-                                              Color.fromRGBO(255, 111, 0, 1),
-                                          activeColor:
-                                              Color.fromRGBO(255, 111, 0, 1),
-                                          onChanged: !this
-                                                  .itemActivated
-                                                  .values
-                                                  .elementAt(i)
-                                              ? null
-                                              : (newValue) {
-                                                  setState(() {
-                                                    selectedItems[selectedItems
-                                                            .keys
-                                                            .elementAt(i)] =
-                                                        !selectedItems[
-                                                            selectedItems.keys
-                                                                .elementAt(i)];
-                                                  });
-                                                  saveSave();
-                                                },
-                                        )),
-                                  )
-                                ]),
-                          ),
-                          /* Container(
-                              height: distanceOffset,
-                            );*/
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                CustomPaint(
-                  painter:
-                      BottomPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
-                  child: Container(
-                    width: c.maxWidth,
-                    height: c.maxHeight * 0.2,
-                    child: Material(
-                      color: Colors.transparent,
-                      shape: BottomShapePainter(0, calcDegree),
-                      child: InkWell(
-                        customBorder: BottomShapePainter(0, calcDegree),
-                        onTap: confirm,
-                        child: Container(
-                            margin: EdgeInsets.only(top: distanceOffset),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              alignment: Alignment.center,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 16.0, left: 16.0, right: 16.0),
-                                child: Text(
-                                  "startGame",
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.caveatBrush(fontSize: 80),
-                                ).tr(),
-                              ),
-                            )),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            );
-          },
-        ));
+      ),
+    );
   }
 }
