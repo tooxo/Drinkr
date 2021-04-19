@@ -61,7 +61,7 @@ class SoundData {
       }
     }
 
-    List<List<double>> output = List<List<double>>();
+    List<List<double>> output = [];
     int step = (minPoints.length / barNum).ceil();
     double aMax = 0;
     int aMaxA = 0;
@@ -95,12 +95,15 @@ class SoundData {
     final t = (size.width / barNum);
     for (int _j = 1; _j < output.length; _j++) {
       if (drawRect) {
-        path
-          ..moveTo(t * _j - 1.25, middle + output[_j][0] * scaleFactor)
-          ..lineTo(t * _j + 1.25, middle + output[_j][0] * scaleFactor)
-          ..lineTo(t * _j + 1.25, middle + output[_j][1] * scaleFactor)
-          ..lineTo(t * _j - 1.25, middle + output[_j][1] * scaleFactor)
-          ..lineTo(t * _j - 1.25, middle + output[_j][0] * scaleFactor);
+        path.addRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromPoints(
+              Offset(t * _j - 1.25, middle + output[_j][0] * scaleFactor),
+              Offset(t * _j + 1.25, middle + output[_j][1] * scaleFactor),
+            ),
+            Radius.circular(24),
+          ),
+        );
       } else {
         path.moveTo(t * _j, middle + output[_j][0] * scaleFactor);
         path.lineTo(t * _j, middle + output[_j][1] * scaleFactor);
