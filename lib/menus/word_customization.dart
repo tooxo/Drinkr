@@ -7,6 +7,7 @@ import 'package:Drinkr/utils/types.dart';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,8 +22,7 @@ class WordCustomization extends StatefulWidget {
 }
 
 class WordCustomizationState extends State<WordCustomization> {
-  Map<GameType, List<String>> textsToDisplay =
-      Map<GameType, List<String>>();
+  Map<GameType, List<String>> textsToDisplay = Map<GameType, List<String>>();
   bool init = false;
   List<GameType> enabledGameTypes = GameType.values;
 
@@ -109,9 +109,7 @@ class WordCustomizationState extends State<WordCustomization> {
       if (await Spotify.playlistExists(tf1Value)) {
         return true;
       } else {
-        await Fluttertoast.showToast(
-            msg:
-                "spotifyGenericError".tr());
+        await Fluttertoast.showToast(msg: "spotifyGenericError".tr());
         return false;
       }
     }
@@ -158,7 +156,8 @@ class WordCustomizationState extends State<WordCustomization> {
                 ),
               ),
               CustomPaint(
-                painter: BottomPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
+                painter:
+                    BottomPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
                 child: Container(
                   height: 0.95 * c.maxHeight + distanceOffset - 3,
                   width: c.maxWidth,
@@ -199,7 +198,8 @@ class WordCustomizationState extends State<WordCustomization> {
                                                 ),
                                                 for (GameType type
                                                     in textsToDisplay.keys)
-                                                  textsToDisplay[type].isNotEmpty
+                                                  textsToDisplay[type]
+                                                          .isNotEmpty
                                                       ? Container(
                                                           width: c.maxWidth,
                                                           color:
@@ -245,7 +245,11 @@ class WordCustomizationState extends State<WordCustomization> {
                                                                                 SingleChildScrollView(
                                                                               scrollDirection: Axis.horizontal,
                                                                               child: Text(
-                                                                                gameTypeToGameTypeClass(type).hasSolution ? value.contains(";") ? value.split(";")[0] : value : value,
+                                                                                gameTypeToGameTypeClass(type).hasSolution
+                                                                                    ? value.contains(";")
+                                                                                        ? value.split(";")[0]
+                                                                                        : value
+                                                                                    : value,
                                                                                 textAlign: TextAlign.start,
                                                                                 style: GoogleFonts.caveatBrush(fontSize: 30),
                                                                               ),
@@ -350,7 +354,8 @@ class WordCustomizationState extends State<WordCustomization> {
                                         keyboardType: TextInputType.multiline,
                                         maxLines: 3,
                                         maxLength: 250,
-                                        maxLengthEnforced: true,
+                                        maxLengthEnforcement:
+                                            MaxLengthEnforcement.enforced,
                                         onChanged: (newVal) {
                                           tf1Value = newVal;
                                           _formKeyField1.currentState
@@ -385,7 +390,8 @@ class WordCustomizationState extends State<WordCustomization> {
                                         keyboardType: TextInputType.multiline,
                                         maxLines: 3,
                                         maxLength: 60,
-                                        maxLengthEnforced: true,
+                                        maxLengthEnforcement:
+                                            MaxLengthEnforcement.enforced,
                                         onChanged: (newVal) {
                                           tf2Value = newVal;
                                           _formKeyField2.currentState
@@ -424,7 +430,7 @@ class WordCustomizationState extends State<WordCustomization> {
                             Row(
                               children: <Widget>[
                                 Expanded(
-                                  child: FlatButton.icon(
+                                  child: TextButton.icon(
                                       label:
                                           Text(buttonEnabled ? "add" : "wait")
                                               .tr(),

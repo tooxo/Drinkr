@@ -1,11 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:Drinkr/menus/difficulty.dart';
-import 'package:Drinkr/utils/shapes.dart';
 import 'package:Drinkr/utils/types.dart';
-import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -50,7 +46,7 @@ class CustomState extends State<StatefulWidget> {
 
   Future<void> saveSave() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    List<String> stringList = List<String>();
+    List<String> stringList = [];
     for (GameType type in selectedItems.keys) {
       stringList.add(JsonEncoder().convert({
         "name": gameTypeToGameTypeClass(type).filePrefix,
@@ -112,7 +108,7 @@ class CustomState extends State<StatefulWidget> {
             ).tr(),
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
-              FlatButton(
+              TextButton(
                 child: Text(
                   "close",
                   style: GoogleFonts.caveatBrush(

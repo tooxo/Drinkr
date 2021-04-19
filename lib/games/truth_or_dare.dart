@@ -12,8 +12,8 @@ import '../utils/player.dart';
 class TruthOrDare extends BasicGame {
   final String title = "truthOrDare";
 
-  final Color backgroundColor1 = Color.fromRGBO(129, 13, 13, 1);
-  final Color backgroundColor2 = Color.fromRGBO(207, 12, 12, 1);
+  final Color backgroundColor1 = Color.fromRGBO(112, 13, 129, 1);
+  final Color backgroundColor2 = Color.fromRGBO(222, 15, 15, 1);
 
   final GameType type = GameType.TRUTH;
 
@@ -140,8 +140,11 @@ class TruthOrDareState extends BasicGameState {
               ],
             ),
           )
-        : TextWidget(this.truth
-            ? "truth".tr() + ": " + jsonDecode(widget.mainTitle)["truth"]
-            : "dare".tr() + ": " + jsonDecode(widget.mainTitle)["dare"]);
+        : TextWidget(
+            this.truth
+                ? "truth".tr() + ": " + jsonDecode(widget.mainTitle)["truth"]
+                : "dare".tr() + ": " + jsonDecode(widget.mainTitle)["dare"],
+            textColor: widget.textColor,
+          );
   }
 }

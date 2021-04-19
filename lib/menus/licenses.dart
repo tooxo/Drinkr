@@ -11,17 +11,17 @@ class Licenses extends StatefulWidget {
 }
 
 class LicensesState extends State<Licenses> {
-  List<List<String>> items = List<List<String>>();
+  List<List<String>> items = [];
   Map<String, List<List<String>>> itemMap =
       Map<String, List<List<String>>>();
 
   void populateItems() async {
     await LicenseRegistry.licenses.forEach((license) {
-      List<String> appendable = List<String>();
+      List<String> appendable = [];
       appendable.add(license.packages.join(", "));
       for (String package in license.packages) {
         if (!itemMap.containsKey(package)) {
-          itemMap[package] = List<List<String>>();
+          itemMap[package] = [];
         }
         itemMap[package].add(
             license.paragraphs.map((paragraph) => paragraph.text).toList());
@@ -95,7 +95,7 @@ class LicensesState extends State<Licenses> {
                                 SizedBox(
                                   height: 40,
                                   width: double.infinity,
-                                  child: FlatButton.icon(
+                                  child: TextButton.icon(
                                     onPressed: () async {
                                       const url =
                                           "https://github.com/tooxo/DrinkrFlutter";

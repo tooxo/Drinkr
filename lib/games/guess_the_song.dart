@@ -22,8 +22,8 @@ import '../utils/player.dart';
 class GuessTheSong extends BasicGame {
   final bool showSolutionButton = true;
 
-  final Color backgroundColor1 = Color.fromRGBO(25, 99, 0, 1);
-  final Color backgroundColor2 = Color.fromRGBO(34, 130, 1, 1);
+  final Color backgroundColor1 = Color.fromRGBO(13, 124, 98, 1);
+  final Color backgroundColor2 = Color.fromRGBO(155, 212, 33, 1);
 
   final GameType type = GameType.GUESS_THE_SONG;
 
@@ -178,6 +178,7 @@ class GuessTheSongState extends BasicGameState
                         animation: _animation,
                         builder: (context, child) => LinearProgressIndicator(
                           value: _animation.value,
+
                           valueColor:
                               AlwaysStoppedAnimation(Colors.grey.shade900),
                           backgroundColor: widget.buttonColor,

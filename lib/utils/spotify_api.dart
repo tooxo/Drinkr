@@ -49,7 +49,7 @@ class Spotify {
   /// Pulls a playlist from Spotify
   Future<List<List<String>>> getPlaylist(String playlistId,
       {useCache = true}) async {
-    List<List<String>> trackList = List<List<String>>();
+    List<List<String>> trackList = [];
 
     SqLite database;
     if (useCache) database = await SqLite().open();

@@ -17,7 +17,7 @@ class BasicGame extends StatefulWidget {
   final String title = "Test Title";
 
   final Color textColor = Colors.white;
-  final Color buttonColor = Color.fromRGBO(255, 255, 255, .3);
+  final Color buttonColor = Color.fromRGBO(0, 0, 0, .3);
   final Color backgroundColor1 = Colors.blue;
   final Color backgroundColor2 = Colors.orange;
 
@@ -33,10 +33,10 @@ class BasicGame extends StatefulWidget {
   final String mainTitle = "Error";
   final String solutionText = "Error";
 
-  final List drinking = List();
+  final List drinking = [];
   final String text;
 
-  final List<Player> selectedPlayer = List<Player>();
+  final List<Player> selectedPlayer = [];
 
   @mustCallSuper
   BasicGame(this.players, this.difficulty, this.text) {
@@ -107,14 +107,23 @@ class BasicGameState extends State<BasicGame>
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
           child: AlertDialog(
-            backgroundColor: widget.backgroundColor2,
-            // FIXME add good color
-            title: Text("exitTitle",
-                style: GoogleFonts.nunito(
-                  textStyle: TextStyle(color: widget.textColor),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                )).tr(),
+            backgroundColor: Color.fromARGB(
+              (widget.backgroundColor1.alpha + widget.backgroundColor2.alpha) ~/
+                  2,
+              (widget.backgroundColor1.red + widget.backgroundColor2.red) ~/ 2,
+              (widget.backgroundColor1.green + widget.backgroundColor2.green) ~/
+                  2,
+              (widget.backgroundColor1.blue + widget.backgroundColor2.blue) ~/
+                  2,
+            ),
+            title: Text(
+              "exitTitle",
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(color: widget.textColor),
+                fontWeight: FontWeight.w800,
+                fontSize: 30,
+              ),
+            ).tr(),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
             content: Text(
@@ -126,7 +135,7 @@ class BasicGameState extends State<BasicGame>
             ).tr(),
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
-              FlatButton(
+              TextButton(
                 child: Text(
                   "exit",
                   style:
@@ -137,7 +146,7 @@ class BasicGameState extends State<BasicGame>
                   Navigator.of(context).pop(true);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text("goOn".tr(),
                     style: GoogleFonts.nunito(
                         color: widget.textColor, fontSize: 20)),
@@ -232,7 +241,7 @@ class BasicGameState extends State<BasicGame>
                             widget.solutionText,
                             style: GoogleFonts.nunito(
                                 color: widget.textColor,
-                                fontSize: 25,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -259,7 +268,7 @@ class BasicGameState extends State<BasicGame>
                                 "gameShowSolution",
                                 style: GoogleFonts.nunito(
                                     color: widget.textColor,
-                                    fontSize: 30,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.w600),
                               ).tr(),
                             ),
@@ -302,36 +311,54 @@ class BasicGameState extends State<BasicGame>
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              "explanation",
-                              style: GoogleFonts.caveatBrush(
-                                  color: widget.textColor,
-                                  fontSize: 45,
-                                  fontWeight: FontWeight.w700),
-                            ).tr(),
-                            backgroundColor:
-                                widget.buttonColor, // Fixme add correct color
-                            content: Text(
-                              generateMessage(),
-                              style: GoogleFonts.caveatBrush(
-                                  color: widget.textColor,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            actions: <Widget>[
-                              // usually buttons at the bottom of the dialog
-                              FlatButton(
-                                child: Text(
-                                  "close",
-                                  style: GoogleFonts.caveatBrush(
-                                      color: widget.textColor, fontSize: 20),
-                                ).tr(),
-                                onPressed: () {
-                                  Navigator.of(context).pop(true);
-                                },
+                          return BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                            child: AlertDialog(
+                              title: Text(
+                                "explanation",
+                                style: GoogleFonts.nunito(
+                                    color: widget.textColor,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700),
+                              ).tr(),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
                               ),
-                            ],
+                              backgroundColor: Color.fromARGB(
+                                (widget.backgroundColor1.alpha +
+                                        widget.backgroundColor2.alpha) ~/
+                                    2,
+                                (widget.backgroundColor1.red +
+                                        widget.backgroundColor2.red) ~/
+                                    2,
+                                (widget.backgroundColor1.green +
+                                        widget.backgroundColor2.green) ~/
+                                    2,
+                                (widget.backgroundColor1.blue +
+                                        widget.backgroundColor2.blue) ~/
+                                    2,
+                              ),
+                              content: Text(
+                                generateMessage(),
+                                style: GoogleFonts.nunito(
+                                    color: widget.textColor,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              actions: <Widget>[
+                                // usually buttons at the bottom of the dialog
+                                TextButton(
+                                  child: Text(
+                                    "close",
+                                    style: GoogleFonts.nunito(
+                                        color: widget.textColor, fontSize: 20),
+                                  ).tr(),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );
@@ -401,7 +428,7 @@ class BasicGameState extends State<BasicGame>
           child: Column(
             children: <Widget>[
               Expanded(
-                flex: 6,
+                flex: 7,
                 child: buildTop(),
               ),
               Expanded(

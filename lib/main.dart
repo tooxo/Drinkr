@@ -91,7 +91,7 @@ class SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 111, 0, 1),
-      body: FlatButton(
+      body: TextButton(
           onPressed: () {
             if (this.t.isActive) {
               this.t.cancel();

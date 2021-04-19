@@ -8,8 +8,8 @@ import 'package:easy_localization/easy_localization.dart';
 import '../utils/drinking.dart';
 
 class Challenges extends BasicGame {
-  final Color backgroundColor1 = Color.fromRGBO(45, 48, 120, 1);
-  final Color backgroundColor2 = Color.fromRGBO(110, 65, 239, 1);
+  final Color backgroundColor1 = Color.fromRGBO(110, 65, 239, 1);
+  final Color backgroundColor2 = Color.fromRGBO(168, 50, 170, 1);
   final Color buttonColor = Color.fromRGBO(29, 29, 69, .3);
   final int drinkingDisplay = 0;
 

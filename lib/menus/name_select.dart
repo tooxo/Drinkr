@@ -27,7 +27,7 @@ class NameSelect extends StatefulWidget {
 
 class NameSelectState extends State<NameSelect> {
   String player1 = "";
-  List<Player> players = List<Player>();
+  List<Player> players = [];
   TextEditingController textEditingController = TextEditingController();
   double sliderState = 100;
   double maxRounds = 1000;
@@ -49,7 +49,7 @@ class NameSelectState extends State<NameSelect> {
 
   Future<void> setPlayers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    List<String> playerNames = List<String>();
+    List<String> playerNames = [];
     for (Player p in this.players) {
       playerNames.add(p.toString());
     }
@@ -62,8 +62,7 @@ class NameSelectState extends State<NameSelect> {
     loadPlayers();
   }
 
-  static String illegalNames =
-      r"^ +$"; //only backspaces = illegal wie Minderheiten
+  static String illegalNames = r"^ +$";
 
   RegExp regExp = RegExp(illegalNames);
 
@@ -90,7 +89,7 @@ class NameSelectState extends State<NameSelect> {
               ).tr(),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
-                FlatButton(
+                TextButton(
                   child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
@@ -127,7 +126,7 @@ class NameSelectState extends State<NameSelect> {
               ).tr(),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
-                FlatButton(
+                TextButton(
                   child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
@@ -342,7 +341,7 @@ class NameSelectState extends State<NameSelect> {
                                   ).tr(),
                                   actions: <Widget>[
                                     // usually buttons at the bottom of the dialog
-                                    FlatButton(
+                                    TextButton(
                                       child: Text(
                                         "close".tr(),
                                         style: GoogleFonts.caveatBrush(
@@ -378,7 +377,7 @@ class NameSelectState extends State<NameSelect> {
                                   ),
                                   actions: <Widget>[
                                     // usually buttons at the bottom of the dialog
-                                    FlatButton(
+                                    TextButton(
                                       child: Text(
                                         "close",
                                         style: GoogleFonts.caveatBrush(

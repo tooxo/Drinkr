@@ -26,7 +26,7 @@ Future<Map<String, dynamic>> _parseManifest(BuildContext context) async {
 /// Get a list of all FilePaths in local Documents.
 Future<List<String>> _getLocalFiles() async {
   Directory documents = Directory(await _localPath);
-  List<String> filePaths = List<String>();
+  List<String> filePaths = [];
   dynamic test = await documents
       .list(recursive: true, followLinks: false)
       .where((event) => event is File)
@@ -64,7 +64,7 @@ Future<List<String>> getIncludedFiles(
       .keys
       .where((element) => element.startsWith(path))
       .toList();
-  List<String> returnValue = List<String>();
+  List<String> returnValue = [];
   for (String fileName in matchingFilenames) {
     String fileContent = await _loadManifestAsset(context, fileName);
     fileContent.split("\n").forEach((element) {
@@ -84,7 +84,7 @@ Future<List<String>> getIncludedFiles(
 Future<List<String>> getLocalFiles(GameType type) async {
   String gameType = gameTypeToGameTypeClass(type).filePrefix;
   String pathMatcher = "/customFiles/$gameType";
-  List<String> returnValue = List<String>();
+  List<String> returnValue = [];
   for (String fileName in (await _getLocalFiles())
       .where((element) => element.contains(pathMatcher))) {
     String documentContent = await _loadLocalFile(fileName);

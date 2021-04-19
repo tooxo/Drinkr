@@ -58,7 +58,7 @@ void showAdDialog(BuildContext context) async {
             ),
           ).tr(),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 "ok",
                 style:
@@ -69,7 +69,7 @@ void showAdDialog(BuildContext context) async {
                 Navigator.of(context).pop(true);
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text(
                 "notAgain",
                 style:
@@ -116,7 +116,7 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
             ).tr(),
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
-              FlatButton(
+              TextButton(
                 child: Text(
                   "close",
                   style: GoogleFonts.caveatBrush(
@@ -151,7 +151,7 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
             ),
           ).tr(),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 "close",
                 style:
@@ -186,7 +186,7 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
           ).tr(),
           actions: <Widget>[
 // usually buttons at the bottom of the dialog
-            FlatButton(
+            TextButton(
               child: Text(
                 "close",
                 style:

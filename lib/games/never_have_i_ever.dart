@@ -8,7 +8,7 @@ class NeverHaveIEver extends BasicGame {
   final GameType type = GameType.NEVER_HAVE_I_EVER;
 
   final Color backgroundColor1 = Color.fromRGBO(222, 0, 0, 1);
-  final Color backgroundColor2 = Color.fromRGBO(241, 72, 0, 1);
+  final Color backgroundColor2 = Color.fromRGBO(255, 12, 186, 1);
 
   final int drinkingDisplay = 1;
 

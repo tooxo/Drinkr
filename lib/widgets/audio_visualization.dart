@@ -26,7 +26,7 @@ class SoundData {
     bits = jsonObject["bits"];
     length = jsonObject["length"];
     List<dynamic> temp = jsonObject["data"];
-    data = List<int>();
+    data = [];
     for (int i = 0; i < temp.length; i++) {
       data.add(temp[i] as int);
     }
