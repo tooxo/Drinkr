@@ -27,7 +27,7 @@ class NameSelect extends StatefulWidget {
 
 class NameSelectState extends State<NameSelect> {
   String player1 = "";
-  List<Player> players = [];
+  List<Player> players = List<Player>();
   TextEditingController textEditingController = TextEditingController();
   double sliderState = 100;
   double maxRounds = 1000;
@@ -49,7 +49,7 @@ class NameSelectState extends State<NameSelect> {
 
   Future<void> setPlayers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    List<String> playerNames = [];
+    List<String> playerNames = List<String>();
     for (Player p in this.players) {
       playerNames.add(p.toString());
     }
@@ -62,7 +62,8 @@ class NameSelectState extends State<NameSelect> {
     loadPlayers();
   }
 
-  static String illegalNames = r"^ +$";
+  static String illegalNames =
+      r"^ +$"; //only backspaces = illegal wie Minderheiten
 
   RegExp regExp = RegExp(illegalNames);
 
@@ -89,7 +90,7 @@ class NameSelectState extends State<NameSelect> {
               ).tr(),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
-                TextButton(
+                FlatButton(
                   child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
@@ -126,7 +127,7 @@ class NameSelectState extends State<NameSelect> {
               ).tr(),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
-                TextButton(
+                FlatButton(
                   child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
@@ -150,282 +151,78 @@ class NameSelectState extends State<NameSelect> {
     }
   }
 
+  //TODO: Bro do this shit gotchu ma n....!!!!
+
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: widget.secondaryColor,
-          iconTheme: IconThemeData(color: Colors.black),
-          title: Center(
-            child: Padding(
-              padding: EdgeInsets.only(right: 50.0),
-              child: Text(
-                "nameSelectTitle",
-                style: GoogleFonts.caveatBrush(
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+      ),
+      backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+      resizeToAvoidBottomInset: false,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+              color: Colors.deepOrange,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.8),
+                  blurRadius: 8,
+                  offset: Offset(2, 10), // changes position of shadow
                 ),
-              ).tr(),
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              children: [
+                Center(
+                  child: TextField(
+                    controller: this.textEditingController,
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (value) => {this.buttonPress()},
+                    onChanged: (value) => {this.player1 = value},
+                    style: GoogleFonts.nunito(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      hintText: "nameInput".tr(),
+                      hintStyle: GoogleFonts.nunito(
+                        fontSize: 20,
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                      border: InputBorder.none,
+                      suffixIcon: Transform.scale(
+                        scale: 0.9,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(1000)),
+                            color: Colors.transparent,
+                          ),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.add,
+                              size: 30,
+                            ),
+                            focusColor: Colors.white,
+                            color: Colors.white,
+                            onPressed: () => {this.buttonPress()},
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-        resizeToAvoidBottomInset: false,
-        body: LayoutBuilder(builder: (context, c) {
-          double calcDegree =
-              (atan((c.maxHeight * 0.5 * 0.1) / c.maxWidth) * 180) / pi;
-          double distanceOffset = (c.maxWidth * sin((calcDegree * pi / 180))) /
-              sin(((90 - calcDegree) * pi) / 180);
-
-          return ColumnSuper(
-            innerDistance: distanceOffset * -1 + 3,
-            separatorOnTop: true,
-            children: <Widget>[
-              CustomPaint(
-                painter: TopPainter(calcDegree, widget.secondaryColor),
-                child: Container(
-                  width: c.maxWidth,
-                  height: c.maxHeight * 0.25,
-                  child: Stack(
-                    children: <Widget>[
-                      Material(
-                        color: Colors.transparent,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: TextField(
-                            controller: this.textEditingController,
-                            textInputAction: TextInputAction.done,
-                            onSubmitted: (value) => {this.buttonPress()},
-                            onChanged: (value) => {this.player1 = value},
-                            maxLength: 15,
-                            style: GoogleFonts.caveatBrush(
-                              fontSize: 20,
-                            ),
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                              fillColor: Colors.black,
-                              hintText: "nameInput".tr(),
-                              hintStyle: GoogleFonts.caveatBrush(
-                                fontSize: 20,
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              suffixIcon: Transform.scale(
-                                scale: 0.9,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(1000)),
-                                    color: Colors.transparent,
-                                  ),
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.add,
-                                      size: 30,
-                                    ),
-                                    focusColor: Colors.black,
-                                    color: Colors.black,
-                                    onPressed: () => {this.buttonPress()},
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 10,
-                        left: 10,
-                        child: Text(
-                          players.length.toString() + " / 12",
-                          style: GoogleFonts.caveatBrush(
-                              fontSize: 25,
-                              color: players.length > 12
-                                  ? Colors.red.shade900
-                                  : Colors.black),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              CustomPaint(
-                painter: MiddlePainter(calcDegree, widget.primaryColor),
-                child: Container(
-                  width: c.maxWidth,
-                  height: c.maxHeight * 0.65 - 6,
-                  child: ClipPath(
-                    clipper: MiddleClipper(calcDegree),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: distanceOffset,
-                          ),
-                          for (Player i in this.players)
-                            Container(
-                              margin: EdgeInsets.fromLTRB(20, 0, 35, 0),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    flex: 7,
-                                    child: Text(
-                                      i.name,
-                                      style:
-                                          GoogleFonts.caveatBrush(fontSize: 30),
-                                    ),
-                                  ),
-                                  Expanded(
-                                      flex: 1,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            this.players.remove(Player(i.name));
-                                            setPlayers();
-                                          });
-                                        },
-                                        color: Colors.black,
-                                        highlightColor: Colors.black,
-                                        splashColor: Colors.blue,
-                                        icon: Icon(Icons.delete_forever),
-                                        alignment: Alignment.center,
-                                      ))
-                                ],
-                              ),
-                            ),
-                          Container(
-                            height: distanceOffset,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              CustomPaint(
-                painter: BottomPainter(calcDegree, widget.secondaryColor),
-                child: Container(
-                  width: c.maxWidth,
-                  height: c.maxHeight * 0.2,
-                  child: Container(
-                    child: Material(
-                      color: Colors.transparent,
-                      shape: BottomShapePainter(0, calcDegree),
-                      child: InkWell(
-                        customBorder: BottomShapePainter(0, calcDegree),
-                        onTap: () {
-                          if (players.length < 2) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  backgroundColor: Colors.deepOrange,
-                                  title: Text("nameTooFewPlayers",
-                                      style: GoogleFonts.caveatBrush(
-                                        textStyle:
-                                            TextStyle(color: Colors.black),
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 30,
-                                      )).tr(),
-                                  content: Text(
-                                    "nameTooFewPlayersDescription",
-                                    style: GoogleFonts.caveatBrush(
-                                      textStyle: TextStyle(color: Colors.black),
-                                      fontSize: 25,
-                                    ),
-                                  ).tr(),
-                                  actions: <Widget>[
-                                    // usually buttons at the bottom of the dialog
-                                    TextButton(
-                                      child: Text(
-                                        "close".tr(),
-                                        style: GoogleFonts.caveatBrush(
-                                            color: Colors.black, fontSize: 20),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else if (players.length > 12) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  backgroundColor: Colors.deepOrange,
-                                  title: Text("nameTooManyPlayers",
-                                      style: GoogleFonts.caveatBrush(
-                                        textStyle:
-                                            TextStyle(color: Colors.black),
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 30,
-                                      )).tr(),
-                                  content: Text(
-                                    "nameTooManyPlayersDescriptions".tr(),
-                                    style: GoogleFonts.caveatBrush(
-                                      textStyle: TextStyle(color: Colors.black),
-                                      fontSize: 25,
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    // usually buttons at the bottom of the dialog
-                                    TextButton(
-                                      child: Text(
-                                        "close",
-                                        style: GoogleFonts.caveatBrush(
-                                            fontSize: 20, color: Colors.black),
-                                      ).tr(),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => Difficulty(
-                                    this.players,
-                                    this.sliderState == 0
-                                        ? 1
-                                        : this.sliderState.toInt(),
-                                    widget.enabledGames)));
-                          }
-                        },
-                        child: Container(
-                            margin: EdgeInsets.only(top: distanceOffset),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              alignment: Alignment.center,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 16.0,
-                                    left: 16.0,
-                                    right: 16.0,
-                                    top: 16),
-                                child: Text(
-                                  "selectDifficulty",
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.caveatBrush(fontSize: 80),
-                                ).tr(),
-                              ),
-                            )),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          );
-        }));
+      ),
+    );
   }
 }
