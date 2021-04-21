@@ -106,43 +106,6 @@ class NameSelectState extends State<NameSelect> {
         );
         return;
       }
-      if (this.players.contains(Player(this.player1))) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Colors.deepOrange,
-              title: Text("duplicatedNameTitle",
-                  style: GoogleFonts.caveatBrush(
-                    textStyle: TextStyle(color: Colors.black),
-                    fontWeight: FontWeight.w800,
-                    fontSize: 30,
-                  )).tr(),
-              content: Text(
-                "duplicatedNameDescription",
-                style: GoogleFonts.caveatBrush(
-                  textStyle: TextStyle(color: Colors.black),
-                  fontSize: 25,
-                ),
-              ).tr(),
-              actions: <Widget>[
-                // usually buttons at the bottom of the dialog
-                FlatButton(
-                  child: Text(
-                    "close",
-                    style: GoogleFonts.caveatBrush(
-                        color: Colors.black, fontSize: 20),
-                  ).tr(),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            );
-          },
-        );
-        return;
-      }
       this.players.add(Player(this.player1));
       this.textEditingController.clear();
       this.player1 = "";

@@ -7,12 +7,14 @@ class TwoColorGradient extends StatelessWidget {
   final Color color2;
   final Widget child;
   final GradientDirection direction;
+  final double roundness;
 
   const TwoColorGradient(
       {Key key,
       this.color1,
       this.color2,
       this.child,
+      this.roundness,
       this.direction = GradientDirection.HORIZONTAL})
       : super(key: key);
 
@@ -31,6 +33,7 @@ class TwoColorGradient extends StatelessWidget {
             colors: <Color>[color1, color2],
             // red to yellow
             tileMode: TileMode.mirror),
+        borderRadius: BorderRadius.all(Radius.circular(roundness)),
       ),
       child: child,
     );

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'dart:math';
 
+import 'package:Drinkr/menus/gameMode.dart';
 import 'package:Drinkr/utils/ad.dart';
 import 'package:Drinkr/menus/setting.dart';
 import 'package:Drinkr/utils/shapes.dart';
@@ -185,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   shape: TopShapePainter(calcDegree),
                   child: InkWell(
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NameSelect(GameType.values))),
+                        builder: (context) => GameMode())),
                     customBorder: TopShapePainter(calcDegree),
                     child: Container(
                       child: Padding(
