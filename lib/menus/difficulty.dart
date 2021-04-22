@@ -13,6 +13,7 @@ import 'package:Drinkr/games/truth_or_dare.dart';
 import 'package:Drinkr/utils/sqlite.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:Drinkr/games/who_would_rather.dart';
+import 'package:Drinkr/widgets/gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -525,153 +526,195 @@ class DifficultyState extends State<Difficulty> {
               iconTheme: IconThemeData(color: Colors.white),
             ),
             backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-            body: Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Column(
-                children: [
-                  Center(
+            body: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Center(
                     child: GestureDetector(
-                      onTap: () => selectDifficulty(Difficulty.EASY),
+                      onTap: () {
+                        selectDifficulty(Difficulty.EASY);
+                      },
                       child: Container(
-                        color: Color.fromRGBO(21, 21, 21, 1),
+                        height: 180,
+                        width: 350.0,
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.8),
+                            blurRadius: 8,
+                            offset: Offset(2, 10), // changes position of shadow
+                          ),
+                        ], borderRadius: BorderRadius.all(Radius.circular(30))),
                         child: Container(
-                          height: 180,
-                          width: 350.0,
-                          decoration: BoxDecoration(
-                              color: Colors.orangeAccent,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.8),
-                                  blurRadius: 8,
-                                  offset: Offset(
-                                      2, 10), // changes position of shadow
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 10, left: 10),
+                                child: Icon(
+                                  Icons.local_drink_rounded,
+                                  size: 80,
+                                  color: Colors.white,
                                 ),
-                              ],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Leicht",
-                                  style: GoogleFonts.nunito(
-                                      color: Colors.white,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w800),
-                                ).tr(),
-                                Text(
-                                  "Strafen 1-2 Schluck(e) | keine Shots",
-                                  style: GoogleFonts.nunito(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600),
-                                ).tr(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () => selectDifficulty(Difficulty.MIDDLE),
-                        child: Container(
-                          color: Color.fromRGBO(21, 21, 21, 1),
-                          child: Container(
-                            height: 180,
-                            width: 350.0,
-                            decoration: BoxDecoration(
-                                color: Colors.orange,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.8),
-                                    blurRadius: 8,
-                                    offset: Offset(
-                                        2, 10), // changes position of shadow
-                                  ),
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30))),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Normal",
-                                    style: GoogleFonts.nunito(
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Leicht",
+                                      style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontSize: 30,
-                                        fontWeight: FontWeight.w800),
-                                  ).tr(),
-                                  Text(
-                                    "Strafen 1-2 Schluck(e) | keine Shots",
-                                    style: GoogleFonts.nunito(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600),
-                                  ).tr(),
-                                ],
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ).tr(),
+                                    Text(
+                                      "1-2 Schlücke | 5 shots",
+                                      style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ).tr(),
+                                  ],
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () => selectDifficulty(Difficulty.HARD),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        selectDifficulty(Difficulty.MIDDLE);
+                      },
+                      child: Container(
+                        height: 180,
+                        width: 350.0,
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.8),
+                            blurRadius: 8,
+                            offset: Offset(2, 10), // changes position of shadow
+                          ),
+                        ], borderRadius: BorderRadius.all(Radius.circular(30))),
                         child: Container(
-                          color: Color.fromRGBO(21, 21, 21, 1),
-                          child: Container(
-                            height: 180,
-                            width: 350.0,
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.8),
-                                    blurRadius: 8,
-                                    offset: Offset(
-                                        2, 10), // changes position of shadow
-                                  ),
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30))),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Absturz",
-                                    style: GoogleFonts.nunito(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 10, left: 10),
+                                child: Icon(
+                                  Icons.local_drink_rounded,
+                                  size: 80,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Normal",
+                                      style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontSize: 30,
-                                        fontWeight: FontWeight.w800),
-                                  ).tr(),
-                                  Text(
-                                    "Strafen 1-2 Schluck(e) | keine Shots",
-                                    style: GoogleFonts.nunito(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600),
-                                  ).tr(),
-                                ],
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ).tr(),
+                                    Text(
+                                      "1-2 Schlücke | 5 shots",
+                                      style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ).tr(),
+                                  ],
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.deepOrange,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        selectDifficulty(Difficulty.HARD);
+                      },
+                      child: Container(
+                        height: 180,
+                        width: 350.0,
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.8),
+                            blurRadius: 8,
+                            offset: Offset(2, 10), // changes position of shadow
+                          ),
+                        ], borderRadius: BorderRadius.all(Radius.circular(30))),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 10, left: 10),
+                                child: Icon(
+                                  Icons.local_drink_rounded,
+                                  size: 80,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Absturz",
+                                      style: GoogleFonts.nunito(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ).tr(),
+                                    Text(
+                                      "1-2 Schlücke | 5 shots",
+                                      style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ).tr(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             floatingActionButton: FloatingActionButton(
               child: Icon(
