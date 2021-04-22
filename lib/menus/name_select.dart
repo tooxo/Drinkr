@@ -27,11 +27,12 @@ class NameSelect extends StatefulWidget {
 
 class NameSelectState extends State<NameSelect> {
   String player1 = "";
-  List<Player> players = List<Player>();
+  List<Player> players;
   TextEditingController textEditingController = TextEditingController();
   double sliderState = 100;
   double maxRounds = 1000;
   int divisions = 1;
+  
 
   static const PREFS_PLAYERS = "PLAYER_STORE";
 
@@ -61,7 +62,7 @@ class NameSelectState extends State<NameSelect> {
     super.initState();
     loadPlayers();
   }
-
+  
   static String illegalNames =
       r"^ +$"; //only backspaces = illegal wie Minderheiten
 

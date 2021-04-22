@@ -55,6 +55,13 @@ class GameState extends State<StatefulWidget> {
                     "\u2022 Entweder ... oder...?\n"
                     "\u2022 Challenges\n"
                     "\u2022 Ich hab noch nie...?",
+                enabledGames: [
+                  GameType.DARE,
+                  GameType.TRUTH,
+                  GameType.CHALLENGES,
+                  GameType.NEVER_HAVE_I_EVER,
+                  GameType.OPINION,
+                ],
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(79, 44, 208, 1),
@@ -63,6 +70,8 @@ class GameState extends State<StatefulWidget> {
                 description: "Teste dein Wissen!",
                 icon: Icons.lightbulb_outline,
                 games: "\u2022 Big brain Quiz\n" "\u2022 Schätzfragen",
+                enabledGames: [
+                ],
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(118, 13, 123, 1),
