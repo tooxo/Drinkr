@@ -1,10 +1,8 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:Drinkr/menus/difficulty.dart';
-import 'package:Drinkr/utils/shapes.dart';
 import 'package:Drinkr/utils/types.dart';
-import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
+import 'package:Drinkr/widgets/name_select_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,12 +25,11 @@ class NameSelect extends StatefulWidget {
 
 class NameSelectState extends State<NameSelect> {
   String player1 = "";
-  List<Player> players;
+  List<Player> players = [];
   TextEditingController textEditingController = TextEditingController();
   double sliderState = 100;
   double maxRounds = 1000;
   int divisions = 1;
-  
 
   static const PREFS_PLAYERS = "PLAYER_STORE";
 
@@ -50,7 +47,7 @@ class NameSelectState extends State<NameSelect> {
 
   Future<void> setPlayers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    List<String> playerNames = List<String>();
+    List<String> playerNames = <String>[];
     for (Player p in this.players) {
       playerNames.add(p.toString());
     }
@@ -62,7 +59,7 @@ class NameSelectState extends State<NameSelect> {
     super.initState();
     loadPlayers();
   }
-  
+
   static String illegalNames =
       r"^ +$"; //only backspaces = illegal wie Minderheiten
 
@@ -91,7 +88,7 @@ class NameSelectState extends State<NameSelect> {
               ).tr(),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
-                FlatButton(
+                TextButton(
                   child: Text(
                     "close",
                     style: GoogleFonts.caveatBrush(
@@ -115,75 +112,271 @@ class NameSelectState extends State<NameSelect> {
     }
   }
 
+  void confirm() {
+    if (players.length < 2) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.deepOrange,
+            title: Text("nameTooFewPlayers",
+                style: GoogleFonts.nunito(
+                  textStyle: TextStyle(color: Colors.white),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                )).tr(),
+            content: Text(
+              "nameTooFewPlayersDescription",
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(color: Colors.white),
+                fontSize: 25,
+              ),
+            ).tr(),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              FlatButton(
+                child: Text(
+                  "close".tr(),
+                  style: GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else if (players.length > 12) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.deepOrange,
+            title: Text("nameTooManyPlayers",
+                style: GoogleFonts.nunito(
+                  textStyle: TextStyle(color: Colors.white),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                )).tr(),
+            content: Text(
+              "nameTooManyPlayersDescriptions".tr(),
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(color: Colors.white),
+                fontSize: 25,
+              ),
+            ),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              FlatButton(
+                child: Text(
+                  "close",
+                  style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ).tr(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Difficulty(
+              this.players,
+              this.sliderState == 0 ? 1 : this.sliderState.toInt(),
+              widget.enabledGames)));
+    }
+  }
+
   //TODO: Bro do this shit gotchu ma n....!!!!
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-      ),
+      ),*/
       backgroundColor: Color.fromRGBO(21, 21, 21, 1),
       resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Container(
-          height: 60,
-          decoration: BoxDecoration(
-              color: Colors.deepOrange,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.8),
-                  blurRadius: 8,
-                  offset: Offset(2, 10), // changes position of shadow
-                ),
-              ],
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            child: Column(
-              children: [
-                Center(
-                  child: TextField(
-                    controller: this.textEditingController,
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (value) => {this.buttonPress()},
-                    onChanged: (value) => {this.player1 = value},
-                    style: GoogleFonts.nunito(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                    cursorColor: Colors.white,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      hintText: "nameInput".tr(),
-                      hintStyle: GoogleFonts.nunito(
-                        fontSize: 20,
-                        color: Colors.white.withOpacity(0.5),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Image(
+                        image: NetworkImage(
+                          "https://raw.githubusercontent.com/tooxo/SaufAppFlutter/769d1fb5ea9496eedf11f8803ba47064493b6f9e/assets/image/AppIcon.png",
+                        ),
+                        fit: BoxFit.contain,
                       ),
-                      border: InputBorder.none,
-                      suffixIcon: Transform.scale(
-                        scale: 0.9,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(1000)),
-                            color: Colors.transparent,
-                          ),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              size: 30,
+                    ),
+                    Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                                  Offset(2, 10), // changes position of shadow
                             ),
-                            focusColor: Colors.white,
-                            color: Colors.white,
-                            onPressed: () => {this.buttonPress()},
-                          ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16, right: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextField(
+                              controller: this.textEditingController,
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (value) => {this.buttonPress()},
+                              onChanged: (value) => {this.player1 = value},
+                              style: GoogleFonts.nunito(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                              cursorColor: Colors.white,
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                hintText: "nameInput".tr(),
+                                hintStyle: GoogleFonts.nunito(
+                                  fontSize: 20,
+                                  color: Colors.white.withOpacity(0.5),
+                                ),
+                                // contentPadding: EdgeInsets.all(0),
+                                alignLabelWithHint: true,
+                                border: InputBorder.none,
+                                suffixIcon: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(
+                                    Icons.add_circle_outline,
+                                    size: 45,
+                                  ),
+                                  focusColor: Colors.white,
+                                  color: Colors.white,
+                                  onPressed: () => {this.buttonPress()},
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 6,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < players.length; i += 2)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: NameSelectTile(
+                                      playerName: players[i].name,
+                                      deleteFunc: () {
+                                        setState(() {
+                                          this.players.remove(
+                                                Player(players[i].name),
+                                              );
+                                          setPlayers();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: i + 1 < players.length
+                                        ? NameSelectTile(
+                                            playerName: players[i + 1].name,
+                                            deleteFunc: () {
+                                              setState(() {
+                                                this.players.remove(
+                                                    Player(players[i].name));
+                                                setPlayers();
+                                              });
+                                            },
+                                          )
+                                        : Container(),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      players.length.toString(),
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(),
+                          flex: 2,
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: MaterialButton(
+                            onPressed: confirm,
+                            padding: EdgeInsets.all(16),
+                            child: Text(
+                              "Start",
+                              style: GoogleFonts.nunito(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            color: Colors.deepOrange,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(),
+                          flex: 2,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

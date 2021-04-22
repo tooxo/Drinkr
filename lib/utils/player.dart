@@ -9,7 +9,7 @@ class Player {
 
   Player(this._name);
 
-  get name {
+  String get name {
     return this._name;
   }
 
