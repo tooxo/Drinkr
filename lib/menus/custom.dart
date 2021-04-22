@@ -115,8 +115,7 @@ class CustomState extends State<StatefulWidget> {
               MaterialButton(
                 child: Text(
                   "close",
-                  style: GoogleFonts.nunito(
-                      color: Colors.black, fontSize: 20),
+                  style: GoogleFonts.nunito(color: Colors.black, fontSize: 20),
                 ).tr(),
                 onPressed: () {
                   Navigator.of(context).pop(true);

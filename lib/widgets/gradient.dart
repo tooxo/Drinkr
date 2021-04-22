@@ -14,7 +14,7 @@ class TwoColorGradient extends StatelessWidget {
       this.color1,
       this.color2,
       this.child,
-      this.roundness,
+      this.roundness = 0,
       this.direction = GradientDirection.HORIZONTAL})
       : super(key: key);
 
@@ -29,9 +29,7 @@ class TwoColorGradient extends StatelessWidget {
             end: direction == GradientDirection.HORIZONTAL
                 ? Alignment.centerRight
                 : Alignment.bottomCenter,
-            // 10% of the width, so there are ten blinds.
             colors: <Color>[color1, color2],
-            // red to yellow
             tileMode: TileMode.mirror),
         borderRadius: BorderRadius.all(Radius.circular(roundness)),
       ),

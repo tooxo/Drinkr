@@ -22,7 +22,7 @@ class TextWidget extends StatelessWidget {
               fontWeight: FontWeight.w600),
           maxLines: 5,
           textAlign: TextAlign.center,
-          maxFontSize: 60,
+          maxFontSize: 35,
           softWrap: true,
           group: AutoSizeGroup(),
         ),
