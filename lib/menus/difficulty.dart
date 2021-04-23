@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:ui';
 import 'package:Drinkr/utils/ad.dart';
 import 'package:Drinkr/games/challenges.dart';
 import 'package:Drinkr/games/guess_the_song.dart';
@@ -53,7 +54,7 @@ class Game {
 class DifficultyState extends State<Difficulty> {
   int difficulty = Difficulty.EASY;
   int displayState =
-      1; // 1 Difficulty Selection, 2 Loading indicator, 3 Just Orange
+  1; // 1 Difficulty Selection, 2 Loading indicator, 3 Just Orange
   List<Game> gamePlan = [];
   Map<GameType, List> texts = Map<GameType, List>();
   Map<GameType, int> maxTexts = Map<GameType, int>();
@@ -98,39 +99,41 @@ class DifficultyState extends State<Difficulty> {
 
   List<List> availableGames = [
     [
-      (players, difficulty, message) =>
+          (players, difficulty, message) =>
           NeverHaveIEver(players, difficulty, message),
       GameType.NEVER_HAVE_I_EVER
     ],
     [
-      (players, difficulty, message) => Quiz(players, difficulty, message),
+          (players, difficulty, message) => Quiz(players, difficulty, message),
       GameType.QUIZ
     ],
     [
-      (players, difficulty, message) => Opinion(players, difficulty, message),
+          (players, difficulty, message) =>
+          Opinion(players, difficulty, message),
       GameType.OPINION
     ],
     [
-      (players, difficulty, message) => Guessing(players, difficulty, message),
+          (players, difficulty, message) =>
+          Guessing(players, difficulty, message),
       GameType.GUESS
     ],
     [
-      (players, difficulty, message) =>
+          (players, difficulty, message) =>
           Challenges(players, difficulty, message),
       GameType.CHALLENGES
     ],
     [
-      (players, difficulty, message) =>
+          (players, difficulty, message) =>
           GuessTheSong(players, difficulty, JsonEncoder().convert(message)),
       GameType.GUESS_THE_SONG
     ],
     [
-      (players, difficulty, message) =>
+          (players, difficulty, message) =>
           TruthOrDare(players, difficulty, message),
       GameType.TRUTH
     ],
     [
-      (players, difficulty, message) =>
+          (players, difficulty, message) =>
           WhoWouldRather(players, difficulty, message),
       GameType.WHO_WOULD_RATHER
     ]
@@ -178,10 +181,10 @@ class DifficultyState extends State<Difficulty> {
           }
         }
       } while ((gameType ==
-                  (this.gamePlan.isNotEmpty
-                      ? this.gamePlan[this.gamePlan.length - 1].function
-                      : null) &&
-              this.availableGames.length > 1) ||
+          (this.gamePlan.isNotEmpty
+              ? this.gamePlan[this.gamePlan.length - 1].function
+              : null) &&
+          this.availableGames.length > 1) ||
           gameType == null);
       this.gamePlan.add(Game(gameType, game[1]));
     }
@@ -195,7 +198,7 @@ class DifficultyState extends State<Difficulty> {
     for (String url in playlistUrls) {
       String playlistId = Spotify.getIdFromUrl(url);
       List<List<String>> playlistResponse =
-          await spotify.getPlaylist(playlistId);
+      await spotify.getPlaylist(playlistId);
       for (List<String> track in playlistResponse) {
         if (!response.contains(track)) {
           response.add(track);
@@ -210,7 +213,7 @@ class DifficultyState extends State<Difficulty> {
 
   Future<void> populateTextsMap() async {
     int selectedModes = (await SharedPreferences.getInstance())
-            .getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ??
+        .getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ??
         SettingsState.BOTH;
     availableGames = availableGamesBackup.toList();
     setState(() {
@@ -237,11 +240,12 @@ class DifficultyState extends State<Difficulty> {
           SqLite database = await SqLite().open();
           Spotify spotify = Spotify();
           dynamic missingSongs =
-              texts[GameType.GUESS_THE_SONG].where((e) => e.contains(null));
+          texts[GameType.GUESS_THE_SONG].where((e) => e.contains(null));
           texts[GameType.GUESS_THE_SONG]
               .removeWhere((element) => element.contains(null));
-          missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]
-              .add(await spotify.fillMissingPreviewUrls(e, database)));
+          missingSongs.map((e) async =>
+              texts[GameType.GUESS_THE_SONG]
+                  .add(await spotify.fillMissingPreviewUrls(e, database)));
         } else {
           await Fluttertoast.showToast(
               msg: "Rate den Song wurde deaktiviert, da du über keine "
@@ -328,7 +332,9 @@ class DifficultyState extends State<Difficulty> {
         }
         bool result;
         for (Game game in gamePlan) {
-          if (texts.values.where((element) => element.isNotEmpty).isEmpty) {
+          if (texts.values
+              .where((element) => element.isNotEmpty)
+              .isEmpty) {
             await populateTextsMap();
           }
           dynamic randomlyChosenText;
@@ -336,10 +342,10 @@ class DifficultyState extends State<Difficulty> {
               texts[GameType.TRUTH].isNotEmpty &&
               texts[GameType.DARE].isNotEmpty) {
             String randomTextTruth = texts[GameType.TRUTH]
-                [Random.secure().nextInt(texts[GameType.TRUTH].length)];
+            [Random.secure().nextInt(texts[GameType.TRUTH].length)];
 
             String randomTextDare = texts[GameType.DARE]
-                [Random.secure().nextInt(texts[GameType.DARE].length)];
+            [Random.secure().nextInt(texts[GameType.DARE].length)];
 
             texts[GameType.TRUTH].remove(randomTextTruth);
             texts[GameType.DARE].remove(randomTextDare);
@@ -349,7 +355,7 @@ class DifficultyState extends State<Difficulty> {
           } else {
             try {
               randomlyChosenText = texts[game.type]
-                  [Random.secure().nextInt(texts[game.type].length)];
+              [Random.secure().nextInt(texts[game.type].length)];
               texts[game.type].remove(randomlyChosenText);
             } on IndexError {
               continue;
@@ -389,14 +395,14 @@ class DifficultyState extends State<Difficulty> {
               if (anim.status == AnimationStatus.reverse) {
                 return SlideTransition(
                   position:
-                      Tween<Offset>(begin: Offset(0.0, 0), end: Offset(0.0, -1))
-                          .animate(a2),
+                  Tween<Offset>(begin: Offset(0.0, 0), end: Offset(0.0, -1))
+                      .animate(a2),
                   child: child,
                 );
               }
               return SlideTransition(
                 position: Tween<Offset>(
-                        begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
+                    begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
                     .animate(anim),
                 child: child,
               );
@@ -426,7 +432,8 @@ class DifficultyState extends State<Difficulty> {
         if (!result) {
           await showDialog(
               context: context,
-              builder: (context) => AlertDialog(
+              builder: (context) =>
+                  AlertDialog(
                       title: Text("goOnTitle",
                           style: GoogleFonts.caveatBrush(
                             textStyle: TextStyle(color: Colors.black),
@@ -503,234 +510,510 @@ class DifficultyState extends State<Difficulty> {
     this.displayState = 2;
     setState(() {});
     populateTextsMap().then(
-        (value) => generateNormalPlan().then((value) => fulfillNormalPlan()));
+            (value) =>
+            generateNormalPlan().then((value) => fulfillNormalPlan()));
   }
 
   int linearProgress = 1;
   int linearMax = 2;
 
+  bool wantSchluck = true;
+  bool wantShots = true;
+
+  int startSchluck = 0;
+  int endSchluck = 0;
+
+  int startShots = 0;
+  int endShots = 0;
+
+  void incrementStartSchluck() {
+    setState(() {
+      startSchluck++;
+    });
+  }
+
+  void decrementStartSchluck() {
+    setState(() {
+      startSchluck--;
+    });
+  }
+
+  void incrementEndSchluck() {
+    setState(() {
+      endSchluck++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return displayState == 1
         ? Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-              title: Text(
-                "selectDifficulty",
-                style: GoogleFonts.nunito(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ).tr(),
-              iconTheme: IconThemeData(color: Colors.white),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+        title: Text(
+          "selectDifficulty",
+          style: GoogleFonts.nunito(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w600),
+        ).tr(),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  selectDifficulty(Difficulty.EASY);
+                },
+                child: Container(
+                  height: 180,
+                  width: 350.0,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.8),
+                      blurRadius: 8,
+                      offset: Offset(2, 10), // changes position of shadow
+                    ),
+                  ], borderRadius: BorderRadius.all(Radius.circular(30))),
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 10, left: 10),
+                          child: Icon(
+                            Icons.local_drink_rounded,
+                            size: 80,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Leicht",
+                                style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ).tr(),
+                              Text(
+                                "1-2 Schlücke | 5 shots",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ).tr(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                  ),
+                ),
+              ),
             ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  selectDifficulty(Difficulty.MIDDLE);
+                },
+                child: Container(
+                  height: 180,
+                  width: 350.0,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.8),
+                          blurRadius: 8,
+                          offset:
+                          Offset(2, 10), // changes position of shadow
+                        ),
+                      ],
+                      color: Colors.grey,
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(30))),
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 10, left: 10),
+                          child: Icon(
+                            Icons.local_drink_rounded,
+                            size: 80,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Normal",
+                                style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ).tr(),
+                              Text(
+                                "1-2 Schlücke | 5 shots",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ).tr(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.deepOrange,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  selectDifficulty(Difficulty.HARD);
+                },
+                child: Container(
+                  height: 180,
+                  width: 350.0,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.8),
+                      blurRadius: 8,
+                      offset: Offset(2, 10), // changes position of shadow
+                    ),
+                  ], borderRadius: BorderRadius.all(Radius.circular(30))),
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 10, left: 10),
+                          child: Icon(
+                            Icons.local_drink_rounded,
+                            size: 80,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Absturz",
+                                style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ).tr(),
+                              Text(
+                                "1-2 Schlücke | 5 shots",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ).tr(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => addCustomDifficulty(context),
+        child: Icon(
+          Icons.add,
+          size: 25,
+        ),
+      ),
+    )
+        : Container(
+      height: 20,
+      color: Color.fromRGBO(21, 21, 21, 1),
+      child: LinearProgressIndicator(
+        value: linearProgress / linearMax,
+        backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+        valueColor: const AlwaysStoppedAnimation(Colors.deepOrange),
+      ),
+    );
+  }
+
+  void addCustomDifficulty(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: AlertDialog(
             backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-            body: Column(
+            title: TextField(
+              style: GoogleFonts.nunito(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                hintText: "Name der Schwierigkeit...".tr(),
+                hintStyle: GoogleFonts.nunito(
+                  fontSize: 20,
+                  color: Colors.white.withOpacity(0.5),
+                ),
+                border: InputBorder.none,
+              ),
+            ),
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        selectDifficulty(Difficulty.EASY);
-                      },
-                      child: Container(
-                        height: 180,
-                        width: 350.0,
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.8),
-                            blurRadius: 8,
-                            offset: Offset(2, 10), // changes position of shadow
-                          ),
-                        ], borderRadius: BorderRadius.all(Radius.circular(30))),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 10, left: 10),
-                                child: Icon(
-                                  Icons.local_drink_rounded,
-                                  size: 80,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Leicht",
-                                      style: GoogleFonts.nunito(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ).tr(),
-                                    Text(
-                                      "1-2 Schlücke | 5 shots",
-                                      style: GoogleFonts.nunito(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ).tr(),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.orange,
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                        ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Transform.scale(
+                      scale: 2,
+                      child: Checkbox(
+                        value: true,
+                        focusColor: Colors.white,
+                        checkColor: Colors.white,
+                        activeColor: Colors.deepOrange,
                       ),
                     ),
-                  ),
+                    Text(
+                      "Schlück(e)",
+                      style: GoogleFonts.nunito(
+                        textStyle: TextStyle(),
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
+                    ).tr(),
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            IconButton(
+                                icon: Icon(
+                                  Icons.add_circle_outline,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: incrementStartSchluck),
+                            Text(
+                              startSchluck.toString(),
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(),
+                                fontSize: 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.remove_circle_outline,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: decrementStartSchluck),
+                          ],
+                        ),
+                        Icon(
+                          Icons.remove,
+                          color: Colors.white,
+                        ),
+                        Column(
+                          children: [
+                            IconButton(
+                                icon: Icon(
+                                  Icons.add_circle_outline,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: incrementStartSchluck),
+                            Text(
+                              startSchluck.toString(),
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(),
+                                fontSize: 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.remove_circle_outline,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: decrementStartSchluck),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        selectDifficulty(Difficulty.MIDDLE);
-                      },
-                      child: Container(
-                        height: 180,
-                        width: 350.0,
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.8),
-                            blurRadius: 8,
-                            offset: Offset(2, 10), // changes position of shadow
-                          ),
-                        ], borderRadius: BorderRadius.all(Radius.circular(30))),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 10, left: 10),
-                                child: Icon(
-                                  Icons.local_drink_rounded,
-                                  size: 80,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Normal",
-                                      style: GoogleFonts.nunito(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ).tr(),
-                                    Text(
-                                      "1-2 Schlücke | 5 shots",
-                                      style: GoogleFonts.nunito(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ).tr(),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.deepOrange,
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                        ),
+                Padding(padding: EdgeInsets.symmetric(horizontal: 15)),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Transform.scale(
+                      scale: 2,
+                      child: Checkbox(
+                        focusColor: Colors.white,
+                        checkColor: Colors.white,
+                        activeColor: Colors.deepOrange,
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        selectDifficulty(Difficulty.HARD);
-                      },
-                      child: Container(
-                        height: 180,
-                        width: 350.0,
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.8),
-                            blurRadius: 8,
-                            offset: Offset(2, 10), // changes position of shadow
-                          ),
-                        ], borderRadius: BorderRadius.all(Radius.circular(30))),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 10, left: 10),
-                                child: Icon(
-                                  Icons.local_drink_rounded,
-                                  size: 80,
+                    Text(
+                      "Shot(s)",
+                      style: GoogleFonts.nunito(
+                        textStyle: TextStyle(),
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
+                    ).tr(),
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            IconButton(
+                                icon: Icon(
+                                  Icons.add_circle_outline,
+                                  size: 30,
                                   color: Colors.white,
                                 ),
+                                onPressed: incrementStartSchluck),
+                            Text(
+                              startSchluck.toString(),
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(),
+                                fontSize: 25,
+                                color: Colors.white,
                               ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Absturz",
-                                      style: GoogleFonts.nunito(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ).tr(),
-                                    Text(
-                                      "1-2 Schlücke | 5 shots",
-                                      style: GoogleFonts.nunito(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ).tr(),
-                                  ],
+                            ),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.remove_circle_outline,
+                                  size: 30,
+                                  color: Colors.white,
                                 ),
-                              ),
-                            ],
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
+                                onPressed: decrementStartSchluck),
+                          ],
                         ),
-                      ),
+                        Icon(
+                          Icons.remove,
+                          color: Colors.white,
+                        ),
+                        Column(
+                          children: [
+                            IconButton(
+                                icon: Icon(
+                                  Icons.add_circle_outline,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: incrementStartSchluck),
+                            Text(
+                              startSchluck.toString(),
+                              style: GoogleFonts.nunito(
+                                textStyle: TextStyle(),
+                                fontSize: 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.remove_circle_outline,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: decrementStartSchluck),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              child: Icon(
-                Icons.add,
-                size: 25,
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, bottom: 50),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    color: Color.fromRGBO(21, 21, 21, 1),
+                    child: Container(
+                      height: 50,
+                      width: 350.0,
+                      decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                              Offset(2, 10), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Schwierigkeit auswählen",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w800),
+                            ).tr(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          )
-        : Container(
-            height: 20,
-            color: Color.fromRGBO(21, 21, 21, 1),
-            child: LinearProgressIndicator(
-              value: linearProgress / linearMax,
-              backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-              valueColor: const AlwaysStoppedAnimation(Colors.deepOrange),
-            ),
-          );
+            ],
+          ),
+        );
+      },
+    );
   }
 }

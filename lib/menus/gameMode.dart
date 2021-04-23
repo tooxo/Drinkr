@@ -61,6 +61,9 @@ class GameState extends State<StatefulWidget> {
                   GameType.CHALLENGES,
                   GameType.NEVER_HAVE_I_EVER,
                   GameType.OPINION,
+                  GameType.QUIZ,
+                  GameType.GUESS,
+                  GameType.GUESS_THE_SONG
                 ],
               ),
               BasicTile(
@@ -69,8 +72,11 @@ class GameState extends State<StatefulWidget> {
                 title: "Quiz",
                 description: "Teste dein Wissen!",
                 icon: Icons.lightbulb_outline,
-                games: "\u2022 Big brain Quiz\n" "\u2022 Schätzfragen",
+                games: "\u2022 Big brain Quiz\n"
+                    "\u2022 Schätzfragen",
                 enabledGames: [
+                  GameType.QUIZ,
+                  GameType.GUESS,
                 ],
               ),
               BasicTile(
@@ -81,6 +87,11 @@ class GameState extends State<StatefulWidget> {
                 icon: Icons.warning_amber_rounded,
                 games: "\u2022 Wahrheit oder Pflicht(+18)\n"
                     "\u2022 Wer würde eher(+18)",
+                enabledGames: [
+                  GameType.NEVER_HAVE_I_EVER,
+                  GameType.DARE,
+                  GameType.TRUTH,
+                ],
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(15, 125, 97, 1),
@@ -89,6 +100,9 @@ class GameState extends State<StatefulWidget> {
                 description: "Errate das Lied als erstes!",
                 icon: Icons.music_note_outlined,
                 games: "\u2022 Rate den Song",
+                enabledGames: [
+                  GameType.GUESS_THE_SONG
+                ],
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(255, 27, 24, 1).withOpacity(0.5),
