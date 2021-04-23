@@ -135,7 +135,7 @@ class CustomState extends State<StatefulWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => NameSelect(availableGames)));
+                builder: (context) => NameSelect()));
       } else {
         Navigator.push(
             context,

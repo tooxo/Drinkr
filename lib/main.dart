@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'dart:math';
 
-import 'package:Drinkr/menus/gameMode.dart';
+import 'package:Drinkr/menus/game_mode.dart';
 import 'package:Drinkr/utils/ad.dart';
 import 'package:Drinkr/menus/setting.dart';
 import 'package:Drinkr/utils/shapes.dart';
@@ -76,8 +76,8 @@ class SplashScreenState extends State<SplashScreen> {
   void _launch(context) {
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => MyHomePage()),
-        (Route<dynamic> route) => route is MyHomePage);
+        MaterialPageRoute(builder: (context) => NameSelect()),
+        (Route<dynamic> route) => route is NameSelect);
   }
 
   @override
@@ -186,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   shape: TopShapePainter(calcDegree),
                   child: InkWell(
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => GameMode())),
+                        builder: (context) => NameSelect())),
                     customBorder: TopShapePainter(calcDegree),
                     child: Container(
                       child: Padding(

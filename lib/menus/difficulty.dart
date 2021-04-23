@@ -14,7 +14,6 @@ import 'package:Drinkr/games/truth_or_dare.dart';
 import 'package:Drinkr/utils/sqlite.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:Drinkr/games/who_would_rather.dart';
-import 'package:Drinkr/widgets/gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -388,27 +387,32 @@ class DifficultyState extends State<Difficulty> {
             continue;
           }
 
-          result = await Navigator.of(context).push(PageRouteBuilder(
-            pageBuilder: (c, a1, a2) =>
-                game.function(widget.players, difficulty, randomlyChosenText),
-            transitionsBuilder: (c, anim, a2, child) {
-              if (anim.status == AnimationStatus.reverse) {
+          result = await Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (c, a1, a2) =>
+                  game.function(widget.players, difficulty, randomlyChosenText),
+              transitionsBuilder: (c, anim, a2, child) {
+                if (anim.status == AnimationStatus.reverse) {
+                  return SlideTransition(
+                    position: Tween<Offset>(
+                      begin: Offset(0.0, 0),
+                      end: Offset(0.0, -1),
+                    ).animate(a2),
+                    child: child,
+                  );
+                }
                 return SlideTransition(
-                  position:
-                  Tween<Offset>(begin: Offset(0.0, 0), end: Offset(0.0, -1))
-                      .animate(a2),
+                  position: Tween<Offset>(
+                    begin: Offset(0.0, 1.0),
+                    end: Offset(0.0, 0.0),
+                  ).animate(anim),
                   child: child,
                 );
-              }
-              return SlideTransition(
-                position: Tween<Offset>(
-                    begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
-                    .animate(anim),
-                child: child,
-              );
-            },
-            transitionDuration: Duration(milliseconds: 200),
-          ));
+              },
+              transitionDuration: Duration(milliseconds: 200),
+            ),
+          );
+
           if (result == null) {
             /*
           This shouldn't happen, this only happens, if some unexpected things

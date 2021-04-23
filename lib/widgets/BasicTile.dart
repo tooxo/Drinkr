@@ -21,6 +21,7 @@ class BasicTile extends StatelessWidget {
   final IconData topIcon;
   final String games;
   final List<GameType> enabledGames;
+  final List<Player> players;
 
   const BasicTile(
       {Key key,
@@ -32,6 +33,7 @@ class BasicTile extends StatelessWidget {
       this.description,
       this.games,
       this.enabledGames,
+      this.players,
       this.topIcon = Icons.info_outline,
       this.textColor = Colors.white})
       : super(key: key);
@@ -46,8 +48,10 @@ class BasicTile extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        Difficulty([Player("1234"), Player("1212334")], 100, enabledGames)));
+                    builder: (context) => Difficulty(
+                        players,
+                        100,
+                        enabledGames)));
           },
           child: Container(
             color: Color.fromRGBO(21, 21, 21, 1),

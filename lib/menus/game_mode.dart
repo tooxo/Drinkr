@@ -1,31 +1,22 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:Drinkr/menus/difficulty.dart';
-import 'package:Drinkr/utils/shapes.dart';
+import 'package:Drinkr/utils/player.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:Drinkr/widgets/BasicTile.dart';
-import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../utils/file.dart';
-import 'name_select.dart';
-import '../utils/player.dart';
-import 'setting.dart';
 import '../utils/types.dart';
 
-ScrollController _scrollControl = ScrollController();
-
 class GameMode extends StatefulWidget {
+  final List<Player> players;
+
+  const GameMode(this.players, {Key key}) : super(key: key);
+
   @override
   GameState createState() => GameState();
 }
 
-class GameState extends State<StatefulWidget> {
+class GameState extends State<GameMode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,10 +52,8 @@ class GameState extends State<StatefulWidget> {
                   GameType.CHALLENGES,
                   GameType.NEVER_HAVE_I_EVER,
                   GameType.OPINION,
-                  GameType.QUIZ,
-                  GameType.GUESS,
-                  GameType.GUESS_THE_SONG
                 ],
+                players: widget.players,
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(79, 44, 208, 1),
@@ -72,12 +61,9 @@ class GameState extends State<StatefulWidget> {
                 title: "Quiz",
                 description: "Teste dein Wissen!",
                 icon: Icons.lightbulb_outline,
-                games: "\u2022 Big brain Quiz\n"
-                    "\u2022 Schätzfragen",
-                enabledGames: [
-                  GameType.QUIZ,
-                  GameType.GUESS,
-                ],
+                games: "\u2022 Big brain Quiz\n" "\u2022 Schätzfragen",
+                enabledGames: [],
+                players: widget.players,
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(118, 13, 123, 1),
@@ -87,11 +73,7 @@ class GameState extends State<StatefulWidget> {
                 icon: Icons.warning_amber_rounded,
                 games: "\u2022 Wahrheit oder Pflicht(+18)\n"
                     "\u2022 Wer würde eher(+18)",
-                enabledGames: [
-                  GameType.NEVER_HAVE_I_EVER,
-                  GameType.DARE,
-                  GameType.TRUTH,
-                ],
+                players: widget.players,
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(15, 125, 97, 1),
@@ -100,9 +82,8 @@ class GameState extends State<StatefulWidget> {
                 description: "Errate das Lied als erstes!",
                 icon: Icons.music_note_outlined,
                 games: "\u2022 Rate den Song",
-                enabledGames: [
-                  GameType.GUESS_THE_SONG
-                ],
+                players: widget.players,
+                enabledGames: [GameType.GUESS_THE_SONG],
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(255, 27, 24, 1).withOpacity(0.5),
@@ -114,6 +95,7 @@ class GameState extends State<StatefulWidget> {
                 textColor: Colors.white.withOpacity(0.5),
                 topIcon: Icons.lock_outline,
                 games: "Kauf pls I need money",
+                players: widget.players,
               )
             ],
           ),
