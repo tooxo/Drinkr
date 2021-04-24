@@ -12,8 +12,7 @@ class Licenses extends StatefulWidget {
 
 class LicensesState extends State<Licenses> {
   List<List<String>> items = [];
-  Map<String, List<List<String>>> itemMap =
-      Map<String, List<List<String>>>();
+  Map<String, List<List<String>>> itemMap = Map<String, List<List<String>>>();
 
   void populateItems() async {
     await LicenseRegistry.licenses.forEach((license) {
@@ -46,14 +45,16 @@ class LicensesState extends State<Licenses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepOrange,
+      backgroundColor: Color.fromRGBO(21, 21, 21, 1),
       appBar: AppBar(
-        title: Text(
-          "about",
-          style: GoogleFonts.caveatBrush(color: Colors.black, fontSize: 30),
-        ).tr(),
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+        title: Text(
+          "Über uns/Lizensen",
+          style: GoogleFonts.nunito(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+        ).tr(),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16),
@@ -80,14 +81,46 @@ class LicensesState extends State<Licenses> {
                               children: <Widget>[
                                 Text(
                                   "Drinkr",
-                                  style: GoogleFonts.caveatBrush(fontSize: 60),
+                                  style: GoogleFonts.nunito(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 FittedBox(
                                   fit: BoxFit.contain,
-                                  child: Text(
-                                      "Created By Artjom Zakoyan and Till Schulte",
-                                      style: GoogleFonts.caveatBrush(
-                                          fontSize: 18)),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: 'Created by ',
+                                      style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w600),
+                                      /*defining default style is optional */
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: "Artjom Zakoyan",
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.deepOrange,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        TextSpan(
+                                          text: ' and ',
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.white,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        TextSpan(
+                                          text: "Till Schulte",
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.deepOrange,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                                 Container(
                                   height: 10,
@@ -104,14 +137,17 @@ class LicensesState extends State<Licenses> {
                                       }
                                     },
                                     icon: Icon(
-                                       const IconData(0xe802,
+                                      const IconData(0xe802,
                                           fontFamily: "Icons",
                                           fontPackage: null),
+                                      color: Colors.white,
                                     ),
                                     label: Text(
                                       "GitHub",
-                                      style:
-                                          GoogleFonts.caveatBrush(fontSize: 25),
+                                      style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ),
@@ -125,11 +161,14 @@ class LicensesState extends State<Licenses> {
                 ),
                 Text(
                   "Licenses",
-                  style: GoogleFonts.caveatBrush(fontSize: 30),
+                  style: GoogleFonts.nunito(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
                 ),
                 itemMap.isEmpty
                     ? SpinKitFadingCircle(
-                        color: Colors.black,
+                        color: Colors.white,
                       )
                     : Container(),
                 for (String package in itemMap.keys.toList()
@@ -143,11 +182,12 @@ class LicensesState extends State<Licenses> {
                         child: Theme(
                           data: ThemeData(
                               textTheme: TextTheme(
-                                  subtitle1: TextStyle(color: Colors.black)),
-                              accentColor: Colors.black),
+                                  subtitle1: TextStyle(color: Colors.white)),
+                              accentColor: Colors.white),
                           child: ExpansionTile(
                             title: Text(
                               package,
+                              style: TextStyle(color: Colors.white),
                             ),
                             children: <Widget>[
                               Padding(
@@ -159,16 +199,19 @@ class LicensesState extends State<Licenses> {
                                         in itemMap[package])
                                       ExpansionTile(
                                         title: Text(
-                                          version[0].length > 50
-                                              ? version[0].substring(0, 50) +
-                                                  "..."
-                                              : version[0],
-                                        ),
+                                            version[0].length > 50
+                                                ? version[0].substring(0, 50) +
+                                                    "..."
+                                                : version[0],
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                         children: <Widget>[
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 32, bottom: 16),
-                                            child: Text(version.join("\n\n")),
+                                            child: Text(version.join("\n\n"),
+                                                style: TextStyle(
+                                                    color: Colors.white)),
                                           ),
                                         ],
                                       )

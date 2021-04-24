@@ -53,305 +53,228 @@ class SettingsState extends State<Settings> {
       sliderState = BOTH;
       await sp.setInt(SETTING_INCLUSION_OF_QUESTIONS, BOTH);
     }
-    key.currentState..setIndex(sliderState)..setState(() {});
+    key.currentState
+      ..setIndex(sliderState)
+      ..setState(() {});
   }
 
   final GlobalKey<ToggleSwitchState> key = GlobalKey<ToggleSwitchState>();
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, c) {
-        double calcDegree =
-            (atan((c.maxHeight * 0.5 * 0.1) / c.maxWidth) * 180) / pi;
-        double distanceOffset = (c.maxWidth * sin((calcDegree * pi / 180))) /
-            sin(((90 - calcDegree) * pi) / 180);
-        return Scaffold(
-          backgroundColor: Colors.black,
-          appBar: AppBar(
-            backgroundColor: Color.fromRGBO(255, 111, 0, 1),
-            title: Center(
-              child: Padding(
-                padding: EdgeInsets.only(right: 50.0),
-                child: Text(
-                  "settings",
-                  style: GoogleFonts.caveatBrush(
-                    textStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600),
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+        title: Text(
+          "settings",
+          style: GoogleFonts.nunito(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+        ).tr(),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    color: Color.fromRGBO(21, 21, 21, 1),
+                    child: Container(
+                      height: 80,
+                      width: 350.0,
+                      decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                                  Offset(2, 10), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Werbung ausschalten",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800),
+                            ).tr(),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ).tr(),
+                ),
               ),
-            ),
-            iconTheme: IconThemeData(color: Colors.black),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    color: Color.fromRGBO(21, 21, 21, 1),
+                    child: Container(
+                      height: 80,
+                      width: 350.0,
+                      decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                                  Offset(2, 10), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "App Bewerten",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800),
+                            ).tr(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    color: Color.fromRGBO(21, 21, 21, 1),
+                    child: Container(
+                      height: 80,
+                      width: 350.0,
+                      decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                                  Offset(2, 10), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Sprache",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800),
+                            ).tr(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    color: Color.fromRGBO(21, 21, 21, 1),
+                    child: Container(
+                      height: 80,
+                      width: 350.0,
+                      decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                                  Offset(2, 10), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Fragen/Vorschläge",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800),
+                            ).tr(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Licenses()));
+                  },
+                  child: Container(
+                    color: Color.fromRGBO(21, 21, 21, 1),
+                    child: Container(
+                      height: 80,
+                      width: 350.0,
+                      decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              blurRadius: 8,
+                              offset:
+                                  Offset(2, 10), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Über uns / Lizensen",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800),
+                            ).tr(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          body: SingleChildScrollView(
-            child: ColumnSuper(
-              innerDistance: distanceOffset * -1 + 3,
-              children: <Widget>[
-                CustomPaint(
-                  painter:
-                      TopPainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
-                  child: Container(
-                    height: 175,
-                    child: SizedBox.expand(
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: distanceOffset),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0, right: 16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "selectedQuestions",
-                                style: GoogleFonts.caveatBrush(fontSize: 30),
-                              ).tr(),
-                              SizedBox(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width,
-                                child: ToggleSwitch(
-                                  key: key,
-                                  minWidth: 120,
-                                  minHeight: null,
-                                  initialLabelIndex: sliderState,
-                                  activeBgColor: Colors.deepOrange,
-                                  activeTextColor: Colors.black,
-                                  inactiveBgColor: Colors.orangeAccent,
-                                  inactiveTextColor: Colors.black,
-                                  labels: [
-                                    'Only Included',
-                                    'Both',
-                                    'Only Custom'
-                                  ],
-                                  onToggle: (index) async {
-                                    if (index == 2 &&
-                                        !customQuestionsAvailable) {
-                                      return false;
-                                    }
-                                    await sp.setInt(
-                                        SETTING_INCLUSION_OF_QUESTIONS, index);
-                                    return true;
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                CustomPaint(
-                  painter: MiddlePainter(calcDegree, Colors.deepOrange),
-                  child: Container(
-                    height: 175,
-                    width: c.maxWidth,
-                    decoration: ShapeDecoration(
-                        shape: MiddleShapePainter(0, calcDegree)),
-                    child: Material(
-                      color: Colors.transparent,
-                      shape: MiddleShapePainter(0, calcDegree),
-                      child: InkWell(
-                        onTap: () => Navigator.of(context)
-                            .push(MaterialPageRoute(
-                                builder: (context) => WordCustomization()))
-                            .then((value) =>
-                                this.updateCustomQuestionsAvailable()),
-                        customBorder: MiddleShapePainter(0, calcDegree),
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              top: distanceOffset, bottom: distanceOffset),
-                          child: Transform.rotate(
-                            //angle: calcDegree * pi / 180 * -1,
-                            angle: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Center(
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Text(
-                                    "addCustomQuestions",
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        GoogleFonts.caveatBrush(fontSize: 300),
-                                  ).tr(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                CustomPaint(
-                  painter:
-                      MiddlePainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
-                  child: Container(
-                    height: 175,
-                    width: c.maxWidth,
-                    decoration: ShapeDecoration(
-                        shape: MiddleShapePainter(0, calcDegree)),
-                    child: Material(
-                      color: Colors.transparent,
-                      shape: MiddleShapePainter(0, calcDegree),
-                      child: InkWell(
-                        onTap: () => showInterstitialAd(context),
-                        customBorder: MiddleShapePainter(0, calcDegree),
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              top: distanceOffset, bottom: distanceOffset),
-                          child: Transform.rotate(
-                            //angle: calcDegree * pi / 180 * -1,
-                            angle: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Center(
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Text(
-                                    "disableAds",
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        GoogleFonts.caveatBrush(fontSize: 300),
-                                  ).tr(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                CustomPaint(
-                  painter: MiddlePainter(calcDegree, Colors.deepOrange),
-                  child: Container(
-                    height: 175,
-                    width: c.maxWidth,
-                    decoration: ShapeDecoration(
-                        shape: MiddleShapePainter(0, calcDegree)),
-                    child: Material(
-                      color: Colors.transparent,
-                      shape: MiddleShapePainter(0, calcDegree),
-                      child: InkWell(
-                        onTap: () =>
-                            Fluttertoast.showToast(msg: "Coming soon..."),
-                        customBorder: MiddleShapePainter(0, calcDegree),
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              top: distanceOffset, bottom: distanceOffset),
-                          child: Transform.rotate(
-                            //angle: calcDegree * pi / 180 * -1,
-                            angle: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Center(
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Text(
-                                    "language",
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        GoogleFonts.caveatBrush(fontSize: 300),
-                                  ).tr(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                CustomPaint(
-                  painter:
-                      MiddlePainter(calcDegree, Color.fromRGBO(255, 111, 0, 1)),
-                  child: Container(
-                    height: 175,
-                    width: c.maxWidth,
-                    decoration: ShapeDecoration(
-                        shape: MiddleShapePainter(0, calcDegree)),
-                    child: Material(
-                      color: Colors.transparent,
-                      shape: MiddleShapePainter(0, calcDegree),
-                      child: InkWell(
-                        onTap: () =>
-                            AppReview.requestReview.then((value) => {}),
-                        customBorder: MiddleShapePainter(0, calcDegree),
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              top: distanceOffset, bottom: distanceOffset),
-                          child: Transform.rotate(
-                            //angle: calcDegree * pi / 180 * -1,
-                            angle: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Center(
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Text(
-                                    "rate",
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        GoogleFonts.caveatBrush(fontSize: 300),
-                                  ).tr(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                CustomPaint(
-                  painter: BottomPainter(calcDegree, Colors.deepOrange),
-                  child: Container(
-                    height: 175,
-                    width: c.maxWidth,
-                    decoration: ShapeDecoration(
-                        shape: BottomShapePainter(0, calcDegree)),
-                    child: Material(
-                      color: Colors.transparent,
-                      shape: BottomShapePainter(0, calcDegree),
-                      child: InkWell(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => Licenses())),
-                        customBorder: BottomShapePainter(0, calcDegree),
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              top: distanceOffset, bottom: distanceOffset),
-                          child: Transform.rotate(
-                            //angle: calcDegree * pi / 180 * -1,
-                            angle: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Center(
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Text(
-                                    "about",
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        GoogleFonts.caveatBrush(fontSize: 300),
-                                  ).tr(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

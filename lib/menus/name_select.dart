@@ -211,58 +211,61 @@ class NameSelectState extends State<NameSelect> {
                           fit: BoxFit.contain,
                         ),
                       ),
-                      Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                            color: Colors.deepOrange,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.8),
-                                blurRadius: 8,
-                                offset:
-                                    Offset(2, 10), // changes position of shadow
-                              ),
-                            ],
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 16, right: 8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextField(
-                                controller: this.textEditingController,
-                                textInputAction: TextInputAction.done,
-                                onSubmitted: (value) => {this.buttonPress()},
-                                onChanged: (value) => {this.player1 = value},
-                                style: GoogleFonts.nunito(
-                                  fontSize: 20,
-                                  color: Colors.white,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.deepOrange,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.8),
+                                  blurRadius: 8,
+                                  offset:
+                                  Offset(2, 10), // changes position of shadow
                                 ),
-                                cursorColor: Colors.white,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  hintText: "nameInput".tr(),
-                                  hintStyle: GoogleFonts.nunito(
+                              ],
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(30))),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 16, right: 8),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextField(
+                                  controller: this.textEditingController,
+                                  textInputAction: TextInputAction.done,
+                                  onSubmitted: (value) => {this.buttonPress()},
+                                  onChanged: (value) => {this.player1 = value},
+                                  style: GoogleFonts.nunito(
                                     fontSize: 20,
-                                    color: Colors.white.withOpacity(0.5),
-                                  ),
-                                  // contentPadding: EdgeInsets.all(0),
-                                  alignLabelWithHint: true,
-                                  border: InputBorder.none,
-                                  suffixIcon: IconButton(
-                                    padding: EdgeInsets.zero,
-                                    icon: Icon(
-                                      Icons.add_circle_outline,
-                                      size: 45,
-                                    ),
-                                    focusColor: Colors.white,
                                     color: Colors.white,
-                                    onPressed: () => {this.buttonPress()},
+                                  ),
+                                  cursorColor: Colors.white,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    hintText: "nameInput".tr(),
+                                    hintStyle: GoogleFonts.nunito(
+                                      fontSize: 20,
+                                      color: Colors.white.withOpacity(0.5),
+                                    ),
+                                    // contentPadding: EdgeInsets.all(0),
+                                    alignLabelWithHint: true,
+                                    border: InputBorder.none,
+                                    suffixIcon: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Icon(
+                                        Icons.add_circle_outline,
+                                        size: 45,
+                                      ),
+                                      focusColor: Colors.white,
+                                      color: Colors.white,
+                                      onPressed: () => {this.buttonPress()},
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -271,7 +274,7 @@ class NameSelectState extends State<NameSelect> {
                 ),
               ),
               Expanded(
-                flex: 6,
+                flex: 5,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: RawScrollbar(
@@ -292,14 +295,14 @@ class NameSelectState extends State<NameSelect> {
                                     flex: 1,
                                     child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                      const EdgeInsets.only(right: 8.0),
                                       child: NameSelectTile(
                                         playerName: players[i].name,
                                         deleteFunc: () {
                                           setState(() {
                                             this.players.remove(
-                                                  Player(players[i].name),
-                                                );
+                                              Player(players[i].name),
+                                            );
                                             setPlayers();
                                           });
                                         },
@@ -313,15 +316,15 @@ class NameSelectState extends State<NameSelect> {
                                           left: 8.0, right: 16),
                                       child: i + 1 < players.length
                                           ? NameSelectTile(
-                                              playerName: players[i + 1].name,
-                                              deleteFunc: () {
-                                                setState(() {
-                                                  this.players.remove(
-                                                      Player(players[i].name));
-                                                  setPlayers();
-                                                });
-                                              },
-                                            )
+                                        playerName: players[i + 1].name,
+                                        deleteFunc: () {
+                                          setState(() {
+                                            this.players.remove(
+                                                Player(players[i].name));
+                                            setPlayers();
+                                          });
+                                        },
+                                      )
                                           : Container(),
                                     ),
                                   )
@@ -337,14 +340,15 @@ class NameSelectState extends State<NameSelect> {
               Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 8.0, bottom: 50),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        players.length.toString(),
+                        players.length.toString() + " / 12",
                         style: GoogleFonts.nunito(
                           color: Colors.white,
+                          fontSize: 20,
                         ),
                       ),
                       Row(
