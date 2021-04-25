@@ -19,6 +19,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   google_fonts: ^1.1.0
@@ -46,14 +47,12 @@ dependencies:
   audiowaveformFlutter:
     git:
       url: "https://github.com/tooxo/audioWaveFormFlutter.git"
-  flutter:
-    sdk: flutter
-  # splashscreen:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
   easy_localization: ^2.3.2
+  cached_network_image: ^2.5.1
 
 dev_dependencies:
   flutter_test:
