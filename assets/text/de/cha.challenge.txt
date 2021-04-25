@@ -19,7 +19,6 @@ Wer %player in die Augen guckt, muss %amountbeer trinken (für 3 Runden)!
 %player, stelle ein Instrument pantomimisch dar. Wer das Instrument zuerst errät, darf %amountbeer verteilen!
 Die Person, die die besten Noten hat/hatte trinkt %amountbeer.
 Wer ist am dümmsten in der Runde. Entscheidet! Der Verlierer muss seine Dummheit mit %amountbeer bekämpfen!
-Wer jünger als 18 ist, meldet seinen Alkoholismus sofort ans Ordnungsamt. Spaß, trinkt %amountbeer!
 Macht 5 Kniebeugen und trinkt nach jedem 1 Schluck.
 Derjenige mit dem vollsten Getränk muss dieses wegexen. Trink mal schneller bro!
 Trinkt pro Kleidungstück ein Schluck (z. B. Sockenpaare zählen als 2)!

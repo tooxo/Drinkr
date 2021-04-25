@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Drinkr/main.dart';
 import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/menus/name_select.dart';
 import 'package:Drinkr/utils/player.dart';
@@ -131,7 +132,7 @@ class BasicTile extends StatelessWidget {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
           child: AlertDialog(
-            backgroundColor: Colors.black,
+            backgroundColor: secondaryColor,
             title: Text(
               "Games",
               style: GoogleFonts.nunito(

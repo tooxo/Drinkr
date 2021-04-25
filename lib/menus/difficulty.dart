@@ -897,9 +897,10 @@ class DifficultyState extends State<Difficulty> {
                     Transform.scale(
                       scale: 2,
                       child: Checkbox(
+                        value: true,
                         focusColor: Colors.white,
                         checkColor: Colors.white,
-                        activeColor: Colors.deepOrange,
+                        activeColor: Colors.deepOrange, onChanged: (bool value) {  },
                       ),
                     ),
                     Text(

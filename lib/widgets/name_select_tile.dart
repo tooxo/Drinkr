@@ -30,7 +30,7 @@ class NameSelectTile extends StatelessWidget {
                   playerName,
                   maxLines: 1,
                   style: GoogleFonts.nunito(
-                    color: Color.fromRGBO(134, 134, 134, 1),
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                 ),

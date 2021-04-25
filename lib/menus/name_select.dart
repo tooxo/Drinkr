@@ -372,7 +372,7 @@ class NameSelectState extends State<NameSelect> {
                               ),
                               color: Colors.deepOrange,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
+                                borderRadius: BorderRadius.circular(30),
                               ),
                             ),
                           ),

@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        /*unselectedWidgetColor: Colors.white,*/
       ),
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
@@ -185,8 +186,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.transparent,
                   shape: TopShapePainter(calcDegree),
                   child: InkWell(
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NameSelect())),
+                    onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => NameSelect())),
                     customBorder: TopShapePainter(calcDegree),
                     child: Container(
                       child: Padding(
