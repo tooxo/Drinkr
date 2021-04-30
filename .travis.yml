@@ -78,7 +78,7 @@ jobs:
     - os: osx
       name: apple
       if: branch = master
-      osx_image: xcode11.5
+      osx_image: xcode12.2
       addons:
         homebrew:
           packages:
@@ -89,6 +89,7 @@ jobs:
       before_install:
         - brew unlink usbmuxd
         - brew link usbmuxd
+        - sudo gem update cocoapods
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
         # create signing prerequisites
         #- security create-keychain -p "chainPassword" build.keychain
