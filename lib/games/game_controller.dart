@@ -75,6 +75,10 @@ class GameController {
     List<Player> possiblePlayers =
         players.where((p) => !lastPickedPlayers.contains(p)).toList();
 
+    if (possiblePlayers.isEmpty) {
+      possiblePlayers = players;
+    }
+
     Player randomPlayer =
         possiblePlayers[Random.secure().nextInt(possiblePlayers.length)];
 

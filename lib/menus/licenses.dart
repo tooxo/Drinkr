@@ -183,7 +183,8 @@ class LicensesState extends State<Licenses> {
                           data: ThemeData(
                               textTheme: TextTheme(
                                   subtitle1: TextStyle(color: Colors.white)),
-                              accentColor: Colors.white),
+                              accentColor: Colors.white,
+                              unselectedWidgetColor: Colors.white),
                           child: ExpansionTile(
                             title: Text(
                               package,

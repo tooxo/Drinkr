@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:Drinkr/menus/game_mode.dart';
+import 'package:Drinkr/menus/setting.dart';
 import 'package:Drinkr/widgets/name_select_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -221,12 +222,12 @@ class NameSelectState extends State<NameSelect> {
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.8),
                                   blurRadius: 8,
-                                  offset:
-                                  Offset(2, 10), // changes position of shadow
+                                  offset: Offset(
+                                      2, 10), // changes position of shadow
                                 ),
                               ],
                               borderRadius:
-                              BorderRadius.all(Radius.circular(30))),
+                                  BorderRadius.all(Radius.circular(30))),
                           child: Padding(
                             padding: EdgeInsets.only(left: 16, right: 8),
                             child: Column(
@@ -295,14 +296,14 @@ class NameSelectState extends State<NameSelect> {
                                     flex: 1,
                                     child: Padding(
                                       padding:
-                                      const EdgeInsets.only(right: 8.0),
+                                          const EdgeInsets.only(right: 8.0),
                                       child: NameSelectTile(
                                         playerName: players[i].name,
                                         deleteFunc: () {
                                           setState(() {
                                             this.players.remove(
-                                              Player(players[i].name),
-                                            );
+                                                  Player(players[i].name),
+                                                );
                                             setPlayers();
                                           });
                                         },
@@ -316,15 +317,15 @@ class NameSelectState extends State<NameSelect> {
                                           left: 8.0, right: 16),
                                       child: i + 1 < players.length
                                           ? NameSelectTile(
-                                        playerName: players[i + 1].name,
-                                        deleteFunc: () {
-                                          setState(() {
-                                            this.players.remove(
-                                                Player(players[i].name));
-                                            setPlayers();
-                                          });
-                                        },
-                                      )
+                                              playerName: players[i + 1].name,
+                                              deleteFunc: () {
+                                                setState(() {
+                                                  this.players.remove(
+                                                      Player(players[i].name));
+                                                  setPlayers();
+                                                });
+                                              },
+                                            )
                                           : Container(),
                                     ),
                                   )
@@ -377,7 +378,17 @@ class NameSelectState extends State<NameSelect> {
                             ),
                           ),
                           Expanded(
-                            child: Container(),
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: TextButton.icon(
+                                onPressed: () => {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => Settings()))
+                                },
+                                icon: Icon(Icons.settings),
+                                label: Container(),
+                              ),
+                            ),
                             flex: 2,
                           ),
                         ],
