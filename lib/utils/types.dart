@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:Drinkr/games/challenges.dart';
 import 'package:Drinkr/games/game.dart';
 import 'package:Drinkr/games/guess_the_song.dart';
@@ -46,8 +44,9 @@ abstract class TypeClass<T extends BaseType> {
   String get text2;
 
   bool get includesPlayers;
+  bool get singlePlayerActivity;
 
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction;
 }
 
@@ -66,11 +65,12 @@ class QuizType extends TypeClass<BaseType> {
   String get text2 => "quizText2".tr();
 
   bool includesPlayers = true;
+  bool singlePlayerActivity = true;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction =>
-          (players, difficulty, message) => Quiz(players, difficulty, message);
+          (player, difficulty, message) => Quiz(player, difficulty, message);
 }
 
 class TruthType extends TypeClass<BaseType> {
@@ -89,9 +89,10 @@ class TruthType extends TypeClass<BaseType> {
   String get text2 => "truthText2".tr();
 
   bool includesPlayers = true;
+  bool singlePlayerActivity = true;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           TruthOrDare(players, difficulty, message);
 }
@@ -111,9 +112,10 @@ class DareType extends TypeClass<BaseType> {
   String get text2 => "dareText2".tr();
 
   bool includesPlayers = true;
+  bool singlePlayerActivity = true;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => throw UnimplementedError();
 }
 
@@ -132,9 +134,10 @@ class ChallengesType extends TypeClass<BaseType> {
   String get text2 => "challengesText2".tr();
 
   bool includesPlayers = true;
+  bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Challenges(players, difficulty, message);
 }
@@ -155,12 +158,13 @@ class NeverHaveIEverType extends TypeClass<BaseType> {
   String get text2 => "neverHaveIEverText2".tr();
 
   bool includesPlayers = false;
+  bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction =>
-          (List<Player> players, int difficulty, String text) =>
-              NeverHaveIEver(players, difficulty, text);
+          (Player player, int difficulty, String text) =>
+              NeverHaveIEver(player, difficulty, text);
 }
 
 class WouldYouRatherType extends TypeClass<BaseType> {
@@ -179,16 +183,17 @@ class WouldYouRatherType extends TypeClass<BaseType> {
   String get text2 => "opinionText2".tr();
 
   bool includesPlayers = false;
+  bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Opinion(players, difficulty, message);
 }
 
 class OpinionType extends WouldYouRatherType {
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Opinion(players, difficulty, message);
 }
@@ -209,9 +214,10 @@ class GuessingType extends TypeClass<BaseType> {
   String get text2 => "guessingText2".tr();
 
   bool includesPlayers = false;
+  bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Guessing(players, difficulty, message);
 }
@@ -232,9 +238,10 @@ class WhoWouldRatherType extends TypeClass<BaseType> {
   String get text2 => "whoWouldRatherText2".tr();
 
   bool includesPlayers = false;
+  bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           WhoWouldRather(players, difficulty, message);
 }
@@ -254,9 +261,10 @@ class GuessTheSongType extends TypeClass<BaseType> {
   String get text2 => "guessTheSongText2".tr();
 
   bool includesPlayers = false;
+  bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           GuessTheSong(players, difficulty, message);
 }
@@ -277,9 +285,10 @@ class UnknownType extends TypeClass<BaseType> {
   String get text2 => "";
 
   bool includesPlayers = false;
+  bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(List<Player> players, int difficulty, String text)
+  BasicGame Function(Player player, int difficulty, String text)
       get constructorFunction => throw UnimplementedError();
 }
 

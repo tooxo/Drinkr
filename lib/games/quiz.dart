@@ -13,12 +13,12 @@ class Quiz extends BasicGame {
 
   final String title = "bigBrainQuiz";
 
-  Quiz(List<Player> players, int difficulty, String text)
-      : super(players, difficulty, text);
+  Quiz(Player player, int difficulty, String text)
+      : super(player, difficulty, text);
 
   @override
   String get mainTitle =>
-      selectedPlayer[0].name + " – " + this.text.split(";")[0];
+      selectedPlayer.name + " – " + this.text.split(";")[0];
 
   @override
   String get solutionText => this.text.split(";")[1];

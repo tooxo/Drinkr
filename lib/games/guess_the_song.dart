@@ -30,8 +30,8 @@ class GuessTheSong extends BasicGame {
   final String title = "guessTheSong";
   final int drinkingDisplay = 1;
 
-  GuessTheSong(List<Player> players, int difficulty, String text)
-      : super(players, difficulty, text);
+  GuessTheSong(Player player, int difficulty, String text)
+      : super(player, difficulty, text);
 
   @override
   State<StatefulWidget> createState() => GuessTheSongState();

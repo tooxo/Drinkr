@@ -12,8 +12,8 @@ class WhoWouldRather extends BasicGame {
 
   final int drinkingDisplay = 1;
 
-  WhoWouldRather(List<Player> players, int difficulty, String text)
-      : super(players, difficulty, text);
+  WhoWouldRather(Player player, int difficulty, String text)
+      : super(player, difficulty, text);
 
   @override
   String get mainTitle => text;

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:Drinkr/menus/setting.dart';
 import 'package:Drinkr/utils/ad.dart';
+import 'package:Drinkr/utils/drinking.dart';
 import 'package:Drinkr/utils/file.dart';
 import 'package:Drinkr/utils/networking.dart';
 import 'package:Drinkr/utils/player.dart';
@@ -64,6 +65,54 @@ class GameController {
     return count;
   }
 
+  List<Player> lastPickedPlayers = [];
+
+  Player getRandomPlayer() {
+    if (lastPickedPlayers.length == players.length) {
+      lastPickedPlayers.clear();
+    }
+
+    List<Player> possiblePlayers =
+        players.where((p) => !lastPickedPlayers.contains(p)).toList();
+
+    Player randomPlayer =
+        possiblePlayers[Random.secure().nextInt(possiblePlayers.length)];
+
+    lastPickedPlayers.add(randomPlayer);
+    return randomPlayer;
+  }
+
+  String populateText(String unpopulated, int difficulty) {
+    String raw = unpopulated.toString();
+    while (raw.contains("%player")) {
+      raw = unpopulated.replaceFirst("%player", getRandomPlayer().name);
+    }
+
+    while (raw.contains("%amountshot")) {
+      int amountShots = Drinking.getDrinkAmountShot(difficulty);
+      if (amountShots > 1) {
+        raw = raw.replaceFirst("%amountshot", "$amountShots Shots");
+      } else {
+        if (amountShots == 0) {
+          raw = raw.replaceFirst("%amountshot", "%amountbeer");
+        } else {
+          raw = raw.replaceFirst("%amountshot", "$amountShots Shot");
+        }
+      }
+    }
+
+    while (raw.contains("%amountbeer")) {
+      int amountBeer = Drinking.getDrinkAmountBeer(difficulty);
+      if (amountBeer > 1) {
+        raw = raw.replaceFirst("%amountbeer", "$amountBeer " + "sips".tr());
+      } else {
+        raw = raw.replaceFirst("%amountbeer", "$amountBeer " + "sip".tr());
+      }
+    }
+
+    return raw;
+  }
+
   Future<void> populateTextsMap() async {
     int selectedModes = (await SharedPreferences.getInstance())
             .getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ??
@@ -89,8 +138,8 @@ class GameController {
                   (element as Song).id == null ||
                   (element as Song).previewUrl == null)
               .toList();
-          texts[GameType.GUESS_THE_SONG].removeWhere((element) =>
-              missingSongs.contains(element as Song));
+          texts[GameType.GUESS_THE_SONG]
+              .removeWhere((element) => missingSongs.contains(element as Song));
           missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]
               .add(await spotify.fillMissingPreviewUrls(e, database)));
         } else {
@@ -242,6 +291,7 @@ class GameController {
       }
       bool result;
       for (Game game in gamePlan) {
+        TypeClass<BaseType> typeClass = gameTypeToGameTypeClass(game.type);
         if (texts.values.where((element) => element.isNotEmpty).isEmpty) {
           await populateTextsMap();
         }
@@ -296,7 +346,7 @@ class GameController {
               throw Exception();
             }
           }
-          if (gameTypeToGameTypeClass(game.type).hasSolution) {
+          if (typeClass.hasSolution) {
             if (!randomlyChosenText.contains(";")) {
               throw Exception("no solution in text " + randomlyChosenText);
             }
@@ -312,10 +362,19 @@ class GameController {
           continue;
         }
 
+        Player player;
+        if (typeClass.singlePlayerActivity) {
+          player = getRandomPlayer();
+        }
+
+        if (typeClass.includesPlayers) {
+          randomlyChosenText = populateText(randomlyChosenText, difficulty);
+        }
+
         result = await Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (c, a1, a2) =>
-                game.function(players, difficulty, randomlyChosenText),
+                game.function(player, difficulty, randomlyChosenText),
             transitionsBuilder: (c, anim, a2, child) {
               if (anim.status == AnimationStatus.reverse) {
                 return SlideTransition(

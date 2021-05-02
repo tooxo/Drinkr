@@ -19,8 +19,8 @@ class TruthOrDare extends BasicGame {
 
   final int drinkingDisplay = 1;
 
-  TruthOrDare(List<Player> players, int difficulty, String text)
-      : super(players, difficulty, text);
+  TruthOrDare(Player player, int difficulty, String text)
+      : super(player, difficulty, text);
 
   @override
   String get mainTitle => text;
@@ -48,7 +48,7 @@ class TruthOrDareState extends BasicGameState {
                 Expanded(
                   flex: 1,
                   child: TextWidget(
-                    widget.selectedPlayer[0].name,
+                    widget.selectedPlayer.name,
                     textColor: widget.textColor,
                   ),
                 ),

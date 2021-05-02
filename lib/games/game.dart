@@ -25,7 +25,6 @@ class BasicGame extends StatefulWidget {
 
   final GameType type = GameType.UNDEFINED;
 
-  final List<Player> players;
   final int difficulty;
 
   final bool showSolutionButton = false;
@@ -36,13 +35,12 @@ class BasicGame extends StatefulWidget {
   final List drinking = [];
   final String text;
 
-  final List<Player> selectedPlayer = [];
+  final Player selectedPlayer;
 
   @mustCallSuper
-  BasicGame(this.players, this.difficulty, this.text) {
+  BasicGame(this.selectedPlayer, this.difficulty, this.text) {
     List<dynamic> resp = Drinking.generateRandomAmount(difficulty);
     this.drinking..add(resp[0])..add(resp[1]);
-    this.selectedPlayer.add(players[Random.secure().nextInt(players.length)]);
   }
 
   @override
@@ -207,7 +205,6 @@ class BasicGameState extends State<BasicGame>
         color2: widget.backgroundColor2,
         direction: GradientDirection.HORIZONTAL,
       ),
-      // backgroundColor: Colors.green, // FIXME add fade
     );
   }
 
@@ -425,17 +422,19 @@ class BasicGameState extends State<BasicGame>
         body: TwoColorGradient(
           color1: widget.backgroundColor1,
           color2: widget.backgroundColor2,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex: 7,
-                child: buildTop(),
-              ),
-              Expanded(
-                flex: 2,
-                child: buildBottom(),
-              )
-            ],
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 7,
+                  child: buildTop(),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: buildBottom(),
+                )
+              ],
+            ),
           ),
         ),
       ),

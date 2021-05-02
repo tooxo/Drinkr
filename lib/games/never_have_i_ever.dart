@@ -12,8 +12,8 @@ class NeverHaveIEver extends BasicGame {
 
   final int drinkingDisplay = 1;
 
-  NeverHaveIEver(List<Player> players, int difficulty, String text)
-      : super(players, difficulty, text);
+  NeverHaveIEver(Player player, int difficulty, String text)
+      : super(player, difficulty, text);
 
   @override
   String get mainTitle => text;
