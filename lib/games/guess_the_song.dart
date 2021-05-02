@@ -37,10 +37,10 @@ class GuessTheSong extends BasicGame {
   State<StatefulWidget> createState() => GuessTheSongState();
 
   @override
-  String get mainTitle => JsonDecoder().convert(text)[1];
+  String get mainTitle => JsonDecoder().convert(text)["previewUrl"];
 
   @override
-  String get solutionText => JsonDecoder().convert(text)[0];
+  String get solutionText => JsonDecoder().convert(text)["name"];
 }
 
 class GuessTheSongState extends BasicGameState

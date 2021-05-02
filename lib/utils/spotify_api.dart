@@ -4,6 +4,26 @@ import 'package:Drinkr/utils/sqlite.dart';
 import 'package:http/http.dart' as http;
 import 'package:pedantic/pedantic.dart';
 
+class Song {
+  String name;
+  String previewUrl;
+  String id;
+
+  Song(this.name, this.previewUrl, this.id);
+}
+
+class Playlist {
+  String id;
+  String name;
+  String creator_name;
+  String image_url;
+  List<String> song_ids;
+  DateTime last_update;
+
+  Playlist(this.id, this.name, this.creator_name, this.image_url, this.song_ids,
+      this.last_update);
+}
+
 class Spotify {
   // can reasonably be dumped here, the key is nothing important and not used
   // anywhere else. stealing it would be useless and completely harmless
@@ -47,46 +67,17 @@ class Spotify {
   }
 
   /// Pulls a playlist from Spotify
-  Future<List<List<String>>> getPlaylist(String playlistId,
-      {useCache = true}) async {
-    List<List<String>> trackList = [];
+  Future<List<Song>> getPlaylist(String playlistId, {bool useCache = true}) async {
+    List<Song> trackList = [];
 
     SqLite database;
     if (useCache) database = await SqLite().open();
 
-    /// Start with pulling the embed web page, because spotify is shit.
-
-    // Disabled for now, because it creates a way too great delay
-    /*
-    http.Response embedPlaylistResponse =
-        await http.get("https://open.spotify.com/embed/playlist/$playlistId");
-
-    var document = parse(embedPlaylistResponse.body);
-    String rawJson = document.getElementById("resource").innerHtml.trim();
-
-    dynamic decodedEmbedPage = jsonDecode(rawJson);
-    for (Map<dynamic, dynamic> track in decodedEmbedPage["tracks"]["items"]) {
-      if (track["track"]["preview_url"] != null) {
-        track["track"]["preview_url"] =
-            track["track"]["preview_url"].replaceAll("\\/", "/");
-      }
-      List<String> song = [
-        track["track"]["artists"][0]["name"] + " - " + track["track"]["name"],
-        track["track"]["preview_url"],
-        track["track"]["id"]
-      ];
-      if (!song.contains(null)) {
-        trackList.add(song);
-      }
-    }
-    */
-
-    //  if (decodedEmbedPage["tracks"]["total"] > 100) {
     String token = await generateAuthKey();
     String url =
         "https://api.spotify.com/v1/playlists/$playlistId/tracks?limit=100&offset=0";
 
-    Map<dynamic, dynamic> jsonResponse;
+    Map<String, dynamic> jsonResponse;
     do {
       http.Response response =
           await http.get(url, headers: {"Authorization": "Bearer $token"});
@@ -94,7 +85,7 @@ class Spotify {
         return trackList;
       }
       jsonResponse = jsonDecode(response.body);
-      for (Map<dynamic, dynamic> track in jsonResponse["items"]) {
+      for (Map<String, dynamic> track in jsonResponse["items"]) {
         if (track["is_local"]) {
           continue;
         }
@@ -102,40 +93,38 @@ class Spotify {
           continue;
         }
 
-        List<String> song = [
-          track["track"]["artists"][0]["name"] + " - " + track["track"]["name"],
-          track["track"]["preview_url"],
-          track["track"]["id"]
-        ];
+        Song song = Song(
+            track["track"]["artists"][0]["name"] +
+                " - " +
+                track["track"]["name"],
+            track["track"]["preview_url"],
+            track["track"]["id"]);
 
-        // if (!song.contains(null)) {
         trackList.add(song);
-        // }
       }
       url = jsonResponse["next"];
     } while (jsonResponse["next"] != null);
-    //}
+
     if (useCache) unawaited(database.putBulkInSpotifyCache(trackList));
     return trackList;
   }
 
-  Future<List<String>> fillMissingPreviewUrls(
-      List<String> track, SqLite database,
-      {useCache = true}) async {
+  Future<Song> fillMissingPreviewUrls(Song track, SqLite database,
+      {bool useCache = true}) async {
     /// this fixes a weird error with spotify returning null as
     /// the preview url, although they have a preview available
     /// this also multiplies the time a playlist gets extracted by factor 50
     /// spotify big suck
     /// Documented here: https://github.com/spotify/web-api/issues/148
 
-    String previewFromDatabase =
-        useCache ? await database.getFromSpotifyCache(track[2]) : null;
+    Song fromDatabase =
+        useCache ? await database.getFromSpotifyCache(track.id) : null;
 
-    if (previewFromDatabase != null) {
-      track[1] = previewFromDatabase;
+    if (fromDatabase != null) {
+      track.previewUrl = fromDatabase.previewUrl;
     } else {
       try {
-        String trackId = track[2];
+        String trackId = track.id;
 
         /// Load the Embed Page via normal http page request
         http.Response embedResponse = await http.get(
@@ -149,9 +138,12 @@ class Spotify {
           /// Un-Escape the url
           previewUrl = previewUrl.replaceAll("\\/", "/");
         }
-        track[1] = previewUrl;
+        track.previewUrl = previewUrl;
+
+        /// put the newly found url in cache
+        if (useCache) unawaited(database.putBulkInSpotifyCache([track]));
       } catch (_) {
-        return [null, null, null];
+        return Song(null, null, null);
       }
     }
     return track;
