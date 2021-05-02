@@ -89,7 +89,7 @@ jobs:
       before_install:
         - brew unlink usbmuxd
         - brew link usbmuxd
-        - sudo gem update cocoapods
+        - sudo gem install cocoapods
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
         # create signing prerequisites
         #- security create-keychain -p "chainPassword" build.keychain
