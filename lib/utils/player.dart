@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 @immutable
 class Player {
-  final bool gender = true; // == Is Man?
   final String _name;
 
   final int difficulty = 0; // Not implemented.

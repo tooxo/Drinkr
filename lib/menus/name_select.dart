@@ -76,11 +76,24 @@ class NameSelectState extends State<NameSelect> {
           ),
         );
       } else {
-        this.players.add(Player(this.player1));
-        this.textEditingController.clear();
-        this.player1 = "";
-        setPlayers();
-        setState(() {});
+        Player newPlayer = Player(this.player1.trim());
+        if (this.players.contains(newPlayer)) {
+          showDialog(
+            context: context,
+            builder: (BuildContext c) => CustomAlert(
+              titleTranslationKey: "duplicatedNameTitle",
+              textTranslationKey: "duplicatedNameDescription",
+              buttonTextTranslationKey: "close",
+              backgroundColor: Colors.deepOrange,
+            ),
+          );
+        } else {
+          this.players.add(newPlayer);
+          this.textEditingController.clear();
+          this.player1 = "";
+          setPlayers();
+          setState(() {});
+        }
       }
     }
   }
@@ -123,8 +136,8 @@ class NameSelectState extends State<NameSelect> {
           padding: const EdgeInsets.only(left: 20, right: 12),
           child: Column(
             children: [
-              Expanded(
-                flex: 3,
+              Container(
+                height: 250,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: Column(
@@ -199,129 +212,119 @@ class NameSelectState extends State<NameSelect> {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 5,
+              Flexible(
+                fit: FlexFit.tight,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: RawScrollbar(
                     thumbColor: Colors.deepOrange,
                     thickness: 4,
                     controller: scrollController,
-                    child: SingleChildScrollView(
-                      controller: scrollController,
-                      physics: BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          for (int i = 0; i < players.length; i += 2)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: NameSelectTile(
-                                        playerName: players[i].name,
-                                        deleteFunc: () {
-                                          setState(() {
-                                            this.players.remove(
-                                                  Player(players[i].name),
-                                                );
-                                            setPlayers();
-                                          });
-                                        },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            for (int i = 0; i < players.length; i += 2)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: NameSelectTile(
+                                          playerName: players[i].name,
+                                          deleteFunc: () {
+                                            setState(() {
+                                              this.players.remove(
+                                                    Player(players[i].name),
+                                                  );
+                                              setPlayers();
+                                            });
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, right: 16),
-                                      child: i + 1 < players.length
-                                          ? NameSelectTile(
-                                              playerName: players[i + 1].name,
-                                              deleteFunc: () {
-                                                setState(() {
-                                                  this.players.remove(
-                                                      Player(players[i].name));
-                                                  setPlayers();
-                                                });
-                                              },
-                                            )
-                                          : Container(),
-                                    ),
-                                  )
-                                ],
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, right: 16),
+                                        child: i + 1 < players.length
+                                            ? NameSelectTile(
+                                                playerName: players[i + 1].name,
+                                                deleteFunc: () {
+                                                  setState(() {
+                                                    this.players.remove(Player(
+                                                        players[i].name));
+                                                    setPlayers();
+                                                  });
+                                                },
+                                              )
+                                            : Container(),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0, bottom: 50),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        players.length.toString() + " / 12",
-                        style: GoogleFonts.nunito(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(),
-                            flex: 2,
-                          ),
-                          Expanded(
-                            flex: 6,
-                            child: MaterialButton(
-                              onPressed: confirm,
-                              padding: EdgeInsets.all(16),
-                              child: Text(
-                                "Start",
-                                style: GoogleFonts.nunito(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              color: Colors.deepOrange,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(8),
-                              child: TextButton.icon(
-                                onPressed: () => {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => Settings()))
-                                },
-                                icon: Icon(Icons.settings),
-                                label: Container(),
-                              ),
-                            ),
-                            flex: 2,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+              Divider(
+                color: Color.fromRGBO(160, 160, 160, 1),
+                thickness: 1,
+                height: 1,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 8.0,
+                  bottom: 8,
+                  top: 8
                 ),
-              )
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      players.length.toString() + " / 12",
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MaterialButton(
+                          minWidth: 200,
+                          onPressed: confirm,
+                          padding: EdgeInsets.all(16),
+                          child: Text(
+                            "Start",
+                            style: GoogleFonts.nunito(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          color: Colors.deepOrange,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
