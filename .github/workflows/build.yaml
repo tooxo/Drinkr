@@ -13,6 +13,12 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter build ios --release --no-codesign
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: ios_build_artifact
+          path: build/ios/iphoneos/Drinkr.app
+
   build_android:
     runs-on: ubuntu-latest
     steps:
@@ -26,3 +32,42 @@ jobs:
       - run: flutter pub get
       - run: flutter build apk --release
       - run: flutter build appbundle --release
+      - name: Upload result
+          uses: actions/upload-artifact@v2
+          with:
+            name: android_build_artifact_apk
+            path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Upload result
+          uses: actions/upload-artifact@v2
+          with:
+            name: android_build_artifact_appbundle
+            path: build/app/outputs/bundle/release/app-release.aab
+
+  sign_android:
+    runs-on: ubuntu-latest
+    needs: build_android
+    steps:
+      - name: Download results from build
+        uses: actions/download-artifact@v2
+        with:
+          name: android_build_artifact_apk
+      - name: Download results from build 2
+        uses: actions/download-artifact@v2
+        with:
+          name: android_build_artifact_appbundle
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app APK
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          # keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.2"
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: android_apk_signed
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
