@@ -49,24 +49,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: android_build_artifact_apk
-      - uses: r0adkll/sign-android-release@v1
-        name: Sign app APK
-        id: sign_app
-        with:
-          releaseDirectory: .
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          # keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "30.0.2"
       - name: Download results from build 2
         uses: actions/download-artifact@v2
         with:
           name: android_build_artifact_appbundle
       - run: zip --delete app-release.aab "META-INF/*"
-      - uses: r0adkll/sign-android-release@v1
-        name: Sign appbundle
+      - uses: Tlaster/android-sign@v1
+        name: Sign app
         id: sign_appbundle
         with:
           releaseDirectory: .
@@ -78,9 +67,5 @@ jobs:
           BUILD_TOOLS_VERSION: "30.0.2"
       - uses: actions/upload-artifact@v2
         with:
-          name: androidapk_signed
-          path: ${{steps.sign_app.outputs.signedReleaseFile}}
-      - uses: actions/upload-artifact@v2
-        with:
-          name: androidappbundle_signed
-          path: ${{steps.sign_appbundle.outputs.signedReleaseFile}}
+          name: android_signed
+          path: build/signed
