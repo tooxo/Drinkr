@@ -33,15 +33,15 @@ jobs:
       - run: flutter build apk --release
       - run: flutter build appbundle --release
       - name: Upload result
-          uses: actions/upload-artifact@v2
-          with:
-            name: android_build_artifact_apk
-            path: build/app/outputs/flutter-apk/app-release.apk
+        uses: actions/upload-artifact@v2
+        with:
+          name: android_build_artifact_apk
+          path: build/app/outputs/flutter-apk/app-release.apk
       - name: Upload result
-          uses: actions/upload-artifact@v2
-          with:
-            name: android_build_artifact_appbundle
-            path: build/app/outputs/bundle/release/app-release.aab
+        uses: actions/upload-artifact@v2
+        with:
+          name: android_build_artifact_appbundle
+          path: build/app/outputs/bundle/release/app-release.aab
 
   sign_android:
     runs-on: ubuntu-latest
