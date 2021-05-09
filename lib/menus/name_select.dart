@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Drinkr/menus/game_mode.dart';
 import 'package:Drinkr/menus/setting.dart';
+import 'package:Drinkr/widgets/custom_alert.dart';
 import 'package:Drinkr/widgets/name_select_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,45 +68,20 @@ class NameSelectState extends State<NameSelect> {
       if (regExp.hasMatch(this.player1)) {
         showDialog(
           context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Colors.deepOrange,
-              title: Text("illegalName",
-                  style: GoogleFonts.caveatBrush(
-                    textStyle: TextStyle(color: Colors.black),
-                    fontWeight: FontWeight.w800,
-                    fontSize: 30,
-                  )).tr(),
-              content: Text(
-                "illegalNameDescription",
-                style: GoogleFonts.caveatBrush(
-                  textStyle: TextStyle(color: Colors.black),
-                  fontSize: 25,
-                ),
-              ).tr(),
-              actions: <Widget>[
-                // usually buttons at the bottom of the dialog
-                TextButton(
-                  child: Text(
-                    "close",
-                    style: GoogleFonts.caveatBrush(
-                        color: Colors.black, fontSize: 20),
-                  ).tr(),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            );
-          },
+          builder: (BuildContext c) => CustomAlert(
+            titleTranslationKey: "illegalName",
+            textTranslationKey: "illegalNameDescription",
+            buttonTextTranslationKey: "close",
+            backgroundColor: Colors.deepOrange,
+          ),
         );
-        return;
+      } else {
+        this.players.add(Player(this.player1));
+        this.textEditingController.clear();
+        this.player1 = "";
+        setPlayers();
+        setState(() {});
       }
-      this.players.add(Player(this.player1));
-      this.textEditingController.clear();
-      this.player1 = "";
-      setPlayers();
-      setState(() {});
     }
   }
 
@@ -113,73 +89,22 @@ class NameSelectState extends State<NameSelect> {
     if (players.length < 2) {
       showDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Colors.deepOrange,
-            title: Text("nameTooFewPlayers",
-                style: GoogleFonts.nunito(
-                  textStyle: TextStyle(color: Colors.white),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                )).tr(),
-            content: Text(
-              "nameTooFewPlayersDescription",
-              style: GoogleFonts.nunito(
-                textStyle: TextStyle(color: Colors.white),
-                fontSize: 25,
-              ),
-            ).tr(),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              TextButton(
-                child: Text(
-                  "close".tr(),
-                  style: GoogleFonts.nunito(color: Colors.white, fontSize: 20),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
+        builder: (BuildContext c) => CustomAlert(
+          titleTranslationKey: "nameTooFewPlayers",
+          textTranslationKey: "nameTooFewPlayersDescription",
+          backgroundColor: Colors.deepOrange,
+          buttonTextTranslationKey: "close",
+        ),
       );
     } else if (players.length > 12) {
       showDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Colors.deepOrange,
-            title: Text("nameTooManyPlayers",
-                style: GoogleFonts.nunito(
-                  textStyle: TextStyle(color: Colors.white),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                )).tr(),
-            content: Text(
-              "nameTooManyPlayersDescriptions".tr(),
-              style: GoogleFonts.nunito(
-                textStyle: TextStyle(color: Colors.white),
-                fontSize: 25,
-              ),
-            ),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              TextButton(
-                child: Text(
-                  "close",
-                  style: GoogleFonts.nunito(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ).tr(),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
+        builder: (BuildContext c) => CustomAlert(
+          titleTranslationKey: "nameTooManyPlayers",
+          textTranslationKey: "nameTooManyPlayersDescription",
+          buttonTextTranslationKey: "color",
+          backgroundColor: Colors.deepOrange,
+        ),
       );
     } else {
       Navigator.of(context)
