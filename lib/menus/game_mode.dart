@@ -31,10 +31,11 @@ class GameState extends State<GameMode> {
           iconTheme: IconThemeData(color: Colors.white),
         ),
         backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-        body: Padding(
-          padding: EdgeInsets.only(top: 20),
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
+              Divider(),
               BasicTile(
                 mainColor: Color.fromRGBO(255, 27, 24, 1),
                 secondaryColor: Color.fromRGBO(241, 61, 180, 1),
@@ -96,7 +97,8 @@ class GameState extends State<GameMode> {
                 topIcon: Icons.lock_outline,
                 games: "Kauf pls I need money",
                 players: widget.players,
-              )
+              ),
+              Divider(),
             ],
           ),
         ));
