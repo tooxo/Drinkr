@@ -55,6 +55,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: android_build_artifact_appbundle
+      - run: zip --delete app-release.aab "META-INF/*"
       - uses: r0adkll/sign-android-release@v1
         name: Sign app APK
         id: sign_app
