@@ -10,7 +10,7 @@
   "nameTooFewPlayers": "Too few players",
   "nameTooFewPlayersDescription": "At least 2 players must be added.\nTip: Search some friends.",
   "nameTooManyPlayers": "Too many players",
-  "nameTooManyPlayersDescriptions": "Only a maximum of 12 players are allowed. \nTip: Create Teams!",
+  "nameTooManyPlayersDescription": "Only a maximum of 12 players are allowed. \nTip: Create Teams!",
   "selectDifficulty": "Select Difficulty",
   "difficultyLow": "Easy",
   "difficultyLowDescription": "Penalties: 1 - 2 Sip(s) | no Shots",
