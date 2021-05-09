@@ -54,7 +54,7 @@ jobs:
         with:
           name: android_build_artifact_appbundle
       - run: zip --delete app-release.aab "META-INF/*"
-      - uses: Tlaster/android-sign@v1
+      - uses: Tlaster/android-sign@v1.2.2
         name: Sign app
         id: sign_appbundle
         with:
