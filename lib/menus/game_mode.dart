@@ -68,7 +68,10 @@ class GameState extends State<GameMode> {
               description: "Teste dein Wissen!",
               icon: GameMode.icon_quiz,
               games: "\u2022 Big brain Quiz\n" "\u2022 Schätzfragen",
-              enabledGames: [],
+              enabledGames: [
+                GameType.QUIZ,
+                GameType.GUESS,
+              ],
               players: widget.players,
             ),
             BasicTile(

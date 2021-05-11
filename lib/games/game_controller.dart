@@ -390,6 +390,10 @@ class GameController {
             pageBuilder: (c, a1, a2) =>
                 game.function(player, difficulty, randomlyChosenText),
             transitionsBuilder: (c, anim, a2, child) {
+              return FadeTransition(
+                opacity: anim,
+                child: child,
+              );
               if (anim.status == AnimationStatus.reverse) {
                 return SlideTransition(
                   position: Tween<Offset>(
@@ -407,7 +411,7 @@ class GameController {
                 child: child,
               );
             },
-            transitionDuration: Duration(milliseconds: 200),
+            transitionDuration: Duration(milliseconds: 500),
           ),
         );
 

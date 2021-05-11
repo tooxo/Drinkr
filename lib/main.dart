@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
       locale: context.locale,
-      home: SplashScreen(),
+      home: NameSelect(),
     );
   }
 }
