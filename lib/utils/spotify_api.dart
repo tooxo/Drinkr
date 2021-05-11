@@ -1,31 +1,56 @@
 import 'dart:convert';
 
-import 'package:Drinkr/utils/sqlite.dart';
+import 'package:Drinkr/utils/spotify_storage.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:pedantic/pedantic.dart';
 
+part 'spotify_api.g.dart';
+
+@HiveType(typeId: 1)
 class Song {
-  String? name;
+  @HiveField(0)
+  String name;
+  @HiveField(1)
   String? previewUrl;
-  String? id;
+  @HiveField(2)
+  String id;
 
   Song(this.name, this.previewUrl, this.id);
 }
 
+@HiveType(typeId: 2)
 class Playlist {
-  String? id;
-  String? name;
-  String? creator_name;
-  String? image_url;
-  List<Song> songs = [];
-  DateTime? last_update;
+  @HiveField(0)
+  String id;
+  @HiveField(1)
+  String name;
+  @HiveField(2)
+  String creator_name;
+  @HiveField(3)
+  String image_url;
+  @HiveField(4)
+  List<String> song_ids = [];
+  @HiveField(5)
+  String snapshotId;
+  @HiveField(6)
+  DateTime lastFetch;
 
-  Playlist(
-      {this.id,
-      this.name,
-      this.creator_name,
-      this.image_url,
-      this.last_update});
+  Playlist({
+    required this.id,
+    required this.name,
+    required this.creator_name,
+    required this.image_url,
+    required this.snapshotId,
+    required this.lastFetch,
+  });
+}
+
+enum PlaylistUpdateStrategy {
+  TRUST_CACHE,
+  CHECK_FOR_UPDATE_TIMESTAMP,
+  CHECK_FOR_UPDATE_SNAPSHOT_ID,
+  FULL_FETCH
 }
 
 class Spotify {
@@ -74,24 +99,62 @@ class Spotify {
 
   /// Pulls a playlist from Spotify
   Future<Playlist?> getPlaylist(String playlistId,
-      {bool useCache = true}) async {
-    Playlist playlist = Playlist(id: playlistId);
+      {PlaylistUpdateStrategy updateStrategy =
+          PlaylistUpdateStrategy.TRUST_CACHE}) async {
+    Playlist? cachePlaylist =
+        await SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
+    if (cachePlaylist != null) {
+      if (updateStrategy == PlaylistUpdateStrategy.TRUST_CACHE) {
+        return cachePlaylist;
+      }
 
-    SqLite? database;
-    if (useCache) database = await SqLite().open();
+      // return if last fetch is closer than 24 hours
+      if (updateStrategy == PlaylistUpdateStrategy.CHECK_FOR_UPDATE_TIMESTAMP) {
+        if (cachePlaylist.lastFetch.difference(DateTime.now()).abs().inHours <
+            24) {
+          return cachePlaylist;
+        }
+      }
+    }
 
     String token = await generateAuthKey();
-    String url =
-        "https://api.spotify.com/v1/playlists/$playlistId/tracks?limit=100&offset=0";
+    String info_url = "https://api.spotify.com/v1/playlists/$playlistId/";
+    String? url = info_url + "tracks?limit=100&offset=0";
 
+    http.Response infoResponse = await http
+        .get(Uri.parse(info_url), headers: {"Authorization": "Bearer $token"});
+    if (infoResponse.statusCode != 200) {
+      return null;
+    }
+
+    Map<String, dynamic> info_json_response = jsonDecode(infoResponse.body);
+    Playlist playlist = Playlist(
+      id: playlistId,
+      creator_name: info_json_response["owner"]["id"],
+      image_url: info_json_response["images"][0]["url"],
+      name: info_json_response["name"],
+      snapshotId: info_json_response["snapshot_id"],
+      lastFetch: DateTime.now(),
+    );
+
+    if (updateStrategy == PlaylistUpdateStrategy.CHECK_FOR_UPDATE_SNAPSHOT_ID &&
+        cachePlaylist != null) {
+      if (cachePlaylist.snapshotId == playlist.snapshotId) {
+        return cachePlaylist;
+      }
+    }
+
+    List<Song> songs = [];
     Map<String, dynamic> jsonResponse;
     do {
       http.Response response = await http
-          .get(Uri.parse(url), headers: {"Authorization": "Bearer $token"});
+          .get(Uri.parse(url!), headers: {"Authorization": "Bearer $token"});
       if (response.statusCode != 200) {
-        return playlist;
+        return null;
       }
+
       jsonResponse = jsonDecode(response.body);
+
       for (Map<String, dynamic> track in jsonResponse["items"]) {
         if (track["is_local"]) {
           continue;
@@ -107,16 +170,18 @@ class Spotify {
             track["track"]["preview_url"],
             track["track"]["id"]);
 
-        playlist.songs.add(song);
+        songs.add(song);
+        playlist.song_ids.add(song.id);
       }
       url = jsonResponse["next"];
     } while (jsonResponse["next"] != null);
 
-    if (useCache) unawaited(database!.putBulkInSpotifyCache(playlist.songs));
+    await SpotifyStorage.putBulkInSpotifyCache(songs);
+    await SpotifyStorage.putBulkInSpotifyPlaylistCache([playlist]);
     return playlist;
   }
 
-  Future<Song> fillMissingPreviewUrls(Song track, SqLite database,
+  Future<Song?> fillMissingPreviewUrls(Song track,
       {bool useCache = true}) async {
     /// this fixes a weird error with spotify returning null as
     /// the preview url, although they have a preview available
@@ -125,13 +190,13 @@ class Spotify {
     /// Documented here: https://github.com/spotify/web-api/issues/148
 
     Song? fromDatabase =
-        useCache ? await database.getFromSpotifyCache(track.id!) : null;
+        useCache ? await SpotifyStorage.getFromSpotifyCache(track.id) : null;
 
     if (fromDatabase != null) {
       track.previewUrl = fromDatabase.previewUrl;
     } else {
       try {
-        String trackId = track.id!;
+        String trackId = track.id;
 
         /// Load the Embed Page via normal http page request
         http.Response embedResponse = await http.get(
@@ -148,9 +213,9 @@ class Spotify {
         track.previewUrl = previewUrl;
 
         /// put the newly found url in cache
-        if (useCache) unawaited(database.putBulkInSpotifyCache([track]));
+        if (useCache) unawaited(SpotifyStorage.putBulkInSpotifyCache([track]));
       } catch (_) {
-        return Song(null, null, null);
+        return null;
       }
     }
     return track;

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:Drinkr/utils/spotify_api.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'menus/name_select.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 /// this is used to create a "no-ad" version, if set to false.
 /// the seemingly random variable naming is used to identify it
@@ -27,6 +30,14 @@ void main() async {
         await rootBundle.loadString("assets/licenses/flaticon.txt");
     yield LicenseEntryWithLineBreaks(["icons (flaticon)"], licenseIcon);
   });
+  await Hive.initFlutter("storage");
+
+  Hive.registerAdapter(SongAdapter());
+  Hive.registerAdapter(PlaylistAdapter());
+
+  await Hive.openBox<Song>('spotify_songs');
+  await Hive.openBox<Playlist>('spotify_playlists');
+
   await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(

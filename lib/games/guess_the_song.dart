@@ -147,7 +147,8 @@ class GuessTheSongState extends BasicGameState
     http.Response response = await http.get(Uri.parse(widget.mainTitle));
     await f!.writeAsBytes(response.bodyBytes);
 
-    return SoundData(await compute(AudiowaveformFlutter.audioWaveForm, f!.path));
+    String? audioData = await compute(AudiowaveformFlutter.audioWaveForm, f!.path);
+    return SoundData(audioData);
   }
 
   void _updateBar(double newValue) {
@@ -178,7 +179,6 @@ class GuessTheSongState extends BasicGameState
                         animation: _animation!,
                         builder: (context, child) => LinearProgressIndicator(
                           value: _animation!.value,
-
                           valueColor:
                               AlwaysStoppedAnimation(Colors.grey.shade900),
                           backgroundColor: widget.buttonColor,

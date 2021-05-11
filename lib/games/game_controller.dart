@@ -8,7 +8,7 @@ import 'package:Drinkr/utils/file.dart';
 import 'package:Drinkr/utils/networking.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:Drinkr/utils/spotify_api.dart';
-import 'package:Drinkr/utils/sqlite.dart';
+import 'package:Drinkr/utils/spotify_storage.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -135,17 +135,17 @@ class GameController {
           }
 
           texts[gameType] = await buildSpotify(urls, spotify);
-          SqLite database = await SqLite().open();
           List<Song> missingSongs = texts[GameType.GUESS_THE_SONG]!
               .where((element) =>
                   element.name == null ||
-                  element.id == null || element.previewUrl == null)
+                  element.id == null ||
+                  element.previewUrl == null)
               .map((e) => e as Song)
               .toList();
           texts[GameType.GUESS_THE_SONG]!
               .removeWhere((element) => missingSongs.contains(element as Song));
           missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]!
-              .add(await spotify.fillMissingPreviewUrls(e, database)));
+              .add(await spotify.fillMissingPreviewUrls(e)));
         } else {
           await Fluttertoast.showToast(
               msg: "Rate den Song wurde deaktiviert, da du über keine "
@@ -197,21 +197,26 @@ class GameController {
   Future<List<Song>> buildSpotify(
       List<String> playlistUrls, Spotify spotify) async {
     List<Song> response = [];
-    for (String url in playlistUrls) {
-      String playlistId = Spotify.getIdFromUrl(url)!;
-      Playlist? playlistResponse = await spotify.getPlaylist(playlistId);
-      if (playlistResponse == null) {
+
+    List<Future<Playlist?>> playlistFutures = playlistUrls
+        .map(Spotify.getIdFromUrl)
+        .map((e) => spotify.getPlaylist(e!))
+        .toList();
+
+    List<Playlist?> playlists = await Future.wait(playlistFutures);
+
+    for (Playlist? p in playlists) {
+      if (p == null) {
         continue;
       }
-      for (Song track in playlistResponse.songs) {
-        if (!response.contains(track)) {
-          response.add(track);
+      for (String track_id in p.song_ids) {
+        Song? track = await SpotifyStorage.getFromSpotifyCache(track_id);
+        if (track != null) {
+          if (!response.contains(track)) {
+            response.add(track);
+          }
         }
       }
-      // FIXME: reimplement progress bar
-      /*context.setState(() {
-        linearProgress++;
-      });*/
     }
     return response;
   }
@@ -246,13 +251,15 @@ class GameController {
           if (count == this.maxTexts[game.type] ||
               count >= maxTexts[GameType.TRUTH]! ||
               count >= maxTexts[GameType.DARE]!) {
-            gameType = GameType.UNDEFINED; // provoke a rerun, because no texts are remaining
+            gameType = GameType
+                .UNDEFINED; // provoke a rerun, because no texts are remaining
             availableGamesBackup.remove(game);
           }
         } else {
           if (countOccurrencesOfSpecificGameInMap(gameType) ==
               this.maxTexts[game.type]) {
-            gameType = GameType.UNDEFINED; // provoke a rerun, because no texts are remaining
+            gameType = GameType
+                .UNDEFINED; // provoke a rerun, because no texts are remaining
             availableGamesBackup.remove(game);
           }
         }
@@ -306,11 +313,11 @@ class GameController {
         if (game.type == GameType.TRUTH &&
             texts[GameType.TRUTH]!.isNotEmpty &&
             texts[GameType.DARE]!.isNotEmpty) {
-          String randomTextTruth = texts[GameType.TRUTH]!
-              [Random.secure().nextInt(texts[GameType.TRUTH]!.length)];
+          String randomTextTruth = texts[GameType.TRUTH]![
+              Random.secure().nextInt(texts[GameType.TRUTH]!.length)];
 
-          String randomTextDare = texts[GameType.DARE]!
-              [Random.secure().nextInt(texts[GameType.DARE]!.length)];
+          String randomTextDare = texts[GameType.DARE]![
+              Random.secure().nextInt(texts[GameType.DARE]!.length)];
 
           texts[GameType.TRUTH]!.remove(randomTextTruth);
           texts[GameType.DARE]!.remove(randomTextDare);
@@ -319,8 +326,8 @@ class GameController {
               json.encode({"truth": randomTextTruth, "dare": randomTextDare});
         } else if (game.type == GameType.GUESS_THE_SONG) {
           try {
-            Song randomSong = texts[game.type]!
-                [Random.secure().nextInt(texts[game.type]!.length)];
+            Song randomSong = texts[game.type]![
+                Random.secure().nextInt(texts[game.type]!.length)];
 
             randomlyChosenText = json.encode(
                 {"name": randomSong.name, "previewUrl": randomSong.previewUrl});
@@ -331,8 +338,8 @@ class GameController {
           }
         } else {
           try {
-            randomlyChosenText = texts[game.type]!
-                [Random.secure().nextInt(texts[game.type]!.length)];
+            randomlyChosenText = texts[game.type]![
+                Random.secure().nextInt(texts[game.type]!.length)];
             texts[game.type]!.remove(randomlyChosenText);
           } on IndexError {
             continue;

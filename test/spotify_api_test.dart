@@ -1,8 +1,17 @@
 import 'package:Drinkr/utils/spotify_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
 // ignore: avoid_relative_lib_imports
 
 void main() {
+  Hive.init(".");
+
+  Hive.registerAdapter(SongAdapter());
+  Hive.registerAdapter(PlaylistAdapter());
+
+  Hive.openBox<Playlist>("spotify_playlists");
+  Hive.openBox<Song>("spotify_songs");
+
   test("test playlist id extraction by regex usage", () {
     Map<String, String> urlsToTest = {
       "https://open.spotify.com/playlist/37i9dQZF1DWX7rdRjOECPW?si=v8CMn-KRQFCCz0dugDIg4g":
@@ -32,8 +41,19 @@ void main() {
     }
   });
   test("test spotify playlist extraction", () async {
-    expect((await Spotify().getPlaylist("37i9dQZEVXbMDoHDwVN2tF", useCache: false))!.songs.length, 50);
-    expect((await Spotify().getPlaylist("71Oc23mUiQmiM3SNYkmvV1", useCache: false))!.songs.length,
-        200);
+    expect(
+      (await Spotify().getPlaylist("37i9dQZEVXbMDoHDwVN2tF",
+              updateStrategy: PlaylistUpdateStrategy.FULL_FETCH))!
+          .song_ids
+          .length,
+      50,
+    );
+    expect(
+      (await Spotify().getPlaylist("71Oc23mUiQmiM3SNYkmvV1",
+              updateStrategy: PlaylistUpdateStrategy.FULL_FETCH))!
+          .song_ids
+          .length,
+      200,
+    );
   });
 }
