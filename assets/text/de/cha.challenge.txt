@@ -23,7 +23,7 @@ Macht 5 Kniebeugen und trinkt nach jedem 1 Schluck.
 Derjenige mit dem vollsten Getränk muss dieses wegexen. Trink mal schneller bro!
 Trinkt pro Kleidungstück ein Schluck (z. B. Sockenpaare zählen als 2)!
 %player verteilt so viele Schlücke, wie Singles mitspielen.
-%player spielt Armdrücken gegen sein Gegenüber. Der Verlierer trinkt %amountbeer und meldet sich im Fittnessstudio an, du Lauch!
+%player spielt Armdrücken gegen sein Gegenüber. Der Verlierer trinkt %amountbeer und meldet sich im Fittnessstudio an!
 Alle trinken 1 Schluck und lesen ihre letzte versandte Nachricht laut vor (mit Kontext, wenn nötig). Wer sich nicht traut, trinkt %amountshot.
 Nennt Modemarken! Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer. %player beginnt. Dein Kopf platzt offenbar nicht Guccisandalen, mein Freund!
 Nennt Automarken! Die Person, die was wiederholt oder nach 10 Sekunden nichts weiß, trinkt %amountbeer. %player beginnt. Wie es ausschaut, fährst du keinen Babawagen.
@@ -95,4 +95,4 @@ Die Person mit der meisten Schminke, trinkt %amountbeer.
 Alle Christen trinke %amountbeer. Amen.
 Alle Muslime trinken nichts, weil Alkohol haram ist amk.
 %player trinke %amountbeer, wenn du findest, das jemand mitspielt, der absolut unwitzig ist. Nicht jeder kann so witzig sein, wie die Developer dieser App.
-%player darf so viele Schlücke verteilen, wie er Fehler in der Theorieprüfung beim Führerschein hatte. Wenn du keinen Führerschein hast, exe dein Glas.
+%player darf so viele Schlücke verteilen, wie er Fehler in der Theorieprüfung (Führerschein) hatte. Wenn du keinen Führerschein hast, exe dein Glas.

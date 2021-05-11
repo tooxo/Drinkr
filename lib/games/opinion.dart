@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class Opinion extends BasicGame {
   final String title = "wouldYouRather";
 
-  final Color backgroundColor1 = Color.fromRGBO(217, 53, 142, 1);
-  final Color backgroundColor2 = Color.fromRGBO(240, 200, 57, 1);
+  final Color backgroundColor1 = Color.fromRGBO(254, 140, 0, 1);
+  final Color backgroundColor2 = Color.fromRGBO(248, 54, 0, 1);
 
   final int drinkingDisplay = 1;
 

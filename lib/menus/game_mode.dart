@@ -77,8 +77,8 @@ class GameState extends State<GameMode> {
                 players: widget.players,
               ),
               BasicTile(
-                mainColor: Color.fromRGBO(15, 125, 97, 1),
-                secondaryColor: Color.fromRGBO(140, 203, 40, 1),
+                mainColor: Color.fromRGBO(25, 96, 2, 1),
+                secondaryColor: Color.fromRGBO(95, 154, 0, 1),
                 title: "Lieder raten",
                 description: "Errate das Lied als erstes!",
                 icon: Icons.music_note_outlined,

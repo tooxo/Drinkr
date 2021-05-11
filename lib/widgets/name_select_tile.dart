@@ -17,7 +17,7 @@ class NameSelectTile extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             border: Border.all(
-              color: Colors.deepOrange,
+              color: Color.fromRGBO(255, 92, 0, 1),
               width: 3,
             )),
         child: Padding(
@@ -43,8 +43,7 @@ class NameSelectTile extends StatelessWidget {
                   icon: Icon(
                     Icons.highlight_off_outlined,
                     size: 35,
-                    color: Colors.deepOrange,
-                  ),
+                    color: Color.fromRGBO(255, 92, 0, 1),                  ),
                 ),
               )
             ],

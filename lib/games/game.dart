@@ -399,8 +399,8 @@ class BasicGameState extends State<BasicGame>
                   "next",
                   style: GoogleFonts.nunito(
                       color: widget.textColor,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
                 ).tr(),
               ),
             ),

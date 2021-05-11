@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:Drinkr/games/game_controller.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:Drinkr/utils/types.dart';
+import 'package:Drinkr/widgets/gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -129,7 +130,7 @@ class DifficultyState extends State<Difficulty> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      height: 180,
+                      height: 140,
                       width: 350.0,
                       decoration: BoxDecoration(
                           color: Colors.orange,
@@ -142,29 +143,34 @@ class DifficultyState extends State<Difficulty> {
                             ),
                           ],
                           borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Center(
-                        child: ListTile(
-                          onTap: () => selectDifficulty(Difficulty.EASY),
-                          leading: Icon(
-                            Difficulty.easyIcon,
-                            size: 60,
-                            color: Colors.white,
-                          ),
-                          title: Text(
-                            "Leicht",
-                            style: GoogleFonts.nunito(
+                      child: TwoColorGradient(
+                        color1: Color.fromRGBO(255, 168, 0, 1),
+                        color2: Color.fromRGBO(255, 92, 0, 1),
+                        roundness: 30,
+                        child: Center(
+                          child: ListTile(
+                            onTap: () => selectDifficulty(Difficulty.EASY),
+                            leading: Icon(
+                              Difficulty.easyIcon,
+                              size: 60,
                               color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800,
                             ),
-                          ).tr(),
-                          subtitle: Text(
-                            "1-2 Schlücke | 5 shots",
-                            style: GoogleFonts.nunito(
+                            title: Text(
+                              "Leicht",
+                              style: GoogleFonts.nunito(
                                 color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ).tr(),
+                                fontSize: 35,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ).tr(),
+                            subtitle: Text(
+                              "1-2 Schlücke | 5 shots",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ).tr(),
+                          ),
                         ),
                       ),
                     ),
@@ -172,7 +178,7 @@ class DifficultyState extends State<Difficulty> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      height: 180,
+                      height: 140,
                       width: 350.0,
                       decoration: BoxDecoration(
                           color: Colors.deepOrange,
@@ -185,29 +191,34 @@ class DifficultyState extends State<Difficulty> {
                             ),
                           ],
                           borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Center(
-                        child: ListTile(
-                          onTap: () => selectDifficulty(Difficulty.EASY),
-                          leading: Icon(
-                            Difficulty.mediumIcon,
-                            size: 60,
-                            color: Colors.white,
-                          ),
-                          title: Text(
-                            "Normal",
-                            style: GoogleFonts.nunito(
+                      child: TwoColorGradient(
+                        color1: Color.fromRGBO(255, 92, 0, 1),
+                        color2: Color.fromRGBO(255, 0, 0, 1),
+                        roundness: 30,
+                        child: Center(
+                          child: ListTile(
+                            onTap: () => selectDifficulty(Difficulty.EASY),
+                            leading: Icon(
+                              Difficulty.mediumIcon,
+                              size: 60,
                               color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800,
                             ),
-                          ).tr(),
-                          subtitle: Text(
-                            "1-2 Schlücke | 5 shots",
-                            style: GoogleFonts.nunito(
+                            title: Text(
+                              "Normal",
+                              style: GoogleFonts.nunito(
                                 color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ).tr(),
+                                fontSize: 35,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ).tr(),
+                            subtitle: Text(
+                              "1-2 Schlücke | 5 shots",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ).tr(),
+                          ),
                         ),
                       ),
                     ),
@@ -215,7 +226,7 @@ class DifficultyState extends State<Difficulty> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      height: 180,
+                      height: 140,
                       width: 350.0,
                       decoration: BoxDecoration(
                           color: Colors.red,
@@ -228,29 +239,34 @@ class DifficultyState extends State<Difficulty> {
                             ),
                           ],
                           borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Center(
-                        child: ListTile(
-                          onTap: () => selectDifficulty(Difficulty.HARD),
-                          leading: Icon(
-                            Difficulty.hardIcon,
-                            size: 60,
-                            color: Colors.white,
-                          ),
-                          title: Text(
-                            "Absturz",
-                            style: GoogleFonts.nunito(
+                      child: TwoColorGradient(
+                        color1: Color.fromRGBO(255, 0, 0, 1),
+                        color2: Color.fromRGBO(118, 0, 0, 1),
+                        roundness: 30,
+                        child: Center(
+                          child: ListTile(
+                            onTap: () => selectDifficulty(Difficulty.HARD),
+                            leading: Icon(
+                              Difficulty.hardIcon,
+                              size: 60,
                               color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800,
                             ),
-                          ).tr(),
-                          subtitle: Text(
-                            "1-2 Schlücke | 5 shots",
-                            style: GoogleFonts.nunito(
+                            title: Text(
+                              "Absturz",
+                              style: GoogleFonts.nunito(
                                 color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ).tr(),
+                                fontSize: 35,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ).tr(),
+                            subtitle: Text(
+                              "1-2 Schlücke | 5 shots",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ).tr(),
+                          ),
                         ),
                       ),
                     ),

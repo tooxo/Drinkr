@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:Drinkr/menus/difficulty.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,7 @@ class DrinkingDisplay extends StatelessWidget {
                 child: Text(
                   amount.toString() + " × ", // Unicode Multiply Sign
                   style: GoogleFonts.nunito(
-                      fontSize: 5000, color: this.tintColor),
+                      fontSize: 5000, color: this.tintColor,fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(

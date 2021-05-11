@@ -72,7 +72,7 @@ class NameSelectState extends State<NameSelect> {
             titleTranslationKey: "illegalName",
             textTranslationKey: "illegalNameDescription",
             buttonTextTranslationKey: "close",
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Color.fromRGBO(255, 92, 0, 1),
           ),
         );
       } else {
@@ -84,7 +84,7 @@ class NameSelectState extends State<NameSelect> {
               titleTranslationKey: "duplicatedNameTitle",
               textTranslationKey: "duplicatedNameDescription",
               buttonTextTranslationKey: "close",
-              backgroundColor: Colors.deepOrange,
+              backgroundColor: Color.fromRGBO(255, 92, 0, 1),
             ),
           );
         } else {
@@ -105,7 +105,7 @@ class NameSelectState extends State<NameSelect> {
         builder: (BuildContext c) => CustomAlert(
           titleTranslationKey: "nameTooFewPlayers",
           textTranslationKey: "nameTooFewPlayersDescription",
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Color.fromRGBO(255, 92, 0, 1),
           buttonTextTranslationKey: "close",
         ),
       );
@@ -116,7 +116,7 @@ class NameSelectState extends State<NameSelect> {
           titleTranslationKey: "nameTooManyPlayers",
           textTranslationKey: "nameTooManyPlayersDescription",
           buttonTextTranslationKey: "color",
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Color.fromRGBO(255, 92, 0, 1),
         ),
       );
     } else {
@@ -155,7 +155,7 @@ class NameSelectState extends State<NameSelect> {
                         child: Container(
                           height: 60,
                           decoration: BoxDecoration(
-                              color: Colors.deepOrange,
+                              color: Color.fromRGBO(255, 92, 0, 1),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.8),
@@ -217,7 +217,7 @@ class NameSelectState extends State<NameSelect> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: RawScrollbar(
-                    thumbColor: Colors.deepOrange,
+                    thumbColor: Color.fromRGBO(255, 92, 0, 1),
                     thickness: 4,
                     controller: scrollController,
                     child: Padding(
@@ -285,11 +285,7 @@ class NameSelectState extends State<NameSelect> {
                 height: 1,
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                  right: 8.0,
-                  bottom: 8,
-                  top: 8
-                ),
+                padding: const EdgeInsets.only(right: 8.0, bottom: 8, top: 8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -315,7 +311,7 @@ class NameSelectState extends State<NameSelect> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          color: Colors.deepOrange,
+                          color: Color.fromRGBO(255, 92, 0, 1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
