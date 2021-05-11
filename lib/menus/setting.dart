@@ -1,16 +1,6 @@
-import 'dart:math';
-
-import 'package:Drinkr/utils/ad.dart';
-import 'package:Drinkr/utils/file.dart';
 import 'package:Drinkr/menus/licenses.dart';
-import 'package:Drinkr/utils/shapes.dart';
-import 'package:Drinkr/widgets/toggle_switch.dart';
-import 'package:Drinkr/menus/word_customization.dart';
-import 'package:app_review/app_review.dart';
-import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +20,7 @@ class SettingsState extends State<Settings> {
   static const int BOTH = 1;
   static const int ONLY_CUSTOM = 2;
 
-  SharedPreferences sp;
+  late SharedPreferences sp;
 
   int sliderState = 1;
   bool customQuestionsAvailable = false;
@@ -40,25 +30,10 @@ class SettingsState extends State<Settings> {
     SharedPreferences.getInstance().then((value) {
       sp = value;
       sliderState = sp.getInt(SETTING_INCLUSION_OF_QUESTIONS) ?? 1;
-      key.currentState.setIndex(sliderState);
-      key.currentState.setState(() {});
     });
-    updateCustomQuestionsAvailable();
     super.initState();
   }
 
-  void updateCustomQuestionsAvailable() async {
-    customQuestionsAvailable = await getNumberOfTextsLocal() > 0;
-    if (!customQuestionsAvailable && sliderState == ONLY_CUSTOM) {
-      sliderState = BOTH;
-      await sp.setInt(SETTING_INCLUSION_OF_QUESTIONS, BOTH);
-    }
-    key.currentState
-      ..setIndex(sliderState)
-      ..setState(() {});
-  }
-
-  final GlobalKey<ToggleSwitchState> key = GlobalKey<ToggleSwitchState>();
 
   @override
   Widget build(BuildContext context) {

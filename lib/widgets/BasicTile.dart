@@ -1,15 +1,12 @@
 import 'dart:ui';
 
-import 'package:Drinkr/main.dart';
 import 'package:Drinkr/menus/difficulty.dart';
-import 'package:Drinkr/menus/name_select.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:Drinkr/widgets/gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:path/path.dart';
 
 class BasicTile extends StatelessWidget {
   final double height;
@@ -25,16 +22,16 @@ class BasicTile extends StatelessWidget {
   final List<Player> players;
 
   const BasicTile(
-      {Key key,
+      {Key? key,
       this.height = 120,
-      this.mainColor,
-      this.secondaryColor,
-      this.icon,
-      this.title,
-      this.description,
-      this.games,
-      this.enabledGames,
-      this.players,
+      required this.mainColor,
+      required this.secondaryColor,
+      required this.icon,
+      required this.title,
+      required this.description,
+      required this.games,
+      required this.enabledGames,
+      required this.players,
       this.topIcon = Icons.info_outline,
       this.textColor = Colors.white})
       : super(key: key);

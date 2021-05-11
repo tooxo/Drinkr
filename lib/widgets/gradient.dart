@@ -5,14 +5,14 @@ enum GradientDirection { HORIZONTAL, VERTICAL }
 class TwoColorGradient extends StatelessWidget {
   final Color color1;
   final Color color2;
-  final Widget child;
+  final Widget? child;
   final GradientDirection direction;
   final double roundness;
 
   const TwoColorGradient(
-      {Key key,
-      this.color1,
-      this.color2,
+      {Key? key,
+      required this.color1,
+      required this.color2,
       this.child,
       this.roundness = 0,
       this.direction = GradientDirection.HORIZONTAL})

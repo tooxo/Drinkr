@@ -33,7 +33,7 @@ class NameSelectState extends State<NameSelect> {
 
   Future<void> loadPlayers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    List<String> playerNames = preferences.getStringList(PREFS_PLAYERS);
+    List<String>? playerNames = preferences.getStringList(PREFS_PLAYERS);
     if (playerNames == null) {
       return;
     }

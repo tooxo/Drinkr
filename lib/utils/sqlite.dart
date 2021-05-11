@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 class SqLite {
   static const String DATABASE_NAME = "spotify_cache.db";
-  Database database;
+  Database? database;
 
   Future<SqLite> open() async {
     if (database == null) {
@@ -20,11 +20,11 @@ class SqLite {
     return this;
   }
 
-  Future<void> close() async => await database.close();
+  Future<void> close() async => await database?.close();
 
-  Future<Song> getFromSpotifyCache(String songId) async {
+  Future<Song?> getFromSpotifyCache(String songId) async {
     List<Map<String, dynamic>> returnValue =
-        await database.query("songs", where: "id = ?", whereArgs: [songId]);
+        await database!.query("songs", where: "id = ?", whereArgs: [songId]);
     if (returnValue.isNotEmpty) {
       return Song(returnValue[0]["name"], returnValue[0]["preview_url"],
           returnValue[0]["id"]);
@@ -34,7 +34,7 @@ class SqLite {
   }
 
   Future<void> putBulkInSpotifyCache(Iterable<Song> songs) async {
-    Batch batch = database.batch();
+    Batch batch = database!.batch();
     for (Song song in songs) {
       batch.insert("songs",
           {"id": song.id, "preview_url": song.previewUrl, "title": song.name},

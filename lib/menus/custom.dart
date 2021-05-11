@@ -1,11 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:Drinkr/menus/difficulty.dart';
-import 'package:Drinkr/utils/shapes.dart';
 import 'package:Drinkr/utils/types.dart';
-import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -30,13 +26,13 @@ class CustomState extends State<StatefulWidget> {
 
   Future<void> loadSave() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    List<String> stringList = sp.getStringList(SAVED_CUSTOM_SETTING);
+    List<String> stringList = sp.getStringList(SAVED_CUSTOM_SETTING)!;
     if (stringList == null) return;
     for (String entry in stringList) {
       dynamic jsonObject = JsonDecoder().convert(entry);
       String savedName = jsonObject["name"];
       bool savedValue = jsonObject["value"];
-      GameType determinedType;
+      GameType? determinedType;
       for (GameType type in GameType.values) {
         if (gameTypeToGameTypeClass(type).filePrefix == savedName) {
           determinedType = type;
@@ -50,7 +46,7 @@ class CustomState extends State<StatefulWidget> {
 
   Future<void> saveSave() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    List<String> stringList = List<String>();
+    List<String> stringList = [];
     for (GameType type in selectedItems.keys) {
       stringList.add(JsonEncoder().convert({
         "name": gameTypeToGameTypeClass(type).filePrefix,
@@ -88,8 +84,8 @@ class CustomState extends State<StatefulWidget> {
   }
 
   void confirm() {
-    List availableGames =
-        selectedItems.keys.where((element) => selectedItems[element]).toList();
+    List<GameType> availableGames =
+        selectedItems.keys.where((element) => selectedItems[element]!).toList();
 
     if (availableGames.isEmpty) {
       showDialog(
@@ -176,7 +172,7 @@ class CustomState extends State<StatefulWidget> {
                     onTap: () {
                       setState(() {
                         selectedItems[selectedItems.keys.elementAt(i)] =
-                            !selectedItems[selectedItems.keys.elementAt(i)];
+                            !selectedItems[selectedItems.keys.elementAt(i)]!;
                       });
                       saveSave();
                     },
@@ -206,7 +202,7 @@ class CustomState extends State<StatefulWidget> {
                               setState(() {
                                 selectedItems[selectedItems.keys.elementAt(i)] =
                                     !selectedItems[
-                                        selectedItems.keys.elementAt(i)];
+                                        selectedItems.keys.elementAt(i)]!;
                               });
                               saveSave();
                             },

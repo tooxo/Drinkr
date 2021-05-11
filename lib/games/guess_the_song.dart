@@ -46,36 +46,36 @@ class GuessTheSong extends BasicGame {
 class GuessTheSongState extends BasicGameState
     with WidgetsBindingObserver, TickerProviderStateMixin {
   bool showSolution = false;
-  AudioPlayer audioPlayer;
+  late AudioPlayer audioPlayer;
 
   // ignore: cancel_subscriptions
-  StreamSubscription<Duration> durationSubscription;
+  late StreamSubscription<Duration>? durationSubscription;
 
   // ignore: cancel_subscriptions
-  StreamSubscription<AudioPlayerState> stateSubscription;
+  late StreamSubscription<AudioPlayerState>? stateSubscription;
 
-  File f;
+  late File? f;
 
   @override
   void dispose() {
     this.durationSubscription?.cancel();
     this.stateSubscription?.cancel();
     this.audioPlayer.stop();
-    _controller.dispose();
+    _controller!.dispose();
     if (f != null) {
-      if (f.existsSync()) {
-        f.deleteSync();
+      if (f!.existsSync()) {
+        f!.deleteSync();
       }
     }
 
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
   void buttonClick() async {
     if (_target == 0 || _target == 1) {
       if (await checkConnection()) {
-        await audioPlayer.play(f.path, isLocal: true);
+        await audioPlayer.play(f!.path, isLocal: true);
       } else {
         await Fluttertoast.showToast(
             msg: "noConnection".tr(), toastLength: Toast.LENGTH_SHORT);
@@ -92,25 +92,25 @@ class GuessTheSongState extends BasicGameState
     }
   }
 
-  int songDuration;
+  int? songDuration;
 
-  AnimationController _controller;
-  Tween<double> _tween;
-  Animation<double> _animation;
+  AnimationController? _controller;
+  Tween<double>? _tween;
+  Animation<double>? _animation;
   double _target = 0.0;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
 
     _controller =
         AnimationController(duration: Duration(milliseconds: 150), vsync: this);
     _tween = Tween(begin: _target, end: _target);
-    _animation = _tween.animate(
+    _animation = _tween!.animate(
       CurvedAnimation(
         curve: Curves.easeInOut,
-        parent: _controller,
+        parent: _controller!,
       ),
     );
 
@@ -120,7 +120,7 @@ class GuessTheSongState extends BasicGameState
       if (songDuration == null) {
         songDuration = await audioPlayer.getDuration();
       }
-      _updateBar(pos.inMilliseconds / songDuration);
+      _updateBar(pos.inMilliseconds / songDuration!);
     });
     this.stateSubscription = audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == AudioPlayerState.COMPLETED) {
@@ -144,18 +144,18 @@ class GuessTheSongState extends BasicGameState
   Future<SoundData> loadVisData() async {
     f = await createTemporaryFile(getRandomString(32) + ".mp3");
 
-    http.Response response = await http.get(widget.mainTitle);
-    await f.writeAsBytes(response.bodyBytes);
+    http.Response response = await http.get(Uri.parse(widget.mainTitle));
+    await f!.writeAsBytes(response.bodyBytes);
 
-    return SoundData(await compute(AudiowaveformFlutter.audioWaveForm, f.path));
+    return SoundData(await compute(AudiowaveformFlutter.audioWaveForm, f!.path));
   }
 
   void _updateBar(double newValue) {
     _target = newValue;
-    _tween.begin = _tween.end;
-    _controller.reset();
-    _tween.end = newValue;
-    _controller.forward();
+    _tween!.begin = _tween!.end;
+    _controller!.reset();
+    _tween!.end = newValue;
+    _controller!.forward();
   }
 
   @override
@@ -171,13 +171,13 @@ class GuessTheSongState extends BasicGameState
                 return InkWell(
                   onTap: buttonClick,
                   child: ClipPath(
-                    clipper: WaveformClipper(snapshot.data),
+                    clipper: WaveformClipper(snapshot.data!),
                     clipBehavior: Clip.hardEdge,
                     child: SizedBox.expand(
                       child: AnimatedBuilder(
-                        animation: _animation,
+                        animation: _animation!,
                         builder: (context, child) => LinearProgressIndicator(
-                          value: _animation.value,
+                          value: _animation!.value,
 
                           valueColor:
                               AlwaysStoppedAnimation(Colors.grey.shade900),

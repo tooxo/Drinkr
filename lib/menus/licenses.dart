@@ -22,7 +22,7 @@ class LicensesState extends State<Licenses> {
         if (!itemMap.containsKey(package)) {
           itemMap[package] = [];
         }
-        itemMap[package].add(
+        itemMap[package]!.add(
             license.paragraphs.map((paragraph) => paragraph.text).toList());
       }
     });
@@ -197,7 +197,7 @@ class LicensesState extends State<Licenses> {
                                 child: Column(
                                   children: <Widget>[
                                     for (List<String> version
-                                        in itemMap[package])
+                                        in itemMap[package]!)
                                       ExpansionTile(
                                         title: Text(
                                             version[0].length > 50

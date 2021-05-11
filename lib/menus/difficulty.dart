@@ -33,7 +33,7 @@ class Difficulty extends StatefulWidget {
 }
 
 class DifficultyState extends State<Difficulty> {
-  GameController controller;
+  late GameController controller;
   int displayState =
       1; // 1 Difficulty Selection, 2 Loading indicator, 3 Just Orange
 
@@ -53,12 +53,12 @@ class DifficultyState extends State<Difficulty> {
     testDevices: [],
   );
 
-  BannerAd bannerAd;
+  late BannerAd? bannerAd;
 
   @override
   void dispose() {
     if (bannerAd != null) {
-      bannerAd.dispose().then((value) => bannerAd = null);
+      bannerAd!.dispose().then((value) => bannerAd = null);
     }
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -332,6 +332,7 @@ class DifficultyState extends State<Difficulty> {
                         focusColor: Colors.white,
                         checkColor: Colors.white,
                         activeColor: Colors.deepOrange,
+                        onChanged: (bool? value) {},
                       ),
                     ),
                     Text(
@@ -415,7 +416,7 @@ class DifficultyState extends State<Difficulty> {
                         focusColor: Colors.white,
                         checkColor: Colors.white,
                         activeColor: Colors.deepOrange,
-                        onChanged: (bool value) {},
+                        onChanged: (bool? value) {},
                       ),
                     ),
                     Text(

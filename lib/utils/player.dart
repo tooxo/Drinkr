@@ -19,7 +19,10 @@ class Player {
 
   @override
   bool operator ==(other) {
-    return this.name == other.name;
+    if (other is Player) {
+      return this.name == other.name;
+    }
+    return false;
   }
 
   @override

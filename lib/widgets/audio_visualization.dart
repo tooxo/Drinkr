@@ -4,19 +4,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class SoundData {
-  int channels;
-  int sampleRate;
-  int samplesPerPixel;
-  int bits;
-  int length;
-  List<int> data;
+  int? channels;
+  int? sampleRate;
+  int? samplesPerPixel;
+  int? bits;
+  int? length;
+  List<int> data = [];
 
-  SoundData(String jsonData) {
+  SoundData(String? jsonData)  {
     assert(jsonData != null);
     assert(jsonData != "{}");
     dynamic jsonObject;
     try {
-      jsonObject = json.decode(jsonData);
+      jsonObject = json.decode(jsonData!);
     } on FormatException {
       throw Exception("Error while parsing.");
     }
@@ -26,22 +26,21 @@ class SoundData {
     bits = jsonObject["bits"];
     length = jsonObject["length"];
     List<dynamic> temp = jsonObject["data"];
-    data = [];
     for (int i = 0; i < temp.length; i++) {
       data.add(temp[i] as int);
     }
   }
 
-  Size savedSize;
-  Path savedPath;
+  Size? savedSize;
+  Path? savedPath;
 
   Path path(Size size, {drawRect = false}) {
     if (size == savedSize && savedPath != null) {
-      return savedPath;
+      return savedPath!;
     }
     savedPath = _path(data, size, drawRect: drawRect);
     savedSize = size;
-    return savedPath;
+    return savedPath!;
   }
 
   Path _path(List<int> samples, Size size, {drawRect = false}) {

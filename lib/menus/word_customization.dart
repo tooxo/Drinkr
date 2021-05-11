@@ -51,15 +51,15 @@ class WordCustomizationState extends State<WordCustomization> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) async {
       // Init the texts to display
       this.reloadTexts();
     });
   }
 
   void deleteItem(GameType type, String entry) async {
-    textsToDisplay[type].remove(entry);
-    if (textsToDisplay[type].isEmpty) {
+    textsToDisplay[type]!.remove(entry);
+    if (textsToDisplay[type]!.isEmpty) {
       textsToDisplay.remove(type);
     }
     await removeCustomLines([entry], type);
@@ -69,13 +69,13 @@ class WordCustomizationState extends State<WordCustomization> {
   Color getColor({reverse = false}) {
     if (reverse) {
       for (GameType type in textsToDisplay.keys.toList().reversed) {
-        if (textsToDisplay[type].isNotEmpty) {
+        if (textsToDisplay[type]!.isNotEmpty) {
           return gameTypeToGameTypeClass(type).primaryColor;
         }
       }
     } else {
       for (GameType type in textsToDisplay.keys.toList()) {
-        if (textsToDisplay[type].isNotEmpty) {
+        if (textsToDisplay[type]!.isNotEmpty) {
           return gameTypeToGameTypeClass(type).primaryColor;
         }
       }
@@ -83,7 +83,8 @@ class WordCustomizationState extends State<WordCustomization> {
     return Colors.transparent;
   }
 
-  String dropdownValue = gameTypeToGameTypeClass(GameType.QUIZ).translatedTitle;
+  String? dropdownValue =
+      gameTypeToGameTypeClass(GameType.QUIZ).translatedTitle;
   String tf1Value = "";
   String tf2Value = "";
 
@@ -198,7 +199,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                                 ),
                                                 for (GameType type
                                                     in textsToDisplay.keys)
-                                                  textsToDisplay[type]
+                                                  textsToDisplay[type]!
                                                           .isNotEmpty
                                                       ? Container(
                                                           width: c.maxWidth,
@@ -229,7 +230,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                                                 ),
                                                                 for (String value
                                                                     in textsToDisplay[
-                                                                        type])
+                                                                        type]!)
                                                                   Padding(
                                                                     padding: EdgeInsets.only(
                                                                         left:
@@ -337,13 +338,13 @@ class WordCustomizationState extends State<WordCustomization> {
                                         validator: (txt) {
                                           if (getSelectedType() ==
                                               GameType.GUESS_THE_SONG) {
-                                            Spotify.getIdFromUrl(txt) == null
+                                            Spotify.getIdFromUrl(txt!) == null
                                                 // ignore: unnecessary_statements
                                                 ? "invalidUrl".tr()
                                                 // ignore: unnecessary_statements
                                                 : null;
                                           }
-                                          return txt.isEmpty
+                                          return txt!.isEmpty
                                               ? "required".tr()
                                               : null;
                                         },
@@ -358,7 +359,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                             MaxLengthEnforcement.enforced,
                                         onChanged: (newVal) {
                                           tf1Value = newVal;
-                                          _formKeyField1.currentState
+                                          _formKeyField1.currentState!
                                               .validate();
                                         },
                                       ),
@@ -376,7 +377,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                               .hasSolution) {
                                             return null;
                                           }
-                                          return txt.isEmpty
+                                          return txt!.isEmpty
                                               ? "required".tr()
                                               : null;
                                         },
@@ -394,7 +395,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                             MaxLengthEnforcement.enforced,
                                         onChanged: (newVal) {
                                           tf2Value = newVal;
-                                          _formKeyField2.currentState
+                                          _formKeyField2.currentState!
                                               .validate();
                                         },
                                       ),
@@ -443,11 +444,11 @@ class WordCustomizationState extends State<WordCustomization> {
                                                   GameType.GUESS_THE_SONG) {
                                                 this.buttonEnabled = false;
                                               }
-                                              if (_formKeyBig.currentState
+                                              if (_formKeyBig.currentState!
                                                       .validate() &&
-                                                  _formKeyField1.currentState
+                                                  _formKeyField1.currentState!
                                                       .validate() &&
-                                                  _formKeyField2.currentState
+                                                  _formKeyField2.currentState!
                                                       .validate() &&
                                                   await spotifyCheckerWrapper()) {
                                                 String thingToAppend = tf1Value;

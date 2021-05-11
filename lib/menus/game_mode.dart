@@ -1,4 +1,3 @@
-import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:Drinkr/widgets/BasicTile.dart';
@@ -10,7 +9,7 @@ import '../utils/types.dart';
 class GameMode extends StatefulWidget {
   final List<Player> players;
 
-  const GameMode(this.players, {Key key}) : super(key: key);
+  const GameMode(this.players, {Key? key}) : super(key: key);
 
   @override
   GameState createState() => GameState();
@@ -74,7 +73,7 @@ class GameState extends State<GameMode> {
                 icon: Icons.warning_amber_rounded,
                 games: "\u2022 Wahrheit oder Pflicht(+18)\n"
                     "\u2022 Wer würde eher(+18)",
-                players: widget.players,
+                players: widget.players, enabledGames: [],
               ),
               BasicTile(
                 mainColor: Color.fromRGBO(25, 96, 2, 1),
