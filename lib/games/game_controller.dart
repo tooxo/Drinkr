@@ -89,7 +89,7 @@ class GameController {
   String populateText(String unpopulated, int difficulty) {
     String raw = unpopulated.toString();
     while (raw.contains("%player")) {
-      raw = unpopulated.replaceFirst("%player", getRandomPlayer().name);
+      raw = raw.replaceFirst("%player", getRandomPlayer().name);
     }
 
     while (raw.contains("%amountshot")) {
