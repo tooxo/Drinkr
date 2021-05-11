@@ -143,11 +143,17 @@ class NameSelectState extends State<NameSelect> {
                   child: Column(
                     children: [
                       Expanded(
-                        child: Image(
-                          image: NetworkImage(
-                            "https://raw.githubusercontent.com/tooxo/SaufAppFlutter/769d1fb5ea9496eedf11f8803ba47064493b6f9e/assets/image/AppIcon.png",
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(35),
+                            ),
+                            child: Image.asset(
+                              "assets/image/appicon3.png",
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                          fit: BoxFit.contain,
                         ),
                       ),
                       Padding(
