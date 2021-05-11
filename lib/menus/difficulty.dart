@@ -53,7 +53,7 @@ class DifficultyState extends State<Difficulty> {
     testDevices: [],
   );
 
-  late BannerAd? bannerAd;
+  BannerAd? bannerAd;
 
   @override
   void dispose() {
