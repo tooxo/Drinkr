@@ -70,10 +70,10 @@ class BasicTile extends StatelessWidget {
                 child: Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(right: 10, left: 10),
+                      padding: EdgeInsets.only(right: 20, left: 20),
                       child: Icon(
                         icon,
-                        size: 80,
+                        size: 70,
                         color: textColor,
                       ),
                     ),
