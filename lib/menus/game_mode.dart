@@ -95,7 +95,7 @@ class GameState extends State<GameMode> {
                 textColor: Colors.white.withOpacity(0.5),
                 topIcon: Icons.lock_outline,
                 games: "Kauf pls I need money",
-                players: widget.players,
+                players: widget.players, enabledGames: [],
               ),
               Divider(),
             ],

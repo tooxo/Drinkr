@@ -12,10 +12,10 @@ class CustomAlert extends StatelessWidget {
   final Color textColor;
 
   CustomAlert({
-    this.titleTranslationKey,
-    this.textTranslationKey,
-    this.buttonTextTranslationKey,
-    this.backgroundColor,
+    required this.titleTranslationKey,
+    required this.textTranslationKey,
+    required this.buttonTextTranslationKey,
+    required this.backgroundColor,
     this.textColor = Colors.white,
   });
 
