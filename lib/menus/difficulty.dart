@@ -2,12 +2,30 @@ import 'dart:ui';
 import 'package:Drinkr/games/game_controller.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:Drinkr/utils/types.dart';
+import 'package:Drinkr/widgets/custom_difficulty.dart';
 import 'package:Drinkr/widgets/gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+class DifficultyType {
+  final int startShots;
+  final int endShots;
+  final int startSips;
+  final int endSips;
+
+  final String name;
+
+  DifficultyType({
+    required this.startShots,
+    required this.endShots,
+    required this.startSips,
+    required this.endSips,
+    required this.name,
+  });
+}
 
 class Difficulty extends StatefulWidget {
   static const int EASY = 0;
@@ -70,40 +88,13 @@ class DifficultyState extends State<Difficulty> {
   selectDifficulty(int selectedDifficulty) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
-    this.displayState = 2;
+    this.displayState = 3;
     setState(() {});
     controller.start(selectedDifficulty);
   }
 
   int linearProgress = 1;
   int linearMax = 2;
-
-  bool wantSchluck = true;
-  bool wantShots = true;
-
-  int startSchluck = 0;
-  int endSchluck = 0;
-
-  int startShots = 0;
-  int endShots = 0;
-
-  void incrementStartSchluck() {
-    setState(() {
-      startSchluck++;
-    });
-  }
-
-  void decrementStartSchluck() {
-    setState(() {
-      startSchluck--;
-    });
-  }
-
-  void incrementEndSchluck() {
-    setState(() {
-      endSchluck++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -275,14 +266,19 @@ class DifficultyState extends State<Difficulty> {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () => addCustomDifficulty(context),
+              onPressed: () async {
+                DifficultyType? difficulty = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) => CustomDifficulty(),
+                );
+              },
               child: Icon(
                 Icons.add,
                 size: 25,
               ),
             ),
           )
-        : Container(
+        : this.displayState == 2 ? Container(
             height: 20,
             color: Color.fromRGBO(21, 21, 21, 1),
             child: LinearProgressIndicator(
@@ -290,251 +286,6 @@ class DifficultyState extends State<Difficulty> {
               backgroundColor: Color.fromRGBO(21, 21, 21, 1),
               valueColor: const AlwaysStoppedAnimation(Colors.deepOrange),
             ),
-          );
-  }
-
-  void addCustomDifficulty(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-          child: AlertDialog(
-            backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-            title: TextField(
-              style: GoogleFonts.nunito(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-              cursorColor: Colors.white,
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                hintText: "Name der Schwierigkeit...".tr(),
-                hintStyle: GoogleFonts.nunito(
-                  fontSize: 20,
-                  color: Colors.white.withOpacity(0.5),
-                ),
-                border: InputBorder.none,
-              ),
-            ),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Transform.scale(
-                      scale: 2,
-                      child: Checkbox(
-                        value: true,
-                        focusColor: Colors.white,
-                        checkColor: Colors.white,
-                        activeColor: Colors.deepOrange,
-                        onChanged: (bool? value) {},
-                      ),
-                    ),
-                    Text(
-                      "Schlück(e)",
-                      style: GoogleFonts.nunito(
-                        textStyle: TextStyle(),
-                        fontSize: 25,
-                        color: Colors.white,
-                      ),
-                    ).tr(),
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.add_circle_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: incrementStartSchluck),
-                            Text(
-                              startSchluck.toString(),
-                              style: GoogleFonts.nunito(
-                                textStyle: TextStyle(),
-                                fontSize: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.remove_circle_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: decrementStartSchluck),
-                          ],
-                        ),
-                        Icon(
-                          Icons.remove,
-                          color: Colors.white,
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.add_circle_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: incrementStartSchluck),
-                            Text(
-                              startSchluck.toString(),
-                              style: GoogleFonts.nunito(
-                                textStyle: TextStyle(),
-                                fontSize: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.remove_circle_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: decrementStartSchluck),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Padding(padding: EdgeInsets.symmetric(horizontal: 15)),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Transform.scale(
-                      scale: 2,
-                      child: Checkbox(
-                        value: true,
-                        focusColor: Colors.white,
-                        checkColor: Colors.white,
-                        activeColor: Colors.deepOrange,
-                        onChanged: (bool? value) {},
-                      ),
-                    ),
-                    Text(
-                      "Shot(s)",
-                      style: GoogleFonts.nunito(
-                        textStyle: TextStyle(),
-                        fontSize: 25,
-                        color: Colors.white,
-                      ),
-                    ).tr(),
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.add_circle_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: incrementStartSchluck),
-                            Text(
-                              startSchluck.toString(),
-                              style: GoogleFonts.nunito(
-                                textStyle: TextStyle(),
-                                fontSize: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.remove_circle_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: decrementStartSchluck),
-                          ],
-                        ),
-                        Icon(
-                          Icons.remove,
-                          color: Colors.white,
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.add_circle_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: incrementStartSchluck),
-                            Text(
-                              startSchluck.toString(),
-                              style: GoogleFonts.nunito(
-                                textStyle: TextStyle(),
-                                fontSize: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.remove_circle_outline,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                                onPressed: decrementStartSchluck),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, bottom: 50),
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    color: Color.fromRGBO(21, 21, 21, 1),
-                    child: Container(
-                      height: 50,
-                      width: 350.0,
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrange,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.8),
-                              blurRadius: 8,
-                              offset:
-                                  Offset(2, 10), // changes position of shadow
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Schwierigkeit auswählen",
-                              style: GoogleFonts.nunito(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w800),
-                            ).tr(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+          ) : Container(color: Colors.black,);
   }
 }
