@@ -23,9 +23,9 @@ environment:
 
 dependencies:
   google_fonts: ^2.0.0
-  auto_size_text: ^2.1.0
+  auto_size_text: ^3.0.0-nullsafety.0
   path_provider: ^2.0.1
-  show_up_animation: ^1.0.4
+  show_up_animation: ^2.0.0-nullsafety.0
   animated_text_kit: ^4.2.1
   audioplayers: ^0.18.3
   http: ^0.13.3
