@@ -412,9 +412,9 @@ class BasicGameState extends State<BasicGame>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
+    /*SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIOverlays([]);*/
     return WillPopScope(
       onWillPop: () => displayExitDialogWrapper(context),
       child: Scaffold(
