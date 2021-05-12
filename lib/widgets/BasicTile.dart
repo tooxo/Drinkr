@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Drinkr/menus/custom.dart';
 import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:Drinkr/utils/types.dart';
@@ -43,13 +44,22 @@ class BasicTile extends StatelessWidget {
       child: Center(
         child: GestureDetector(
           onTap: () {
-            Navigator.push(
+            if (enabledGames.isNotEmpty) {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => Difficulty(
                         players,
                         100,
                         enabledGames)));
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Custom(),
+                )
+              );
+            }
           },
           child: Container(
             color: Color.fromRGBO(21, 21, 21, 1),

@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/utils/types.dart';
+import 'package:Drinkr/widgets/custom_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../utils/file.dart';
 import 'name_select.dart';
@@ -26,7 +28,7 @@ class CustomState extends State<StatefulWidget> {
 
   Future<void> loadSave() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    List<String> stringList = sp.getStringList(SAVED_CUSTOM_SETTING)!;
+    List<String>? stringList = sp.getStringList(SAVED_CUSTOM_SETTING);
     if (stringList == null) return;
     for (String entry in stringList) {
       dynamic jsonObject = JsonDecoder().convert(entry);
@@ -62,7 +64,7 @@ class CustomState extends State<StatefulWidget> {
 
     for (GameType type in GameType.values) {
       if ([GameType.UNDEFINED, GameType.DARE].contains(type)) continue;
-      selectedItems[type] = true;
+      selectedItems[type] = false;
       itemActivated[type] = true;
     }
 
@@ -71,7 +73,7 @@ class CustomState extends State<StatefulWidget> {
           SettingsState.ONLY_CUSTOM) {
         for (GameType type in itemActivated.keys) {
           int number = await getNumberOfTextsLocal(enabledGames: [type]);
-          if (number == 0) {
+          if (number == 1) {
             itemActivated[type] = false;
             selectedItems[type] = false;
           }
@@ -91,33 +93,11 @@ class CustomState extends State<StatefulWidget> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Colors.orange,
-            title: Text("customNoGameSelected",
-                style: GoogleFonts.nunito(
-                  textStyle: TextStyle(color: Colors.black  ),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 28,
-                )).tr(),
-            content: Text(
-              "customNoGameSelectedDescription",
-              style: GoogleFonts.nunito(
-                textStyle: TextStyle(color: Colors.black),
-                fontSize: 25,
-              ),
-            ).tr(),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              MaterialButton(
-                child: Text(
-                  "close",
-                  style: GoogleFonts.nunito(color: Colors.black, fontSize: 20),
-                ).tr(),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-              ),
-            ],
+          return CustomAlert(
+            titleTranslationKey: "customNoGameSelected",
+            textTranslationKey: "customNoGameSelectedDescription",
+            buttonTextTranslationKey: "close",
+            backgroundColor: Colors.deepOrange,
           );
         },
       );
@@ -129,9 +109,7 @@ class CustomState extends State<StatefulWidget> {
 
       if (playersRequired) {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => NameSelect()));
+            context, MaterialPageRoute(builder: (context) => NameSelect()));
       } else {
         Navigator.push(
             context,
@@ -163,7 +141,37 @@ class CustomState extends State<StatefulWidget> {
         child: ListView.builder(
           controller: _scrollControl,
           itemCount: selectedItems.length,
-          itemBuilder: (c, i) => Padding(
+          itemBuilder: (c, i) => MergeSemantics(
+            child: ListTile(
+              title: Text(
+                selectedItems.keys.elementAt(i) == GameType.TRUTH
+                    ? "truthOrDare".tr()
+                    : gameTypeToGameTypeClass(selectedItems.keys.elementAt(i))
+                        .translatedTitle,
+                style: GoogleFonts.nunito(
+                    textStyle: TextStyle(color: Colors.white, fontSize: 25)),
+              ),
+              trailing: CupertinoSwitch(
+                activeColor: Colors.deepOrange,
+                value: selectedItems[selectedItems.keys.elementAt(i)]!,
+                onChanged: (bool? value) {
+                  setState(() {
+                    selectedItems[selectedItems.keys.elementAt(i)] = value!;
+                  });
+                  saveSave();
+                },
+              ),
+              onTap: () {
+                setState(() {
+                  selectedItems[selectedItems.keys.elementAt(i)] =
+                      !selectedItems[selectedItems.keys.elementAt(i)]!;
+                });
+                saveSave();
+              },
+            ),
+          )
+
+          /*Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
             child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
               Expanded(
@@ -209,7 +217,8 @@ class CustomState extends State<StatefulWidget> {
                     )),
               ),
             ]),
-          ),
+          )*/
+          ,
         ),
       ),
       floatingActionButton: Padding(
