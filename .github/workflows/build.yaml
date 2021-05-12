@@ -86,3 +86,24 @@ jobs:
         with:
           name: android_signed_apk
           path: ${{steps.sign_appapk.outputs.signedReleaseFile}}
+
+  upload_to_google_play:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/stable'
+    needs: sign_android_appbundle
+    steps:
+      - name: Download results from build
+        uses: actions/download-artifact@v2
+        with:
+          name: android_signed_appbundle
+      - run: mkdir whatsnew/
+      - run: echo "Multiple Improvements." > whatsnew/whatsnew-en-US
+      - run: echo "Verschiedene Verbesserungen." > whatsnew/whatsnew-de-DE
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: ${{ secrets.GOOGLE_PLAY_JSON }}
+          packageName: com.drinkr.android
+          releaseFile: "app-release.aab"
+          track: beta
+          inAppUpdatePriority: 2
+          whatsNewDirectory: whatsnew
