@@ -41,104 +41,98 @@ class TruthOrDareState extends BasicGameState {
   @override
   Widget buildWithoutSolution() {
     return !showSolution
-        ? Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: TextWidget(
-                    widget.selectedPlayer.name,
-                    textColor: widget.textColor,
-                  ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 32, right: 32, top: 10),
-                          child: SizedBox.expand(
-                            child: ShowUpAnimation(
-                              offset: 0,
-                              child: MaterialButton(
-                                color: widget.buttonColor,
-                                onPressed: () {
-                                  showSolution = true;
-                                  truth = true;
-                                  setState(() {});
-                                },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24)),
-                                child: FittedBox(
-                                  child: Text(
-                                    "truth",
-                                    style: GoogleFonts.nunito(
-                                      textStyle:
-                                          TextStyle(color: widget.textColor),
-                                      fontSize: 45,
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        widget.selectedPlayer.name,
+                        style: GoogleFonts.nunito(color: widget.textColor, fontSize: 30),
+                      ),
+                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: 100,
+                        maxHeight: 250,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: SizedBox.expand(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 32, right: 32, top: 10),
+                                child: ShowUpAnimation(
+                                  offset: 0,
+                                  child: MaterialButton(
+                                    color: widget.buttonColor,
+                                    onPressed: () {
+                                      showSolution = true;
+                                      truth = true;
+                                      setState(() {});
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(24)),
+                                    child: FittedBox(
+                                      child: Text(
+                                        "truth",
+                                        style: GoogleFonts.nunito(
+                                          textStyle: TextStyle(
+                                              color: widget.textColor),
+                                          fontSize: 45,
+                                        ),
+                                      ).tr(),
                                     ),
-                                  ).tr(),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      /*Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10,
+                          Expanded(
+                            child: SizedBox.expand(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 32, right: 32, top: 10),
+                                child: ShowUpAnimation(
+                                  offset: 0,
+                                  child: MaterialButton(
+                                    color: widget.buttonColor,
+                                    onPressed: () {
+                                      showSolution = true;
+                                      truth = false;
+                                      setState(() {});
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(24)),
+                                    child: FittedBox(
+                                      child: Text(
+                                        "dare",
+                                        style: GoogleFonts.nunito(
+                                          textStyle: TextStyle(
+                                              color: widget.textColor),
+                                          fontSize: 45,
                                         ),
-                                        child: Center(
-                                            child: IconButton(
-                                                icon: Icon(dice),
-                                                color: widget.buttonColor,
-                                            )
-                                        ),
+                                      ).tr(),
                                     ),
-                                ),*/
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 32, right: 32, top: 10),
-                          child: SizedBox.expand(
-                            child: ShowUpAnimation(
-                              offset: 0,
-                              child: MaterialButton(
-                                color: widget.buttonColor,
-                                onPressed: () {
-                                  showSolution = true;
-                                  truth = false;
-                                  setState(() {});
-                                },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24)),
-                                child: FittedBox(
-                                  child: Text(
-                                    "dare",
-                                    style: GoogleFonts.nunito(
-                                      textStyle:
-                                          TextStyle(color: widget.textColor),
-                                      fontSize: 45,
-                                    ),
-                                  ).tr(),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           )
         : TextWidget(
             this.truth

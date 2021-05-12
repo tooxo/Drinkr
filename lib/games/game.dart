@@ -412,9 +412,6 @@ class BasicGameState extends State<BasicGame>
 
   @override
   Widget build(BuildContext context) {
-    /*SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    SystemChrome.setEnabledSystemUIOverlays([]);*/
     return WillPopScope(
       onWillPop: () => displayExitDialogWrapper(context),
       child: Scaffold(
@@ -425,12 +422,11 @@ class BasicGameState extends State<BasicGame>
           child: SafeArea(
             child: Column(
               children: <Widget>[
-                Expanded(
-                  flex: 7,
+                Flexible(
                   child: buildTop(),
                 ),
-                Expanded(
-                  flex: 2,
+                Container(
+                  height: 80,
                   child: buildBottom(),
                 )
               ],

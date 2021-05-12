@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:Drinkr/utils/spotify_api.dart';
@@ -6,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'menus/name_select.dart';
 import 'package:hive/hive.dart';
@@ -68,52 +66,6 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       locale: context.locale,
       home: NameSelect(),
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => SplashScreenState();
-}
-
-class SplashScreenState extends State<SplashScreen> {
-  late Timer t;
-
-  void _launch(context) {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => NameSelect()),
-        (Route<dynamic> route) => route is NameSelect);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    t = Timer(Duration(seconds: 3), () {
-      _launch(context);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 111, 0, 1),
-      body: TextButton(
-          onPressed: () {
-            if (this.t.isActive) {
-              this.t.cancel();
-            }
-            this._launch(context);
-          },
-          child: Center(
-              child: Text(
-            "splash",
-            style: GoogleFonts.caveatBrush(
-              textStyle: TextStyle(fontWeight: FontWeight.w700, fontSize: 35),
-            ),
-            textAlign: TextAlign.center,
-          ).tr())),
     );
   }
 }
