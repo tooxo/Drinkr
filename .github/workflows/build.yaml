@@ -41,31 +41,48 @@ jobs:
         with:
           name: android_build_artifact_appbundle
           path: build/app/outputs/bundle/release/app-release.aab
-#  sign_android:
-#    runs-on: ubuntu-latest
-#    needs: build_android
-#    steps:
-#      - name: Download results from build
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: android_build_artifact_apk
-#      - name: Download results from build 2
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: android_build_artifact_appbundle
-#      - run: zip --delete app-release.aab "META-INF/*"
-#      - uses: Tlaster/android-sign@v1.2.2
-#        name: Sign app
-#        id: sign_appbundle
-#        with:
-#          releaseDirectory: .
-#          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-#          alias: ${{ secrets.ALIAS }}
-#          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-#          # keyPassword: ${{ secrets.KEY_PASSWORD }}
-#        env:
-#          BUILD_TOOLS_VERSION: "30.0.2"
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: android_signed
-#          path: build/signed
+  sign_android_appbundle:
+    runs-on: ubuntu-latest
+    needs: build_android
+    steps:
+      - name: Download results from build
+        uses: actions/download-artifact@v2
+        with:
+          name: android_build_artifact_appbundle
+      - run: zip --delete app-release.aab "META-INF/*"
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app APPBUNDLE
+        id: sign_appbundle
+        with:
+          releaseDirectory: .
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.2"
+      - uses: actions/upload-artifact@v2
+        with:
+          name: android_signed_appbundle
+          path: ${{steps.sign_appbundle.outputs.signedReleaseFile}}
+  sign_android_apk:
+    runs-on: ubuntu-latest
+    needs: build_android
+    steps:
+      - name: Download results from build
+        uses: actions/download-artifact@v2
+        with:
+          name: android_build_artifact_apk
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app APK
+        id: sign_appapk
+        with:
+          releaseDirectory: .
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.2"
+      - uses: actions/upload-artifact@v2
+        with:
+          name: android_signed_apk
+          path: ${{steps.sign_appapk.outputs.signedReleaseFile}}
