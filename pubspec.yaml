@@ -40,7 +40,7 @@ dependencies:
   draggable_scrollbar: ^0.1.0
   circular_reveal_animation: ^2.0.0
   html: ^0.15.0
-  sqflite: ^2.0.0+3
+  # sqflite: ^2.0.0+3
   path: ^1.8.0
   url_launcher: ^6.0.0-nullsafety.6
   pedantic: ^1.11.0
