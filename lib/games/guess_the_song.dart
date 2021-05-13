@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/utils/file.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -30,7 +31,7 @@ class GuessTheSong extends BasicGame {
   final String title = "guessTheSong";
   final int drinkingDisplay = 1;
 
-  GuessTheSong(Player player, int difficulty, String text)
+  GuessTheSong(Player player, DifficultyType difficulty, String text)
       : super(player, difficulty, text);
 
   @override

@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/utils/drinking.dart';
 import 'package:Drinkr/widgets/gradient.dart';
 import 'package:Drinkr/widgets/text_widget.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -25,7 +25,7 @@ class BasicGame extends StatefulWidget {
 
   final GameType type = GameType.UNDEFINED;
 
-  final int difficulty;
+  final DifficultyType difficulty;
 
   final bool showSolutionButton = false;
 

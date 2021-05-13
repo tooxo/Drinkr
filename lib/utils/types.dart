@@ -7,6 +7,7 @@ import 'package:Drinkr/games/opinion.dart';
 import 'package:Drinkr/games/quiz.dart';
 import 'package:Drinkr/games/truth_or_dare.dart';
 import 'package:Drinkr/games/who_would_rather.dart';
+import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -44,9 +45,10 @@ abstract class TypeClass<T extends BaseType> {
   String get text2;
 
   bool get includesPlayers;
+
   bool get singlePlayerActivity;
 
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction;
 }
 
@@ -68,7 +70,7 @@ class QuizType extends TypeClass<BaseType> {
   bool singlePlayerActivity = true;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction =>
           (player, difficulty, message) => Quiz(player, difficulty, message);
 }
@@ -92,7 +94,7 @@ class TruthType extends TypeClass<BaseType> {
   bool singlePlayerActivity = true;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           TruthOrDare(players, difficulty, message);
 }
@@ -115,7 +117,7 @@ class DareType extends TypeClass<BaseType> {
   bool singlePlayerActivity = true;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => throw UnimplementedError();
 }
 
@@ -137,7 +139,7 @@ class ChallengesType extends TypeClass<BaseType> {
   bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Challenges(players, difficulty, message);
 }
@@ -161,9 +163,9 @@ class NeverHaveIEverType extends TypeClass<BaseType> {
   bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction =>
-          (Player player, int difficulty, String text) =>
+          (Player player, DifficultyType difficulty, String text) =>
               NeverHaveIEver(player, difficulty, text);
 }
 
@@ -186,14 +188,14 @@ class WouldYouRatherType extends TypeClass<BaseType> {
   bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Opinion(players, difficulty, message);
 }
 
 class OpinionType extends WouldYouRatherType {
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Opinion(players, difficulty, message);
 }
@@ -217,7 +219,7 @@ class GuessingType extends TypeClass<BaseType> {
   bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Guessing(players, difficulty, message);
 }
@@ -241,7 +243,7 @@ class WhoWouldRatherType extends TypeClass<BaseType> {
   bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           WhoWouldRather(players, difficulty, message);
 }
@@ -264,7 +266,7 @@ class GuessTheSongType extends TypeClass<BaseType> {
   bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           GuessTheSong(players, difficulty, message);
 }
@@ -288,7 +290,7 @@ class UnknownType extends TypeClass<BaseType> {
   bool singlePlayerActivity = false;
 
   @override
-  BasicGame Function(Player player, int difficulty, String text)
+  BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => throw UnimplementedError();
 }
 

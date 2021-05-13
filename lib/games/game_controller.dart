@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/menus/setting.dart';
 import 'package:Drinkr/utils/ad.dart';
 import 'package:Drinkr/utils/drinking.dart';
@@ -86,7 +87,7 @@ class GameController {
     return randomPlayer;
   }
 
-  String populateText(String unpopulated, int difficulty) {
+  String populateText(String unpopulated, DifficultyType difficulty) {
     String raw = unpopulated.toString();
     while (raw.contains("%player")) {
       raw = raw.replaceFirst("%player", getRandomPlayer().name);
@@ -273,7 +274,7 @@ class GameController {
     }
   }
 
-  Future<void> fulfillNormalPlan(int difficulty) async {
+  Future<void> fulfillNormalPlan(DifficultyType difficulty) async {
     /*
     setState(() {
       this.displayState = 3;
@@ -504,7 +505,7 @@ class GameController {
     Navigator.of(context).pop();
   }
 
-  Future<void> start(int difficulty) async {
+  Future<void> start(DifficultyType difficulty) async {
     await populateTextsMap();
     await fulfillNormalPlan(difficulty);
   }

@@ -1,4 +1,5 @@
 import 'package:Drinkr/games/game.dart';
+import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class Quiz extends BasicGame {
 
   final String title = "bigBrainQuiz";
 
-  Quiz(Player player, int difficulty, String text)
+  Quiz(Player player, DifficultyType difficulty, String text)
       : super(player, difficulty, text);
 
   @override

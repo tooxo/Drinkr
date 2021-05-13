@@ -11,10 +11,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class DifficultyType {
+  static DifficultyType EASY = DifficultyType(
+      startShots: 0, endShots: 0, startSips: 0, endSips: 0, name: "EASY");
+  static DifficultyType MEDIUM = DifficultyType(
+      startShots: 0, endShots: 0, startSips: 0, endSips: 0, name: "MEDIUM");
+  static DifficultyType HARD = DifficultyType(
+      startShots: 0, endShots: 0, startSips: 0, endSips: 0, name: "HARD");
+
   final int startShots;
   final int endShots;
   final int startSips;
   final int endSips;
+
+  final int shotProbability;
 
   final String name;
 
@@ -24,6 +33,7 @@ class DifficultyType {
     required this.startSips,
     required this.endSips,
     required this.name,
+    this.shotProbability = 50,
   });
 }
 
@@ -85,7 +95,7 @@ class DifficultyState extends State<Difficulty> {
     super.dispose();
   }
 
-  selectDifficulty(int selectedDifficulty) {
+  selectDifficulty(DifficultyType selectedDifficulty) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
     this.displayState = 3;
@@ -140,7 +150,7 @@ class DifficultyState extends State<Difficulty> {
                         roundness: 30,
                         child: Center(
                           child: ListTile(
-                            onTap: () => selectDifficulty(Difficulty.EASY),
+                            onTap: () => selectDifficulty(DifficultyType.EASY),
                             leading: Icon(
                               Difficulty.easyIcon,
                               size: 60,
@@ -188,7 +198,7 @@ class DifficultyState extends State<Difficulty> {
                         roundness: 30,
                         child: Center(
                           child: ListTile(
-                            onTap: () => selectDifficulty(Difficulty.EASY),
+                            onTap: () => selectDifficulty(DifficultyType.EASY),
                             leading: Icon(
                               Difficulty.mediumIcon,
                               size: 60,
@@ -236,7 +246,7 @@ class DifficultyState extends State<Difficulty> {
                         roundness: 30,
                         child: Center(
                           child: ListTile(
-                            onTap: () => selectDifficulty(Difficulty.HARD),
+                            onTap: () => selectDifficulty(DifficultyType.HARD),
                             leading: Icon(
                               Difficulty.hardIcon,
                               size: 60,
@@ -278,14 +288,18 @@ class DifficultyState extends State<Difficulty> {
               ),
             ),
           )
-        : this.displayState == 2 ? Container(
-            height: 20,
-            color: Color.fromRGBO(21, 21, 21, 1),
-            child: LinearProgressIndicator(
-              value: linearProgress / linearMax,
-              backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-              valueColor: const AlwaysStoppedAnimation(Colors.deepOrange),
-            ),
-          ) : Container(color: Colors.black,);
+        : this.displayState == 2
+            ? Container(
+                height: 20,
+                color: Color.fromRGBO(21, 21, 21, 1),
+                child: LinearProgressIndicator(
+                  value: linearProgress / linearMax,
+                  backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+                  valueColor: const AlwaysStoppedAnimation(Colors.deepOrange),
+                ),
+              )
+            : Container(
+                color: Colors.black,
+              );
   }
 }

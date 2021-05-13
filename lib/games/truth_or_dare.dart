@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Drinkr/games/game.dart';
+import 'package:Drinkr/menus/difficulty.dart';
 import 'package:Drinkr/widgets/text_widget.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class TruthOrDare extends BasicGame {
 
   final int drinkingDisplay = 1;
 
-  TruthOrDare(Player player, int difficulty, String text)
+  TruthOrDare(Player player, DifficultyType difficulty, String text)
       : super(player, difficulty, text);
 
   @override
