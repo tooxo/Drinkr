@@ -438,46 +438,52 @@ class GameController {
       if (!result) {
         await showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-                    title: Text("goOnTitle",
-                        style: GoogleFonts.caveatBrush(
-                          textStyle: TextStyle(color: Colors.black),
-                          fontWeight: FontWeight.w800,
-                          fontSize: 30,
-                        )).tr(),
-                    content: Text(
-                      "goOnDescription",
-                      style: GoogleFonts.caveatBrush(
-                        textStyle: TextStyle(color: Colors.black),
-                        fontSize: 25,
+            builder: (context) => BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                  child: AlertDialog(
+                      title: Text("goOnTitle",
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 30,
+                          )).tr(),
+                      content: Text(
+                        "goOnDescription",
+                        style: GoogleFonts.nunito(
+                          color: Colors.white,
+                          fontSize: 25,
+                        ),
+                      ).tr(),
+                      backgroundColor: Colors.deepOrange,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
                       ),
-                    ).tr(),
-                    backgroundColor: Colors.deepOrange,
-                    actions: <Widget>[
-                      // usually buttons at the bottom of the dialog
-                      TextButton(
-                        child: Text(
-                          "exit",
-                          style: GoogleFonts.caveatBrush(
-                              color: Colors.black, fontSize: 20),
-                        ).tr(),
-                        onPressed: () {
-                          shouldContinue = false;
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        child: Text(
-                          "goOn",
-                          style: GoogleFonts.caveatBrush(
-                              color: Colors.black, fontSize: 20),
-                        ).tr(),
-                        onPressed: () {
-                          shouldContinue = true;
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ]).build(context));
+                      actions: <Widget>[
+                        // usually buttons at the bottom of the dialog
+                        TextButton(
+                          child: Text(
+                            "exit",
+                            style: GoogleFonts.nunito(
+                                color: Colors.white, fontSize: 20),
+                          ).tr(),
+                          onPressed: () {
+                            shouldContinue = false;
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: Text(
+                            "goOn",
+                            style: GoogleFonts.nunito(
+                                color: Colors.white, fontSize: 20),
+                          ).tr(),
+                          onPressed: () {
+                            shouldContinue = true;
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]).build(context),
+                ));
       }
     } while (shouldContinue);
 
