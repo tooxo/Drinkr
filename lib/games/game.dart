@@ -385,23 +385,25 @@ class BasicGameState extends State<BasicGame>
           flex: 1,
           child: Padding(
             padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
-            child: MaterialButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              color: widget.buttonColor,
-              //minWidth: 120,
-              height: 5000,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: FittedBox(
-                fit: BoxFit.fitHeight,
-                child: Text(
-                  "next",
-                  style: GoogleFonts.nunito(
-                      color: widget.textColor,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
-                ).tr(),
+            child: SizedBox.expand(
+              child: MaterialButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                color: widget.buttonColor,
+                //minWidth: 120,
+                height: 5000,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Text(
+                    "next",
+                    style: GoogleFonts.nunito(
+                        color: widget.textColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ).tr(),
+                ),
               ),
             ),
           ),

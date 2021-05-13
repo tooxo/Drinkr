@@ -50,9 +50,12 @@ class TruthOrDareState extends BasicGameState {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        widget.selectedPlayer.name,
-                        style: GoogleFonts.nunito(color: widget.textColor, fontSize: 30),
+                      child: ShowUpAnimation(
+                        offset: 0,
+                        child: Text(
+                          widget.selectedPlayer.name,
+                          style: GoogleFonts.nunito(color: widget.textColor, fontSize: 30),
+                        ),
                       ),
                     ),
                     ConstrainedBox(
