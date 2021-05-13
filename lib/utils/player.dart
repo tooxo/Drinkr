@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-@immutable
 class Player {
-  final String _name;
+  String _name;
+
+  set name(String value) {
+    _name = value;
+  }
 
   final int difficulty = 0; // Not implemented.
 
