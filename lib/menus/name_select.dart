@@ -127,7 +127,7 @@ class NameSelectState extends State<NameSelect> {
 
   void onNameChange(int playerId, String newName) {
     if (newName.isEmpty) return;
-    players[playerId].name = newName;
+    players[playerId].name = newName.trim();
   }
 
   ScrollController scrollController = ScrollController();

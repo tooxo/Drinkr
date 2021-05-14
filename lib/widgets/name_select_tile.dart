@@ -39,7 +39,10 @@ class NameSelectTile extends StatelessWidget {
           controller: TextEditingController.fromValue(TextEditingValue(
               text: playerName,
               selection: TextSelection.collapsed(offset: playerName.length))),
-          style: GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+          style: GoogleFonts.nunito(
+            color: Colors.white,
+            fontSize: 22,
+          ),
           decoration: InputDecoration(
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
@@ -47,7 +50,7 @@ class NameSelectTile extends StatelessWidget {
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
             contentPadding:
-                EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                EdgeInsets.only(left: 15, right: 15),
           ),
           onChanged: (String newValue) => this.changeFunc(playerId, newValue),
         ),
