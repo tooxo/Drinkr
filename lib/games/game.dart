@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:Drinkr/menus/difficulty.dart';
+import 'package:Drinkr/utils/difficulty.dart';
 import 'package:Drinkr/utils/drinking.dart';
 import 'package:Drinkr/widgets/gradient.dart';
 import 'package:Drinkr/widgets/text_widget.dart';
@@ -61,6 +61,12 @@ class BasicGameState extends State<BasicGame>
         AnimationController(vsync: this, duration: Duration(milliseconds: 150));
     animation =
         CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 
   String generateMessage() {
@@ -200,9 +206,11 @@ class BasicGameState extends State<BasicGame>
               ).tr(),
             ]),
       centerTitle: true,
-      flexibleSpace: TwoColorGradient(
-        color1: widget.backgroundColor1,
-        color2: widget.backgroundColor2,
+      flexibleSpace: ColorGradient(
+        colors: [
+          widget.backgroundColor1,
+          widget.backgroundColor2,
+        ],
         direction: GradientDirection.HORIZONTAL,
       ),
     );
@@ -418,19 +426,22 @@ class BasicGameState extends State<BasicGame>
       onWillPop: () => displayExitDialogWrapper(context),
       child: Scaffold(
         appBar: buildAppBar(),
-        body: TwoColorGradient(
-          color1: widget.backgroundColor1,
-          color2: widget.backgroundColor2,
+        body: ColorGradient(
+          colors: [
+            widget.backgroundColor1,
+            widget.backgroundColor2,
+          ],
+
           child: SafeArea(
             child: Column(
               children: <Widget>[
-                Flexible(
+                Expanded(
                   child: buildTop(),
                 ),
                 Container(
                   height: 80,
                   child: buildBottom(),
-                )
+                ),
               ],
             ),
           ),

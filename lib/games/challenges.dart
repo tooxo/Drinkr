@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:Drinkr/games/game.dart';
-import 'package:Drinkr/menus/difficulty.dart';
+import 'package:Drinkr/utils/difficulty.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';

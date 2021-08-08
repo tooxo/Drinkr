@@ -68,6 +68,12 @@ class Spotify {
   static const REQUEST_TOKEN_URL = "https://accounts.spotify.com/api/token";
   DateTime? lastKeyRequest;
 
+  static final Spotify _instance = Spotify._privateConstructor();
+
+  Spotify._privateConstructor();
+
+  factory Spotify() => _instance;
+
   static String? getIdFromUrl(String url) {
     RegExp regExp = RegExp(REGEX_PLAYLIST);
     return regExp.firstMatch(url)?.group(5);

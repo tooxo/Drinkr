@@ -1,9 +1,8 @@
 import 'dart:ui';
 
 import 'package:Drinkr/menus/game_mode.dart';
-import 'package:Drinkr/menus/setting.dart';
 import 'package:Drinkr/widgets/custom_alert.dart';
-import 'package:Drinkr/widgets/name_select_tile.dart';
+import 'package:Drinkr/widgets/external/animated_grid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,7 +58,7 @@ class NameSelectState extends State<NameSelect> {
   }
 
   static String illegalNames =
-      r"^ +$"; //only backspaces = illegal wie Minderheiten
+      r"^ +$"; //only backspaces
 
   RegExp regExp = RegExp(illegalNames);
 
@@ -129,6 +128,8 @@ class NameSelectState extends State<NameSelect> {
     if (newName.isEmpty) return;
     players[playerId].name = newName.trim();
   }
+
+  Map<Player, Key> keys = {};
 
   ScrollController scrollController = ScrollController();
 
@@ -227,76 +228,37 @@ class NameSelectState extends State<NameSelect> {
                     ),
                   ),
                 ),
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: RawScrollbar(
-                      thumbColor: Color.fromRGBO(255, 92, 0, 1),
-                      thickness: 4,
-                      controller: scrollController,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: SingleChildScrollView(
-                          controller: scrollController,
-                          physics: BouncingScrollPhysics(),
-                          child: Column(
-                            children: [
-                              for (int i = 0; i < players.length; i += 2)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: NameSelectTile(
-                                            playerName: players[i].name,
-                                            playerId: i,
-                                            changeFunc: this.onNameChange,
-                                            deleteFunc: () {
-                                              setState(() {
-                                                this.players.remove(
-                                                      Player(players[i].name),
-                                                    );
-                                                setPlayers();
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 16),
-                                          child: i + 1 < players.length
-                                              ? NameSelectTile(
-                                                  playerName:
-                                                      players[i + 1].name,
-                                                  playerId: i + 1,
-                                                  changeFunc: this.onNameChange,
-                                                  deleteFunc: () {
-                                                    setState(() {
-                                                      this.players.remove(
-                                                          Player(players[i + 1]
-                                                              .name));
-                                                      setPlayers();
-                                                    });
-                                                  },
-                                                )
-                                              : Container(),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: AnimatedGrid(
+                      itemHeight: 55,
+                      columns: 2,
+                      items: players,
+                      curve: Curves.linear,
+                      duration: Duration(milliseconds: 100),
+                      keyBuilder: (Player p) {
+                        if (keys.containsKey(p)) {
+                          return keys[p]!;
+                        }
+                        keys[p] = GlobalKey();
+                        return keys[p]!;
+                      },
+                      builder: (BuildContext context, Player player,
+                          AnimatedGridDetails details) {
+                        return TextSelectTile(
+                          player: player,
+                          onDelete: () {
+                            setState(() {
+                              players.remove(player);
+                            });
+                          },
+                          onNameChange: (String newName) {
+                            player.name = newName;
+                            setState(() {});
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -306,7 +268,7 @@ class NameSelectState extends State<NameSelect> {
                   height: 1,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 8.0, bottom: 8, top: 8),
+                  padding: const EdgeInsets.only(right: 8.0, bottom: 8, top: 4),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -314,7 +276,7 @@ class NameSelectState extends State<NameSelect> {
                         players.length.toString() + " / 12",
                         style: GoogleFonts.nunito(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                       ),
                       Row(
@@ -345,6 +307,104 @@ class NameSelectState extends State<NameSelect> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class TextSelectTile extends StatefulWidget {
+  final Player player;
+  final Function() onDelete;
+  final Function(String) onNameChange;
+
+  TextSelectTile({
+    required this.player,
+    required this.onDelete,
+    required this.onNameChange,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _TextSelectTileState();
+}
+
+class _TextSelectTileState extends State<TextSelectTile> {
+  late TextEditingController controller;
+  FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    controller = TextEditingController(text: widget.player.name);
+    focusNode.addListener(() {
+      focused = focusNode.hasFocus;
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  bool focused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: focused
+          ? Colors.white.withOpacity(.3)
+          : Colors.white.withOpacity(.15),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: TextField(
+                focusNode: focusNode,
+                controller: controller,
+                onChanged: widget.onNameChange,
+                onSubmitted: (String sub) {
+                  if (sub.trim() == "") {
+                    widget.onDelete();
+                  }
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  counterText: "",
+                ),
+                maxLines: 1,
+                maxLength: 16,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                style: GoogleFonts.nunito(color: Colors.white),
+              ),
+            ),
+            this.focused
+                ? GestureDetector(
+                    onTap: widget.onDelete,
+                    child: Container(
+                      height: 30,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ),
     );

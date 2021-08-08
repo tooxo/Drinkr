@@ -93,7 +93,7 @@ Future<void> deactivateAds() async {
 
 Future<void> showInterstitialAd(BuildContext buildContext) async {
   if (!ADS_ENABLED_BUQF1EVY) return;
-  final AdListener listener = AdListener(onRewardedAdUserEarnedReward:
+  /*final AdListener listener = AdListener(onRewardedAdUserEarnedReward:
       (RewardedAd rewardedAd, RewardItem rewardItem) async {
     await deactivateAds();
     await showDialog(
@@ -208,5 +208,5 @@ Future<void> showInterstitialAd(BuildContext buildContext) async {
       request: AdRequest());
 
   await rewardedAd.load();
-  if (await rewardedAd.isLoaded()) await rewardedAd.show();
+  if (await rewardedAd.isLoaded()) await rewardedAd.show();*/
 }

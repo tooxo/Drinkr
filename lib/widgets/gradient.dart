@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 
 enum GradientDirection { HORIZONTAL, VERTICAL }
 
-class TwoColorGradient extends StatelessWidget {
-  final Color color1;
-  final Color color2;
+class ColorGradient extends StatelessWidget {
+  final List<Color> colors;
   final Widget? child;
   final GradientDirection direction;
   final double roundness;
 
-  const TwoColorGradient(
+  const ColorGradient(
       {Key? key,
-      required this.color1,
-      required this.color2,
+      required this.colors,
       this.child,
       this.roundness = 0,
       this.direction = GradientDirection.HORIZONTAL})
@@ -29,7 +27,7 @@ class TwoColorGradient extends StatelessWidget {
             end: direction == GradientDirection.HORIZONTAL
                 ? Alignment.centerRight
                 : Alignment.bottomCenter,
-            colors: <Color>[color1, color2],
+            colors: colors,
             tileMode: TileMode.mirror),
         borderRadius: BorderRadius.all(Radius.circular(roundness)),
       ),

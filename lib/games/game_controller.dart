@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
-import 'package:Drinkr/menus/difficulty.dart';
+import 'package:Drinkr/utils/difficulty.dart';
 import 'package:Drinkr/menus/setting.dart';
 import 'package:Drinkr/utils/ad.dart';
 import 'package:Drinkr/utils/drinking.dart';
@@ -12,11 +13,11 @@ import 'package:Drinkr/utils/spotify_api.dart';
 import 'package:Drinkr/utils/spotify_storage.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/navigator.dart';
 import 'package:flutter/src/widgets/pages.dart';
-import 'package:flutter/src/animation/animation.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,8 +37,10 @@ class GameController {
   final List<GameType> enabledGames;
   final List<Player> players;
   final BuildContext context;
+  final bool filterAdultQuestions;
 
-  GameController(this.rounds, this.enabledGames, this.players, this.context);
+  GameController(this.rounds, this.enabledGames, this.players, this.context,
+      this.filterAdultQuestions);
 
   final List<TypeClass<BaseType>> available_games = [
     NeverHaveIEverType(),
@@ -118,7 +121,7 @@ class GameController {
     return raw;
   }
 
-  Future<void> populateTextsMap() async {
+  Future<bool> _populateTextsMap() async {
     int selectedModes = (await SharedPreferences.getInstance())
             .getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ??
         SettingsState.BOTH;
@@ -128,7 +131,8 @@ class GameController {
           List<String> urls = [];
           if (selectedModes == SettingsState.ONLY_INCLUDED ||
               selectedModes == SettingsState.BOTH) {
-            urls.addAll(await getIncludedFiles(gameType, context));
+            urls.addAll(await getIncludedFiles(
+                gameType, context, this.filterAdultQuestions));
           }
           if (selectedModes == SettingsState.ONLY_CUSTOM ||
               selectedModes == SettingsState.BOTH) {
@@ -164,10 +168,10 @@ class GameController {
 
         if (selectedModes == SettingsState.ONLY_INCLUDED ||
             selectedModes == SettingsState.BOTH) {
-          texts[GameType.TRUTH]!
-              .addAll(await getIncludedFiles(GameType.TRUTH, context));
-          texts[GameType.DARE]!
-              .addAll(await getIncludedFiles(GameType.DARE, context));
+          texts[GameType.TRUTH]!.addAll(await getIncludedFiles(
+              GameType.TRUTH, context, this.filterAdultQuestions));
+          texts[GameType.DARE]!.addAll(await getIncludedFiles(
+              GameType.DARE, context, this.filterAdultQuestions));
         }
         if (selectedModes == SettingsState.ONLY_CUSTOM ||
             selectedModes == SettingsState.BOTH) {
@@ -180,7 +184,8 @@ class GameController {
       texts[gameType] = [];
       if (selectedModes == SettingsState.ONLY_INCLUDED ||
           selectedModes == SettingsState.BOTH) {
-        texts[gameType]!.addAll(await getIncludedFiles(gameType, context));
+        texts[gameType]!.addAll(await getIncludedFiles(
+            gameType, context, this.filterAdultQuestions));
       }
       if (selectedModes == SettingsState.ONLY_CUSTOM ||
           selectedModes == SettingsState.BOTH) {
@@ -193,6 +198,11 @@ class GameController {
       texts[gameType]!.shuffle();
       maxTexts[gameType] = texts[gameType]!.length;
     }
+
+    int sum = texts.values
+        .map((e) => e.length)
+        .fold(0, (previousValue, element) => previousValue + element);
+    return sum > 0;
   }
 
   Future<List<Song>> buildSpotify(
@@ -222,12 +232,12 @@ class GameController {
     return response;
   }
 
-  Future<void> generateNormalPlan() async {
+  Future<bool> generateNormalPlan() async {
     List<TypeClass<BaseType>> availableGamesBackup = available_games.toList();
     while (this.gamePlan.length < rounds) {
       TypeClass<BaseType> game;
       if (this.texts.isEmpty) {
-        await populateTextsMap();
+        await _populateTextsMap();
       }
       availableGamesBackup = available_games
           .where((element) =>
@@ -237,7 +247,7 @@ class GameController {
       GameType gameType;
       do {
         if (availableGamesBackup.isEmpty) {
-          return;
+          return false;
         }
         dynamic aa = availableGamesBackup
             .where((element) => this.texts[element.type]!.isNotEmpty)
@@ -272,14 +282,14 @@ class GameController {
           gameType == GameType.UNDEFINED);
       this.gamePlan.add(Game(game.constructorFunction, game.type));
     }
+    return this.gamePlan.isNotEmpty;
   }
 
-  Future<void> fulfillNormalPlan(DifficultyType difficulty) async {
-    /*
-    setState(() {
-      this.displayState = 3;
-    });
-     */
+  Future<void> _fulfillNormalPlan(DifficultyType difficulty) async {
+    unawaited(SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]));
+    unawaited(SystemChrome.setEnabledSystemUIOverlays([]));
+
     bool ads = await shouldShowAds();
 
     if (ads) {
@@ -308,7 +318,7 @@ class GameController {
       for (Game game in gamePlan) {
         TypeClass<BaseType> typeClass = gameTypeToGameTypeClass(game.type);
         if (texts.values.where((element) => element.isNotEmpty).isEmpty) {
-          await populateTextsMap();
+          await _populateTextsMap();
         }
         dynamic randomlyChosenText;
         if (game.type == GameType.TRUTH &&
@@ -380,6 +390,8 @@ class GameController {
         Player? player;
         if (typeClass.singlePlayerActivity) {
           player = getRandomPlayer();
+        } else {
+          player = Player("");
         }
 
         if (typeClass.includesPlayers) {
@@ -395,24 +407,9 @@ class GameController {
                 opacity: anim,
                 child: child,
               );
-              if (anim.status == AnimationStatus.reverse) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: Offset(0.0, 0),
-                    end: Offset(0.0, -1),
-                  ).animate(a2),
-                  child: child,
-                );
-              }
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: Offset(0.0, 1.0),
-                  end: Offset(0.0, 0.0),
-                ).animate(anim),
-                child: child,
-              );
             },
             transitionDuration: Duration(milliseconds: 500),
+            // reverseTransitionDuration: Duration(milliseconds: 500),
           ),
         );
 
@@ -495,18 +492,23 @@ class GameController {
       } catch (_) {}
     }*/
 
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    unawaited(
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]),
+    );
+    unawaited(
+      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values),
+    );
 
     // this.displayState = 1;
     // setState(() {});
+  }
 
-    Navigator.of(context).pop();
+  Future<bool> prepare() async {
+    return await _populateTextsMap() && await generateNormalPlan();
   }
 
   Future<void> start(DifficultyType difficulty) async {
-    await populateTextsMap();
-    await fulfillNormalPlan(difficulty);
+    await _fulfillNormalPlan(difficulty);
   }
 }

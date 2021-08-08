@@ -7,7 +7,7 @@ import 'package:Drinkr/games/opinion.dart';
 import 'package:Drinkr/games/quiz.dart';
 import 'package:Drinkr/games/truth_or_dare.dart';
 import 'package:Drinkr/games/who_would_rather.dart';
-import 'package:Drinkr/menus/difficulty.dart';
+import 'package:Drinkr/utils/difficulty.dart';
 import 'package:Drinkr/utils/player.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -48,6 +48,8 @@ abstract class TypeClass<T extends BaseType> {
 
   bool get singlePlayerActivity;
 
+  bool get hasAdultQuestions;
+
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction;
 }
@@ -73,6 +75,8 @@ class QuizType extends TypeClass<BaseType> {
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction =>
           (player, difficulty, message) => Quiz(player, difficulty, message);
+
+  bool hasAdultQuestions = false;
 }
 
 class TruthType extends TypeClass<BaseType> {
@@ -97,6 +101,8 @@ class TruthType extends TypeClass<BaseType> {
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           TruthOrDare(players, difficulty, message);
+
+  bool hasAdultQuestions = true;
 }
 
 class DareType extends TypeClass<BaseType> {
@@ -119,6 +125,8 @@ class DareType extends TypeClass<BaseType> {
   @override
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => throw UnimplementedError();
+
+  bool hasAdultQuestions = true;
 }
 
 class ChallengesType extends TypeClass<BaseType> {
@@ -142,6 +150,8 @@ class ChallengesType extends TypeClass<BaseType> {
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Challenges(players, difficulty, message);
+
+  bool hasAdultQuestions = true;
 }
 
 class NeverHaveIEverType extends TypeClass<BaseType> {
@@ -167,6 +177,8 @@ class NeverHaveIEverType extends TypeClass<BaseType> {
       get constructorFunction =>
           (Player player, DifficultyType difficulty, String text) =>
               NeverHaveIEver(player, difficulty, text);
+
+  bool hasAdultQuestions = true;
 }
 
 class WouldYouRatherType extends TypeClass<BaseType> {
@@ -191,6 +203,7 @@ class WouldYouRatherType extends TypeClass<BaseType> {
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Opinion(players, difficulty, message);
+  bool hasAdultQuestions = false;
 }
 
 class OpinionType extends WouldYouRatherType {
@@ -198,6 +211,8 @@ class OpinionType extends WouldYouRatherType {
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Opinion(players, difficulty, message);
+
+  bool hasAdultQuestions = true;
 }
 
 class GuessingType extends TypeClass<BaseType> {
@@ -222,6 +237,8 @@ class GuessingType extends TypeClass<BaseType> {
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           Guessing(players, difficulty, message);
+
+  bool hasAdultQuestions = false;
 }
 
 class WhoWouldRatherType extends TypeClass<BaseType> {
@@ -246,6 +263,8 @@ class WhoWouldRatherType extends TypeClass<BaseType> {
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           WhoWouldRather(players, difficulty, message);
+
+  bool hasAdultQuestions = false;
 }
 
 class GuessTheSongType extends TypeClass<BaseType> {
@@ -269,6 +288,8 @@ class GuessTheSongType extends TypeClass<BaseType> {
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => (players, difficulty, message) =>
           GuessTheSong(players, difficulty, message);
+
+  bool hasAdultQuestions = false;
 }
 
 class UnknownType extends TypeClass<BaseType> {
@@ -292,6 +313,8 @@ class UnknownType extends TypeClass<BaseType> {
   @override
   BasicGame Function(Player player, DifficultyType difficulty, String text)
       get constructorFunction => throw UnimplementedError();
+
+  bool hasAdultQuestions = false;
 }
 
 TypeClass<BaseType> gameTypeToGameTypeClass(GameType gameType) {

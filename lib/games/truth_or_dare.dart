@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:Drinkr/games/game.dart';
-import 'package:Drinkr/menus/difficulty.dart';
+import 'package:Drinkr/utils/difficulty.dart';
 import 'package:Drinkr/widgets/text_widget.dart';
 import 'package:Drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
@@ -55,76 +55,70 @@ class TruthOrDareState extends BasicGameState {
                         offset: 0,
                         child: Text(
                           widget.selectedPlayer.name,
-                          style: GoogleFonts.nunito(color: widget.textColor, fontSize: 30),
+                          style: GoogleFonts.nunito(
+                              color: widget.textColor, fontSize: 30),
                         ),
                       ),
                     ),
                     ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: 100,
-                        maxHeight: 250,
-                      ),
+                      constraints: BoxConstraints(),
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                            child: SizedBox.expand(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 32, right: 32, top: 10),
-                                child: ShowUpAnimation(
-                                  offset: 0,
-                                  child: MaterialButton(
-                                    color: widget.buttonColor,
-                                    onPressed: () {
-                                      showSolution = true;
-                                      truth = true;
-                                      setState(() {});
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(24)),
-                                    child: FittedBox(
-                                      child: Text(
-                                        "truth",
-                                        style: GoogleFonts.nunito(
-                                          textStyle: TextStyle(
-                                              color: widget.textColor),
-                                          fontSize: 45,
-                                        ),
-                                      ).tr(),
-                                    ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 32, right: 32, top: 10),
+                              child: ShowUpAnimation(
+                                offset: 0,
+                                child: MaterialButton(
+                                  height: 120,
+                                  color: widget.buttonColor,
+                                  onPressed: () {
+                                    showSolution = true;
+                                    truth = true;
+                                    setState(() {});
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      "truth",
+                                      style: GoogleFonts.nunito(
+                                        textStyle:
+                                            TextStyle(color: widget.textColor),
+                                        fontSize: 45,
+                                      ),
+                                    ).tr(),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                           Expanded(
-                            child: SizedBox.expand(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 32, right: 32, top: 10),
-                                child: ShowUpAnimation(
-                                  offset: 0,
-                                  child: MaterialButton(
-                                    color: widget.buttonColor,
-                                    onPressed: () {
-                                      showSolution = true;
-                                      truth = false;
-                                      setState(() {});
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(24)),
-                                    child: FittedBox(
-                                      child: Text(
-                                        "dare",
-                                        style: GoogleFonts.nunito(
-                                          textStyle: TextStyle(
-                                              color: widget.textColor),
-                                          fontSize: 45,
-                                        ),
-                                      ).tr(),
-                                    ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 32, right: 32, top: 10),
+                              child: ShowUpAnimation(
+                                offset: 0,
+                                child: MaterialButton(
+                                  height: 120,
+                                  color: widget.buttonColor,
+                                  onPressed: () {
+                                    showSolution = true;
+                                    truth = false;
+                                    setState(() {});
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24)),
+                                  child: FittedBox(
+                                    child: Text(
+                                      "dare",
+                                      style: GoogleFonts.nunito(
+                                        textStyle:
+                                            TextStyle(color: widget.textColor),
+                                        fontSize: 45,
+                                      ),
+                                    ).tr(),
                                   ),
                                 ),
                               ),

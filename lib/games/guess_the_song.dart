@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:Drinkr/menus/difficulty.dart';
+import 'package:Drinkr/utils/difficulty.dart';
 import 'package:Drinkr/utils/file.dart';
+import 'package:audioplayers/audioplayers_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
@@ -53,7 +54,7 @@ class GuessTheSongState extends BasicGameState
   late StreamSubscription<Duration>? durationSubscription;
 
   // ignore: cancel_subscriptions
-  late StreamSubscription<AudioPlayerState>? stateSubscription;
+  late StreamSubscription<PlayerState>? stateSubscription;
 
   late File? f;
 
@@ -82,13 +83,14 @@ class GuessTheSongState extends BasicGameState
             msg: "noConnection".tr(), toastLength: Toast.LENGTH_SHORT);
       }
     }
+
     if (_target < 1 && _target > 0) {
-      if (audioPlayer.state == AudioPlayerState.PAUSED) {
+      if (audioPlayer.state == PlayerState.PAUSED) {
         await audioPlayer.resume();
-        audioPlayer.state = AudioPlayerState.PLAYING;
+        audioPlayer.state = PlayerState.PLAYING;
       } else {
         await audioPlayer.pause();
-        audioPlayer.state = AudioPlayerState.PAUSED;
+        audioPlayer.state = PlayerState.PAUSED;
       }
     }
   }
@@ -105,6 +107,8 @@ class GuessTheSongState extends BasicGameState
     WidgetsBinding.instance!.addObserver(this);
     super.initState();
 
+
+    
     _controller =
         AnimationController(duration: Duration(milliseconds: 150), vsync: this);
     _tween = Tween(begin: _target, end: _target);
@@ -124,7 +128,7 @@ class GuessTheSongState extends BasicGameState
       _updateBar(pos.inMilliseconds / songDuration!);
     });
     this.stateSubscription = audioPlayer.onPlayerStateChanged.listen((event) {
-      if (event == AudioPlayerState.COMPLETED) {
+      if (event == PlayerState.COMPLETED) {
         _updateBar(1);
       }
     }, onError: (msg) {
@@ -144,11 +148,11 @@ class GuessTheSongState extends BasicGameState
 
   Future<SoundData> loadVisData() async {
     f = await createTemporaryFile(getRandomString(32) + ".mp3");
-
     http.Response response = await http.get(Uri.parse(widget.mainTitle));
     await f!.writeAsBytes(response.bodyBytes);
 
-    String? audioData = await compute(AudiowaveformFlutter.audioWaveForm, f!.path);
+    String? audioData =
+        await compute(AudiowaveformFlutter.audioWaveForm, f!.path);
     return SoundData(audioData);
   }
 
@@ -197,7 +201,7 @@ class GuessTheSongState extends BasicGameState
                         ? Icons.replay
                         : _target == 0
                             ? Icons.play_arrow
-                            : this.audioPlayer.state == AudioPlayerState.PAUSED
+                            : this.audioPlayer.state == PlayerState.PAUSED
                                 ? Icons.play_arrow
                                 : Icons.pause,
                     color: widget.textColor,
