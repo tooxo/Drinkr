@@ -86,7 +86,6 @@ jobs:
         with:
           name: android_signed_apk
           path: ${{steps.sign_appapk.outputs.signedReleaseFile}}
-
   upload_to_google_play:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/stable'
@@ -107,3 +106,12 @@ jobs:
           track: beta
           inAppUpdatePriority: 2
           whatsNewDirectory: whatsnew
+
+  upload_to_github_releases:
+    runs-on: ubuntu-latest
+    needs: [sign_android_appbundle, sign_android_apk, build_ios]
+    steps:
+      - name: Download results from build
+          uses: actions/download-artifact@v2
+          with:
+            name: android_build_artifact_appbundle
