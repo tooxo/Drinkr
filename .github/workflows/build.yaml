@@ -112,6 +112,6 @@ jobs:
     needs: [sign_android_appbundle, sign_android_apk, build_ios]
     steps:
       - name: Download results from build
-          uses: actions/download-artifact@v2
-          with:
-            name: android_build_artifact_appbundle
+        uses: actions/download-artifact@v2
+        with:
+          name: android_build_artifact_appbundle
