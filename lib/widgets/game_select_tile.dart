@@ -206,9 +206,9 @@ class GameSelectTileState extends State<GameSelectTile> {
                 tapHeaderToExpand: true,
                 tapBodyToExpand: true,
                 tapBodyToCollapse: true,
-
                 useInkWell: false,
-                iconSize: 0),
+                iconSize: 0, hasIcon: false
+            ),
             header: GestureDetector(
               onTap: () => controller.toggle(),
               child: Padding(

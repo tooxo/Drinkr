@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:Drinkr/menus/game_mode.dart';
+import 'package:Drinkr/menus/setting.dart';
+import 'package:Drinkr/utils/spotify_storage.dart';
 import 'package:Drinkr/widgets/custom_alert.dart';
 import 'package:Drinkr/widgets/external/animated_grid.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,10 +57,12 @@ class NameSelectState extends State<NameSelect> {
   void initState() {
     super.initState();
     loadPlayers();
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (_) => SpotifyStorage.initializePreshippedPlaylists(context),
+    );
   }
 
-  static String illegalNames =
-      r"^ +$"; //only backspaces
+  static String illegalNames = r"^ +$"; //only backspaces
 
   RegExp regExp = RegExp(illegalNames);
 
@@ -141,25 +145,29 @@ class NameSelectState extends State<NameSelect> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: [
-                Container(
-                  height: 250,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Container(
+                    height: 250,
                     child: Column(
                       children: [
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(35),
-                              ),
-                              child: Image.asset(
-                                "assets/image/appicon3.png",
-                                fit: BoxFit.contain,
+                          child: InkWell(
+                            onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(builder: (a) => Settings())),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(35),
+                                ),
+                                child: Image.asset(
+                                  "assets/image/appicon3.png",
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             ),
                           ),
@@ -169,29 +177,36 @@ class NameSelectState extends State<NameSelect> {
                           child: Container(
                             height: 60,
                             decoration: BoxDecoration(
-                                color: Color.fromRGBO(255, 92, 0, 1),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.8),
-                                    blurRadius: 8,
-                                    offset: Offset(
-                                        2, 10), // changes position of shadow
+                              color: Color.fromRGBO(255, 92, 0, 1),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.8),
+                                  blurRadius: 8,
+                                  offset: Offset(
+                                    2,
+                                    10,
                                   ),
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30))),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 16, right: 8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextField(
+                                ),
+                              ],
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 16, right: 8),
+                                  child: TextField(
                                     controller: this.textEditingController,
                                     textInputAction: TextInputAction.done,
-                                    onSubmitted: (value) =>
-                                        {this.buttonPress()},
-                                    onChanged: (value) =>
-                                        {this.player1 = value},
+                                    onSubmitted: (value) => {
+                                      this.buttonPress(),
+                                    },
+                                    onChanged: (value) => {
+                                      this.player1 = value,
+                                    },
                                     style: GoogleFonts.nunito(
                                       fontSize: 20,
                                       color: Colors.white,
@@ -219,8 +234,8 @@ class NameSelectState extends State<NameSelect> {
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -229,38 +244,43 @@ class NameSelectState extends State<NameSelect> {
                   ),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: AnimatedGrid(
-                      itemHeight: 55,
-                      columns: 2,
-                      items: players,
-                      curve: Curves.linear,
-                      duration: Duration(milliseconds: 100),
-                      keyBuilder: (Player p) {
-                        if (keys.containsKey(p)) {
-                          return keys[p]!;
-                        }
-                        keys[p] = GlobalKey();
-                        return keys[p]!;
-                      },
-                      builder: (BuildContext context, Player player,
-                          AnimatedGridDetails details) {
-                        return TextSelectTile(
-                          player: player,
-                          onDelete: () {
-                            setState(() {
-                              players.remove(player);
-                            });
-                          },
-                          onNameChange: (String newName) {
-                            player.name = newName;
-                            setState(() {});
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                  child: this.players.isEmpty
+                      ? Container()
+                      : SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: AnimatedGrid(
+                              itemHeight: 55,
+                              columns: 2,
+                              items: players,
+                              curve: Curves.linear,
+                              duration: Duration(milliseconds: 100),
+                              keyBuilder: (Player p) {
+                                if (keys.containsKey(p)) {
+                                  return keys[p]!;
+                                }
+                                keys[p] = GlobalKey();
+                                return keys[p]!;
+                              },
+                              builder: (BuildContext context, Player player,
+                                  AnimatedGridDetails details) {
+                                return TextSelectTile(
+                                  player: player,
+                                  onDelete: () {
+                                    setState(() {
+                                      players.remove(player);
+                                    });
+                                  },
+                                  onNameChange: (String newName) {
+                                    player.name = newName;
+                                    setState(() {});
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                 ),
                 Divider(
                   color: Color.fromRGBO(160, 160, 160, 1),
@@ -335,11 +355,23 @@ class _TextSelectTileState extends State<TextSelectTile> {
   @override
   void initState() {
     controller = TextEditingController(text: widget.player.name);
-    focusNode.addListener(() {
-      focused = focusNode.hasFocus;
-      setState(() {});
-    });
+    focusNode.addListener(
+      () {
+        if (focused && !focusNode.hasFocus) {
+          // lost focus
+          onSubmit(controller.text);
+        }
+        focused = focusNode.hasFocus;
+        setState(() {});
+      },
+    );
     super.initState();
+  }
+
+  void onSubmit(String sub) {
+    if (sub.trim() == "") {
+      widget.onDelete();
+    }
   }
 
   @override
@@ -353,58 +385,66 @@ class _TextSelectTileState extends State<TextSelectTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: focused
-          ? Colors.white.withOpacity(.3)
-          : Colors.white.withOpacity(.15),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       elevation: 0,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: TextField(
-                focusNode: focusNode,
-                controller: controller,
-                onChanged: widget.onNameChange,
-                onSubmitted: (String sub) {
-                  if (sub.trim() == "") {
-                    widget.onDelete();
-                  }
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  counterText: "",
+      child: AnimatedContainer(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: focused
+              ? Colors.white.withOpacity(.3)
+              : Colors.white.withOpacity(.15),
+        ),
+        duration: Duration(
+          milliseconds: 300,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: TextField(
+                  focusNode: focusNode,
+                  controller: controller,
+                  onChanged: widget.onNameChange,
+                  onSubmitted: onSubmit,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    counterText: "",
+                  ),
+                  maxLines: 1,
+                  maxLength: 16,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  style: GoogleFonts.nunito(color: Colors.white),
                 ),
-                maxLines: 1,
-                maxLength: 16,
-                maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                style: GoogleFonts.nunito(color: Colors.white),
               ),
-            ),
-            this.focused
-                ? GestureDetector(
-                    onTap: widget.onDelete,
-                    child: Container(
-                      height: 30,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.redAccent,
-                        borderRadius: BorderRadius.circular(15),
+              !this.focused
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: GestureDetector(
+                        onTap: widget.onDelete,
+                        child: Container(
+                          height: 30,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
-                : Container(),
-          ],
+                    )
+                  : Container(),
+            ],
+          ),
         ),
       ),
     );

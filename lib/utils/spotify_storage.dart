@@ -1,5 +1,9 @@
+import 'package:Drinkr/utils/file.dart';
+import 'package:Drinkr/utils/networking.dart';
 import 'package:Drinkr/utils/spotify_api.dart';
+import 'package:Drinkr/utils/types.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter/material.dart';
 
 class SpotifyStorage {
   static var songs_box = Hive.box<Song>("spotify_songs");
@@ -7,6 +11,28 @@ class SpotifyStorage {
 
   static Future<Song?> getFromSpotifyCache(String songId) async {
     return songs_box.get(songId);
+  }
+
+  static Future<void> initializePreshippedPlaylists(
+      BuildContext context) async {
+    List<String> playlistIds =
+        (await getIncludedFiles(GameType.GUESS_THE_SONG, context, false))
+            .map(Spotify.getIdFromUrl)
+            .map((e) => e!)
+            .toList();
+
+    List<String> missingPlaylistIds = playlistIds
+        .where((element) => !playlists_box.keys.contains(element))
+        .toList();
+
+    if (await checkConnection()) {
+      for (String pid in missingPlaylistIds) {
+        Playlist? p = await Spotify().getPlaylistWithoutSongs(pid);
+        if (p == null) continue;
+
+        await playlists_box.put(pid, p);
+      }
+    }
   }
 
   static Future<void> putBulkInSpotifyCache(Iterable<Song> songs) async {
@@ -23,8 +49,7 @@ class SpotifyStorage {
     }
   }
 
-  static Future<Playlist?> getPlaylistFromSpotifyCache(
-      String playlistId) async {
+  static Playlist? getPlaylistFromSpotifyCache(String playlistId) {
     return playlists_box.get(playlistId);
   }
 

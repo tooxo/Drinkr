@@ -17,7 +17,7 @@ class BasicGame extends StatefulWidget {
   final String title = "Test Title";
 
   final Color textColor = Colors.white;
-  final Color buttonColor = Color.fromRGBO(0, 0, 0, .3);
+  final Color buttonColor = Color.fromRGBO(0, 0, 0, .4);
   final Color backgroundColor1 = Colors.blue;
   final Color backgroundColor2 = Colors.orange;
 
@@ -257,6 +257,7 @@ class BasicGameState extends State<BasicGame>
                       ? Container()
                       : ShowUpAnimation(
                           child: MaterialButton(
+                            elevation: 0,
                             onPressed: () {
                               setState(() {
                                 this.showSolution = true;
@@ -312,6 +313,7 @@ class BasicGameState extends State<BasicGame>
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 10, 5, 10),
                   child: MaterialButton(
+                    elevation: 0,
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -397,6 +399,7 @@ class BasicGameState extends State<BasicGame>
               child: MaterialButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 color: widget.buttonColor,
+                elevation: 0,
                 //minWidth: 120,
                 height: 5000,
                 shape: RoundedRectangleBorder(
@@ -431,7 +434,6 @@ class BasicGameState extends State<BasicGame>
             widget.backgroundColor1,
             widget.backgroundColor2,
           ],
-
           child: SafeArea(
             child: Column(
               children: <Widget>[

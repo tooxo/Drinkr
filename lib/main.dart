@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'menus/name_select.dart';
 import 'package:hive/hive.dart';
@@ -21,9 +22,6 @@ void main() async {
   LicenseRegistry.addLicense(() async* {
     final licenseGFont = await rootBundle.loadString("assets/licenses/OFL.txt");
     yield LicenseEntryWithLineBreaks(['google_fonts'], licenseGFont);
-    final licenseTSwitch =
-        await rootBundle.loadString("assets/licenses/TOGGLE_SWITCH.txt");
-    yield LicenseEntryWithLineBreaks(["toggle_switch"], licenseTSwitch);
     final licenseIcon =
         await rootBundle.loadString("assets/licenses/flaticon.txt");
     yield LicenseEntryWithLineBreaks(["icons (flaticon)"], licenseIcon);
@@ -60,7 +58,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        /*unselectedWidgetColor: Colors.white,*/
       ),
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,

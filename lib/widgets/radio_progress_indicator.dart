@@ -15,11 +15,11 @@ class RadioProgressIndicator extends StatefulWidget {
   static const String? _kFontPkg = null;
 
   static const IconData dif_hard =
-      IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData dif_mid =
-      IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+      IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData dif_easy =
-      IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 
   @override
   State<StatefulWidget> createState() => _RadioProgressIndicatorState();
@@ -73,87 +73,101 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {
-                  updateGroupValue(0);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Icon(
-                          RadioProgressIndicator.dif_easy,
-                          color: getColor(0),
-                          size: 60,
+        Container(
+          height: 85,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 1,
+                child: InkWell(
+                  onTap: () {
+                    updateGroupValue(0);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            RadioProgressIndicator.dif_easy,
+                            color: getColor(0),
+                            size: 60,
+                          ),
+                          Text(
+                            "difficultyLow",
+                            style: GoogleFonts.nunito(
+                              color: getColor(0),
+                              fontSize: 18,
+                            ),
+                          ).tr()
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Spacer(),
+              Expanded(
+                flex: 1,
+                child: InkWell(
+                  onTap: () {
+                    updateGroupValue(1);
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        RadioProgressIndicator.dif_mid,
+                        color: getColor(1),
+                        size: 60,
+                      ),
+                      Text(
+                        "difficultyMed",
+                        style: GoogleFonts.nunito(
+                          color: getColor(1),
+                          fontSize: 18,
                         ),
-                        Text(
-                          "difficultyLow",
-                          style: GoogleFonts.nunito(
-                              color: getColor(0), fontSize: 18),
-                        ).tr()
-                      ],
-                    ),
-                  ],
+                      ).tr()
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {
-                  updateGroupValue(1);
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      RadioProgressIndicator.dif_mid,
-                      color: getColor(1),
-                      size: 60,
-                    ),
-                    Text(
-                      "difficultyMed",
-                      style:
-                          GoogleFonts.nunito(color: getColor(1), fontSize: 18),
-                    ).tr()
-                  ],
+              Spacer(),
+              Expanded(
+                flex: 1,
+                child: InkWell(
+                  onTap: () {
+                    updateGroupValue(2);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(
+                            RadioProgressIndicator.dif_hard,
+                            color: getColor(2),
+                            size: 60,
+                          ),
+                          Text(
+                            "difficultyHigh",
+                            style: GoogleFonts.nunito(
+                              color: getColor(2),
+                              fontSize: 18,
+                            ),
+                          ).tr()
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {
-                  updateGroupValue(2);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          RadioProgressIndicator.dif_hard,
-                          color: getColor(2),
-                          size: 60,
-                        ),
-                        Text(
-                          "difficultyHigh",
-                          style: GoogleFonts.nunito(
-                              color: getColor(2), fontSize: 18),
-                        ).tr()
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),

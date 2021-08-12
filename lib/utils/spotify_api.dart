@@ -20,7 +20,7 @@ class Song {
 }
 
 @HiveType(typeId: 2)
-class Playlist {
+class Playlist with Comparable<Playlist> {
   @HiveField(0)
   String id;
   @HiveField(1)
@@ -35,6 +35,12 @@ class Playlist {
   String snapshotId;
   @HiveField(6)
   DateTime lastFetch;
+  @HiveField(7)
+  bool enabled;
+  @HiveField(8)
+  bool included;
+
+  String get url => "https://open.spotify.com/playlist/$id";
 
   Playlist({
     required this.id,
@@ -43,7 +49,14 @@ class Playlist {
     required this.image_url,
     required this.snapshotId,
     required this.lastFetch,
+    required this.enabled,
+    required this.included,
   });
+
+  @override
+  int compareTo(Playlist other) {
+    return this.name.toLowerCase().compareTo(other.name.toLowerCase());
+  }
 }
 
 enum PlaylistUpdateStrategy {
@@ -103,14 +116,42 @@ class Spotify {
     return jsonResponse["access_token"];
   }
 
+  Future<Playlist?> getPlaylistWithoutSongs(String playlistId,
+      {bool included = true}) async {
+    Playlist? cachePlaylist =
+        SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
+
+    String token = await generateAuthKey();
+    String info_url = "https://api.spotify.com/v1/playlists/$playlistId/";
+
+    http.Response infoResponse = await http
+        .get(Uri.parse(info_url), headers: {"Authorization": "Bearer $token"});
+    if (infoResponse.statusCode != 200) {
+      return null;
+    }
+
+    Map<String, dynamic> info_json_response = jsonDecode(infoResponse.body);
+    Playlist playlist = Playlist(
+        id: playlistId,
+        creator_name: info_json_response["owner"]["id"],
+        image_url: info_json_response["images"][0]["url"],
+        name: info_json_response["name"],
+        snapshotId: info_json_response["snapshot_id"],
+        lastFetch: DateTime.fromMillisecondsSinceEpoch(0),
+        enabled: cachePlaylist?.enabled ?? true,
+        included: included);
+    return playlist;
+  }
+
   /// Pulls a playlist from Spotify
   Future<Playlist?> getPlaylist(String playlistId,
       {PlaylistUpdateStrategy updateStrategy =
-          PlaylistUpdateStrategy.TRUST_CACHE}) async {
+          PlaylistUpdateStrategy.CHECK_FOR_UPDATE_TIMESTAMP}) async {
     Playlist? cachePlaylist =
-        await SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
+        SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
     if (cachePlaylist != null) {
-      if (updateStrategy == PlaylistUpdateStrategy.TRUST_CACHE) {
+      if (updateStrategy == PlaylistUpdateStrategy.TRUST_CACHE &&
+          cachePlaylist.lastFetch.millisecondsSinceEpoch != 0) {
         return cachePlaylist;
       }
 
@@ -141,6 +182,8 @@ class Spotify {
       name: info_json_response["name"],
       snapshotId: info_json_response["snapshot_id"],
       lastFetch: DateTime.now(),
+      enabled: cachePlaylist?.enabled ?? true,
+      included: cachePlaylist?.included ?? false,
     );
 
     if (updateStrategy == PlaylistUpdateStrategy.CHECK_FOR_UPDATE_SNAPSHOT_ID &&
