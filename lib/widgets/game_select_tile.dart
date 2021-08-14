@@ -306,7 +306,7 @@ class GameSelectTileState extends State<GameSelectTile> {
                       ),
                       iconedButtons: {
                         ButtonState.idle: IconedButton(
-                            text: "Start",
+                            text: "startGame".tr(),
                             icon: Icon(Icons.send, color: Colors.white),
                             color: Colors.black.withOpacity(.3)),
                         ButtonState.loading:

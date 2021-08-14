@@ -47,7 +47,7 @@ class GameState extends State<GameMode> {
               centerTitle: true,
               backgroundColor: Color.fromRGBO(21, 21, 21, 1),
               title: Text(
-                "Wähle deinen Spielmodus",
+                "gameModeSelect",
                 style: GoogleFonts.nunito(
                     color: Colors.white,
                     fontSize: 20,
@@ -73,8 +73,8 @@ class GameState extends State<GameMode> {
                       ],
                       parentContext: context,
                       onGameStateChange: onStateChange,
-                      title: "Party",
-                      subtitle: "Spaß für die ganze Familie",
+                      title: "gameModeParty",
+                      subtitle: "gameModePartyDescription",
                       icon: GameMode.icon_party,
                       players: widget.players,
                       enabledGames: [
@@ -95,8 +95,8 @@ class GameState extends State<GameMode> {
                       ],
                       parentContext: context,
                       onGameStateChange: onStateChange,
-                      title: "Quiz",
-                      subtitle: "Teste dein Wissen!",
+                      title: "gameModeQuiz",
+                      subtitle: "gameModeQuizDescription",
                       icon: GameMode.icon_quiz,
                       players: widget.players,
                       enabledGames: [
@@ -113,8 +113,8 @@ class GameState extends State<GameMode> {
                       ],
                       parentContext: context,
                       onGameStateChange: onStateChange,
-                      title: "Lieder raten",
-                      subtitle: "Errate den Song als erstes!",
+                      title: "gameModeSongGuess",
+                      subtitle: "gameModeSongGuessDescription",
                       icon: GameMode.icon_guessthesong,
                       players: widget.players,
                       enabledGames: [
@@ -123,8 +123,8 @@ class GameState extends State<GameMode> {
                     ),
                     Divider(),
                     CustomGameSelectTile(
-                      title: "custom",
-                      subtitle: "Wähle zwischen allen Spielen!",
+                      title: "gameModeCustom",
+                      subtitle: "gameModeCustomDescription",
                       icon: GameMode.icon_custom,
                       players: widget.players,
                       enabledGames: [],
