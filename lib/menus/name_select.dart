@@ -17,20 +17,28 @@ import 'package:easy_localization/easy_localization.dart';
 import '../utils/player.dart';
 
 class NameSelect extends StatefulWidget {
-  final Color primaryColor = Color.fromRGBO(255, 81, 0, 1);
-  final Color secondaryColor = Color.fromRGBO(255, 111, 0, 1);
+  /*final Color primaryColor = Color.fromRGBO(0xd2, 0x6d, 0x00, 1);*/
+  // final Color secondaryColor = Color.fromRGBO(0xf2, 0xac, 0x40, 1);
+
+  final Color primaryColor = Color.fromRGBO(0xff, 0x90, 0x25, .9);
+  final Color secondaryColor = Color.fromRGBO(0xff, 0x90, 0x25, 1);
+
+  // final Color primaryColor = Color.fromRGBO(0xFF,0x82,0x09, 1);
+
+  // final Color secondaryColor = Color.fromRGBO(0xfd, 0xab, 0x73, 1);
+
+  final Color backgroundColor = Color.fromRGBO(21, 21, 21, 1);
 
   @override
   State<StatefulWidget> createState() => NameSelectState();
 }
 
 class NameSelectState extends State<NameSelect> {
-  String player1 = "";
+  String newPlayer = "";
   List<Player> players = [];
+
   TextEditingController textEditingController = TextEditingController();
-  double sliderState = 100;
-  double maxRounds = 1000;
-  int divisions = 1;
+  FocusNode focusNodeInput = FocusNode();
 
   static const PREFS_PLAYERS = "PLAYER_STORE";
 
@@ -69,8 +77,8 @@ class NameSelectState extends State<NameSelect> {
   RegExp regExp = RegExp(illegalNames);
 
   void buttonPress() {
-    if (this.player1.isNotEmpty) {
-      if (regExp.hasMatch(this.player1)) {
+    if (this.newPlayer.isNotEmpty) {
+      if (regExp.hasMatch(this.newPlayer)) {
         showDialog(
           context: context,
           builder: (BuildContext c) => CustomAlert(
@@ -81,7 +89,7 @@ class NameSelectState extends State<NameSelect> {
           ),
         );
       } else {
-        Player newPlayer = Player(this.player1.trim());
+        Player newPlayer = Player(this.newPlayer.trim());
         if (this.players.contains(newPlayer)) {
           showDialog(
             context: context,
@@ -95,7 +103,7 @@ class NameSelectState extends State<NameSelect> {
         } else {
           this.players.add(newPlayer);
           this.textEditingController.clear();
-          this.player1 = "";
+          this.newPlayer = "";
           setPlayers();
           setState(() {});
         }
@@ -143,7 +151,7 @@ class NameSelectState extends State<NameSelect> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+      backgroundColor: widget.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -166,7 +174,7 @@ class NameSelectState extends State<NameSelect> {
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(35),
+                                  Radius.circular(30),
                                 ),
                                 child: Image.asset(
                                   "assets/image/appicon3.png",
@@ -196,11 +204,13 @@ class NameSelectState extends State<NameSelect> {
                           left: 16,
                           right: 16,
                         ),
-                        child: Container(
+                        child: AnimatedContainer(
                           height: 60,
                           decoration: BoxDecoration(
-                            color: Color.fromRGBO(255, 92, 0, 1),
-                            boxShadow: [
+                            color: this.focusNodeInput.hasFocus
+                                ? widget.secondaryColor
+                                : widget.primaryColor,
+                            /*boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.8),
                                 blurRadius: 8,
@@ -209,11 +219,12 @@ class NameSelectState extends State<NameSelect> {
                                   10,
                                 ),
                               ),
-                            ],
+                            ],*/
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
                             ),
                           ),
+                          duration: Duration(milliseconds: 250),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -223,13 +234,14 @@ class NameSelectState extends State<NameSelect> {
                                   right: 8,
                                 ),
                                 child: TextField(
+                                  focusNode: focusNodeInput,
                                   controller: this.textEditingController,
                                   textInputAction: TextInputAction.done,
                                   onSubmitted: (value) => {
                                     this.buttonPress(),
                                   },
                                   onChanged: (value) => {
-                                    this.player1 = value,
+                                    this.newPlayer = value,
                                   },
                                   style: GoogleFonts.nunito(
                                     fontSize: 20,

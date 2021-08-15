@@ -1,6 +1,5 @@
 library custom_switch;
 
-
 import 'package:flutter/material.dart';
 
 class CustomSwitch extends StatefulWidget {
@@ -91,6 +90,10 @@ class CustomSwitchState extends State<CustomSwitch>
             width: 50.0,
             height: 25.0,
             decoration: BoxDecoration(
+                /*border: Border.all(
+                  color: Colors.white,
+                  width: 0,
+                ),*/
                 borderRadius: BorderRadius.circular(20.0),
                 color: _colorAnimation.value),
             child: Row(

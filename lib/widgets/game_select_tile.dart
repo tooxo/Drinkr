@@ -127,7 +127,7 @@ class GameSelectTileState extends State<GameSelectTile> {
           padding: EdgeInsets.only(bottom: 8.0),
           child: Divider(
             color: Colors.white,
-            thickness: 3,
+            thickness: 1,
           ),
         ),
         for (GameType type in widget.enabledGames)
@@ -163,13 +163,13 @@ class GameSelectTileState extends State<GameSelectTile> {
               value: useAdultQuestions,
               enabled: adultSwitchEnabled(),
               onChanged: adultSwitchEnabled() ? toggleAdultQuestions : null,
-              activeColor: Colors.orange,
+              activeColor: Colors.black.withOpacity(.6),
             ),
             contentPadding: EdgeInsets.zero,
           ),
         ),
         Divider(
-          thickness: 3,
+          thickness: 1,
           color: Colors.white,
         )
       ],
@@ -180,161 +180,156 @@ class GameSelectTileState extends State<GameSelectTile> {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(minWidth: 300, maxWidth: 500),
-      child: Container(
-        // width: 350,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.8),
-              blurRadius: 8,
-              offset: Offset(2, 10), // changes position of shadow
+      child: GestureDetector(
+        onTap: () => controller.toggle(),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(30),
             ),
-          ],
-          borderRadius: BorderRadius.all(
-            Radius.circular(30),
           ),
-        ),
-        child: ColorGradient(
-          colors: widget.backgroundColors,
-          roundness: 30,
-          child: ExpandablePanel(
-            controller: controller,
-            theme: ExpandableThemeData(
-                tapHeaderToExpand: true,
-                tapBodyToExpand: true,
-                tapBodyToCollapse: true,
-                useInkWell: false,
-                iconSize: 0,
-                hasIcon: false),
-            header: GestureDetector(
-              onTap: () => controller.toggle(),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Row(
+          child: ColorGradient(
+            colors: widget.backgroundColors,
+            roundness: 30,
+            child: ExpandablePanel(
+              controller: controller,
+              theme: ExpandableThemeData(
+                  tapHeaderToExpand: true,
+                  tapBodyToExpand: true,
+                  tapBodyToCollapse: true,
+                  useInkWell: false,
+                  iconSize: 0,
+                  hasIcon: false),
+              header: GestureDetector(
+                onTap: () => controller.toggle(),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 20, left: 20),
+                        child: Icon(
+                          widget.icon,
+                          size: 70,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: GoogleFonts.nunito(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ).tr(),
+                            Text(
+                              widget.subtitle,
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ).tr(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              collapsed: InkWell(
+                onTap: () => controller.toggle(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Icon(
+                      Icons.arrow_drop_down_rounded,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              expanded: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(right: 20, left: 20),
-                      child: Icon(
-                        widget.icon,
-                        size: 70,
-                        color: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: enabledGamesSelection(),
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 1,
+                    ),
+                    buildAdultSelection(),
+                    InkWell(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Column(
+                          children: [
+                            RadioProgressIndicator(
+                              onChanged: (newVal) {
+                                selectedDifficulty = newVal;
+                              },
+                              enabled: widget.enabled,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.title,
-                            style: GoogleFonts.nunito(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ).tr(),
-                          Text(
-                            widget.subtitle,
-                            style: GoogleFonts.nunito(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ).tr(),
-                        ],
+                    Center(
+                      child: ProgressButton.icon(
+                        textStyle: GoogleFonts.nunito(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        progressIndicator: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                          color: Colors.white,
+                        ),
+                        iconedButtons: {
+                          ButtonState.idle: IconedButton(
+                              text: "startGame".tr(),
+                              icon: Icon(Icons.send, color: Colors.white),
+                              color: Colors.black.withOpacity(.3)),
+                          ButtonState.loading:
+                              IconedButton(color: Colors.black.withOpacity(.3)),
+                          ButtonState.fail: IconedButton(
+                              color: Colors.red,
+                              text: "Error",
+                              icon:
+                                  Icon(Icons.error_outline, color: Colors.white)),
+                          ButtonState.success: IconedButton(color: Colors.green)
+                        },
+                        onPressed: widget.enabledGames.isNotEmpty
+                            ? () => startGame()
+                            : null,
+                        state: buttonState,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => controller.toggle(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Center(
+                          child: Icon(
+                            Icons.arrow_drop_up_rounded,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            collapsed: InkWell(
-              onTap: () => controller.toggle(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Icon(
-                    Icons.arrow_drop_down_rounded,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            expanded: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: enabledGamesSelection(),
-                  ),
-                  Divider(
-                    color: Colors.white,
-                    thickness: 3,
-                  ),
-                  buildAdultSelection(),
-                  InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Column(
-                        children: [
-                          RadioProgressIndicator(
-                            onChanged: (newVal) {
-                              selectedDifficulty = newVal;
-                            },
-                            enabled: widget.enabled,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: ProgressButton.icon(
-                      textStyle: GoogleFonts.nunito(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      progressIndicator: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Colors.white),
-                        color: Colors.white,
-                      ),
-                      iconedButtons: {
-                        ButtonState.idle: IconedButton(
-                            text: "startGame".tr(),
-                            icon: Icon(Icons.send, color: Colors.white),
-                            color: Colors.black.withOpacity(.3)),
-                        ButtonState.loading:
-                            IconedButton(color: Colors.black.withOpacity(.3)),
-                        ButtonState.fail: IconedButton(
-                            color: Colors.red,
-                            text: "Error",
-                            icon:
-                                Icon(Icons.error_outline, color: Colors.white)),
-                        ButtonState.success: IconedButton(color: Colors.green)
-                      },
-                      onPressed: widget.enabledGames.isNotEmpty
-                          ? () => startGame()
-                          : null,
-                      state: buttonState,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () => controller.toggle(),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Center(
-                        child: Icon(
-                          Icons.arrow_drop_up_rounded,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
           ),

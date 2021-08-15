@@ -71,133 +71,160 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 85,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 1,
-                child: InkWell(
-                  onTap: () {
-                    updateGroupValue(0);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            RadioProgressIndicator.dif_easy,
-                            color: getColor(0),
-                            size: 60,
-                          ),
-                          Text(
-                            "difficultyLow",
-                            style: GoogleFonts.nunito(
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      return Column(
+        children: [
+          Container(
+            height: 85,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () {
+                      updateGroupValue(0);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              RadioProgressIndicator.dif_easy,
                               color: getColor(0),
-                              fontSize: 18,
+                              size: 60,
                             ),
-                          ).tr()
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Spacer(),
-              Expanded(
-                flex: 1,
-                child: InkWell(
-                  onTap: () {
-                    updateGroupValue(1);
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        RadioProgressIndicator.dif_mid,
-                        color: getColor(1),
-                        size: 60,
-                      ),
-                      Text(
-                        "difficultyMed",
-                        style: GoogleFonts.nunito(
-                          color: getColor(1),
-                          fontSize: 18,
+                            Text(
+                              "difficultyLow",
+                              style: GoogleFonts.nunito(
+                                color: getColor(0),
+                                fontSize: 18,
+                              ),
+                            ).tr()
+                          ],
                         ),
-                      ).tr()
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Spacer(),
-              Expanded(
-                flex: 1,
-                child: InkWell(
-                  onTap: () {
-                    updateGroupValue(2);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(
-                            RadioProgressIndicator.dif_hard,
-                            color: getColor(2),
-                            size: 60,
+                Spacer(),
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () {
+                      updateGroupValue(1);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          RadioProgressIndicator.dif_mid,
+                          color: getColor(1),
+                          size: 60,
+                        ),
+                        Text(
+                          "difficultyMed",
+                          style: GoogleFonts.nunito(
+                            color: getColor(1),
+                            fontSize: 18,
                           ),
-                          Text(
-                            "difficultyHigh",
-                            style: GoogleFonts.nunito(
-                              color: getColor(2),
-                              fontSize: 18,
-                            ),
-                          ).tr()
-                        ],
-                      ),
-                    ],
+                        ).tr()
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: LinearProgressIndicator(
-                  value: animation.value,
-                  backgroundColor: Colors.white.withOpacity(0.6),
-                  valueColor:
-                      AlwaysStoppedAnimation(Colors.white.withOpacity(0.9)),
+                Spacer(),
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () {
+                      updateGroupValue(2);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              RadioProgressIndicator.dif_hard,
+                              color: getColor(2),
+                              size: 60,
+                            ),
+                            Text(
+                              "difficultyHigh",
+                              style: GoogleFonts.nunito(
+                                color: getColor(2),
+                                fontSize: 18,
+                              ),
+                            ).tr()
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  for (int i = 0; i < 3; i++)
-                    CustomRadioWidget(
-                        value: i,
-                        enabled: widget.enabled,
-                        groupValue: groupValue,
-                        onChanged: updateGroupValue)
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned(
+                  left: 0,
+                  child: Container(
+                    width: constraints.maxWidth / 2.0 - 12,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: LinearProgressIndicator(
+                        value: animation.value * 2,
+                        backgroundColor: Colors.white.withOpacity(.6),
+                        minHeight: 3,
+                        valueColor: AlwaysStoppedAnimation(
+                            Colors.white.withOpacity(0.9)),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: Container(
+                    width: constraints.maxWidth / 2.0 - 12,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: LinearProgressIndicator(
+                        value: animation.value * 2 - 1,
+                        backgroundColor: Colors.white.withOpacity(0.6),
+                        minHeight: 2,
+                        valueColor: AlwaysStoppedAnimation(
+                            Colors.white.withOpacity(0.9)),
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    for (int i = 0; i < 3; i++)
+                      CustomRadioWidget(
+                          value: i,
+                          enabled: widget.enabled,
+                          groupValue: groupValue,
+                          onChanged: updateGroupValue)
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

@@ -93,6 +93,7 @@ class GuessTheSongState extends BasicGameState
         audioPlayer.state = PlayerState.PAUSED;
       }
     }
+    setState(() {});
   }
 
   int? songDuration;
@@ -102,13 +103,13 @@ class GuessTheSongState extends BasicGameState
   Animation<double>? _animation;
   double _target = 0.0;
 
+  late Future<SoundData> sd;
+
   @override
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
     super.initState();
 
-
-    
     _controller =
         AnimationController(duration: Duration(milliseconds: 150), vsync: this);
     _tween = Tween(begin: _target, end: _target);
@@ -137,6 +138,8 @@ class GuessTheSongState extends BasicGameState
           toastLength: Toast.LENGTH_SHORT);
       _updateBar(1);
     });
+
+    sd = loadVisData();
   }
 
   static const _chars =
@@ -147,13 +150,22 @@ class GuessTheSongState extends BasicGameState
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   Future<SoundData> loadVisData() async {
-    f = await createTemporaryFile(getRandomString(32) + ".mp3");
+    String randomFileName = getRandomString(32);
+    f = await createTemporaryFile(randomFileName + ".mp3");
+    File outputFile = await createTemporaryFile(randomFileName + ".json");
     http.Response response = await http.get(Uri.parse(widget.mainTitle));
     await f!.writeAsBytes(response.bodyBytes);
 
-    String? audioData =
-        await compute(AudiowaveformFlutter.audioWaveForm, f!.path);
-    return SoundData(audioData);
+    await compute(AudiowaveformFlutter.audioWaveForm,
+        AudioWaveformConfig(f!.path, outputFile.path));
+
+    bool wasSuccessful = (await outputFile.length()) > 0;
+
+    if (wasSuccessful) {
+      String audioData = await outputFile.readAsString();
+      return SoundData(audioData);
+    }
+    return SoundData("{}");
   }
 
   void _updateBar(double newValue) {
@@ -171,7 +183,7 @@ class GuessTheSongState extends BasicGameState
       child: ShowUpAnimation(
         child: Center(
           child: FutureBuilder<SoundData>(
-            future: loadVisData(),
+            future: sd,
             builder: (BuildContext context, AsyncSnapshot<SoundData> snapshot) {
               if (snapshot.hasData) {
                 return InkWell(

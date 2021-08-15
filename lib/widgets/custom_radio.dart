@@ -32,7 +32,7 @@ class _CustomRadioWidgetState extends State<CustomRadioWidget>
     controller.reset();
     animation = Tween(
             begin: 0.0,
-            end: widget.value == widget.groupValue ? widget.height - 8.0 : 0.0)
+            end: widget.value == widget.groupValue ? widget.height : 0.0)
         .animate(controller)
           ..addListener(() {
             setState(() {});
@@ -53,8 +53,8 @@ class _CustomRadioWidgetState extends State<CustomRadioWidget>
         setState(() {
           controller.reset();
           double begin =
-              widget.value == widget.groupValue ? widget.height - 8.0 : 0.1;
-          double end = widget.height - 8.0;
+              widget.value == widget.groupValue ? widget.height : 0.1;
+          double end = widget.height;
 
           animation = Tween(begin: begin, end: end).animate(controller)
             ..addListener(() {
@@ -68,17 +68,20 @@ class _CustomRadioWidgetState extends State<CustomRadioWidget>
       child: Container(
         height: widget.height,
         width: widget.height,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: widget.value == widget.groupValue ? Colors.transparent : Colors.white,
+            border: Border.all(color: Colors.white, width: 3)),
         child: Center(
           child: Container(
             height:
-                animation.value == 0.0 ? widget.height - 8 : animation.value,
-            width: animation.value == 0.0 ? widget.height - 8 : animation.value,
+                animation.value == 0.0 ? widget.height - 6 : animation.value,
+            width: animation.value == 0.0 ? widget.height - 6 : animation.value,
             decoration: ShapeDecoration(
               shape: CircleBorder(),
               color: widget.value == widget.groupValue
                   ? widget.enabled
-                      ? Colors.black
+                      ? Colors.black.withOpacity(.6)
                       : Colors.grey
                   : Colors.white,
             ),

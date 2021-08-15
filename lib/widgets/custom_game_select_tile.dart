@@ -122,7 +122,7 @@ class _CustomGameSelectTileState extends GameSelectTileState {
     return Column(
       children: [
         Divider(
-          thickness: 3,
+          thickness: 1,
           color: Colors.white,
         ),
         for (TypeClass type in GameType.values

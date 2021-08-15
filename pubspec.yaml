@@ -39,6 +39,8 @@ dependencies:
   circular_reveal_animation: ^2.0.0
   url_launcher: ^6.0.0-nullsafety.6
   pedantic: ^1.11.1
+  # audiowaveformFlutter:
+  #     path: "/home/till/Projects/Other/audiowaveform_flutter"
   audiowaveformFlutter:
     git:
       url: "https://github.com/tooxo/audioWaveFormFlutter.git"
