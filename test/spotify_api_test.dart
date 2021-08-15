@@ -1,4 +1,4 @@
-import 'package:Drinkr/utils/spotify_api.dart';
+import 'package:drinkr/utils/spotify_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 // ignore: avoid_relative_lib_imports
@@ -49,7 +49,7 @@ void main() {
       50,
     );
     expect(
-      (await Spotify().getPlaylist("71Oc23mUiQmiM3SNYkmvV1",
+      (await Spotify().getPlaylist("3y1DdsLazc9zK1AARQYo7b",
               updateStrategy: PlaylistUpdateStrategy.FULL_FETCH))!
           .song_ids
           .length,
