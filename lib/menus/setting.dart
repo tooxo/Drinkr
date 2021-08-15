@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:Drinkr/menus/licenses.dart';
-import 'package:Drinkr/utils/spotify_api.dart';
-import 'package:Drinkr/utils/spotify_storage.dart';
-import 'package:Drinkr/widgets/extending_textfield_button.dart';
-import 'package:Drinkr/widgets/gradient.dart';
-import 'package:Drinkr/widgets/spotify_tile.dart';
+import 'package:drinkr/menus/licenses.dart';
+import 'package:drinkr/utils/spotify_api.dart';
+import 'package:drinkr/utils/spotify_storage.dart';
+import 'package:drinkr/widgets/extending_textfield_button.dart';
+import 'package:drinkr/widgets/gradient.dart';
+import 'package:drinkr/widgets/spotify_tile.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

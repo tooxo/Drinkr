@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:Drinkr/utils/custom.dart';
-import 'package:Drinkr/menus/game_mode.dart';
-import 'package:Drinkr/utils/player.dart';
-import 'package:Drinkr/utils/types.dart';
-import 'package:Drinkr/widgets/custom_switch.dart';
-import 'package:Drinkr/widgets/game_select_tile.dart';
+import 'package:drinkr/utils/custom.dart';
+import 'package:drinkr/menus/game_mode.dart';
+import 'package:drinkr/utils/player.dart';
+import 'package:drinkr/utils/types.dart';
+import 'package:drinkr/widgets/custom_switch.dart';
+import 'package:drinkr/widgets/game_select_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,71 +1,121 @@
+import 'package:drinkr/utils/player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
-class NameSelectTile extends StatelessWidget {
-  final String playerName;
-  final int playerId;
-  final dynamic deleteFunc;
-  final dynamic changeFunc;
 
-  late final TextEditingController textEditingController;
+class NameSelectTile extends StatefulWidget {
+  final Player player;
+  final Function() onDelete;
+  final Function(String) onNameChange;
 
-  NameSelectTile(
-      {Key? key,
-      required this.playerName,
-      required this.playerId,
-      this.deleteFunc,
-      this.changeFunc}) {
-    this.textEditingController = TextEditingController(
-      text: this.playerName,
+  NameSelectTile({
+    required this.player,
+    required this.onDelete,
+    required this.onNameChange,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _NameSelectTileState();
+}
+
+class _NameSelectTileState extends State<NameSelectTile> {
+  late TextEditingController controller;
+  FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    controller = TextEditingController(text: widget.player.name);
+    focusNode.addListener(
+      () {
+        if (focused && !focusNode.hasFocus) {
+          // lost focus
+          onSubmit(controller.text);
+        }
+        focused = focusNode.hasFocus;
+        setState(() {});
+      },
     );
+    super.initState();
+  }
+
+  void onSubmit(String sub) {
+    if (sub.trim() == "") {
+      widget.onDelete();
+    }
   }
 
   @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  bool focused = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(
-          color: Color.fromRGBO(255, 92, 0, 1),
-          width: 3,
+    return Card(
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      elevation: 0,
+      child: AnimatedContainer(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: focused
+              ? Colors.white.withOpacity(.3)
+              : Colors.white.withOpacity(.15),
         ),
-      ),
-      child: ListTile(
-        contentPadding: EdgeInsets.only(
-          left: 10,
+        duration: Duration(
+          milliseconds: 300,
         ),
-        title: TextField(
-          controller: TextEditingController.fromValue(TextEditingValue(
-              text: playerName,
-              selection: TextSelection.collapsed(offset: playerName.length))),
-          style: GoogleFonts.nunito(
-            color: Colors.white,
-            fontSize: 22,
-          ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            contentPadding:
-                EdgeInsets.only(left: 15, right: 15),
-          ),
-          onChanged: (String newValue) => this.changeFunc(playerId, newValue),
-        ),
-        /*title: Text(
-          this.playerName,
-          maxLines: 1,
-          style: GoogleFonts.nunito(color: Colors.white, fontSize: 20),
-        ),*/
-        trailing: IconButton(
-          onPressed: this.deleteFunc,
-          padding: EdgeInsets.all(0),
-          icon: Icon(
-            Icons.highlight_off_outlined,
-            color: Color.fromRGBO(255, 92, 0, 1),
-            size: 35,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: TextField(
+                  focusNode: focusNode,
+                  controller: controller,
+                  onChanged: widget.onNameChange,
+                  onSubmitted: onSubmit,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    counterText: "",
+                  ),
+                  maxLines: 1,
+                  maxLength: 16,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  style: GoogleFonts.nunito(color: Colors.white),
+                ),
+              ),
+              !this.focused
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: GestureDetector(
+                        onTap: widget.onDelete,
+                        child: Container(
+                          height: 30,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(),
+            ],
           ),
         ),
       ),

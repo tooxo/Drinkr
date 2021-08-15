@@ -1,7 +1,7 @@
-import 'package:Drinkr/utils/player.dart';
-import 'package:Drinkr/utils/types.dart';
-import 'package:Drinkr/widgets/custom_game_select_tile.dart';
-import 'package:Drinkr/widgets/game_select_tile.dart';
+import 'package:drinkr/utils/player.dart';
+import 'package:drinkr/utils/types.dart';
+import 'package:drinkr/widgets/custom_game_select_tile.dart';
+import 'package:drinkr/widgets/game_select_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';

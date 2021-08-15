@@ -1,14 +1,14 @@
-import 'package:Drinkr/games/challenges.dart';
-import 'package:Drinkr/games/game.dart';
-import 'package:Drinkr/games/guess_the_song.dart';
-import 'package:Drinkr/games/guessing.dart';
-import 'package:Drinkr/games/never_have_i_ever.dart';
-import 'package:Drinkr/games/opinion.dart';
-import 'package:Drinkr/games/quiz.dart';
-import 'package:Drinkr/games/truth_or_dare.dart';
-import 'package:Drinkr/games/who_would_rather.dart';
-import 'package:Drinkr/utils/difficulty.dart';
-import 'package:Drinkr/utils/player.dart';
+import 'package:drinkr/games/challenges.dart';
+import 'package:drinkr/games/game.dart';
+import 'package:drinkr/games/guess_the_song.dart';
+import 'package:drinkr/games/guessing.dart';
+import 'package:drinkr/games/never_have_i_ever.dart';
+import 'package:drinkr/games/opinion.dart';
+import 'package:drinkr/games/quiz.dart';
+import 'package:drinkr/games/truth_or_dare.dart';
+import 'package:drinkr/games/who_would_rather.dart';
+import 'package:drinkr/utils/difficulty.dart';
+import 'package:drinkr/utils/player.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 

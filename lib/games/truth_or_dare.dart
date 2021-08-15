@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:Drinkr/games/game.dart';
-import 'package:Drinkr/utils/difficulty.dart';
-import 'package:Drinkr/widgets/text_widget.dart';
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/games/game.dart';
+import 'package:drinkr/utils/difficulty.dart';
+import 'package:drinkr/widgets/text_widget.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:show_up_animation/show_up_animation.dart';

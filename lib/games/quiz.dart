@@ -1,7 +1,7 @@
-import 'package:Drinkr/games/game.dart';
-import 'package:Drinkr/utils/difficulty.dart';
-import 'package:Drinkr/utils/player.dart';
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/games/game.dart';
+import 'package:drinkr/utils/difficulty.dart';
+import 'package:drinkr/utils/player.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
 
 class Quiz extends BasicGame {

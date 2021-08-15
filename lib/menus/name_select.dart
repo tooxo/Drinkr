@@ -1,10 +1,12 @@
 import 'dart:ui';
 
-import 'package:Drinkr/menus/game_mode.dart';
-import 'package:Drinkr/menus/setting.dart';
-import 'package:Drinkr/utils/spotify_storage.dart';
-import 'package:Drinkr/widgets/custom_alert.dart';
-import 'package:Drinkr/widgets/external/animated_grid.dart';
+import 'package:drinkr/menus/game_mode.dart';
+import 'package:drinkr/menus/setting.dart';
+import 'package:drinkr/utils/spotify_storage.dart';
+import 'package:drinkr/widgets/custom_alert.dart';
+import 'package:drinkr/widgets/external/animated_grid.dart';
+import 'package:drinkr/widgets/language_dropdown.dart';
+import 'package:drinkr/widgets/name_select_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -137,6 +139,8 @@ class NameSelectState extends State<NameSelect> {
 
   ScrollController scrollController = ScrollController();
 
+  Locale selectedLocale = Locale('de', 'DE');
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(21, 21, 21, 1),
@@ -144,21 +148,21 @@ class NameSelectState extends State<NameSelect> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    height: 250,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(builder: (a) => Settings())),
-                            child: Padding(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Container(
+                  height: 250,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            LanguageDropdown(),
+                            Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.all(
@@ -170,279 +174,181 @@ class NameSelectState extends State<NameSelect> {
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Container(
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(255, 92, 0, 1),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.8),
-                                  blurRadius: 8,
-                                  offset: Offset(
-                                    2,
-                                    10,
-                                  ),
-                                ),
-                              ],
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(30),
+                            IconButton(
+                              icon: Icon(
+                                Icons.settings,
+                                color: Colors.white,
                               ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 16, right: 8),
-                                  child: TextField(
-                                    controller: this.textEditingController,
-                                    textInputAction: TextInputAction.done,
-                                    onSubmitted: (value) => {
-                                      this.buttonPress(),
-                                    },
-                                    onChanged: (value) => {
-                                      this.player1 = value,
-                                    },
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                    ),
-                                    cursorColor: Colors.white,
-                                    decoration: InputDecoration(
-                                      fillColor: Colors.white,
-                                      hintText: "nameInput".tr(),
-                                      hintStyle: GoogleFonts.nunito(
-                                        fontSize: 20,
-                                        color: Colors.white.withOpacity(0.5),
-                                      ),
-                                      // contentPadding: EdgeInsets.all(0),
-                                      alignLabelWithHint: true,
-                                      border: InputBorder.none,
-                                      suffixIcon: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        icon: Icon(
-                                          Icons.add_circle_outline,
-                                          size: 45,
-                                        ),
-                                        focusColor: Colors.white,
-                                        color: Colors.white,
-                                        onPressed: () => {this.buttonPress()},
-                                      ),
-                                    ),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (a) => Settings(),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: this.players.isEmpty
-                      ? Container()
-                      : SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: AnimatedGrid(
-                              itemHeight: 55,
-                              columns: 2,
-                              items: players,
-                              curve: Curves.linear,
-                              duration: Duration(milliseconds: 100),
-                              keyBuilder: (Player p) {
-                                if (keys.containsKey(p)) {
-                                  return keys[p]!;
-                                }
-                                keys[p] = GlobalKey();
-                                return keys[p]!;
-                              },
-                              builder: (BuildContext context, Player player,
-                                  AnimatedGridDetails details) {
-                                return TextSelectTile(
-                                  player: player,
-                                  onDelete: () {
-                                    setState(() {
-                                      players.remove(player);
-                                    });
-                                  },
-                                  onNameChange: (String newName) {
-                                    player.name = newName;
-                                    setState(() {});
-                                  },
                                 );
                               },
                             ),
-                          ),
-                        ),
-                ),
-                Divider(
-                  color: Color.fromRGBO(160, 160, 160, 1),
-                  thickness: 1,
-                  height: 1,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0, bottom: 8, top: 4),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        players.length.toString() + " / 12",
-                        style: GoogleFonts.nunito(
-                          color: Colors.white,
-                          fontSize: 16,
+                          ],
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MaterialButton(
-                            minWidth: 200,
-                            onPressed: confirm,
-                            padding: EdgeInsets.all(16),
-                            child: Text(
-                              "Start",
-                              style: GoogleFonts.nunito(
-                                color: Colors.white,
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          left: 16,
+                          right: 16,
+                        ),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
                             color: Color.fromRGBO(255, 92, 0, 1),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.8),
+                                blurRadius: 8,
+                                offset: Offset(
+                                  2,
+                                  10,
+                                ),
+                              ),
+                            ],
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
                             ),
                           ),
-                        ],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  right: 8,
+                                ),
+                                child: TextField(
+                                  controller: this.textEditingController,
+                                  textInputAction: TextInputAction.done,
+                                  onSubmitted: (value) => {
+                                    this.buttonPress(),
+                                  },
+                                  onChanged: (value) => {
+                                    this.player1 = value,
+                                  },
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                  cursorColor: Colors.white,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    hintText: "nameInput".tr(),
+                                    hintStyle: GoogleFonts.nunito(
+                                      fontSize: 20,
+                                      color: Colors.white.withOpacity(0.5),
+                                    ),
+                                    // contentPadding: EdgeInsets.all(0),
+                                    alignLabelWithHint: true,
+                                    border: InputBorder.none,
+                                    suffixIcon: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Icon(
+                                        Icons.add_circle_outline,
+                                        size: 45,
+                                      ),
+                                      focusColor: Colors.white,
+                                      color: Colors.white,
+                                      onPressed: () => {this.buttonPress()},
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TextSelectTile extends StatefulWidget {
-  final Player player;
-  final Function() onDelete;
-  final Function(String) onNameChange;
-
-  TextSelectTile({
-    required this.player,
-    required this.onDelete,
-    required this.onNameChange,
-  });
-
-  @override
-  State<StatefulWidget> createState() => _TextSelectTileState();
-}
-
-class _TextSelectTileState extends State<TextSelectTile> {
-  late TextEditingController controller;
-  FocusNode focusNode = FocusNode();
-
-  @override
-  void initState() {
-    controller = TextEditingController(text: widget.player.name);
-    focusNode.addListener(
-      () {
-        if (focused && !focusNode.hasFocus) {
-          // lost focus
-          onSubmit(controller.text);
-        }
-        focused = focusNode.hasFocus;
-        setState(() {});
-      },
-    );
-    super.initState();
-  }
-
-  void onSubmit(String sub) {
-    if (sub.trim() == "") {
-      widget.onDelete();
-    }
-  }
-
-  @override
-  void dispose() {
-    focusNode.dispose();
-    super.dispose();
-  }
-
-  bool focused = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      elevation: 0,
-      child: AnimatedContainer(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: focused
-              ? Colors.white.withOpacity(.3)
-              : Colors.white.withOpacity(.15),
-        ),
-        duration: Duration(
-          milliseconds: 300,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: TextField(
-                  focusNode: focusNode,
-                  controller: controller,
-                  onChanged: widget.onNameChange,
-                  onSubmitted: onSubmit,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    counterText: "",
-                  ),
-                  maxLines: 1,
-                  maxLength: 16,
-                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                  style: GoogleFonts.nunito(color: Colors.white),
-                ),
               ),
-              !this.focused
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: GestureDetector(
-                        onTap: widget.onDelete,
-                        child: Container(
-                          height: 30,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Icon(
-                            Icons.delete,
-                            color: Colors.white,
+              Expanded(
+                child: this.players.isEmpty
+                    ? Container()
+                    : SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16),
+                          child: AnimatedGrid(
+                            itemHeight: 55,
+                            columns: 2,
+                            items: players,
+                            curve: Curves.linear,
+                            duration: Duration(milliseconds: 100),
+                            keyBuilder: (Player p) {
+                              if (keys.containsKey(p)) {
+                                return keys[p]!;
+                              }
+                              keys[p] = GlobalKey();
+                              return keys[p]!;
+                            },
+                            builder: (BuildContext context, Player player,
+                                AnimatedGridDetails details) {
+                              return NameSelectTile(
+                                player: player,
+                                onDelete: () {
+                                  setState(() {
+                                    players.remove(player);
+                                  });
+                                },
+                                onNameChange: (String newName) {
+                                  player.name = newName;
+                                  setState(() {});
+                                },
+                              );
+                            },
                           ),
                         ),
                       ),
-                    )
-                  : Container(),
+              ),
+              Divider(
+                color: Color.fromRGBO(160, 160, 160, 1),
+                thickness: 1,
+                height: 1,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0, bottom: 8, top: 4),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      players.length.toString() + " / 12",
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MaterialButton(
+                          minWidth: 200,
+                          onPressed: confirm,
+                          padding: EdgeInsets.all(16),
+                          child: Text(
+                            "Start",
+                            style: GoogleFonts.nunito(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          color: Color.fromRGBO(255, 92, 0, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

@@ -1,4 +1,4 @@
-import 'package:Drinkr/utils/spotify_api.dart';
+import 'package:drinkr/utils/spotify_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

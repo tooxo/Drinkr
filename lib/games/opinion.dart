@@ -1,5 +1,5 @@
-import 'package:Drinkr/games/game.dart';
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/games/game.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
 
 class Opinion extends BasicGame {

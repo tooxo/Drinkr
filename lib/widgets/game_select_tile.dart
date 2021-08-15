@@ -1,14 +1,14 @@
 import 'dart:ui';
 
-import 'package:Drinkr/games/game_controller.dart';
-import 'package:Drinkr/utils/difficulty.dart';
-import 'package:Drinkr/menus/game_mode.dart';
-import 'package:Drinkr/utils/player.dart';
-import 'package:Drinkr/widgets/custom_switch.dart';
+import 'package:drinkr/games/game_controller.dart';
+import 'package:drinkr/utils/difficulty.dart';
+import 'package:drinkr/menus/game_mode.dart';
+import 'package:drinkr/utils/player.dart';
+import 'package:drinkr/widgets/custom_switch.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:Drinkr/utils/types.dart';
-import 'package:Drinkr/widgets/gradient.dart';
-import 'package:Drinkr/widgets/radio_progress_indicator.dart';
+import 'package:drinkr/utils/types.dart';
+import 'package:drinkr/widgets/gradient.dart';
+import 'package:drinkr/widgets/radio_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -179,10 +179,7 @@ class GameSelectTileState extends State<GameSelectTile> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: 300,
-        maxWidth: 500
-      ),
+      constraints: BoxConstraints(minWidth: 300, maxWidth: 500),
       child: Container(
         // width: 350,
         decoration: BoxDecoration(
@@ -207,8 +204,8 @@ class GameSelectTileState extends State<GameSelectTile> {
                 tapBodyToExpand: true,
                 tapBodyToCollapse: true,
                 useInkWell: false,
-                iconSize: 0, hasIcon: false
-            ),
+                iconSize: 0,
+                hasIcon: false),
             header: GestureDetector(
               onTap: () => controller.toggle(),
               child: Padding(
@@ -314,7 +311,8 @@ class GameSelectTileState extends State<GameSelectTile> {
                         ButtonState.fail: IconedButton(
                             color: Colors.red,
                             text: "Error",
-                            icon: Icon(Icons.error_outline, color: Colors.white)),
+                            icon:
+                                Icon(Icons.error_outline, color: Colors.white)),
                         ButtonState.success: IconedButton(color: Colors.green)
                       },
                       onPressed: widget.enabledGames.isNotEmpty

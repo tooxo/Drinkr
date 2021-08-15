@@ -1,17 +1,16 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
-import 'package:Drinkr/utils/difficulty.dart';
-import 'package:Drinkr/menus/setting.dart';
-import 'package:Drinkr/utils/ad.dart';
-import 'package:Drinkr/utils/drinking.dart';
-import 'package:Drinkr/utils/file.dart';
-import 'package:Drinkr/utils/networking.dart';
-import 'package:Drinkr/utils/player.dart';
-import 'package:Drinkr/utils/spotify_api.dart';
-import 'package:Drinkr/utils/spotify_storage.dart';
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/utils/difficulty.dart';
+import 'package:drinkr/menus/setting.dart';
+import 'package:drinkr/utils/ad.dart';
+import 'package:drinkr/utils/drinking.dart';
+import 'package:drinkr/utils/file.dart';
+import 'package:drinkr/utils/networking.dart';
+import 'package:drinkr/utils/player.dart';
+import 'package:drinkr/utils/spotify_api.dart';
+import 'package:drinkr/utils/spotify_storage.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';

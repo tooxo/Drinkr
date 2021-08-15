@@ -1,4 +1,4 @@
-name: Drinkr
+name: drinkr
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -24,7 +24,6 @@ environment:
 dependencies:
   google_fonts: ^2.1.0
   auto_size_text: ^3.0.0-nullsafety.0
-  path_provider: ^2.0.2
   show_up_animation: ^2.0.0
   audioplayers: ^0.19.1
   http: ^0.13.3
@@ -80,7 +79,9 @@ flutter:
     - assets/text/
     - assets/text/de/
     - assets/text/en/
+    - assets/text/es/
     - assets/image/
+    - assets/flags/
     - google_fonts/
     - assets/i18n/
     - assets/licenses/

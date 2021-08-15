@@ -1,4 +1,4 @@
-import 'package:Drinkr/widgets/custom_radio.dart';
+import 'package:drinkr/widgets/custom_radio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';

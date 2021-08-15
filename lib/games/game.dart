@@ -1,11 +1,11 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:Drinkr/utils/difficulty.dart';
-import 'package:Drinkr/utils/drinking.dart';
-import 'package:Drinkr/widgets/gradient.dart';
-import 'package:Drinkr/widgets/text_widget.dart';
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/utils/difficulty.dart';
+import 'package:drinkr/utils/drinking.dart';
+import 'package:drinkr/widgets/gradient.dart';
+import 'package:drinkr/widgets/text_widget.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

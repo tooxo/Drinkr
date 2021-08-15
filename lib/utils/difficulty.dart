@@ -1,14 +1,3 @@
-import 'dart:ui';
-import 'package:Drinkr/games/game_controller.dart';
-import 'package:Drinkr/utils/player.dart';
-import 'package:Drinkr/utils/types.dart';
-import 'package:Drinkr/widgets/custom_difficulty.dart';
-import 'package:Drinkr/widgets/gradient.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class DifficultyType {
   static DifficultyType EASY = DifficultyType(

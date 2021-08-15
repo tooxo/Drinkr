@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:Drinkr/utils/spotify_api.dart';
-import 'package:Drinkr/utils/spotify_storage.dart';
+import 'package:drinkr/utils/spotify_api.dart';
+import 'package:drinkr/utils/spotify_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pedantic/pedantic.dart';

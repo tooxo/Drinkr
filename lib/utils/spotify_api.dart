@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:Drinkr/utils/spotify_storage.dart';
+import 'package:drinkr/utils/spotify_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:pedantic/pedantic.dart';

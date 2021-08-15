@@ -1,7 +1,7 @@
-import 'package:Drinkr/utils/file.dart';
-import 'package:Drinkr/utils/networking.dart';
-import 'package:Drinkr/utils/spotify_api.dart';
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/utils/file.dart';
+import 'package:drinkr/utils/networking.dart';
+import 'package:drinkr/utils/spotify_api.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 
