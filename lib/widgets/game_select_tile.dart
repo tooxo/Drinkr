@@ -111,11 +111,6 @@ class GameSelectTileState extends State<GameSelectTile> {
   void toggleAdultQuestions(bool _) {
     setState(() {
       useAdultQuestions = !useAdultQuestions;
-      if (useAdultQuestions) {
-        key.currentState?.controller.reverse();
-      } else {
-        key.currentState?.controller.forward();
-      }
     });
   }
 
@@ -141,8 +136,6 @@ class GameSelectTileState extends State<GameSelectTile> {
     );
   }
 
-  GlobalKey<CustomSwitchState> key = GlobalKey<CustomSwitchState>();
-
   Widget buildAdultSelection() {
     if (!hasAdultGames()) return Container();
     return Column(
@@ -159,11 +152,10 @@ class GameSelectTileState extends State<GameSelectTile> {
                   fontWeight: FontWeight.bold),
             ),
             trailing: CustomSwitch(
-              key: key,
-              value: useAdultQuestions,
-              enabled: adultSwitchEnabled(),
+              value: useAdultQuestions && adultSwitchEnabled(),
+              enabled: widget.enabled,
               onChanged: adultSwitchEnabled() ? toggleAdultQuestions : null,
-              activeColor: Colors.black.withOpacity(.6),
+              activeColor: Colors.black.withOpacity(.4),
             ),
             contentPadding: EdgeInsets.zero,
           ),
@@ -255,7 +247,8 @@ class GameSelectTileState extends State<GameSelectTile> {
                 ),
               ),
               expanded: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -297,17 +290,28 @@ class GameSelectTileState extends State<GameSelectTile> {
                         ),
                         iconedButtons: {
                           ButtonState.idle: IconedButton(
-                              text: "startGame".tr(),
-                              icon: Icon(Icons.send, color: Colors.white),
-                              color: Colors.black.withOpacity(.3)),
-                          ButtonState.loading:
-                              IconedButton(color: Colors.black.withOpacity(.3)),
+                            text: "startGame".tr(),
+                            icon: Icon(Icons.send, color: Colors.white),
+                            color: Colors.black.withOpacity(
+                              .4,
+                            ),
+                          ),
+                          ButtonState.loading: IconedButton(
+                            color: Colors.black.withOpacity(
+                              .4,
+                            ),
+                          ),
                           ButtonState.fail: IconedButton(
-                              color: Colors.red,
-                              text: "Error",
-                              icon:
-                                  Icon(Icons.error_outline, color: Colors.white)),
-                          ButtonState.success: IconedButton(color: Colors.green)
+                            color: Colors.red,
+                            text: "error".tr(),
+                            icon: Icon(
+                              Icons.error_outline,
+                              color: Colors.white,
+                            ),
+                          ),
+                          ButtonState.success: IconedButton(
+                            color: Colors.green,
+                          )
                         },
                         onPressed: widget.enabledGames.isNotEmpty
                             ? () => startGame()

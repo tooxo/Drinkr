@@ -40,6 +40,18 @@ class TruthOrDareState extends BasicGameState {
   bool showSolution = false;
 
   @override
+  String buildTitle() {
+    if (!showSolution) {
+      return widget.title;
+    }
+    if (truth) {
+      return "truth".tr();
+    } else {
+      return "dare".tr();
+    }
+  }
+
+  @override
   Widget buildWithoutSolution() {
     return !showSolution
         ? Column(

@@ -99,23 +99,10 @@ class _CustomGameSelectTileState extends GameSelectTileState {
   @override
   void initState() {
     loadSave().then((value) {
-      for (GameType type in widget.enabledGames) {
-        keys[type]?.currentState?.controller.forward();
-      }
       setState(() {});
     });
     super.initState();
   }
-
-  Map<GameType, GlobalKey<CustomSwitchState>> keys =
-      Map.fromEntries(GameType.values
-          .map(
-            (e) => MapEntry(
-              e,
-              GlobalKey<CustomSwitchState>(),
-            ),
-          )
-          .toList());
 
   @override
   Widget enabledGamesSelection() {
@@ -139,11 +126,6 @@ class _CustomGameSelectTileState extends GameSelectTileState {
                   widget.enabledGames.remove(type.type);
                 }
               });
-              if (value) {
-                keys[type.type]!.currentState?.controller.forward();
-              } else {
-                keys[type.type]!.currentState?.controller.reverse();
-              }
               saveSave();
             },
             child: ListTile(
@@ -171,9 +153,8 @@ class _CustomGameSelectTileState extends GameSelectTileState {
                   saveSave();
                 },
                 value: widget.enabledGames.contains(type.type),
-                activeColor: Colors.orange,
+                activeColor: Colors.black.withOpacity(.4),
                 enabled: widget.enabled,
-                key: keys[type.type],
               ),
             ),
           )

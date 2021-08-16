@@ -246,7 +246,7 @@ class GameController {
       GameType gameType;
       do {
         if (availableGamesBackup.isEmpty) {
-          return false;
+          return true;
         }
         dynamic aa = availableGamesBackup
             .where((element) => this.texts[element.type]!.isNotEmpty)
@@ -255,6 +255,7 @@ class GameController {
             .where((element) => this.texts[element.type]!.isNotEmpty)
             .toList()
             .length)];
+
         gameType = game.type;
         if (game.type == GameType.TRUTH) {
           int count = countOccurrencesOfSpecificGameInMap(game.type);

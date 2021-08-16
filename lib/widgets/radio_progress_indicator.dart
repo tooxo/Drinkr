@@ -82,89 +82,98 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
               children: [
                 Expanded(
                   flex: 1,
-                  child: InkWell(
-                    onTap: () {
-                      updateGroupValue(0);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              RadioProgressIndicator.dif_easy,
-                              color: getColor(0),
-                              size: 60,
-                            ),
-                            Text(
-                              "difficultyLow",
-                              style: GoogleFonts.nunito(
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: InkWell(
+                      onTap: () {
+                        updateGroupValue(0);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                RadioProgressIndicator.dif_easy,
                                 color: getColor(0),
-                                fontSize: 18,
+                                size: 60,
                               ),
-                            ).tr()
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Expanded(
-                  flex: 1,
-                  child: InkWell(
-                    onTap: () {
-                      updateGroupValue(1);
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          RadioProgressIndicator.dif_mid,
-                          color: getColor(1),
-                          size: 60,
-                        ),
-                        Text(
-                          "difficultyMed",
-                          style: GoogleFonts.nunito(
-                            color: getColor(1),
-                            fontSize: 18,
+                              Text(
+                                "difficultyLow",
+                                style: GoogleFonts.nunito(
+                                  color: getColor(0),
+                                  fontSize: 18,
+                                ),
+                              ).tr()
+                            ],
                           ),
-                        ).tr()
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 Spacer(),
                 Expanded(
                   flex: 1,
-                  child: InkWell(
-                    onTap: () {
-                      updateGroupValue(2);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Icon(
-                              RadioProgressIndicator.dif_hard,
-                              color: getColor(2),
-                              size: 60,
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: InkWell(
+                      onTap: () {
+                        updateGroupValue(1);
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            RadioProgressIndicator.dif_mid,
+                            color: getColor(1),
+                            size: 60,
+                          ),
+                          Text(
+                            "difficultyMed",
+                            style: GoogleFonts.nunito(
+                              color: getColor(1),
+                              fontSize: 18,
                             ),
-                            Text(
-                              "difficultyHigh",
-                              style: GoogleFonts.nunito(
+                          ).tr()
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Expanded(
+                  flex: 1,
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: InkWell(
+                      onTap: () {
+                        updateGroupValue(2);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(
+                                RadioProgressIndicator.dif_hard,
                                 color: getColor(2),
-                                fontSize: 18,
+                                size: 60,
                               ),
-                            ).tr()
-                          ],
-                        ),
-                      ],
+                              Text(
+                                "difficultyHigh",
+                                style: GoogleFonts.nunito(
+                                  color: getColor(2),
+                                  fontSize: 18,
+                                ),
+                              ).tr()
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

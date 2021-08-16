@@ -170,6 +170,10 @@ class BasicGameState extends State<BasicGame>
     return Future.value(true);
   }
 
+  String buildTitle() {
+    return widget.title;
+  }
+
   AppBar buildAppBar() {
     return AppBar(
       elevation: 0,
@@ -189,7 +193,7 @@ class BasicGameState extends State<BasicGame>
                   MediaQuery.of(context).viewPadding.left) ==
               0.0
           ? Text(
-              widget.title,
+              buildTitle(),
               style: GoogleFonts.nunito(
                   fontSize: 28,
                   color: widget.textColor,
@@ -198,7 +202,7 @@ class BasicGameState extends State<BasicGame>
             ).tr()
           : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                widget.title,
+                buildTitle(),
                 style: GoogleFonts.nunito(
                     color: widget.textColor,
                     fontSize: 28,

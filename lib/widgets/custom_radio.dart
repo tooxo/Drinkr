@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomRadioWidget extends StatefulWidget {
+class CustomRadioWidget extends StatelessWidget {
   final int value;
   final int groupValue;
   final ValueChanged<int> onChanged;
@@ -15,75 +15,38 @@ class CustomRadioWidget extends StatefulWidget {
       this.height = 20});
 
   @override
-  State<StatefulWidget> createState() => _CustomRadioWidgetState();
-}
-
-class _CustomRadioWidgetState extends State<CustomRadioWidget>
-    with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-  late Animation<double> animation;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(
-        duration: const Duration(milliseconds: 150), vsync: this);
-
-    controller.reset();
-    animation = Tween(
-            begin: 0.0,
-            end: widget.value == widget.groupValue ? widget.height : 0.0)
-        .animate(controller)
-          ..addListener(() {
-            setState(() {});
-          });
-    controller.forward();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          controller.reset();
-          double begin =
-              widget.value == widget.groupValue ? widget.height : 0.1;
-          double end = widget.height;
-
-          animation = Tween(begin: begin, end: end).animate(controller)
-            ..addListener(() {
-              setState(() {});
-            });
-          widget.onChanged(widget.value);
-        });
-
-        controller.forward();
+        onChanged(value);
       },
-      child: Container(
-        height: widget.height,
-        width: widget.height,
+      child: AnimatedContainer(
+        height: height,
+        width: height,
         decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: widget.value == widget.groupValue ? Colors.transparent : Colors.white,
-            border: Border.all(color: Colors.white, width: 3)),
+          shape: BoxShape.circle,
+          color: value == groupValue ? Colors.transparent : Colors.white,
+          border: Border.all(
+            color: Colors.white,
+            width: value == groupValue ? 3 : 1,
+          ),
+        ),
+        duration: Duration(milliseconds: 200),
         child: Center(
-          child: Container(
-            height:
-                animation.value == 0.0 ? widget.height - 6 : animation.value,
-            width: animation.value == 0.0 ? widget.height - 6 : animation.value,
+          child: AnimatedContainer(
             decoration: ShapeDecoration(
               shape: CircleBorder(),
-              color: widget.value == widget.groupValue
-                  ? widget.enabled
-                      ? Colors.black.withOpacity(.6)
+              color: value == groupValue
+                  ? enabled
+                      ? Colors.black.withOpacity(.4)
                       : Colors.grey
                   : Colors.white,
+            ),
+            duration: Duration.zero,
+            child: AnimatedContainer(
+              height: value == groupValue ? height - 6 : height - 2,
+              width: value == groupValue ? height - 6 : height - 2,
+              duration: Duration.zero,
             ),
           ),
         ),
