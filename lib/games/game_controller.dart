@@ -287,7 +287,7 @@ class GameController {
   }
 
   BannerAd? bannerAd;
-  OverlayEntry? overlayEntry;
+  OverlayEntry? adOverlayEntry;
 
   Future<void> _fulfillNormalPlan(DifficultyType difficulty) async {
     unawaited(SystemChrome.setPreferredOrientations(
@@ -305,8 +305,8 @@ class GameController {
         }
 
         // show the ad
-        if (overlayEntry == null) {
-          overlayEntry = OverlayEntry(builder: (BuildContext context) {
+        if (adOverlayEntry == null) {
+          adOverlayEntry = OverlayEntry(builder: (BuildContext context) {
             if (bannerAd == null) return Container();
             return Align(
               alignment: Alignment.bottomCenter,
@@ -325,7 +325,7 @@ class GameController {
             );
           });
 
-          Overlay.of(context)?.insert(overlayEntry!);
+          Overlay.of(context)?.insert(adOverlayEntry!);
         }
       }, onAdFailedToLoad: (Ad? ad, LoadAdError lae) {
         print("loading ad error: " + lae.message);
@@ -487,7 +487,7 @@ class GameController {
       }
       if (!result) {
         if (ads) {
-          overlayEntry?.remove();
+          adOverlayEntry?.remove();
         }
 
         await showDialog(
@@ -539,16 +539,16 @@ class GameController {
                 ]).build(context),
           ),
         );
-        if (overlayEntry != null && shouldContinue) {
-          Overlay.of(context)?.insert(overlayEntry!);
+        if (adOverlayEntry != null && shouldContinue) {
+          Overlay.of(context)?.insert(adOverlayEntry!);
         }
       }
     } while (shouldContinue);
 
     if (ads) {
       try {
-        overlayEntry?.dispose();
-        overlayEntry = null;
+        adOverlayEntry?.dispose();
+        adOverlayEntry = null;
 
         await bannerAd?.dispose();
         bannerAd = null;

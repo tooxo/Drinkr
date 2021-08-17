@@ -60,7 +60,7 @@ class GameSelectTileState extends State<GameSelectTile> {
       return;
     }
     widget.onGameStateChange(CurrentGameState.LOADING);
-    GameController gameController = GameController(10, widget.enabledGames,
+    GameController gameController = GameController(100, widget.enabledGames,
         widget.players, widget.parentContext, !useAdultQuestions);
     buttonState = ButtonState.loading;
     bool success = await gameController.prepare();
