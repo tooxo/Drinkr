@@ -9,6 +9,7 @@ import 'package:drinkr/utils/types.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overlay_dialog/overlay_dialog.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../utils/player.dart';
@@ -105,6 +106,66 @@ class BasicGameState extends State<BasicGame>
   }
 
   void displayExitDialog(BuildContext context) {
+    DialogHelper().show(
+      context,
+      DialogWidget.custom(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: AlertDialog(
+            backgroundColor: Color.fromRGBO(
+              (widget.backgroundColor1.red + widget.backgroundColor2.red) ~/ 2,
+              (widget.backgroundColor1.green + widget.backgroundColor2.green) ~/
+                  2,
+              (widget.backgroundColor1.blue + widget.backgroundColor2.blue) ~/
+                  2,
+              1
+            ),
+            title: Text(
+              "exitTitle",
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(color: widget.textColor),
+                fontWeight: FontWeight.w800,
+                fontSize: 30,
+              ),
+            ).tr(),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            content: Text(
+              "exitDescription",
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(color: widget.textColor),
+                fontSize: 25,
+              ),
+            ).tr(),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              TextButton(
+                child: Text(
+                  "exit",
+                  style:
+                      GoogleFonts.nunito(color: widget.textColor, fontSize: 20),
+                ).tr(),
+                onPressed: () {
+                  DialogHelper().hide(context);
+                  Navigator.of(context).pop(true);
+                },
+              ),
+              TextButton(
+                child: Text("goOn".tr(),
+                    style: GoogleFonts.nunito(
+                        color: widget.textColor, fontSize: 20)),
+                onPressed: () {
+                  DialogHelper().hide(context);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void displayExitDialog2(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -167,7 +228,7 @@ class BasicGameState extends State<BasicGame>
 
   Future<bool> displayExitDialogWrapper(BuildContext context) {
     displayExitDialog(context);
-    return Future.value(true);
+    return Future.value(false);
   }
 
   String buildTitle() {

@@ -60,7 +60,7 @@ class GameSelectTileState extends State<GameSelectTile> {
       return;
     }
     widget.onGameStateChange(CurrentGameState.LOADING);
-    GameController gameController = GameController(100, widget.enabledGames,
+    GameController gameController = GameController(10, widget.enabledGames,
         widget.players, widget.parentContext, !useAdultQuestions);
     buttonState = ButtonState.loading;
     bool success = await gameController.prepare();
@@ -71,7 +71,10 @@ class GameSelectTileState extends State<GameSelectTile> {
     } else {
       unawaited(
         Future.delayed(Duration(milliseconds: 500)).then(
-          (value) => widget.onGameStateChange(CurrentGameState.IN_GAME),
+          (value) {
+            print("delayed future activated");
+            widget.onGameStateChange(CurrentGameState.IN_GAME);
+          },
         ),
       );
     }

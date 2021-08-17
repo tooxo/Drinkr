@@ -40,9 +40,7 @@ class GameState extends State<GameMode> {
 
   @override
   Widget build(BuildContext context) {
-    return gameState == CurrentGameState.IN_GAME
-        ? Container()
-        : Scaffold(
+    return Scaffold(
             appBar: AppBar(
               centerTitle: true,
               backgroundColor: Color.fromRGBO(21, 21, 21, 1),

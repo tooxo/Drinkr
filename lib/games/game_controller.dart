@@ -12,6 +12,7 @@ import 'package:drinkr/utils/spotify_api.dart';
 import 'package:drinkr/utils/spotify_storage.dart';
 import 'package:drinkr/utils/types.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -285,6 +286,9 @@ class GameController {
     return this.gamePlan.isNotEmpty;
   }
 
+  BannerAd? bannerAd;
+  OverlayEntry? overlayEntry;
+
   Future<void> _fulfillNormalPlan(DifficultyType difficulty) async {
     unawaited(SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]));
@@ -293,23 +297,54 @@ class GameController {
     bool ads = await shouldShowAds();
 
     if (ads) {
-      /*AdListener listener = AdListener(onAdLoaded: (Ad ad) async {
-        if (bannerAd.size.width <= context.size.width ~/ 2) {
-          if (bannerAd = null) return;
-          if (!mounted) {
-            unawaited(bannerAd.dispose());
-            bannerAd = null;
-          } else {}
+      BannerAdListener listener = BannerAdListener(onAdLoaded: (Ad ad) async {
+        if (bannerAd == null) return;
+        if (bannerAd!.size.width >= context.size!.width ~/ 2) {
+          unawaited(bannerAd!.dispose());
+          bannerAd = null;
         }
+
+        // show the ad
+        if (overlayEntry == null) {
+          overlayEntry = OverlayEntry(builder: (BuildContext context) {
+            if (bannerAd == null) return Container();
+            return Align(
+              alignment: Alignment.bottomCenter,
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  width: bannerAd!.size.width.toDouble(),
+                  height: 80,
+                  child: Center(
+                    child: AdWidget(
+                      ad: bannerAd!,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          });
+
+          Overlay.of(context)?.insert(overlayEntry!);
+        }
+      }, onAdFailedToLoad: (Ad? ad, LoadAdError lae) {
+        print("loading ad error: " + lae.message);
       });
       bannerAd = BannerAd(
         adUnitId: BannerAd.testAdUnitId,
         size: AdSize.banner,
-        request: targetingInfo,
+        request: AdRequest(
+          keywords: ["alkohol", "alcohol", "drinking", "beer", "liquor"],
+        ),
         listener: listener,
-      );*/
+      );
+      unawaited(bannerAd!.load());
     }
     bool shouldContinue = false;
+
+    Widget? oldRoute;
+    Widget? newRoute;
+
     do {
       if (gamePlan.isEmpty) {
         await generateNormalPlan();
@@ -398,18 +433,35 @@ class GameController {
           randomlyChosenText = populateText(randomlyChosenText, difficulty);
         }
 
+        oldRoute = newRoute;
+        newRoute = game.function(player, difficulty, randomlyChosenText);
+
         result = await Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder: (c, a1, a2) =>
-                game.function(player, difficulty, randomlyChosenText),
-            transitionsBuilder: (c, anim, a2, child) {
-              return FadeTransition(
-                opacity: anim,
-                child: child,
+            pageBuilder: (c, a1, a2) => newRoute!,
+            transitionsBuilder: (BuildContext c, Animation<double> anim,
+                Animation<double> a2, Widget child) {
+              if (oldRoute == null) {
+                return child;
+              }
+              return Container(
+                color: Colors.black,
+                child: Stack(
+                  children: [
+                    Opacity(
+                      opacity: anim.value,
+                      child: child,
+                    ),
+                    Opacity(
+                      opacity: 1.0 - anim.value,
+                      child: oldRoute,
+                    ),
+                  ],
+                ),
               );
             },
             transitionDuration: Duration(milliseconds: 500),
-            // reverseTransitionDuration: Duration(milliseconds: 500),
+            // reverseTransitionDuration: Duration.zero,
           ),
         );
 
@@ -431,77 +483,86 @@ class GameController {
       if (result == null) {
         // TODO: This occures only if a game launches without loading any texts.
         Navigator.of(context).pop(false);
-        return;
+        break;
       }
       if (!result) {
+        if (ads) {
+          overlayEntry?.remove();
+        }
+
         await showDialog(
-            context: context,
-            builder: (context) => BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                  child: AlertDialog(
-                      title: Text("goOnTitle",
-                          style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 30,
-                          )).tr(),
-                      content: Text(
-                        "goOnDescription",
-                        style: GoogleFonts.nunito(
-                          color: Colors.white,
-                          fontSize: 25,
-                        ),
-                      ).tr(),
-                      backgroundColor: Colors.deepOrange,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      actions: <Widget>[
-                        // usually buttons at the bottom of the dialog
-                        TextButton(
-                          child: Text(
-                            "exit",
-                            style: GoogleFonts.nunito(
-                                color: Colors.white, fontSize: 20),
-                          ).tr(),
-                          onPressed: () {
-                            shouldContinue = false;
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text(
-                            "goOn",
-                            style: GoogleFonts.nunito(
-                                color: Colors.white, fontSize: 20),
-                          ).tr(),
-                          onPressed: () {
-                            shouldContinue = true;
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ]).build(context),
-                ));
+          context: context,
+          builder: (context) => Container(
+            color: Colors.black,
+            child: AlertDialog(
+                title: Text("goOnTitle",
+                    style: GoogleFonts.nunito(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 30,
+                    )).tr(),
+                content: Text(
+                  "goOnDescription",
+                  style: GoogleFonts.nunito(
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
+                ).tr(),
+                backgroundColor: Colors.deepOrange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  TextButton(
+                    child: Text(
+                      "exit",
+                      style:
+                          GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+                    ).tr(),
+                    onPressed: () {
+                      shouldContinue = false;
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text(
+                      "goOn",
+                      style:
+                          GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+                    ).tr(),
+                    onPressed: () {
+                      shouldContinue = true;
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ]).build(context),
+          ),
+        );
+        if (overlayEntry != null && shouldContinue) {
+          Overlay.of(context)?.insert(overlayEntry!);
+        }
       }
     } while (shouldContinue);
 
-    /*if (ads) {
+    if (ads) {
       try {
-        await bannerAd.dispose();
+        overlayEntry?.dispose();
+        overlayEntry = null;
+
+        await bannerAd?.dispose();
         bannerAd = null;
       } catch (_) {}
-    }*/
+    }
 
     unawaited(
       SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]),
     );
+
     unawaited(
       SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values),
     );
-
-    // this.displayState = 1;
-    // setState(() {});
   }
 
   Future<bool> prepare() async {

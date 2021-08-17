@@ -210,19 +210,13 @@ class NameSelectState extends State<NameSelect> {
                             color: this.focusNodeInput.hasFocus
                                 ? widget.secondaryColor
                                 : widget.primaryColor,
-                            /*boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.8),
-                                blurRadius: 8,
-                                offset: Offset(
-                                  2,
-                                  10,
-                                ),
-                              ),
-                            ],*/
                             borderRadius: BorderRadius.all(
-                              Radius.circular(30),
+                              Radius.circular(15),
                             ),
+                            /*border: Border.all(
+                              color: Colors.white,
+                              width: 2,
+                            )*/
                           ),
                           duration: Duration(milliseconds: 250),
                           child: Column(
@@ -353,7 +347,7 @@ class NameSelectState extends State<NameSelect> {
                           ),
                           color: Color.fromRGBO(255, 92, 0, 1),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                         ),
                       ],

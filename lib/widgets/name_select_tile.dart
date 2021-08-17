@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
-
 class NameSelectTile extends StatefulWidget {
   final Player player;
   final Function() onDelete;
@@ -58,11 +57,12 @@ class _NameSelectTileState extends State<NameSelectTile> {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 0,
       child: AnimatedContainer(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.circular(15),
           color: focused
               ? Colors.white.withOpacity(.3)
               : Colors.white.withOpacity(.15),
@@ -74,6 +74,7 @@ class _NameSelectTileState extends State<NameSelectTile> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: TextField(
@@ -82,13 +83,13 @@ class _NameSelectTileState extends State<NameSelectTile> {
                   onChanged: widget.onNameChange,
                   onSubmitted: onSubmit,
                   decoration: InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    counterText: "",
-                  ),
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      counterText: "",
+                      isDense: true),
                   maxLines: 1,
                   maxLength: 16,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -100,17 +101,9 @@ class _NameSelectTileState extends State<NameSelectTile> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: GestureDetector(
                         onTap: widget.onDelete,
-                        child: Container(
-                          height: 30,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          ),
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
                         ),
                       ),
                     )
