@@ -45,9 +45,9 @@ class TruthOrDareState extends BasicGameState {
       return widget.title;
     }
     if (truth) {
-      return "truth".tr();
+      return "truth";
     } else {
-      return "dare".tr();
+      return "dare";
     }
   }
 
@@ -95,7 +95,6 @@ class TruthOrDareState extends BasicGameState {
                                   height: 120,
                                   color: widget.buttonColor,
                                   onPressed: () {
-                                    print("truth");
                                     showSolution = true;
                                     truth = true;
                                     setState(() {});
