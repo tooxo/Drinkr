@@ -448,13 +448,15 @@ class GameController {
                 color: Colors.black,
                 child: Stack(
                   children: [
+                    anim.value == 1.0
+                        ? Container()
+                        : Opacity(
+                            opacity: 1.0 - anim.value,
+                            child: oldRoute,
+                          ),
                     Opacity(
                       opacity: anim.value,
                       child: child,
-                    ),
-                    Opacity(
-                      opacity: 1.0 - anim.value,
-                      child: oldRoute,
                     ),
                   ],
                 ),

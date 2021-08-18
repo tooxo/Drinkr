@@ -53,39 +53,49 @@ class TruthOrDareState extends BasicGameState {
 
   @override
   Widget buildWithoutSolution() {
-    return !showSolution
-        ? Column(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ShowUpAnimation(
-                        offset: 0,
-                        child: Text(
-                          widget.selectedPlayer.name,
-                          style: GoogleFonts.nunito(
-                              color: widget.textColor, fontSize: 30),
-                        ),
-                      ),
-                    ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(),
-                      child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ShowUpAnimation(
+                  offset: 0,
+                  child: Text(
+                    widget.selectedPlayer.name,
+                    style: GoogleFonts.nunito(
+                        color: widget.textColor, fontSize: 30),
+                  ),
+                ),
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(),
+                child: this.showSolution
+                    ? TextWidget(
+                        this.truth
+                            ? jsonDecode(widget.mainTitle)["truth"]
+                            : jsonDecode(widget.mainTitle)["dare"],
+                        textColor: widget.textColor,
+                      )
+                    : Row(
                         children: <Widget>[
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                  left: 32, right: 32, top: 10),
+                                left: 32,
+                                right: 32,
+                                top: 10,
+                              ),
                               child: ShowUpAnimation(
                                 offset: 0,
                                 child: MaterialButton(
                                   height: 120,
                                   color: widget.buttonColor,
                                   onPressed: () {
+                                    print("truth");
                                     showSolution = true;
                                     truth = true;
                                     setState(() {});
@@ -138,17 +148,11 @@ class TruthOrDareState extends BasicGameState {
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
               ),
             ],
-          )
-        : TextWidget(
-            this.truth
-                ? "truth".tr() + ": " + jsonDecode(widget.mainTitle)["truth"]
-                : "dare".tr() + ": " + jsonDecode(widget.mainTitle)["dare"],
-            textColor: widget.textColor,
-          );
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -60,8 +60,13 @@ class GameSelectTileState extends State<GameSelectTile> {
       return;
     }
     widget.onGameStateChange(CurrentGameState.LOADING);
-    GameController gameController = GameController(100, widget.enabledGames,
-        widget.players, widget.parentContext, !useAdultQuestions);
+    GameController gameController = GameController(
+      100,
+      widget.enabledGames,
+      widget.players,
+      widget.parentContext,
+      !useAdultQuestions,
+    );
     buttonState = ButtonState.loading;
     bool success = await gameController.prepare();
     if (!success) {
@@ -69,14 +74,7 @@ class GameSelectTileState extends State<GameSelectTile> {
       widget.onGameStateChange(CurrentGameState.STOPPED);
       return;
     } else {
-      unawaited(
-        Future.delayed(Duration(milliseconds: 500)).then(
-          (value) {
-            print("delayed future activated");
-            widget.onGameStateChange(CurrentGameState.IN_GAME);
-          },
-        ),
-      );
+      widget.onGameStateChange(CurrentGameState.IN_GAME);
     }
 
     DifficultyType difficultyType;
