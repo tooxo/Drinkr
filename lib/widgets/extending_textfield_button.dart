@@ -42,17 +42,21 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
     controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 300),
-    )..addListener(() {
-        if (controller.value == 0.0) {
-          textEditingController.clear();
-        }
-      });
+    )..addListener(
+        () {
+          if (controller.value == 0.0) {
+            textEditingController.clear();
+          }
+        },
+      );
     textEditingController = TextEditingController()
-      ..addListener(() {
-        if (textEditingController.text.isEmpty) {
-          errorText = null;
-        }
-      });
+      ..addListener(
+        () {
+          if (textEditingController.text.isEmpty) {
+            errorText = null;
+          }
+        },
+      );
     super.initState();
   }
 
@@ -95,7 +99,8 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0, top: 8.0, bottom: 8.0),
+      padding:
+          const EdgeInsets.only(right: 8.0, top: 8.0, bottom: 8.0, left: 8),
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         return Row(
@@ -182,8 +187,8 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
             AnimatedBuilder(
               builder: (BuildContext context, Widget? _) {
                 return Container(
-                  width:
-                      48 + (constraints.maxWidth - 48 - 48) * controller.value,
+                  width: 48 +
+                      (constraints.maxWidth - 48 - 48 - 8) * controller.value,
                   height: 48,
                   decoration: BoxDecoration(
                       color: Colors.black,
@@ -192,8 +197,8 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
                   child: Row(
                     children: [
                       Container(
-                        width:
-                            (constraints.maxWidth - 48 - 48) * controller.value,
+                        width: (constraints.maxWidth - 48 - 48 - 8) *
+                            controller.value,
                         child: Padding(
                           padding: const EdgeInsets.only(
                             top: 8,

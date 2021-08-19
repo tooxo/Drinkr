@@ -30,11 +30,6 @@ class TruthOrDare extends BasicGame {
   State<StatefulWidget> createState() => TruthOrDareState();
 }
 
-const _kFontFam = 'Icons';
-const _kFontPkg = null;
-const IconData dice =
-    IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-
 class TruthOrDareState extends BasicGameState {
   bool truth = false;
   bool showSolution = false;

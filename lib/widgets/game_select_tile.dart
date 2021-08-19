@@ -61,7 +61,7 @@ class GameSelectTileState extends State<GameSelectTile> {
     }
     widget.onGameStateChange(CurrentGameState.LOADING);
     GameController gameController = GameController(
-      100,
+      10,
       widget.enabledGames,
       widget.players,
       widget.parentContext,

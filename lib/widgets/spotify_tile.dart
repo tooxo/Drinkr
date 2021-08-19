@@ -32,8 +32,8 @@ class SpotifyTile extends StatelessWidget {
             alignment: Alignment.centerLeft,
             children: [
               AnimatedPositioned(
-                left: expanded ? 48 : 8,
-                width: constraints.maxWidth - 8,
+                left: expanded ? 48 + 16 : 8 ,
+                width: constraints.maxWidth - 8 ,
                 // height: 70,
                 duration: Duration(milliseconds: 250),
                 child: Row(
@@ -107,49 +107,56 @@ class SpotifyTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Transform.scale(
-                      scale: 1.6,
-                      child: Checkbox(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Transform.scale(
+                        scale: 1.6,
+                        child: Checkbox(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          checkColor: Colors.white,
+                          activeColor: Colors.black,
+                          fillColor: MaterialStateProperty.all(Colors.black),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          // focusColor: Colors.black,
+                          // hoverColor: Colors.black,
+                          value: playlist.enabled,
+                          onChanged: (bool? value) {
+                            playlist.enabled = value!;
+                            onChanged(playlist);
+                          },
                         ),
-                        checkColor: Colors.white,
-                        activeColor: Colors.black,
-                        fillColor: MaterialStateProperty.all(Colors.black),
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.transparent),
-                        // focusColor: Colors.black,
-                        // hoverColor: Colors.black,
-                        value: playlist.enabled,
-                        onChanged: (bool? value) {
-                          playlist.enabled = value!;
-                          onChanged(playlist);
-                        },
                       ),
                     )
                   ],
                 ),
               ),
               AnimatedPositioned(
-                left: expanded ? 0.0 : -48,
+                left: expanded ? 0.0 : -48 - 16,
                 duration: Duration(milliseconds: 250),
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8.0, top: 8, bottom: 8, right: 8),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: playlist.included ? Colors.grey : Colors.red,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed:
-                            playlist.included ? null : () => onDelete(playlist),
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8.0, top: 8, bottom: 8, right: 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: playlist.included ? Colors.grey : Colors.red,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: playlist.included
+                              ? null
+                              : () => onDelete(playlist),
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

@@ -10,10 +10,8 @@ import 'menus/name_select.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-/// this is used to create a "no-ad" version, if set to false.
-/// the seemingly random variable naming is used to identify it
-/// during build with tools like unix's sed.
-const bool ADS_ENABLED_BUQF1EVY = true;
+const bool ADS_ENABLED =
+    bool.fromEnvironment("ADS_ENABLED", defaultValue: false);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

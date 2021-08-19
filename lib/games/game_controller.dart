@@ -128,7 +128,7 @@ class GameController {
     for (GameType gameType in enabledGames) {
       if (gameType == GameType.GUESS_THE_SONG) {
         if (await checkConnection()) {
-          List<String> urls = [];
+          /*List<String> urls = [];
           if (selectedModes == SettingsState.ONLY_INCLUDED ||
               selectedModes == SettingsState.BOTH) {
             urls.addAll(await getIncludedFiles(
@@ -137,6 +137,24 @@ class GameController {
           if (selectedModes == SettingsState.ONLY_CUSTOM ||
               selectedModes == SettingsState.BOTH) {
             urls.addAll(await getLocalFiles(gameType));
+          }*/
+          List<String> urls = SpotifyStorage.playlists_box.values
+              .where(
+                (Playlist e) => e.enabled,
+              )
+              .map(
+                (Playlist e) => e.url,
+              )
+              .toList();
+
+          if (urls.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                "Rate den Song wurde deaktiviert, da alle Playlists "
+                        "in den Einstellungen deaktiviert wurden."
+                    .tr(),
+              ),
+            ));
           }
 
           texts[gameType] = await buildSpotify(urls, spotify);
@@ -152,11 +170,15 @@ class GameController {
           missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]!
               .add(await spotify.fillMissingPreviewUrls(e)));
         } else {
-          await Fluttertoast.showToast(
-              msg: "Rate den Song wurde deaktiviert, da du über keine "
-                  "Internetverbindung verfügst.",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Rate den Song wurde deaktiviert, da du über keine "
+                        "Internetverbindung verfügst."
+                    .tr(),
+              ),
+            ),
+          );
           this.texts[gameType] = [];
         }
         continue;
@@ -331,7 +353,10 @@ class GameController {
         print("loading ad error: " + lae.message);
       });
       bannerAd = BannerAd(
-        adUnitId: BannerAd.testAdUnitId,
+        adUnitId: String.fromEnvironment(
+          "BANNER_AD_ID",
+          defaultValue: BannerAd.testAdUnitId,
+        ),
         size: AdSize.banner,
         request: AdRequest(
           keywords: ["alkohol", "alcohol", "drinking", "beer", "liquor"],
@@ -342,10 +367,11 @@ class GameController {
     }
     bool shouldContinue = false;
 
-    Widget? oldRoute;
-    Widget? newRoute;
-
     do {
+      Widget? oldRoute;
+      Widget? newRoute;
+      shouldContinue = false;
+
       if (gamePlan.isEmpty) {
         await generateNormalPlan();
       }
@@ -444,21 +470,25 @@ class GameController {
               if (oldRoute == null) {
                 return child;
               }
-              return Container(
-                color: Colors.black,
-                child: Stack(
-                  children: [
-                    anim.value == 1.0
-                        ? Container()
-                        : Opacity(
-                            opacity: 1.0 - anim.value,
-                            child: oldRoute,
-                          ),
-                    Opacity(
-                      opacity: anim.value,
-                      child: child,
-                    ),
-                  ],
+
+              return Transform.scale(
+                scale: anim.value >= .5 ? 1 : 1.05 - anim.value * 0.1,
+                child: Container(
+                  color: Colors.black,
+                  child: Stack(
+                    children: [
+                      anim.value == 1.0
+                          ? Container()
+                          : Opacity(
+                              opacity: 1.0 - anim.value,
+                              child: oldRoute,
+                            ),
+                      Opacity(
+                        opacity: anim.value,
+                        child: child,
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -466,7 +496,7 @@ class GameController {
             // reverseTransitionDuration: Duration.zero,
           ),
         );
-
+        
         if (result == null) {
           /*
           This shouldn't happen, this only happens, if some unexpected things

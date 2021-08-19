@@ -31,7 +31,6 @@ dependencies:
   flutter_spinkit: ^5.0.0
   fluttertoast: ^8.0.8
   shared_preferences: ^2.0.6
-  # firebase_admob: ^0.9.3+2
   google_mobile_ads: ^0.13.3
   app_review: ^2.1.1+1
   assorted_layout_widgets: ^5.0.2
@@ -39,8 +38,6 @@ dependencies:
   circular_reveal_animation: ^2.0.0
   url_launcher: ^6.0.0-nullsafety.6
   pedantic: ^1.11.1
-  # audiowaveformFlutter:
-  #     path: "/home/till/Projects/Other/audiowaveform_flutter"
   audiowaveformFlutter:
     git:
       url: "https://github.com/tooxo/audioWaveFormFlutter.git"
@@ -59,25 +56,15 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: any
   flutter_driver: any
-  # screenshots: any
   test: any
   hive_generator: ^1.1.0
   build_runner: ^2.1.0
   dependency_validator: ^3.1.0
 
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/text/
     - assets/text/de/
@@ -99,6 +86,9 @@ flutter:
     - family: GameModeSelectionIcons
       fonts:
         - asset: assets/fonts/GameModeSelectionIcons.ttf
+    - family: BrandIcons
+      fonts:
+        - asset: assets/fonts/BrandIcons.ttf
 
 
 flutter_icons:

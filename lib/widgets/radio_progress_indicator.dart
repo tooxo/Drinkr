@@ -63,6 +63,13 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
     return Colors.white.withOpacity(0.6);
   }
 
+  Color getBeginColor(int i) {
+    if (getColor(i) == Colors.white) {
+      return Colors.white.withOpacity(.6);
+    }
+    return Colors.white;
+  }
+
   @override
   void dispose() {
     controller.dispose();
@@ -91,22 +98,30 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                RadioProgressIndicator.dif_easy,
-                                color: getColor(0),
-                                size: 60,
-                              ),
-                              Text(
-                                "difficultyLow",
-                                style: GoogleFonts.nunito(
-                                  color: getColor(0),
-                                  fontSize: 18,
-                                ),
-                              ).tr()
-                            ],
+                          TweenAnimationBuilder(
+                            builder: (BuildContext context, Color? value,
+                                Widget? child) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    RadioProgressIndicator.dif_easy,
+                                    color: value,
+                                    size: 60,
+                                  ),
+                                  Text(
+                                    "difficultyLow",
+                                    style: GoogleFonts.nunito(
+                                      color: value,
+                                      fontSize: 18,
+                                    ),
+                                  ).tr()
+                                ],
+                              );
+                            },
+                            tween: ColorTween(
+                                begin: getBeginColor(0), end: getColor(0)),
+                            duration: Duration(milliseconds: 250),
                           ),
                         ],
                       ),
@@ -122,22 +137,32 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                       onTap: () {
                         updateGroupValue(1);
                       },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            RadioProgressIndicator.dif_mid,
-                            color: getColor(1),
-                            size: 60,
-                          ),
-                          Text(
-                            "difficultyMed",
-                            style: GoogleFonts.nunito(
-                              color: getColor(1),
-                              fontSize: 18,
-                            ),
-                          ).tr()
-                        ],
+                      child: TweenAnimationBuilder(
+                        builder: (BuildContext context, Color? value,
+                            Widget? child) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                RadioProgressIndicator.dif_mid,
+                                color: value,
+                                size: 60,
+                              ),
+                              Text(
+                                "difficultyMed",
+                                style: GoogleFonts.nunito(
+                                  color: value,
+                                  fontSize: 18,
+                                ),
+                              ).tr()
+                            ],
+                          );
+                        },
+                        tween: ColorTween(
+                          begin: getBeginColor(1),
+                          end: getColor(1),
+                        ),
+                        duration: Duration(milliseconds: 250),
                       ),
                     ),
                   ),
@@ -154,23 +179,34 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(
-                                RadioProgressIndicator.dif_hard,
-                                color: getColor(2),
-                                size: 60,
-                              ),
-                              Text(
-                                "difficultyHigh",
-                                style: GoogleFonts.nunito(
-                                  color: getColor(2),
-                                  fontSize: 18,
-                                ),
-                              ).tr()
-                            ],
+                          TweenAnimationBuilder(
+                            builder: (BuildContext context, Color? value,
+                                Widget? child) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    RadioProgressIndicator.dif_hard,
+                                    color: value,
+                                    size: 60,
+                                  ),
+                                  Text(
+                                    "difficultyHigh",
+                                    style: GoogleFonts.nunito(
+                                      color: value,
+                                      fontSize: 18,
+                                    ),
+                                  ).tr()
+                                ],
+                              );
+                            },
+                            tween: ColorTween(
+                              begin: getBeginColor(2),
+                              end: getColor(2),
+                            ),
+                            duration: Duration(
+                              milliseconds: 250,
+                            ),
                           ),
                         ],
                       ),

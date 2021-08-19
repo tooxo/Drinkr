@@ -38,6 +38,8 @@ class GameState extends State<GameMode> {
     });
   }
 
+  List<GameType> enabledGamesCustom = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +127,7 @@ class GameState extends State<GameMode> {
                       subtitle: "gameModeCustomDescription",
                       icon: GameMode.icon_custom,
                       players: widget.players,
-                      enabledGames: [],
+                      enabledGames: enabledGamesCustom,
                       backgroundColors: [
                         Color.fromRGBO(131, 58, 180, 1),
                         Color.fromRGBO(253, 29, 29, 1),
