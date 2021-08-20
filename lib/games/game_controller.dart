@@ -472,7 +472,7 @@ class GameController {
               }
 
               return Transform.scale(
-                scale: anim.value >= .5 ? 1 : 1.05 - anim.value * 0.1,
+                scale: anim.value >= .5 ? 1 : 1.025 - anim.value * 0.025,
                 child: Container(
                   color: Colors.black,
                   child: Stack(
@@ -492,11 +492,13 @@ class GameController {
                 ),
               );
             },
-            transitionDuration: Duration(milliseconds: 500),
+            transitionDuration: Duration(
+              milliseconds: 500,
+            ),
             // reverseTransitionDuration: Duration.zero,
           ),
         );
-        
+
         if (result == null) {
           /*
           This shouldn't happen, this only happens, if some unexpected things
@@ -589,7 +591,11 @@ class GameController {
 
     unawaited(
       SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]),
+        [
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ],
+      ),
     );
 
     unawaited(
