@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drinkr/widgets/custom_radio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -89,127 +90,163 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
               children: [
                 Expanded(
                   flex: 1,
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: InkWell(
-                      onTap: () {
-                        updateGroupValue(0);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TweenAnimationBuilder(
-                            builder: (BuildContext context, Color? value,
-                                Widget? child) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    RadioProgressIndicator.dif_easy,
-                                    color: value,
-                                    size: 60,
-                                  ),
-                                  Text(
-                                    "difficultyLow",
-                                    style: GoogleFonts.nunito(
+                  child: InkWell(
+                    onTap: () {
+                      updateGroupValue(0);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TweenAnimationBuilder(
+                          builder: (BuildContext context, Color? value,
+                              Widget? child) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Icon(
+                                      RadioProgressIndicator.dif_easy,
                                       color: value,
-                                      fontSize: 18,
+                                      size: 60,
                                     ),
-                                  ).tr()
-                                ],
-                              );
-                            },
-                            tween: ColorTween(
-                                begin: getBeginColor(0), end: getColor(0)),
-                            duration: Duration(milliseconds: 250),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Expanded(
-                  flex: 1,
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: InkWell(
-                      onTap: () {
-                        updateGroupValue(1);
-                      },
-                      child: TweenAnimationBuilder(
-                        builder: (BuildContext context, Color? value,
-                            Widget? child) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                RadioProgressIndicator.dif_mid,
-                                color: value,
-                                size: 60,
-                              ),
-                              Text(
-                                "difficultyMed",
-                                style: GoogleFonts.nunito(
-                                  color: value,
-                                  fontSize: 18,
+                                  ),
                                 ),
-                              ).tr()
-                            ],
-                          );
-                        },
-                        tween: ColorTween(
-                          begin: getBeginColor(1),
-                          end: getColor(1),
+                                Spacer(),
+                                Container(
+                                  height: 25,
+                                  width: 60,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text(
+                                      "difficultyLow".tr(),
+                                      style: GoogleFonts.nunito(
+                                        color: value,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                          tween: ColorTween(
+                              begin: getBeginColor(0), end: getColor(0)),
+                          duration: Duration(milliseconds: 250),
                         ),
-                        duration: Duration(milliseconds: 250),
-                      ),
+                      ],
                     ),
                   ),
                 ),
                 Spacer(),
                 Expanded(
                   flex: 1,
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: InkWell(
-                      onTap: () {
-                        updateGroupValue(2);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TweenAnimationBuilder(
-                            builder: (BuildContext context, Color? value,
-                                Widget? child) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    RadioProgressIndicator.dif_hard,
-                                    color: value,
-                                    size: 60,
-                                  ),
-                                  Text(
-                                    "difficultyHigh",
-                                    style: GoogleFonts.nunito(
+                  child: InkWell(
+                    onTap: () {
+                      updateGroupValue(1);
+                    },
+                    child: TweenAnimationBuilder(
+                      builder:
+                          (BuildContext context, Color? value, Widget? child) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Icon(
+                                      RadioProgressIndicator.dif_mid,
                                       color: value,
-                                      fontSize: 18,
+                                      size: 60,
                                     ),
-                                  ).tr()
-                                ],
-                              );
-                            },
-                            tween: ColorTween(
-                              begin: getBeginColor(2),
-                              end: getColor(2),
-                            ),
-                            duration: Duration(
-                              milliseconds: 250,
-                            ),
-                          ),
-                        ],
+                                  ),
+                                ),
+                                Spacer(),
+                                Container(
+                                  height: 25,
+                                  width: 60,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text(
+                                      "difficultyMed".tr(),
+                                      style: GoogleFonts.nunito(
+                                        color: value,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                      },
+                      tween: ColorTween(
+                        begin: getBeginColor(1),
+                        end: getColor(1),
                       ),
+                      duration: Duration(milliseconds: 250),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () {
+                      updateGroupValue(2);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TweenAnimationBuilder(
+                          builder: (BuildContext context, Color? value,
+                              Widget? child) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Icon(
+                                      RadioProgressIndicator.dif_hard,
+                                      color: value,
+                                      size: 60,
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                                Container(
+                                  height: 25,
+                                  width: 60,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text(
+                                      "difficultyHigh".tr(),
+                                      style: GoogleFonts.nunito(
+                                        color: value,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                          tween: ColorTween(
+                            begin: getBeginColor(2),
+                            end: getColor(2),
+                          ),
+                          duration: Duration(
+                            milliseconds: 250,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

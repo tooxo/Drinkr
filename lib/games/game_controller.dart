@@ -365,7 +365,7 @@ class GameController {
       );
       unawaited(bannerAd!.load());
     }
-    bool shouldContinue = false;
+    late bool shouldContinue;
 
     do {
       Widget? oldRoute;
@@ -507,7 +507,7 @@ class GameController {
            */
           await Fluttertoast.showToast(msg: "An unexpected Error occured.");
           Navigator.of(context).pop(false);
-          return;
+          break;
         }
         result = result || gamePlan.isEmpty;
         if (result) {
@@ -529,12 +529,14 @@ class GameController {
           builder: (context) => Container(
             color: Colors.black,
             child: AlertDialog(
-                title: Text("goOnTitle",
-                    style: GoogleFonts.nunito(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 30,
-                    )).tr(),
+                title: Text(
+                  "goOnTitle",
+                  style: GoogleFonts.nunito(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 30,
+                  ),
+                ).tr(),
                 content: Text(
                   "goOnDescription",
                   style: GoogleFonts.nunito(
@@ -555,7 +557,6 @@ class GameController {
                           GoogleFonts.nunito(color: Colors.white, fontSize: 20),
                     ).tr(),
                     onPressed: () {
-                      shouldContinue = false;
                       Navigator.of(context).pop();
                     },
                   ),
