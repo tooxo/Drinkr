@@ -13,11 +13,15 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter build ios --release --no-codesign
+      - run: mkdir Payload
+      - run: mv build/ios/iphoneos/Drinkr.app Payload/Drinkr.app
+      - run: zip -r drinkr-app-release.zip ./Payload
+      - run: mv drinkr-app-release.zip drinkr-app-release.ipa
       - name: Upload result
         uses: actions/upload-artifact@v2
         with:
           name: ios_build_artifact
-          path: build/ios/iphoneos/Drinkr.app
+          path: drinkr-app-release.ipa
   build_android_no_ads:
     runs-on: ubuntu-latest
     steps:
