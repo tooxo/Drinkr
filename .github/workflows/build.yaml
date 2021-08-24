@@ -138,12 +138,35 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ sign_android_appbundle, sign_android_apk, build_android_no_ads, build_ios ]
     steps:
-      - name: Download results from build
+      - name: Download results from build appbundle
         uses: actions/download-artifact@v2
         with:
-          name: android_build_artifact_appbundle
-      - name: Download results from build 2
+          name: android_signed_appbundle
+      - name: Download results from build apk
+        uses: actions/download-artifact@v2
+        with:
+          name: android_signed_apk
+      - name: Download results from build ios
+        uses: actions/download-artifact@v2
+        with:
+          name: ios_build_artifact
+      - name: Download results from build apk
         uses: actions/download-artifact@v2
         with:
           name: android_build_artifact_apk
-      - run: ls
+      - name: Download results from build noad apk
+        uses: actions/download-artifact@v2
+        with:
+          name: android_build_artifact_noad_apk
+      - name: Download results from build noad appbundle
+        uses: actions/download-artifact@v2
+        with:
+          name: android_build_artifact_noad_appbundle
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            *.aab
+            *.apk
+            *.ipa
