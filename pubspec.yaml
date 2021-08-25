@@ -89,6 +89,10 @@ flutter:
     - family: BrandIcons
       fonts:
         - asset: assets/fonts/BrandIcons.ttf
+    - family: OtherIcons
+      fonts:
+        - asset: assets/fonts/OtherIcons.ttf
+
 
 
 flutter_icons:

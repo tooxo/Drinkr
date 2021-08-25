@@ -235,7 +235,6 @@ Future<void> showInterstitialAd(
             ),
           ).tr(),
           actions: <Widget>[
-// usually buttons at the bottom of the dialog
             TextButton(
               child: Text(
                 "close",
