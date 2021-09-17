@@ -1,50 +1,87 @@
-Whoever does 10 push-ups first, may distribute %amountbeer.
-Whoever does 10 sit-ups first gets to distribute %amountbeer
-Now %player is only allowed to drink with the left hand (for 4 rounds). In case of violation, drink %amountbeer.
-%player is now only allowed to drink with the right hand (for 4 rounds). On violation, drink %amountbeer.
-%player is no longer allowed to talk (for 4 rounds). On violation, drink %amountbeer.
-%player must now always drink when someone else drinks (for 3 rounds). Good luck bro!
-When %player looks into someone's eyes, he has to drink %amountbeer (for 3 rounds)!
-If you look into %player's eyes, you have to drink %amountbeer (for 3 rounds)!
-%player, quote a movie quote Whoever guesses first, may distribute %amountbeer!
+Whoever does 10 pushups first gets to distribute %amountbeer.
+Whoever does 10 squats first gets to distribute %amountbeer.
+Whoever does 10 sit-ups first gets to distribute %amountbeer.
+Play, I'm packing my suitcase! %player begins. The person who repeats what or knows nothing after 10 seconds drinks %amountbeer.
+%player may now drink only with left hand (for 4 rounds). In case of violation, drink %amountbeer.
+%player may now only drink with his right hand (for 4 rounds). On violation, drink %amountbeer.
+%player may now speak only in English (for 4 rounds). On violation, drink %amountbeer.
+%player may no longer speak (for 4 rounds). On violation, drink %amountbeer.
+%player must now drink whenever someone else drinks (for 3 rounds).
+%player plays rock-paper-scissors against his opposite!
+If %player looks someone in the eye, he must drink %amountbeer (for 3 rounds)!
+If %player looks someone in the eye, he must drink %amountbeer (for 3 rounds)!
+%player, quote a movie quote. Whoever guesses it first gets to hand out %amountbeer!
 %player, sing a song. Whoever guesses the song first gets to distribute %amountbeer!
-%player, hum a song. First guess who gets the song gets to give out %amountbeer!
-%player, do a celebrity impersonation. Whoever guesses the song first gets %amountbeer!
-%player, imitate a person of the round. Whoever guesses the person first, gets to give out %amountbeer!
-%player, mime a sport. Whoever guesses the sport first gets to distribute %amountbeer!
+%player, hum a song. Whoever guesses the song first gets to distribute %amountbeer!
+%player, imitate a celebrity. Whoever guesses the celebrity first gets to distribute %amountbeer!
+%player, copy a person from the round. Whoever guesses the person first gets to distribute %amountbeer!
+%player, pantomime a sport. Whoever guesses the sport first gets to distribute %amountbeer!
 %player, pantomime an instrument. Whoever guesses the instrument first gets to distribute %amountbeer!
-The person who has/had the best marks drinks %amountbeer.
-Who is the dumbest in the round. Decide! The loser has to fight his stupidity with %amountbeer!
-Whoever is younger than 18, reports his alcoholism to the public order office immediately. Fun, drink %amountbeer!
-The person with the fullest drink has to chug it. Drink faster bro!
-Drink one sip per garment (e.g. pairs of socks count as 2)!
-%player distributes as many sips as singles are playing.
-Everyone drinks 1 sip and reads their last sent message aloud (with context if necessary). Whoever doesn't dare, drinks %amountshot.
-Name fashion brands! The person who repeats something or does not know anything after 10 seconds drinks %amountbeer. %player starts. Your head doesn't seem to burst Gucci sandals, my friend!
-Name brands of cars! The person, who repeats what or does not know anything after 10 seconds, drinks %amountbeer. %player begins. Looks like you're not driving a baby carriage.
-Name brands of beer! The person who repeats or does not know after 10 seconds drinks %amountbeer. %player begins.
-Name mobile phone brands! The person who repeats or does not know after 10 seconds drinks %amountbeer. %player starts.
-If someone can recite all 7 ancient wonders of the world, everyone else will chug their drink. Respect, bro!
-%player is allowed to distribute as many sips as he/she can name capitals in Africa. If you don't know one, drink %amountbeer drink and have a look at an atlas.
-%player is allowed to distribute as many sips as he/she can name oceans. If you don't know one, drink %amountbeer drink and have a look at an atlas.
-%player plays your last heard song. If the majority of the players don't like the song, drink %amountbeer.
-The first person who touches the feet of %player will distribute %amountbeer. There are no strange fetishes.The person with the most piercings gets to sip one sip per piercing.
-Whoever has the most expensive outfit gets to give two sips, the Hypebeast.
-%player lists one show he watched. Everybody who has seen this one has to drink %amountbeer.
+The person who has/had the best grades drinks %amountbeer.
+Who is the dumbest in the round? Decide. The loser has to fight his stupidity with %amountbeer!
+Do 5 squats and drink a sip after each one.
+The one with the fullest drink must finish it!
+Drink one sip per piece of clothing (e.g. pairs of socks count as 2)!
+%player distributes as many sips as singles play along.
+%player plays arm wrestling against his opponent. The loser drinks %amountbeer.
+Everyone takes a sip and reads their last sent message out loud (with context if needed). Those who don't dare drink %amountshot.
+Name fashion brands! The person who repeats what or knows nothing after 10 seconds drinks %amountsbeer. %player starts.
+Name car brands! The person who repeats something or knows nothing after 10 seconds drinks %amountbeer. %player begins.
+Name beer brands! The person who repeats something or knows nothing after 10 seconds drinks %amountbeer. %player begins.
+Name cell phone brands! The person who repeats something or knows nothing after 10 seconds drinks %amountbeer. %player begins.
+Name directors! The person who repeats what or knows nothing after 10 seconds drinks %amountbeer. %player begins.
+If someone can recite all 7 ancient wonders of the world, everyone else finish their drink.
+%player may distribute as many sips as he/she/it can recite island states. If you don't know any, finish your drink.
+%player gets to hand out as many sips as he/she can name states in the US. If you don't know any, finish your drink.
+%player may distribute as many sips as he/she/it can name capitals in Africa. If you don't know any, drink %amountbeer drink.
+%player may distribute as many sips as he/she/it can name oceans. If you don't know any, drink finish your drink.
+%player name the 3 city states of Germany! Otherwise drink 3 sips.
+%player play your last heard song. If the majority of the players don't like the song, drink %amountbeer.
+The first person to touch %player's feet distributes %amountbeer.
+The person with the most piercings, gets to distribute one sip per piercing.
+Whoever has the most expensive outfit gets to distribute 2 sips, the hypebeast.
+%player names a series he watches/has watched. Everyone who has seen it must drink %amountbeer.
 %player chooses the next song. All who celebrate it drink %amountbeer.
-The person who knows the longest palindrome (words that are as forward as they are backwards, e.g. Otto) is allowed to give one sip of each letter of the palindrome.
-The person with the oldest model of mobile phone is allowed to distribute %amountbeer.
-All those who are smaller than %player drink %amountbeer.
-%player is cursed. Make a Dab after every sip (3 rounds)!
+Whoever knows the longest palindrome (e.g. Otto, Anna etc.) may distribute one sip per letter of the palindrome.
+Whoever has the oldest cell phone model may distribute %amountbeer.
+Everyone shorter than %player drinks %amountbeer.
 The person with the shortest hair distributes %amountbeer. If you are bald, distribute %amountshot.
-Show the last 5 photos you took. If you don't dare, drink %amountbeer.
-People older than %player will drink the difference (max. 5 so you don't get killed).
-Per chancellor who knows %player, %player is allowed to distribute one sip.
-The last person who went to the toilet drinks %amountbeer, so that the person can use it again immediately.
-%player, name Oscar winners. For each correct answer you get one sip. If you don't know any, drink %amountbeer.
-Name the decimal places of pi. Give one sip per decimal place. If you don't know any, it doesn't matter, because you will never need it.
-%player names the weakness of Achilles. If you don't know it, take four sips.
-Anyone with an Apple phone drinks %amountbeer, you big shots.
-Everybody who has studied, or has studied, drinks %amountbeer.
-Everybody who owned something from Nintendo drinks 1 sip for Mario.
-Names types of noodles. %player starts. The person who repeats or does not know after 10 seconds drinks %amountbeer.
+Show the last 5 pictures on your phone. If you don't dare, drink %amountbeer.
+People older than %player drink the difference.
+For each Spanish song that %player knows, %player may distribute one sip.
+For each chancellor that %player knows, %player may distribute one sip.
+Whoever was last in the toilet drinks %amountbeer so that the person can use it again right away.
+%player, name Nobel Prize winners. You get to hand out one sip per correct answer. If you don't know one, drink %amountbeer.
+%player, name an Oscar winner. For each correct answer, you get to give away one sip. If you don't know one, drink %amountbeer.
+Name the decimal places of pi. For each decimal place, give out one sip. If you don't know any, it doesn't matter because you'll never need something like that in your life.
+Everyone who has a cell phone from Apple drinks %amountbeer.
+%player gets to hand out as many sips as he can recite internet browsers. If you don't know anyone, drink %amountshot.
+Anyone who studies, or has studied, drinks %amountbeer.
+Everyone who owned something from Nintendo drinks %amountbeer for Mario.
+Name German female rappers! %player starts. Anyone who repeats something or doesn't know it after 10 seconds drinks %amountbeer.
+Name words with 3 letters in a row (e.g., nutshell). %player begins. The person who repeats something or doesn't know it after 10 seconds drinks %amountbeer.
+Names types of pasta. %player begins. The person who repeats what or knows nothing after 10 seconds drinks %amountbeer.
+Names fast food restaurants. %player begins. The person who repeats what or knows nothing after 10 seconds drinks %amountbeer.
+Put your cell phones, on and with sound, in the middle (except the player cell phone, of course). The person whose phone rings/vibrates first drinks %amountshot.
+The next person to look at their phone (except the player phone, of course) must drink %amountshot.
+Everyone writes on WhatsApp, to the person he/she hasn't written to in the longest time. Those who don't dare, drink %amountshot.
+%player drinks one shot per mobile game on his/her phone.
+Names programming languages. %player starts. The person who repeats what or knows nothing after 10 seconds drinks %amountsbeer.
+%player gets to give out as many sips as he/she can name countries in the former Soviet Union. If you don't know any, drink %amountbeer drink.
+%player may distribute as many sips as he/she can name teammates' last names. For each wrong last name, drink one sip yourself.
+Name porn sites, %player starts. The person who repeats something or knows nothing after 10 seconds drinks %amountbeer.
+Names porn stars, %player begins. The person who repeats something or knows nothing after 10 seconds drinks %amountbeer.
+Names newspaper, %player begins. The person who repeats what or knows nothing after 10 seconds drinks %amountbeer.
+Names movies with Leonardo di Caprio, %player begins. The person who repeats what or knows nothing after 10 seconds drinks %amountbeer.
+All drink 1 sip, per sex partner you had.
+All smokers drink %amountshot.
+All drink as many shots as they smoked cigarettes today.
+Who is the most beautiful person among you? Vote! The model gets to drink %amountbeer.
+%player name all the planets in our solar system. Distribute one sip per correct planet. If you know them all, everyone has to drink another shot. If you don't know any, finish your glass.
+Drink one shot, per letter in your first name.
+Anyone who can touch their nose with their tongue gets to pass out %amountbeer.
+%player must drink a bodyshot (shot from his belly button) from his opposite. If you don't dare, drink 2 shots.
+The person with the most makeup, drinks %amountbeer.
+All Christians drink %amountbeer. Amen.
+Everyone drinks a shot except Muslims because alcohol is haram.
+%player may distribute as many shots as he had mistakes in the theory test (driver's license). If you don't have a driver's license, finish your glass.
