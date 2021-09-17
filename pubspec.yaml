@@ -92,6 +92,9 @@ flutter:
     - family: OtherIcons
       fonts:
         - asset: assets/fonts/OtherIcons.ttf
+    - family: AlcoholIcons
+      fonts:
+        - asset: assets/fonts/AlcoholIcons.ttf
 
 
 

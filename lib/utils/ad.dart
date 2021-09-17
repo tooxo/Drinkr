@@ -238,8 +238,10 @@ Future<void> showInterstitialAd(
             TextButton(
               child: Text(
                 "close",
-                style:
-                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
+                style: GoogleFonts.caveatBrush(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
               ).tr(),
               onPressed: () {
                 Navigator.of(context).pop(true);

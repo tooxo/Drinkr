@@ -1,3 +1,4 @@
+import 'package:drinkr/utils/custom_icons.dart';
 import 'package:drinkr/utils/spotify_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,8 @@ class SpotifyTile extends StatelessWidget {
             alignment: Alignment.centerLeft,
             children: [
               AnimatedPositioned(
-                left: expanded ? 48 + 16 : 8 ,
-                width: constraints.maxWidth - 8 ,
+                left: expanded ? 48 + 16 : 8,
+                width: constraints.maxWidth - 8,
                 // height: 70,
                 duration: Duration(milliseconds: 250),
                 child: Row(
@@ -43,8 +44,8 @@ class SpotifyTile extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: playlist.enabled
-                              ? Colors.black
-                              : Colors.black.withOpacity(.6),
+                              ? Colors.black.withOpacity(.7)
+                              : Colors.black.withOpacity(.3),
                         ),
                         child: ListTile(
                           // tileColor: Colors.black,
@@ -101,9 +102,8 @@ class SpotifyTile extends StatelessWidget {
                             onPressed: () async {
                               if (await canLaunch(playlist.url)) {
                                 await launch(playlist.url);
-                              }
-                              else {
-                                print("cant laucnh");
+                              } else {
+                                print("cant launch");
                               }
                             },
                           ),
@@ -118,13 +118,17 @@ class SpotifyTile extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
+                          side: BorderSide(
+                            color: Colors.black.withOpacity(.7),
+                            width: 2,
+                          ),
                           checkColor: Colors.white,
-                          activeColor: Colors.black,
-                          fillColor: MaterialStateProperty.all(Colors.black),
+                          activeColor: Colors.black.withOpacity(.7),
+                          fillColor: MaterialStateProperty.all(
+                            Colors.black.withOpacity(.7),
+                          ),
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent),
-                          // focusColor: Colors.black,
-                          // hoverColor: Colors.black,
                           value: playlist.enabled,
                           onChanged: (bool? value) {
                             playlist.enabled = value!;
@@ -132,7 +136,7 @@ class SpotifyTile extends StatelessWidget {
                           },
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -149,7 +153,9 @@ class SpotifyTile extends StatelessWidget {
                           left: 8.0, top: 8, bottom: 8, right: 8),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: playlist.included ? Colors.grey : Colors.red,
+                            color: playlist.included
+                                ? Colors.white.withOpacity(.15)
+                                : Colors.white.withOpacity(.3),
                             borderRadius: BorderRadius.circular(5)),
                         child: IconButton(
                           padding: EdgeInsets.zero,
@@ -157,8 +163,11 @@ class SpotifyTile extends StatelessWidget {
                               ? null
                               : () => onDelete(playlist),
                           icon: Icon(
-                            Icons.delete,
-                            color: Colors.white,
+                            CustomIcons.trash,
+                            color: playlist.included
+                                ? Colors.white.withOpacity(.3)
+                                : Colors.white,
+                            size: 18,
                           ),
                         ),
                       ),

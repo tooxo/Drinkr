@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:drinkr/utils/custom_icons.dart';
 import 'package:drinkr/utils/spotify_api.dart';
 import 'package:drinkr/utils/spotify_storage.dart';
 import 'package:flutter/material.dart';
@@ -115,14 +116,17 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: widget.extended ? Colors.redAccent : Colors.grey,
+                    color: widget.extended
+                        ? Colors.white.withOpacity(.15)
+                        : Colors.white.withOpacity(.3),
                   ),
                   child: IconButton(
                     padding: EdgeInsets.zero,
                     onPressed: widget.toggleExtend,
                     icon: Icon(
-                      Icons.delete,
+                      CustomIcons.trash,
                       color: Colors.white,
+                      size: 18,
                     ),
                   ),
                 ),
@@ -191,9 +195,9 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
                       (constraints.maxWidth - 48 - 48 - 8) * controller.value,
                   height: 48,
                   decoration: BoxDecoration(
-                      color: Colors.black,
-                      // shape: BoxShape.circle,
-                      borderRadius: BorderRadius.circular(25)),
+                    color: Colors.black.withOpacity(.7),
+                    borderRadius: BorderRadius.circular(25),
+                  ),
                   child: Row(
                     children: [
                       Container(

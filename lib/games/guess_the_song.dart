@@ -24,8 +24,8 @@ import '../utils/player.dart';
 class GuessTheSong extends BasicGame {
   final bool showSolutionButton = true;
 
-  final Color backgroundColor1 = Color.fromRGBO(13, 124, 98, 1);
-  final Color backgroundColor2 = Color.fromRGBO(155, 212, 33, 1);
+  final Color backgroundColor1 = Color.fromRGBO(25, 96, 2, 1);
+  final Color backgroundColor2 = Color.fromRGBO(74, 142, 5, 1.0);
 
   final GameType type = GameType.GUESS_THE_SONG;
 

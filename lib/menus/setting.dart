@@ -76,208 +76,214 @@ class SettingsState extends State<Settings> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ColorGradient(
-                colors: [
-                  Color.fromRGBO(36, 140, 0, 1),
-                  Color.fromRGBO(36, 140, 0, 1),
-                ],
-                roundness: 15,
-                child: ExpandablePanel(
-                  controller: spotifyController,
-                  theme: ExpandableThemeData(
-                    hasIcon: false,
-                    useInkWell: false,
-                  ),
-                  header: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 16,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: ColorGradient(
+                  colors: [
+                    Color.fromRGBO(36, 140, 0, 1),
+                    Color.fromRGBO(36, 140, 0, 1),
+                  ],
+                  roundness: 15,
+                  child: ExpandablePanel(
+                    controller: spotifyController,
+                    theme: ExpandableThemeData(
+                      hasIcon: false,
+                      useInkWell: false,
                     ),
-                    child: IconListTile(
-                      iconData: CustomIcons.spotify,
-                      title: "Spotify Playlists",
-                      subtitle: "Spiele mit eigenen Songs",
-                      onTap: () {},
-                      iconSize: 55,
-                    ),
-                  ),
-                  collapsed: GestureDetector(
-                    onTap: () {
-                      spotifyController.toggle();
-                    },
-                    child: Center(
-                      child: Container(
-                        child: Icon(
-                          Icons.arrow_drop_down_rounded,
-                          color: Colors.white,
-                        ),
+                    header: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 16,
+                      ),
+                      child: IconListTile(
+                        iconData: CustomIcons.spotify,
+                        title: "Spotify Playlists",
+                        subtitle: "Spiele mit eigenen Songs",
+                        onTap: () {},
+                        iconSize: 55,
                       ),
                     ),
-                  ),
-                  expanded: Column(
-                    children: [
-                      Divider(
-                        color: Colors.white,
-                        thickness: 1,
-                        height: 1,
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight: 350,
-                        ),
+                    collapsed: GestureDetector(
+                      onTap: () {
+                        spotifyController.toggle();
+                      },
+                      child: Center(
                         child: Container(
-                          color: Color.fromRGBO(36, 140, 0, 1),
-                          child: SingleChildScrollView(
-                            physics: BouncingScrollPhysics(),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Column(
-                                children: [
-                                  for (Playlist p in SpotifyStorage
-                                      .playlists_box.values
-                                      .toList()
-                                        ..sort())
-                                    SpotifyTile(
-                                      p,
-                                      onChanged: onPlaylistChange,
-                                      onDelete: onPlaylistDelete,
-                                      expanded: spotifyEdit,
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.white,
-                        thickness: 1,
-                        height: 1,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ExtendingTextFieldButton(
-                              () {
-                                setState(() {
-                                  spotifyEdit = !spotifyEdit;
-                                });
-                              },
-                              this.spotifyEdit,
-                              (Playlist playlist) async {
-                                await SpotifyStorage.playlists_box
-                                    .put(playlist.id, playlist);
-                                setState(() {});
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          spotifyController.toggle();
-                        },
-                        child: Center(
                           child: Icon(
-                            Icons.arrow_drop_up_rounded,
+                            Icons.arrow_drop_down_rounded,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                    ],
+                    ),
+                    expanded: Column(
+                      children: [
+                        Divider(
+                          color: Colors.white,
+                          thickness: 1,
+                          height: 1,
+                        ),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: 350,
+                          ),
+                          child: Container(
+                            color: Color.fromRGBO(36, 140, 0, 1),
+                            child: SingleChildScrollView(
+                              physics: BouncingScrollPhysics(),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Column(
+                                  children: [
+                                    for (Playlist p in SpotifyStorage
+                                        .playlists_box.values
+                                        .toList()
+                                          ..sort())
+                                      SpotifyTile(
+                                        p,
+                                        onChanged: onPlaylistChange,
+                                        onDelete: onPlaylistDelete,
+                                        expanded: spotifyEdit,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Divider(
+                          color: Colors.white,
+                          thickness: 1,
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ExtendingTextFieldButton(
+                                () {
+                                  setState(() {
+                                    spotifyEdit = !spotifyEdit;
+                                  });
+                                },
+                                this.spotifyEdit,
+                                (Playlist playlist) async {
+                                  await SpotifyStorage.playlists_box
+                                      .put(playlist.id, playlist);
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            spotifyController.toggle();
+                          },
+                          child: Center(
+                            child: Icon(
+                              Icons.arrow_drop_up_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              ColorGradient(
-                roundness: 15,
-                colors: [
-                  Color.fromRGBO(0x2B, 0xA5, 0x00, 1),
-                  Color.fromRGBO(0x2B, 0xA5, 0x00, 1),
-                ],
-                child: ExpandablePanel(
-                  theme: ExpandableThemeData(
-                    hasIcon: false,
-                  ),
-                  header: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 16,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: ColorGradient(
+                  roundness: 15,
+                  colors: [
+                    Color.fromRGBO(0x2B, 0xA5, 0x00, 1),
+                    Color.fromRGBO(0x2B, 0xA5, 0x00, 1),
+                  ],
+                  child: ExpandablePanel(
+                    theme: ExpandableThemeData(
+                      hasIcon: false,
                     ),
-                    child: IconListTile(
-                      title: "Werbung deaktivieren",
-                      subtitle:
-                          "schaue ein kurzes Video und deaktiviere die Werbung für eine Stunde!",
-                      iconData: Icons.circle,
-                      onTap: () {},
+                    header: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 16,
+                      ),
+                      child: IconListTile(
+                        title: "Werbung deaktivieren",
+                        subtitle:
+                            "schaue ein kurzes Video und deaktiviere die Werbung für eine Stunde!",
+                        iconData: Icons.circle,
+                        onTap: () {},
+                      ),
                     ),
-                  ),
-                  collapsed: Center(
-                    child: Icon(
-                      Icons.arrow_drop_down_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                  expanded: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                        child: Divider(
-                          color: Colors.white,
-                          thickness: 1,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8.0,
-                        ),
-                        child: ProgressButton.icon(
-                          onPressed: () {
-                            showInterstitialAd(context, onAdButtonStateChange);
-                          },
-                          state: adButtonState,
-                          textStyle: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          iconedButtons: {
-                            ButtonState.idle: IconedButton(
-                              color: Colors.black.withOpacity(.4),
-                              text: "startGame".tr(),
-                              icon: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              ),
-                            ),
-                            ButtonState.fail: IconedButton(
-                              color: Colors.redAccent,
-                            ),
-                            ButtonState.loading: IconedButton(
-                              color: Colors.black.withOpacity(.4),
-                            ),
-                            ButtonState.success: IconedButton(
-                              color: Colors.green,
-                            )
-                          },
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          "30-sekündiges Video schauen,\num Werbung für 1h zu deaktivieren",
-                          style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_drop_up_rounded,
+                    collapsed: Center(
+                      child: Icon(
+                        Icons.arrow_drop_down_rounded,
                         color: Colors.white,
                       ),
-                    ],
+                    ),
+                    expanded: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: Divider(
+                            color: Colors.white,
+                            thickness: 1,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                          ),
+                          child: ProgressButton.icon(
+                            onPressed: () {
+                              showInterstitialAd(context, onAdButtonStateChange);
+                            },
+                            state: adButtonState,
+                            textStyle: GoogleFonts.nunito(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            iconedButtons: {
+                              ButtonState.idle: IconedButton(
+                                color: Colors.black.withOpacity(.4),
+                                text: "startGame".tr(),
+                                icon: Icon(
+                                  Icons.send,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              ButtonState.fail: IconedButton(
+                                color: Colors.redAccent,
+                              ),
+                              ButtonState.loading: IconedButton(
+                                color: Colors.black.withOpacity(.4),
+                              ),
+                              ButtonState.success: IconedButton(
+                                color: Colors.green,
+                              )
+                            },
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            "30-sekündiges Video schauen,\num Werbung für 1h zu deaktivieren",
+                            style: GoogleFonts.nunito(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_up_rounded,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

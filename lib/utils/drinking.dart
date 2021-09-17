@@ -5,6 +5,8 @@ import 'package:drinkr/utils/difficulty.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'custom_icons.dart';
+
 class Drinking {
   /// Returns a random amount of sips according to the given [difficulty]
   static int getDrinkAmountBeer(DifficultyType difficulty) {
@@ -41,8 +43,6 @@ class DrinkingDisplay extends StatelessWidget {
 
   static const IconData beer_outline =
       IconData(0xe800, fontFamily: 'Icons', fontPackage: null);
-  static const IconData shot_glass =
-      IconData(0xe801, fontFamily: 'Icons', fontPackage: null);
 
   const DrinkingDisplay(this.isShot, this.amount, this.tintColor);
 
@@ -64,7 +64,7 @@ class DrinkingDisplay extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(0, 8, 8, 8.0),
           child: FittedBox(
             child: Icon(
-              isShot ? shot_glass : beer_outline,
+              isShot ? CustomIcons.shot : beer_outline,
               size: 5000,
               color: tintColor,
             ),
