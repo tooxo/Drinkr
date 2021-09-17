@@ -52,6 +52,7 @@ jobs:
     env:
       BANNER_ID: ${{ secrets.BANNER_ID_ANDROID }}
       REWARDED_ID: ${{ secrets.REWARDED_ID_ANDROID }}
+      FULLSCREEN_ID: ${{ secrets.FULLSCREEN_ID_ANDROID }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -61,8 +62,8 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter build apk --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID"
-      - run: flutter build appbundle --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID"
+      - run: flutter build apk --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID"
+      - run: flutter build appbundle --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID"
       - name: Upload result
         uses: actions/upload-artifact@v2
         with:

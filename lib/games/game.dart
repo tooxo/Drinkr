@@ -41,7 +41,9 @@ class BasicGame extends StatefulWidget {
   @mustCallSuper
   BasicGame(this.selectedPlayer, this.difficulty, this.text) {
     List<dynamic> resp = Drinking.generateRandomAmount(difficulty);
-    this.drinking..add(resp[0])..add(resp[1]);
+    this.drinking
+      ..add(resp[0])
+      ..add(resp[1]);
   }
 
   @override
@@ -113,13 +115,14 @@ class BasicGameState extends State<BasicGame>
           filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
           child: AlertDialog(
             backgroundColor: Color.fromRGBO(
-              (widget.backgroundColor1.red + widget.backgroundColor2.red) ~/ 2,
-              (widget.backgroundColor1.green + widget.backgroundColor2.green) ~/
-                  2,
-              (widget.backgroundColor1.blue + widget.backgroundColor2.blue) ~/
-                  2,
-              1
-            ),
+                (widget.backgroundColor1.red + widget.backgroundColor2.red) ~/
+                    2,
+                (widget.backgroundColor1.green +
+                        widget.backgroundColor2.green) ~/
+                    2,
+                (widget.backgroundColor1.blue + widget.backgroundColor2.blue) ~/
+                    2,
+                1),
             title: Text(
               "exitTitle",
               style: GoogleFonts.nunito(
@@ -333,15 +336,18 @@ class BasicGameState extends State<BasicGame>
                               borderRadius: BorderRadius.circular(24),
                             ),
                             color: widget.buttonColor,
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: Text(
-                                "gameShowSolution",
-                                style: GoogleFonts.nunito(
-                                    color: widget.textColor,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w600),
-                              ).tr(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Text(
+                                  "gameShowSolution",
+                                  style: GoogleFonts.nunito(
+                                      color: widget.textColor,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600),
+                                ).tr(),
+                              ),
                             ),
                           ),
                         ),
@@ -494,25 +500,28 @@ class BasicGameState extends State<BasicGame>
       onWillPop: () => displayExitDialogWrapper(context),
       child: Scaffold(
         appBar: buildAppBar(),
+        extendBodyBehindAppBar: true,
+        extendBody: true,
         body: ColorGradient(
-          colors: [
-            widget.backgroundColor1,
-            widget.backgroundColor2,
-          ],
-          child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: buildTop(),
-                ),
-                Container(
-                  height: 80,
-                  child: buildBottom(),
-                ),
-              ],
+            colors: [
+              widget.backgroundColor1,
+              widget.backgroundColor2,
+            ],
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: buildTop(),
+                  ),
+                  Container(
+                    height: 80,
+                    child: buildBottom(),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          )
+
       ),
     );
   }

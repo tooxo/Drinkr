@@ -59,6 +59,8 @@ class _NameSelectTileState extends State<NameSelectTile> {
     } else {
       if (sub.trim() == "") {
         widget.onDelete();
+      } else {
+        widget.onNameChange(sub);
       }
     }
   }
@@ -70,9 +72,11 @@ class _NameSelectTileState extends State<NameSelectTile> {
 
   void onNameChange(String newName) {
     if (widget.player != null) {
-      widget.onNameChange(newName);
+      // widget.onNameChange(newName);
     }
   }
+
+  void onNameChangeCompleted(String newName) {}
 
   @override
   void dispose() {
@@ -88,7 +92,6 @@ class _NameSelectTileState extends State<NameSelectTile> {
     return InkWell(
       borderRadius: BorderRadius.circular(30),
       onTap: () {
-        print("cl $focused");
         focused = true;
         focusNode.requestFocus();
         setState(() {});
@@ -126,13 +129,14 @@ class _NameSelectTileState extends State<NameSelectTile> {
               onSubmitted: onSubmit,
               onEditingComplete: widget.player != null ? null : () {},
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  counterText: "",
-                  isDense: true),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                counterText: "",
+                isDense: true,
+              ),
               maxLines: 1,
               maxLength: 16,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,

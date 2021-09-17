@@ -102,6 +102,9 @@ class SpotifyTile extends StatelessWidget {
                               if (await canLaunch(playlist.url)) {
                                 await launch(playlist.url);
                               }
+                              else {
+                                print("cant laucnh");
+                              }
                             },
                           ),
                         ),

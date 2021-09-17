@@ -1,12 +1,9 @@
-
 class Player {
   String _name;
 
   set name(String value) {
     _name = value;
   }
-
-  final int difficulty = 0; // Not implemented.
 
   Player(this._name);
 

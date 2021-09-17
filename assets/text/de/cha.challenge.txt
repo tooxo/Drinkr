@@ -92,7 +92,7 @@ Die Person mit der größten Oberweite trinkt %amountbeer. Wenn diese Person mä
 Jeder der seine Nase mit seiner Zunge berühren kann, darf %amountbeer verteilen. Was du mit dieser Zunge wohl sonst noch kannst?
 %player muss einen Bodyshot (Shot vom Bauchnabel) von seinem gegenüber trinken. Wenn du dich nicht traust, trinke 2 Shots.
 Die Person mit der meisten Schminke, trinkt %amountbeer.
-Alle Christen trinke %amountbeer. Amen.
+Alle Christen trinken %amountbeer. Amen.
 Alle Muslime trinken nichts, weil Alkohol haram ist amk.
 %player trinke %amountbeer, wenn du findest, das jemand mitspielt, der absolut unwitzig ist. Nicht jeder kann so witzig sein, wie die Developer dieser App.
 %player darf so viele Schlücke verteilen, wie er Fehler in der Theorieprüfung (Führerschein) hatte. Wenn du keinen Führerschein hast, exe dein Glas.

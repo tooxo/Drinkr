@@ -524,6 +524,8 @@ class GameController {
           adOverlayEntry?.remove();
         }
 
+        unawaited(showFullscreenAd(context));
+
         await showDialog(
           context: context,
           builder: (context) => Container(

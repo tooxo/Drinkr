@@ -262,90 +262,39 @@ Future<void> showInterstitialAd(
   );
 }
 
-Future<void> showInterstitialAd2(BuildContext buildContext) async {
-  if (!ADS_ENABLED) return;
-  /*final AdListener listener = AdListener(onRewardedAdUserEarnedReward:
-      (RewardedAd rewardedAd, RewardItem rewardItem) async {
-    await deactivateAds();
+Future<void> showFullscreenAd(
+  BuildContext buildContext,
+) async {
+  if (!(await shouldShowAds())) {
+    return;
+  }
 
-  }, onAdClosed: (Ad ad) async {
-    await showDialog(
-      context: buildContext,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.deepOrange,
-          title: Text(
-            "error",
-            style: GoogleFonts.caveatBrush(
-              textStyle: TextStyle(color: Colors.black),
-              fontWeight: FontWeight.w800,
-              fontSize: 30,
-            ),
-          ).tr(),
-          content: Text(
-            "adVideoAbortDescription",
-            style: GoogleFonts.caveatBrush(
-              textStyle: TextStyle(color: Colors.black),
-              fontSize: 25,
-            ),
-          ).tr(),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                "close",
-                style:
-                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
-              ).tr(),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
-        );
+  InterstitialAd? interstitial;
+
+  return await InterstitialAd.load(
+    adUnitId: String.fromEnvironment(
+      "INTERSTITIAL_AD_ID",
+      defaultValue: InterstitialAd.testAdUnitId,
+    ),
+    request: AdRequest(),
+    adLoadCallback: InterstitialAdLoadCallback(
+      onAdFailedToLoad: (LoadAdError error) {
+        print(error.message);
       },
-    );
-  }, onAdFailedToLoad: (Ad ad, LoadAdError loadAdError) async {
-    await showDialog(
-      context: buildContext,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.deepOrange,
-          title: Text("adsNoVideosTitle",
-              style: GoogleFonts.caveatBrush(
-                textStyle: TextStyle(color: Colors.black),
-                fontWeight: FontWeight.w800,
-                fontSize: 30,
-              )).tr(),
-          content: Text(
-            "adsNoVideosDescription",
-            style: GoogleFonts.caveatBrush(
-              textStyle: TextStyle(color: Colors.black),
-              fontSize: 25,
-            ),
-          ).tr(),
-          actions: <Widget>[
-// usually buttons at the bottom of the dialog
-            TextButton(
-              child: Text(
-                "close",
-                style:
-                    GoogleFonts.caveatBrush(color: Colors.black, fontSize: 20),
-              ).tr(),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
+      onAdLoaded: (InterstitialAd ad) {
+        interstitial = ad;
+
+        interstitial!.fullScreenContentCallback = FullScreenContentCallback(
+          onAdDismissedFullScreenContent: (InterstitialAd ad) {
+            ad.dispose();
+          },
+          onAdFailedToShowFullScreenContent:
+              (InterstitialAd ad, AdError error) {
+            ad.dispose();
+          },
         );
+        interstitial!.show();
       },
-    );
-  });
-
-  final RewardedAd rewardedAd = RewardedAd(
-      adUnitId: RewardedAd.testAdUnitId,
-      listener: listener,
-      request: AdRequest());
-
-  await rewardedAd.load();
-  if (await rewardedAd.isLoaded()) await rewardedAd.show();*/
+    ),
+  );
 }

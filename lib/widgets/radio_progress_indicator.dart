@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drinkr/widgets/custom_radio.dart';
 import 'package:flutter/material.dart';
@@ -77,6 +79,8 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
     super.dispose();
   }
 
+  AutoSizeGroup asg = AutoSizeGroup();
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -119,15 +123,16 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                 Container(
                                   height: 25,
                                   width: 60,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitWidth,
-                                    child: Text(
-                                      "difficultyLow".tr(),
-                                      style: GoogleFonts.nunito(
-                                        color: value,
-                                        fontSize: 18,
-                                      ),
+                                  child: AutoSizeText(
+                                    "difficultyLow".tr(),
+                                    style: GoogleFonts.nunito(
+                                      color: value,
+                                      fontSize: 30,
                                     ),
+                                    group: asg,
+                                    textAlign: TextAlign.center,
+                                    minFontSize: 20,
+                                    maxFontSize: 30,
                                   ),
                                 )
                               ],
@@ -151,38 +156,39 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                     child: TweenAnimationBuilder(
                       builder:
                           (BuildContext context, Color? value, Widget? child) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 60,
-                                  width: 60,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitWidth,
-                                    child: Icon(
-                                      RadioProgressIndicator.dif_mid,
-                                      color: value,
-                                      size: 60,
-                                    ),
-                                  ),
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 60,
+                              width: 60,
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Icon(
+                                  RadioProgressIndicator.dif_mid,
+                                  color: value,
+                                  size: 60,
                                 ),
-                                Spacer(),
-                                Container(
-                                  height: 25,
-                                  width: 60,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitWidth,
-                                    child: Text(
-                                      "difficultyMed".tr(),
-                                      style: GoogleFonts.nunito(
-                                        color: value,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            );
+                              ),
+                            ),
+                            Spacer(),
+                            Container(
+                              height: 25,
+                              width: 60,
+                              child: AutoSizeText(
+                                "difficultyMed".tr(),
+                                style: GoogleFonts.nunito(
+                                  color: value,
+                                  fontSize: 30,
+                                ),
+                                group: asg,
+                                textAlign: TextAlign.center,
+                                minFontSize: 15,
+                                maxFontSize: 30,
+                              ),
+                            )
+                          ],
+                        );
                       },
                       tween: ColorTween(
                         begin: getBeginColor(1),
@@ -224,15 +230,16 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                 Container(
                                   height: 25,
                                   width: 60,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitWidth,
-                                    child: Text(
-                                      "difficultyHigh".tr(),
-                                      style: GoogleFonts.nunito(
-                                        color: value,
-                                        fontSize: 18,
-                                      ),
+                                  child: AutoSizeText(
+                                    "difficultyHigh".tr(),
+                                    style: GoogleFonts.nunito(
+                                      color: value,
+                                      fontSize: 30,
                                     ),
+                                    group: asg,
+                                    textAlign: TextAlign.center,
+                                    minFontSize: 20,
+                                    maxFontSize: 30,
                                   ),
                                 )
                               ],

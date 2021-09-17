@@ -77,25 +77,44 @@ class NameSelectState extends State<NameSelect> {
           buttonTextTranslationKey: "close",
         ),
       );
-    } else if (players.length > 12) {
-      showDialog(
-        context: context,
-        builder: (BuildContext c) => CustomAlert(
-          titleTranslationKey: "nameTooManyPlayers",
-          textTranslationKey: "nameTooManyPlayersDescription",
-          buttonTextTranslationKey: "color",
-          backgroundColor: Color.fromRGBO(255, 92, 0, 1),
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => GameMode(players),
         ),
       );
-    } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => GameMode(players)));
     }
   }
 
-  void onNameChange(int playerId, String newName) {
-    if (newName.isEmpty) return;
-    players[playerId].name = newName.trim();
+  void onNameChange(int? playerId, String newName) {
+    if (newName.isEmpty) {
+      if (playerId != null) {
+        players.removeAt(playerId);
+      }
+      return;
+    }
+    if (playerId != null) {
+      // no name change occurred
+      if (players[playerId].name == newName) {
+        return;
+      }
+    }
+
+    Player newPlayer = Player(newName);
+
+    int i = 2;
+    while (players.contains(newPlayer)) {
+      newPlayer = Player(newName + " $i");
+      i++;
+    }
+
+    if (playerId == null) {
+      players.add(newPlayer);
+    } else {
+      players[playerId] = newPlayer;
+    }
+
+    setState(() {});
     setPlayers();
   }
 
@@ -213,70 +232,92 @@ class NameSelectState extends State<NameSelect> {
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Divider(
                             color: Colors.white,
-                            thickness: 2,
+                            thickness: 1,
                             height: 1,
                           ),
                         ),
                         Expanded(
-                          child: SingleChildScrollView(
-                            controller: scrollController,
-                            physics: BouncingScrollPhysics(
-                                parent: AlwaysScrollableScrollPhysics()),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: AnimatedGridPlus<Player>(
-                                    itemHeight: 55 + 8,
-                                    columns: 2,
-                                    items: players,
-                                    curve: Curves.easeInOut,
-                                    duration: Duration(
-                                      milliseconds: 200,
-                                    ),
-                                    keyBuilder: (Player p) {
-                                      if (keys.containsKey(p)) {
-                                        return keys[p]!;
-                                      }
-                                      keys[p] = GlobalKey();
-                                      return keys[p]!;
-                                    },
-                                    finalWidget: players.length >= 12
-                                        ? null
-                                        : NameSelectTile(
-                                            player: null,
-                                            onDelete: () {},
-                                            onNameChange: (String newName) {},
-                                            onPlayerAdd: (String newName) {
-                                              setState(() {
-                                                players.add(Player(newName));
-                                                setPlayers();
-                                              });
-                                            },
-                                            key: finalKey,
-                                          ),
-                                    builder: (BuildContext context,
-                                        Player player,
-                                        AnimatedGridDetails details) {
-                                      return NameSelectTile(
-                                        player: player,
-                                        onDelete: () {
-                                          setState(() {
-                                            players.remove(player);
-                                            setPlayers();
-                                          });
-                                        },
-                                        onPlayerAdd: (String playerName) {},
-                                        onNameChange: (String newName) {
-                                          player.name = newName;
-                                          setState(() {});
-                                          setPlayers();
-                                        },
-                                      );
-                                    },
-                                  ),
+                          child: ShaderMask(
+                            shaderCallback: (Rect bounds) {
+                              return LinearGradient(
+                                begin: Alignment.center,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black,
+                                  Colors.black,
+                                  Colors.black,
+                                  // Colors.black,
+                                  Colors.transparent,
+                                ],
+                              ).createShader(
+                                Rect.fromLTRB(
+                                  0,
+                                  0,
+                                  bounds.width,
+                                  bounds.height,
                                 ),
-                              ],
+                              );
+                            },
+                            blendMode: BlendMode.dstIn,
+                            child: SingleChildScrollView(
+                              controller: scrollController,
+                              physics: BouncingScrollPhysics(),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: AnimatedGridPlus<Player>(
+                                      itemHeight: 55 + 8,
+                                      columns: 2,
+                                      items: players,
+                                      curve: Curves.easeInOut,
+                                      duration: Duration(
+                                        milliseconds: 200,
+                                      ),
+                                      keyBuilder: (Player p) {
+                                        if (keys.containsKey(p)) {
+                                          return keys[p]!;
+                                        }
+                                        keys[p] = GlobalKey();
+                                        return keys[p]!;
+                                      },
+                                      finalWidget: players.length >= 12
+                                          ? null
+                                          : NameSelectTile(
+                                              player: null,
+                                              onDelete: () {},
+                                              onNameChange: (String newName) {},
+                                              onPlayerAdd: (String newName) {
+                                                onNameChange(null, newName);
+                                              },
+                                              key: finalKey,
+                                            ),
+                                      builder: (
+                                        BuildContext context,
+                                        Player player,
+                                        AnimatedGridDetails details,
+                                      ) {
+                                        return NameSelectTile(
+                                          player: player,
+                                          onDelete: () {
+                                            setState(() {
+                                              players.remove(player);
+                                              setPlayers();
+                                            });
+                                          },
+                                          onPlayerAdd: (String playerName) {},
+                                          onNameChange: (String newName) {
+                                            int index = players.indexOf(player);
+                                            if (index != 1) {
+                                              onNameChange(index, newName);
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -285,7 +326,10 @@ class NameSelectState extends State<NameSelect> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.only(
+                    bottom: 32,
+                    top: 16,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

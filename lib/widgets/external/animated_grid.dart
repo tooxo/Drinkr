@@ -84,6 +84,8 @@ class AnimatedGrid<T> extends StatelessWidget {
                     final indicies = gridIndicies(i, columns, count);
                     assert(indicies.length == 2);
 
+                    print(indicies);
+
                     final xIndex = indicies.first;
                     final yIndex = indicies.last;
                     final offset =
