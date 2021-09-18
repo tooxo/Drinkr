@@ -314,7 +314,10 @@ class GameController {
   Future<void> _fulfillNormalPlan(DifficultyType difficulty) async {
     unawaited(SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]));
-    unawaited(SystemChrome.setEnabledSystemUIOverlays([]));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent));
+    unawaited(
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []));
 
     bool ads = await shouldShowAds();
 

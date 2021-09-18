@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CustomRadioWidget extends StatelessWidget {
-  final int value;
-  final int groupValue;
-  final ValueChanged<int> onChanged;
+class CustomRadioWidget<T> extends StatelessWidget {
+  final T value;
+  final T groupValue;
+  final ValueChanged<T> onChanged;
   final double height;
   final bool enabled;
 

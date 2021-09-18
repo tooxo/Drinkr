@@ -8,27 +8,28 @@ class ColorGradient extends StatelessWidget {
   final GradientDirection direction;
   final double roundness;
 
-  const ColorGradient(
-      {Key? key,
-      required this.colors,
-      this.child,
-      this.roundness = 0,
-      this.direction = GradientDirection.HORIZONTAL})
-      : super(key: key);
+  const ColorGradient({
+    Key? key,
+    required this.colors,
+    this.child,
+    this.roundness = 0,
+    this.direction = GradientDirection.HORIZONTAL,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: direction == GradientDirection.HORIZONTAL
-                ? Alignment.centerLeft
-                : Alignment.topCenter,
-            end: direction == GradientDirection.HORIZONTAL
-                ? Alignment.centerRight
-                : Alignment.bottomCenter,
-            colors: colors,
-            tileMode: TileMode.mirror),
+          begin: direction == GradientDirection.HORIZONTAL
+              ? Alignment.centerLeft
+              : Alignment.topCenter,
+          end: direction == GradientDirection.HORIZONTAL
+              ? Alignment.centerRight
+              : Alignment.bottomCenter,
+          colors: colors,
+          tileMode: TileMode.mirror,
+        ),
         borderRadius: BorderRadius.all(Radius.circular(roundness)),
       ),
       child: child,

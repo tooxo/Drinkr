@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:drinkr/utils/ad.dart';
 import 'package:drinkr/utils/spotify_api.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'menus/name_select.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -14,6 +16,7 @@ const bool ADS_ENABLED =
     bool.fromEnvironment("ADS_ENABLED", defaultValue: false);
 
 void main() async {
+  checkAdVariables();
   WidgetsFlutterBinding.ensureInitialized();
 
   LicenseRegistry.addLicense(() async* {

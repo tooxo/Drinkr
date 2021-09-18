@@ -38,6 +38,26 @@ Future<bool> shouldShowAdDialog() async {
   return false;
 }
 
+void checkAdVariables() {
+  if (!bool.fromEnvironment("ADS_ENABLED", defaultValue: false)) return;
+
+  String banner = String.fromEnvironment("BANNER_AD_ID", defaultValue: "");
+  if (banner == "" || banner == BannerAd.testAdUnitId) {
+    print("WARN: Invalid Banner Ad Id: $banner");
+  }
+
+  String rewarded = String.fromEnvironment("REWARDED_AD_ID", defaultValue: "");
+  if (rewarded == "" || rewarded == RewardedAd.testAdUnitId) {
+    print("WARN: Invalid Rewarded Ad Id: $rewarded");
+  }
+
+  String fullscreen =
+      String.fromEnvironment("INTERSTITIAL_AD_ID", defaultValue: "");
+  if (fullscreen == "" || fullscreen == InterstitialAd.testAdUnitId) {
+    print("WARN: Invalid Fullscreen Ad Id: $fullscreen");
+  }
+}
+
 void showAdDialog(BuildContext context) async {
   await showDialog(
       context: context,

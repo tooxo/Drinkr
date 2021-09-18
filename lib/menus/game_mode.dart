@@ -43,105 +43,127 @@ class GameState extends State<GameMode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-              title: Text(
-                "gameModeSelect",
-                style: GoogleFonts.nunito(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ).tr(),
-              iconTheme: IconThemeData(color: Colors.white),
-            ),
-            backgroundColor: Color.fromRGBO(21, 21, 21, 1),
-            body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: Column(
-                  children: [
-                    Divider(),
-                    GameSelectTile(
-                      enabled: gameState == CurrentGameState.STOPPED,
-                      backgroundColors: [
-                        Color.fromRGBO(255, 27, 24, 1),
-                        Color.fromRGBO(241, 61, 180, 1),
-                      ],
-                      parentContext: context,
-                      onGameStateChange: onStateChange,
-                      title: "gameModeParty",
-                      subtitle: "gameModePartyDescription",
-                      icon: GameMode.icon_party,
-                      players: widget.players,
-                      enabledGames: [
-                        GameType.DARE,
-                        GameType.TRUTH,
-                        GameType.CHALLENGES,
-                        GameType.NEVER_HAVE_I_EVER,
-                        GameType.OPINION,
-                        GameType.WHO_WOULD_RATHER
-                      ],
-                    ),
-                    Divider(),
-                    GameSelectTile(
-                      enabled: gameState == CurrentGameState.STOPPED,
-                      backgroundColors: [
-                        Color.fromRGBO(79, 44, 208, 1),
-                        Color.fromRGBO(7, 149, 199, 1),
-                      ],
-                      parentContext: context,
-                      onGameStateChange: onStateChange,
-                      title: "gameModeQuiz",
-                      subtitle: "gameModeQuizDescription",
-                      icon: GameMode.icon_quiz,
-                      players: widget.players,
-                      enabledGames: [
-                        GameType.QUIZ,
-                        GameType.GUESS,
-                      ],
-                    ),
-                    Divider(),
-                    GameSelectTile(
-                      enabled: gameState == CurrentGameState.STOPPED,
-                      backgroundColors: [
-                        Color.fromRGBO(25, 96, 2, 1),
-                        Color.fromRGBO(95, 154, 0, 1),
-                      ],
-                      parentContext: context,
-                      onGameStateChange: onStateChange,
-                      title: "gameModeSongGuess",
-                      subtitle: "gameModeSongGuessDescription",
-                      icon: GameMode.icon_guessthesong,
-                      players: widget.players,
-                      enabledGames: [
-                        GameType.GUESS_THE_SONG,
-                      ],
-                    ),
-                    Divider(),
-                    CustomGameSelectTile(
-                      title: "gameModeCustom",
-                      subtitle: "gameModeCustomDescription",
-                      icon: GameMode.icon_custom,
-                      players: widget.players,
-                      enabledGames: enabledGamesCustom,
-                      backgroundColors: [
-                        Color.fromRGBO(131, 58, 180, 1),
-                        Color.fromRGBO(253, 29, 29, 1),
-                        Color.fromRGBO(253, 187, 45, 1),
-                      ],
-                      parentContext: context,
-                      onGameStateChange: onStateChange,
-                      enabled: gameState == CurrentGameState.STOPPED,
-                    ),
-                    Divider(),
-                  ],
-                ),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+        title: Text(
+          "gameModeSelect",
+          style: GoogleFonts.nunito(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+        ).tr(),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      backgroundColor: Color.fromRGBO(21, 21, 21, 1),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Column(
+            children: [
+              Divider(),
+              GameSelectTile(
+                enabled: gameState == CurrentGameState.STOPPED,
+                backgroundColors: [
+                  Color.fromRGBO(0xFE, 0x8C, 0x00, 1),
+                  Color.fromRGBO(0xF8, 0x36, 0x00, 1)
+                ],
+                parentContext: context,
+                onGameStateChange: onStateChange,
+                title: "gameModeStandard",
+                subtitle: "gameModeStandardDescription",
+                icon: GameMode.icon_party,
+                players: widget.players,
+                enabledGames: [
+                  GameType.WHO_WOULD_RATHER,
+                  GameType.TRUTH,
+                  GameType.NEVER_HAVE_I_EVER,
+                  GameType.OPINION,
+                  GameType.CHALLENGES,
+                  GameType.QUIZ,
+                  GameType.GUESS,
+                  GameType.GUESS_THE_SONG
+                ],
               ),
-            ),
-          );
+              Divider(),
+              GameSelectTile(
+                enabled: gameState == CurrentGameState.STOPPED,
+                backgroundColors: [
+                  Color.fromRGBO(255, 27, 24, 1),
+                  Color.fromRGBO(241, 61, 180, 1),
+                ],
+                parentContext: context,
+                onGameStateChange: onStateChange,
+                title: "gameModeParty",
+                subtitle: "gameModePartyDescription",
+                icon: GameMode.icon_party,
+                players: widget.players,
+                enabledGames: [
+                  GameType.DARE,
+                  GameType.TRUTH,
+                  GameType.CHALLENGES,
+                  GameType.NEVER_HAVE_I_EVER,
+                  GameType.OPINION,
+                  GameType.WHO_WOULD_RATHER
+                ],
+              ),
+              Divider(),
+              GameSelectTile(
+                enabled: gameState == CurrentGameState.STOPPED,
+                backgroundColors: [
+                  Color.fromRGBO(79, 44, 208, 1),
+                  Color.fromRGBO(7, 149, 199, 1),
+                ],
+                parentContext: context,
+                onGameStateChange: onStateChange,
+                title: "gameModeQuiz",
+                subtitle: "gameModeQuizDescription",
+                icon: GameMode.icon_quiz,
+                players: widget.players,
+                enabledGames: [
+                  GameType.QUIZ,
+                  GameType.GUESS,
+                ],
+              ),
+              Divider(),
+              GameSelectTile(
+                enabled: gameState == CurrentGameState.STOPPED,
+                backgroundColors: [
+                  Color.fromRGBO(25, 96, 2, 1),
+                  Color.fromRGBO(95, 154, 0, 1),
+                ],
+                parentContext: context,
+                onGameStateChange: onStateChange,
+                title: "gameModeSongGuess",
+                subtitle: "gameModeSongGuessDescription",
+                icon: GameMode.icon_guessthesong,
+                players: widget.players,
+                enabledGames: [
+                  GameType.GUESS_THE_SONG,
+                ],
+              ),
+              Divider(),
+              CustomGameSelectTile(
+                title: "gameModeCustom",
+                subtitle: "gameModeCustomDescription",
+                icon: GameMode.icon_custom,
+                players: widget.players,
+                enabledGames: enabledGamesCustom,
+                backgroundColors: [
+                  Color.fromRGBO(131, 58, 180, 1),
+                  Color.fromRGBO(253, 29, 29, 1),
+                  Color.fromRGBO(253, 187, 45, 1),
+                ],
+                parentContext: context,
+                onGameStateChange: onStateChange,
+                enabled: gameState == CurrentGameState.STOPPED,
+              ),
+              Divider(),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

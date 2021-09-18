@@ -72,7 +72,7 @@ class LicensesState extends State<Licenses> {
                       children: <Widget>[
                         Expanded(
                             flex: 3,
-                            child: Image.asset("assets/image/cutebeer.png")),
+                            child: Image.asset("assets/image/appicon3.png")),
                         Expanded(
                           flex: 3,
                           child: Padding(
@@ -80,7 +80,7 @@ class LicensesState extends State<Licenses> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  "Drinkr",
+                                  "Drinkr.",
                                   style: GoogleFonts.nunito(
                                       color: Colors.white,
                                       fontSize: 30,

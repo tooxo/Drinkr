@@ -102,5 +102,7 @@
   "gameModePartyDescription": "Spaß für die ganze Familie!",
   "gameModeQuizDescription": "Teste dein Wissen!",
   "gameModeSongGuessDescription": "Errate den Song als erstes!",
-  "gameModeCustomDescription": "Spiel nach deinen eigenen Regeln!"
+  "gameModeCustomDescription": "Spiel nach deinen eigenen Regeln!",
+  "gameModeStandard": "Standard",
+  "gameModeStandardDescription": "Mit allen unseren Spielen!"
 }

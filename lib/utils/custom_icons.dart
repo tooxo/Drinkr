@@ -9,7 +9,9 @@ class CustomIcons {
 
   // other icons
   static const IconData trash =
-      IconData(0xe804, fontFamily: "OtherIcons", fontPackage: null);
+      IconData(0xe804, fontFamily: 'OtherIcons', fontPackage: _kFontPkg);
+  static const IconData noad =
+      IconData(0xe806, fontFamily: 'OtherIcons', fontPackage: _kFontPkg);
 
   static const IconData dif_high =
       IconData(0xe800, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
