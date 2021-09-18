@@ -355,11 +355,12 @@ class GameController {
       }, onAdFailedToLoad: (Ad? ad, LoadAdError lae) {
         print("loading ad error: " + lae.message);
       });
+
+      const String adId =
+          String.fromEnvironment("BANNER_AD_ID", defaultValue: "");
+
       bannerAd = BannerAd(
-        adUnitId: String.fromEnvironment(
-          "BANNER_AD_ID",
-          defaultValue: BannerAd.testAdUnitId,
-        ),
+        adUnitId: adId == "" ? BannerAd.testAdUnitId : adId,
         size: AdSize.banner,
         request: AdRequest(
           keywords: ["alkohol", "alcohol", "drinking", "beer", "liquor"],
@@ -605,7 +606,8 @@ class GameController {
     );
 
     unawaited(
-      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values),
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: SystemUiOverlay.values),
     );
   }
 

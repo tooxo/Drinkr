@@ -39,20 +39,22 @@ Future<bool> shouldShowAdDialog() async {
 }
 
 void checkAdVariables() {
-  if (!bool.fromEnvironment("ADS_ENABLED", defaultValue: false)) return;
+  if (!const bool.fromEnvironment("ADS_ENABLED", defaultValue: false)) return;
 
-  String banner = String.fromEnvironment("BANNER_AD_ID", defaultValue: "");
+  String banner =
+      const String.fromEnvironment("BANNER_AD_ID", defaultValue: "");
   if (banner == "" || banner == BannerAd.testAdUnitId) {
     print("WARN: Invalid Banner Ad Id: $banner");
   }
 
-  String rewarded = String.fromEnvironment("REWARDED_AD_ID", defaultValue: "");
+  String rewarded =
+      const String.fromEnvironment("REWARDED_AD_ID", defaultValue: "");
   if (rewarded == "" || rewarded == RewardedAd.testAdUnitId) {
     print("WARN: Invalid Rewarded Ad Id: $rewarded");
   }
 
   String fullscreen =
-      String.fromEnvironment("INTERSTITIAL_AD_ID", defaultValue: "");
+      const String.fromEnvironment("INTERSTITIAL_AD_ID", defaultValue: "");
   if (fullscreen == "" || fullscreen == InterstitialAd.testAdUnitId) {
     print("WARN: Invalid Fullscreen Ad Id: $fullscreen");
   }
@@ -274,11 +276,10 @@ Future<void> showInterstitialAd(
     valueChanged(ButtonState.idle);
   });
 
+  const String adId = String.fromEnvironment("REWARDED_AD_ID", defaultValue: "");
+
   await RewardedAd.load(
-    adUnitId: String.fromEnvironment(
-      "REWARDED_AD_ID",
-      defaultValue: RewardedAd.testAdUnitId,
-    ),
+    adUnitId: adId == "" ? RewardedAd.testAdUnitId : adId,
     rewardedAdLoadCallback: rewardedAdLoadCallback,
     request: AdRequest(),
   );
@@ -292,12 +293,10 @@ Future<void> showFullscreenAd(
   }
 
   InterstitialAd? interstitial;
+  const String adId = String.fromEnvironment("INTERSTITIAL_AD_ID", defaultValue: "");
 
   return await InterstitialAd.load(
-    adUnitId: String.fromEnvironment(
-      "INTERSTITIAL_AD_ID",
-      defaultValue: InterstitialAd.testAdUnitId,
-    ),
+    adUnitId: adId == "" ? InterstitialAd.testAdUnitId : adId,
     request: AdRequest(),
     adLoadCallback: InterstitialAdLoadCallback(
       onAdFailedToLoad: (LoadAdError error) {

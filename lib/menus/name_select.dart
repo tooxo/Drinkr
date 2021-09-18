@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:drinkr/menus/game_mode.dart';
 import 'package:drinkr/menus/setting.dart';
+import 'package:drinkr/utils/ad.dart';
 import 'package:drinkr/utils/spotify_storage.dart';
 import 'package:drinkr/widgets/animated_grid_plus.dart';
 import 'package:drinkr/widgets/custom_alert.dart';
@@ -64,6 +65,7 @@ class NameSelectState extends State<NameSelect> {
     WidgetsBinding.instance?.addPostFrameCallback(
       (_) => SpotifyStorage.initializePreshippedPlaylists(context),
     );
+    checkAdVariables();
   }
 
   void confirm() {
