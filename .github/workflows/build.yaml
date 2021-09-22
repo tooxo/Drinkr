@@ -13,7 +13,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: sed -i "s|ca-app-pub-3940256099942544~3347511713|$APP_ID|g" ios/Runner/Info.plist
+      - run: sed -i .bak "s|ca-app-pub-3940256099942544~3347511713|$APP_ID|g" ios/Runner/Info.plist
       - run: flutter pub get
       - run: flutter build ios --release --no-codesign
       - run: mkdir Payload
