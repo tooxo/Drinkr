@@ -11,6 +11,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
+      - run: sed -i "s|ca-app-pub-3940256099942544~3347511713|$APP_ID_ANDROID|g" ios/Runner/Info.plist
       - run: flutter pub get
       - run: flutter build ios --release --no-codesign
       - run: mkdir Payload
@@ -50,6 +51,7 @@ jobs:
   build_android:
     runs-on: ubuntu-latest
     env:
+      APP_ID: ${{ secrets.APP_ID_ANDROID }}
       BANNER_ID: ${{ secrets.BANNER_ID_ANDROID }}
       REWARDED_ID: ${{ secrets.REWARDED_ID_ANDROID }}
       FULLSCREEN_ID: ${{ secrets.FULLSCREEN_ID_ANDROID }}
@@ -61,6 +63,8 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
+      - run: sed -i "s|ca-app-pub-3940256099942544~3347511713|$APP_ID_ANDROID|g" android/app/src/main/AndroidManifest.xml
+      - run: sed -i "s|ca-app-pub-3940256099942544~3347511713|$APP_ID_ANDROID|g" android/app/src/main/res/values/strings.xml
       - run: flutter pub get
       - run: flutter build apk --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID"
       - run: flutter build appbundle --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID"
