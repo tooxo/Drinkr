@@ -50,6 +50,7 @@ dependencies:
   progress_state_button: ^1.0.3
   overlay_dialog: ^0.2.0
   flutter_localized_locales: ^2.0.3
+  in_app_purchase: ^1.0.8
 
 
 dev_dependencies:
@@ -62,6 +63,8 @@ dev_dependencies:
   build_runner: ^2.1.0
   dependency_validator: ^3.1.0
 
+dependency_overrides:
+  in_app_purchase_android: '0.1.4+6'
 
 flutter:
   uses-material-design: true
@@ -84,9 +87,9 @@ flutter:
     - family: DifficultyIcons
       fonts:
         - asset: assets/fonts/DifficultyIcons.ttf
-    - family: GameModeSelectionIcons
+    - family: GameModeIcons
       fonts:
-        - asset: assets/fonts/GameModeSelectionIcons.ttf
+        - asset: assets/fonts/GameModeIcons.ttf
     - family: BrandIcons
       fonts:
         - asset: assets/fonts/BrandIcons.ttf

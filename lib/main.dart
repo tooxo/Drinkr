@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 import 'menus/name_select.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -35,6 +36,10 @@ void main() async {
   await Hive.openBox<Playlist>('spotify_playlists');
 
   await EasyLocalization.ensureInitialized();
+
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+  }
 
   runApp(EasyLocalization(
     supportedLocales: [

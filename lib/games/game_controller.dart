@@ -363,7 +363,7 @@ class GameController {
         adUnitId: adId == "" ? BannerAd.testAdUnitId : adId,
         size: AdSize.banner,
         request: AdRequest(
-          keywords: ["alkohol", "alcohol", "drinking", "beer", "liquor"],
+          keywords: [],
         ),
         listener: listener,
       );

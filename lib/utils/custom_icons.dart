@@ -21,4 +21,15 @@ class CustomIcons {
       IconData(0xe802, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
   static const IconData shot =
       IconData(0xe805, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
+
+  static const IconData game_mode_standard =
+      IconData(0xe807, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
+  static const IconData game_mode_party =
+      IconData(0xe809, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
+  static const IconData game_mode_song =
+      IconData(0xe80c, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
+  static const IconData game_mode_custom =
+      IconData(0xe80d, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
+  static const IconData game_mode_quiz =
+      IconData(0xe810, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
 }

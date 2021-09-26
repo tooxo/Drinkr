@@ -48,34 +48,40 @@ class TruthOrDareState extends BasicGameState {
 
   @override
   Widget buildWithoutSolution() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: Column(
+    return this.showSolution
+        ? Padding(
+            padding: const EdgeInsets.only(
+              left: 32,
+              right: 32,
+              top: 10,
+            ),
+            child: TextWidget(
+              "${widget.selectedPlayer.name} – ${this.truth ? jsonDecode(widget.mainTitle)["truth"] : jsonDecode(widget.mainTitle)["dare"]}",
+              textColor: widget.textColor,
+            ),
+          )
+        : Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ShowUpAnimation(
-                  offset: 0,
-                  child: Text(
-                    widget.selectedPlayer.name,
-                    style: GoogleFonts.nunito(
-                        color: widget.textColor, fontSize: 30),
-                  ),
-                ),
-              ),
-              ConstrainedBox(
-                constraints: BoxConstraints(),
-                child: this.showSolution
-                    ? TextWidget(
-                        this.truth
-                            ? jsonDecode(widget.mainTitle)["truth"]
-                            : jsonDecode(widget.mainTitle)["dare"],
-                        textColor: widget.textColor,
-                      )
-                    : Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ShowUpAnimation(
+                        offset: 0,
+                        child: Text(
+                          widget.selectedPlayer.name,
+                          style: GoogleFonts.nunito(
+                            color: widget.textColor,
+                            fontSize: 30,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
                         children: <Widget>[
                           Expanded(
                             child: Padding(
@@ -142,11 +148,11 @@ class TruthOrDareState extends BasicGameState {
                           ),
                         ],
                       ),
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
   }
 }

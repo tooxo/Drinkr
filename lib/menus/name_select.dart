@@ -152,7 +152,9 @@ class NameSelectState extends State<NameSelect> {
                 child: child,
               );
             },
-            tween: Tween(end: bottomInset * -1),
+            tween: Tween(
+              end: bottomInset * -1,
+            ),
             duration: Duration(
               milliseconds: 0,
             ),
@@ -290,7 +292,8 @@ class NameSelectState extends State<NameSelect> {
                                               onDelete: () {},
                                               onNameChange: (String newName) {},
                                               onPlayerAdd: (String newName) {
-                                                onNameChange(null, newName);
+                                                onNameChange(
+                                                    null, newName.trim());
                                               },
                                               key: finalKey,
                                             ),
@@ -311,7 +314,8 @@ class NameSelectState extends State<NameSelect> {
                                           onNameChange: (String newName) {
                                             int index = players.indexOf(player);
                                             if (index != 1) {
-                                              onNameChange(index, newName);
+                                              onNameChange(
+                                                  index, newName.trim());
                                             }
                                           },
                                         );
