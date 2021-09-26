@@ -44,7 +44,7 @@
   "truth": "Truth",
   "dare": "Dare",
   "goOnTitle": "Continue?",
-  "goOnDescription": "You've already played 100 questions! Do you want to go on?",
+  "goOnDescription": "You've already played 50 questions! Do you want to go on?",
   "illegalName": "Name not allowed",
   "illegalNameDescription": "Please select another name.",
   "quizText1": "Question:",
@@ -102,5 +102,7 @@
   "gameModePartyDescription": "Fun for the entire family!",
   "gameModeQuizDescription": "Prove your education!",
   "gameModeSongGuessDescription": "Prove your music knowledge!",
-  "gameModeCustomDescription": "Play by your own rules!"
+  "gameModeCustomDescription": "Play by your own rules!",
+  "gameModeStandard": "Standard",
+  "gameModeStandardDescription": "All of our games combined!"
 }
