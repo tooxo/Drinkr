@@ -2,7 +2,7 @@ name: Flutter Build
 on: [ push ]
 jobs:
   build_ios:
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
       APP_ID: ${{ secrets.APP_ID_IOS }}
     steps:
