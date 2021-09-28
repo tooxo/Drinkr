@@ -39,6 +39,8 @@ class Playlist with Comparable<Playlist> {
   bool enabled;
   @HiveField(8)
   bool included;
+  @HiveField(9)
+  String? localeString;
 
   String get url => "https://open.spotify.com/playlist/$id";
 
@@ -51,6 +53,7 @@ class Playlist with Comparable<Playlist> {
     required this.lastFetch,
     required this.enabled,
     required this.included,
+    this.localeString,
   });
 
   @override
@@ -116,8 +119,11 @@ class Spotify {
     return jsonResponse["access_token"];
   }
 
-  Future<Playlist?> getPlaylistWithoutSongs(String playlistId,
-      {bool included = true}) async {
+  Future<Playlist?> getPlaylistWithoutSongs(
+    String playlistId, {
+    bool included = true,
+    String? locale,
+  }) async {
     Playlist? cachePlaylist =
         SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
 
@@ -132,14 +138,16 @@ class Spotify {
 
     Map<String, dynamic> info_json_response = jsonDecode(infoResponse.body);
     Playlist playlist = Playlist(
-        id: playlistId,
-        creator_name: info_json_response["owner"]["id"],
-        image_url: info_json_response["images"][0]["url"],
-        name: info_json_response["name"],
-        snapshotId: info_json_response["snapshot_id"],
-        lastFetch: DateTime.fromMillisecondsSinceEpoch(0),
-        enabled: cachePlaylist?.enabled ?? true,
-        included: included);
+      id: playlistId,
+      creator_name: info_json_response["owner"]["id"],
+      image_url: info_json_response["images"][0]["url"],
+      name: info_json_response["name"],
+      snapshotId: info_json_response["snapshot_id"],
+      lastFetch: DateTime.fromMillisecondsSinceEpoch(0),
+      enabled: cachePlaylist?.enabled ?? true,
+      included: included,
+      localeString: locale,
+    );
     return playlist;
   }
 

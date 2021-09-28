@@ -17,7 +17,7 @@ class IconListTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.onTap,
-    this.iconSize = 70,
+    this.iconSize = 60,
     this.color = Colors.white,
   });
 
@@ -30,9 +30,10 @@ class IconListTile extends StatelessWidget {
           padding: const EdgeInsets.only(right: 12.0),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minWidth: 80,
-              maxWidth: 80,
-              maxHeight: 80
+              minWidth: 70,
+                maxWidth: 70,
+              maxHeight: 70,
+              minHeight: 70
             ),
             child: Icon(
               iconData,

@@ -99,8 +99,9 @@ flutter:
     - family: AlcoholIcons
       fonts:
         - asset: assets/fonts/AlcoholIcons.ttf
-
-
+    - family: SettingsIcons
+      fonts:
+        - asset: assets/fonts/SettingsIcons.ttf
 
 flutter_icons:
   android: "launcher_icon"

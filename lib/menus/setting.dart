@@ -1,10 +1,10 @@
-import 'dart:io';
+import 'dart:async';
 import 'dart:ui';
 
-import 'package:app_review/app_review.dart';
 import 'package:drinkr/menus/licenses.dart';
 import 'package:drinkr/utils/ad.dart';
 import 'package:drinkr/utils/custom_icons.dart';
+import 'package:drinkr/utils/purchases.dart';
 import 'package:drinkr/utils/spotify_api.dart';
 import 'package:drinkr/utils/spotify_storage.dart';
 import 'package:drinkr/widgets/custom_radio.dart';
@@ -18,9 +18,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:hive/hive.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'game_mode.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -54,6 +57,68 @@ class SettingsState extends State<Settings> {
     setState(() {
       adButtonState = newState;
     });
+  }
+
+  late StreamSubscription<BoxEvent> playlistSubscription;
+
+  PurchaseState purchaseState = PurchaseState.AVAILABLE;
+
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        setState(() {
+          purchaseState = PurchaseState.IN_PROGRESS;
+        });
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+          setState(() {
+            purchaseState = PurchaseState.AVAILABLE;
+          });
+        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+            purchaseDetails.status == PurchaseStatus.restored) {
+          setState(() {
+            purchaseState = PurchaseState.DONE;
+          });
+          await Purchases.setPremiumPurchased();
+        }
+        if (purchaseDetails.pendingCompletePurchase) {
+          await InAppPurchase.instance.completePurchase(purchaseDetails);
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    playlistSubscription = SpotifyStorage.playlists_box.watch().listen(
+      (BoxEvent event) {
+        setState(() {});
+      },
+    );
+
+    InAppPurchase.instance.purchaseStream
+        .listen((List<PurchaseDetails> purchaseDetails) {
+      _listenToPurchaseUpdated(purchaseDetails);
+    });
+
+    Purchases.isPremiumPurchased().then(
+      (bool value) => {
+        setState(
+          () {
+            if (purchaseState == PurchaseState.AVAILABLE && value) {
+              purchaseState = PurchaseState.DONE;
+            }
+          },
+        )
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    playlistSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -102,11 +167,11 @@ class SettingsState extends State<Settings> {
                         vertical: 16,
                       ),
                       child: IconListTile(
-                        iconData: CustomIcons.spotify,
-                        title: "Spotify Playlists",
-                        subtitle: "Spiele mit eigenen Songs",
+                        iconData: CustomIcons.spotify_outline,
+                        title: "spotifyPlaylists".tr(),
+                        subtitle: "spotifyPlaylistsDescription".tr(),
                         onTap: () {},
-                        iconSize: 55,
+                        // iconSize: 55,
                       ),
                     ),
                     collapsed: GestureDetector(
@@ -144,6 +209,14 @@ class SettingsState extends State<Settings> {
                                   children: [
                                     for (Playlist p
                                         in SpotifyStorage.playlists_box.values
+                                            .where(
+                                              (Playlist element) =>
+                                                  element.localeString ==
+                                                      null ||
+                                                  element.localeString ==
+                                                      context
+                                                          .locale.languageCode,
+                                            )
                                             .toList()
                                           ..sort())
                                       SpotifyTile(
@@ -217,10 +290,11 @@ class SettingsState extends State<Settings> {
                         vertical: 16,
                       ),
                       child: IconListTile(
-                        title: "Werbung deaktivieren",
+                        title: "deactivateAds".tr(),
                         subtitle:
-                            "schaue ein kurzes Video und deaktiviere die Werbung für eine Stunde!",
-                        iconData: CustomIcons.noad,
+                            "deactivateAdsDescription".tr(),
+                        iconData: CustomIcons.no_ad,
+                        // iconSize: 55,
                         onTap: () {},
                       ),
                     ),
@@ -277,7 +351,7 @@ class SettingsState extends State<Settings> {
                         ),
                         Center(
                           child: Text(
-                            "30-sekündiges Video schauen,\num Werbung für 1h zu deaktivieren",
+                            "deactivateAdsText".tr(),
                             style: GoogleFonts.nunito(
                               color: Colors.white,
                               fontSize: 10,
@@ -316,7 +390,7 @@ class SettingsState extends State<Settings> {
                       child: IconListTile(
                         title: "language".tr(),
                         subtitle: "languageSubtitle".tr(),
-                        iconData: CustomIcons.noad,
+                        iconData: CustomIcons.translation,
                         onTap: () {},
                       ),
                     ),
@@ -348,6 +422,9 @@ class SettingsState extends State<Settings> {
                                   onTap: () async {
                                     await EasyLocalization.of(context)!
                                         .setLocale(locale);
+                                    unawaited(SpotifyStorage
+                                        .initializePreshippedPlaylists(
+                                            context));
                                     setState(() {});
                                   },
                                   child: ListTile(
@@ -369,6 +446,9 @@ class SettingsState extends State<Settings> {
                                       onChanged: (Locale value) async {
                                         await EasyLocalization.of(context)!
                                             .setLocale(locale);
+                                        unawaited(SpotifyStorage
+                                            .initializePreshippedPlaylists(
+                                                context));
                                         setState(() {});
                                       },
                                     ),
@@ -405,9 +485,9 @@ class SettingsState extends State<Settings> {
                         vertical: 16,
                       ),
                       child: IconListTile(
-                        title: "rate".tr(),
-                        subtitle: "rateDescription".tr(),
-                        iconData: CustomIcons.noad,
+                        title: "restorePurchases".tr(),
+                        subtitle: "restorePurchasesDescription".tr(),
+                        iconData: CustomIcons.refresh,
                         onTap: () {},
                       ),
                     ),
@@ -427,46 +507,42 @@ class SettingsState extends State<Settings> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton(
-                            onPressed: () async {
-                              if (Platform.isAndroid) {
-                                print(await AppReview.openAndroidReview());
-                              }
-                              if (Platform.isIOS) {
-                                print(await AppReview.openIosReview());
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 8),
-                              child: Text(
-                                "rate",
-                                style: GoogleFonts.nunito(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                ),
-                              ).tr(),
-                            ),
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.black.withOpacity(.4),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
+                          padding: const EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                            bottom: 8,
                           ),
-                        ),
-                        ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: 120),
-                          child: Text(
-                            "Du wirst zum PlayStore weitergeleitet, danke!",
-                            style: GoogleFonts.nunito(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                            textAlign: TextAlign.center,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextButton(
+                                  onPressed: () async {
+                                    await InAppPurchase.instance
+                                        .restorePurchases();
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 8),
+                                    child: Text(
+                                      "restore",
+                                      style: GoogleFonts.nunito(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ).tr(),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        Colors.black.withOpacity(.4),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Icon(
@@ -497,9 +573,9 @@ class SettingsState extends State<Settings> {
                         vertical: 16,
                       ),
                       child: IconListTile(
-                        title: "licenses".tr(),
+                        title: "about".tr(),
                         subtitle: "licensesDescription".tr(),
-                        iconData: CustomIcons.noad,
+                        iconData: Icons.info_outline,
                         onTap: () {},
                       ),
                     ),

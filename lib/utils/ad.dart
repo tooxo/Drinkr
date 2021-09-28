@@ -1,4 +1,5 @@
 import 'package:drinkr/main.dart';
+import 'package:drinkr/utils/purchases.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -27,6 +28,9 @@ Future<bool> shouldShowAds() async {
 Future<bool> shouldShowAdDialog() async {
   if (!ADS_ENABLED) return false;
   SharedPreferences preferences = await SharedPreferences.getInstance();
+  if (await Purchases.isPremiumPurchased()) {
+    return false;
+  }
   if (preferences.getBool(AD_DIALOG_SETTING) ?? true) {
     DateTime millisSinceLastShow = DateTime.fromMillisecondsSinceEpoch(
         preferences.getInt(LAST_AD_DISPLAY) ?? 0);

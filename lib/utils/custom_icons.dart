@@ -32,4 +32,13 @@ class CustomIcons {
       IconData(0xe80d, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
   static const IconData game_mode_quiz =
       IconData(0xe810, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
+
+  static const IconData spotify_outline =
+      IconData(0xe812, fontFamily: 'SettingsIcons', fontPackage: _kFontPkg);
+  static const IconData no_ad =
+      IconData(0xe813, fontFamily: 'SettingsIcons', fontPackage: _kFontPkg);
+  static const IconData translation =
+      IconData(0xe814, fontFamily: 'SettingsIcons', fontPackage: _kFontPkg);
+  static const IconData refresh =
+      IconData(0xe816, fontFamily: 'SettingsIcons', fontPackage: _kFontPkg);
 }

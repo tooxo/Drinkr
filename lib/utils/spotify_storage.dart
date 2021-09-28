@@ -2,6 +2,7 @@ import 'package:drinkr/utils/file.dart';
 import 'package:drinkr/utils/networking.dart';
 import 'package:drinkr/utils/spotify_api.dart';
 import 'package:drinkr/utils/types.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 
@@ -21,13 +22,15 @@ class SpotifyStorage {
             .map((e) => e!)
             .toList();
 
+    String locale = context.locale.languageCode;
+
     List<String> missingPlaylistIds = playlistIds
         .where((element) => !playlists_box.keys.contains(element))
         .toList();
 
     if (await checkConnection()) {
       for (String pid in missingPlaylistIds) {
-        Playlist? p = await Spotify().getPlaylistWithoutSongs(pid);
+        Playlist? p = await Spotify().getPlaylistWithoutSongs(pid, locale: locale);
         if (p == null) continue;
 
         await playlists_box.put(pid, p);

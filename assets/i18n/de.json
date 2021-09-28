@@ -104,5 +104,16 @@
   "gameModeSongGuessDescription": "Errate den Song als erstes!",
   "gameModeCustomDescription": "Spiel nach deinen eigenen Regeln!",
   "gameModeStandard": "Standard",
-  "gameModeStandardDescription": "Mit allen unseren Spielen!"
+  "gameModeStandardDescription": "Mit allen unseren Spielen!",
+  "spotifyPlaylists": "Spotify",
+  "spotifyPlaylistsDescription": "Spiele mit deinen eigenen Playlists!",
+  "deactivateAds": "Werbung deaktivieren",
+  "deactivateAdsDescription": "schaue ein kurzes Video und deaktiviere die Werbung für eine Stunde",
+  "deactivateAdsText": "30-sekündiges Video schauen,\num Werbung für 1h zu deaktivieren",
+  "languageSubtitle": "wähle deine bevorzugte Sprache aus!",
+  "restorePurchases": "Käufe wiederherstellen",
+  "restorePurchasesDescription": "stelle deine Käufe wieder her!",
+  "restore": "Wiederherstellen",
+  "licenses": "Lizenzen",
+  "licensesDescription": "Infos über uns und über die Software, die wir benutzt haben!"
 }
