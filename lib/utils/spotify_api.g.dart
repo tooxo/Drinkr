@@ -65,14 +65,13 @@ class PlaylistAdapter extends TypeAdapter<Playlist> {
       lastFetch: fields[6] as DateTime,
       enabled: fields[7] as bool,
       included: fields[8] as bool,
-      localeString: fields[9] as String?,
     )..song_ids = (fields[4] as List).cast<String>();
   }
 
   @override
   void write(BinaryWriter writer, Playlist obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -90,9 +89,7 @@ class PlaylistAdapter extends TypeAdapter<Playlist> {
       ..writeByte(7)
       ..write(obj.enabled)
       ..writeByte(8)
-      ..write(obj.included)
-      ..writeByte(9)
-      ..write(obj.localeString);
+      ..write(obj.included);
   }
 
   @override

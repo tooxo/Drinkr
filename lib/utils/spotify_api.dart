@@ -39,8 +39,6 @@ class Playlist with Comparable<Playlist> {
   bool enabled;
   @HiveField(8)
   bool included;
-  @HiveField(9)
-  String? localeString;
 
   String get url => "https://open.spotify.com/playlist/$id";
 
@@ -53,7 +51,6 @@ class Playlist with Comparable<Playlist> {
     required this.lastFetch,
     required this.enabled,
     required this.included,
-    this.localeString,
   });
 
   @override
@@ -122,7 +119,6 @@ class Spotify {
   Future<Playlist?> getPlaylistWithoutSongs(
     String playlistId, {
     bool included = true,
-    String? locale,
   }) async {
     Playlist? cachePlaylist =
         SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
@@ -146,7 +142,6 @@ class Spotify {
       lastFetch: DateTime.fromMillisecondsSinceEpoch(0),
       enabled: cachePlaylist?.enabled ?? true,
       included: included,
-      localeString: locale,
     );
     return playlist;
   }

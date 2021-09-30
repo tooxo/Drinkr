@@ -4,9 +4,11 @@ import 'dart:ui';
 import 'package:drinkr/menus/licenses.dart';
 import 'package:drinkr/utils/ad.dart';
 import 'package:drinkr/utils/custom_icons.dart';
+import 'package:drinkr/utils/file.dart';
 import 'package:drinkr/utils/purchases.dart';
 import 'package:drinkr/utils/spotify_api.dart';
 import 'package:drinkr/utils/spotify_storage.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:drinkr/widgets/buy_premium.dart';
 import 'package:drinkr/widgets/custom_radio.dart';
 import 'package:drinkr/widgets/extending_textfield_button.dart';
@@ -211,27 +213,41 @@ class SettingsState extends State<Settings> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Column(
-                                  children: [
-                                    for (Playlist p
-                                        in SpotifyStorage.playlists_box.values
+                                child: FutureBuilder<List<String>>(
+                                  future: getIncludedFiles(
+                                    GameType.GUESS_THE_SONG,
+                                    context,
+                                    false,
+                                  ),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<String>> snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return Container();
+                                    }
+                                    List<String> ids = snapshot.data!
+                                        .map((e) => Spotify.getIdFromUrl(e)!)
+                                        .toList();
+                                    List<Playlist> playlists =
+                                        SpotifyStorage.playlists_box.values
                                             .where(
-                                              (Playlist element) =>
-                                                  element.localeString ==
-                                                      null ||
-                                                  element.localeString ==
-                                                      context
-                                                          .locale.languageCode,
+                                              (element) =>
+                                                  !element.included ||
+                                                  ids.contains(element.id),
                                             )
                                             .toList()
-                                          ..sort())
-                                      SpotifyTile(
-                                        p,
-                                        onChanged: onPlaylistChange,
-                                        onDelete: onPlaylistDelete,
-                                        expanded: spotifyEdit,
-                                      ),
-                                  ],
+                                          ..sort();
+                                    return Column(
+                                      children: [
+                                        for (Playlist p in playlists)
+                                          SpotifyTile(
+                                            p,
+                                            onChanged: onPlaylistChange,
+                                            onDelete: onPlaylistDelete,
+                                            expanded: spotifyEdit,
+                                          ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
                             ),

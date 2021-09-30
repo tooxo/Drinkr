@@ -22,15 +22,13 @@ class SpotifyStorage {
             .map((e) => e!)
             .toList();
 
-    String locale = context.locale.languageCode;
-
     List<String> missingPlaylistIds = playlistIds
         .where((element) => !playlists_box.keys.contains(element))
         .toList();
 
     if (await checkConnection()) {
       for (String pid in missingPlaylistIds) {
-        Playlist? p = await Spotify().getPlaylistWithoutSongs(pid, locale: locale);
+        Playlist? p = await Spotify().getPlaylistWithoutSongs(pid);
         if (p == null) continue;
 
         await playlists_box.put(pid, p);
