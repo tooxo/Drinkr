@@ -296,6 +296,7 @@ class GameSelectTileState extends State<GameSelectTile> {
                             color: Colors.black.withOpacity(
                               .4,
                             ),
+                            disabledColor: Colors.black.withOpacity(.2)
                           ),
                           ButtonState.loading: IconedButton(
                             color: Colors.black.withOpacity(

@@ -7,6 +7,7 @@ import 'package:drinkr/utils/custom_icons.dart';
 import 'package:drinkr/utils/purchases.dart';
 import 'package:drinkr/utils/spotify_api.dart';
 import 'package:drinkr/utils/spotify_storage.dart';
+import 'package:drinkr/widgets/buy_premium.dart';
 import 'package:drinkr/widgets/custom_radio.dart';
 import 'package:drinkr/widgets/extending_textfield_button.dart';
 import 'package:drinkr/widgets/gradient.dart';
@@ -149,6 +150,11 @@ class SettingsState extends State<Settings> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: BuyPremium(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: ColorGradient(
                   colors: [
                     Color.fromRGBO(36, 140, 0, 1),
@@ -277,8 +283,8 @@ class SettingsState extends State<Settings> {
                 child: ColorGradient(
                   roundness: 15,
                   colors: [
-                    Color.fromRGBO(0x2B, 0xA5, 0x00, 1),
-                    Color.fromRGBO(0x2B, 0xA5, 0x00, 1),
+                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
                   ],
                   child: ExpandablePanel(
                     theme: ExpandableThemeData(
@@ -291,8 +297,7 @@ class SettingsState extends State<Settings> {
                       ),
                       child: IconListTile(
                         title: "deactivateAds".tr(),
-                        subtitle:
-                            "deactivateAdsDescription".tr(),
+                        subtitle: "deactivateAdsDescription".tr(),
                         iconData: CustomIcons.no_ad,
                         // iconSize: 55,
                         onTap: () {},
@@ -318,10 +323,8 @@ class SettingsState extends State<Settings> {
                             vertical: 8.0,
                           ),
                           child: ProgressButton.icon(
-                            onPressed: () {
-                              showInterstitialAd(
-                                  context, onAdButtonStateChange);
-                            },
+                            onPressed: () => showInterstitialAd(
+                                context, onAdButtonStateChange),
                             state: adButtonState,
                             textStyle: GoogleFonts.nunito(
                               color: Colors.white,
@@ -331,9 +334,10 @@ class SettingsState extends State<Settings> {
                             iconedButtons: {
                               ButtonState.idle: IconedButton(
                                 color: Colors.black.withOpacity(.4),
+                                disabledColor: Colors.black.withOpacity(.2),
                                 text: "startGame".tr(),
                                 icon: Icon(
-                                  Icons.send,
+                                  Icons.ondemand_video_outlined,
                                   color: Colors.white,
                                 ),
                               ),
@@ -349,17 +353,33 @@ class SettingsState extends State<Settings> {
                             },
                           ),
                         ),
-                        Center(
-                          child: Text(
-                            "deactivateAdsText".tr(),
-                            style: GoogleFonts.nunito(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        FutureBuilder<bool>(
+                            future: shouldShowAds(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (!snapshot.hasData || snapshot.data) {
+                                return Text(
+                                  "deactivateAdsText".tr(),
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                );
+                              }
+                              return Center(
+                                child: Text(
+                                  "adsAlreadyDisabled".tr(),
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
+                            }),
                         Icon(
                           Icons.arrow_drop_up_rounded,
                           color: Colors.white,

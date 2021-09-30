@@ -45,7 +45,7 @@ void main() async {
     supportedLocales: [
       Locale('en', 'US'),
       Locale('de', 'DE'),
-      Locale('es', 'ES'),
+      // Locale('es', 'ES'),
     ],
     path: 'assets/i18n',
     fallbackLocale: Locale('en', 'US'),
