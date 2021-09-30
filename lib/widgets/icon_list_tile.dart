@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,11 +13,14 @@ class IconListTile extends StatelessWidget {
 
   final Function() onTap;
 
+  final AutoSizeGroup? asg;
+
   IconListTile({
     required this.iconData,
     required this.title,
     required this.subtitle,
     required this.onTap,
+    required this.asg,
     this.iconSize = 60,
     this.color = Colors.white,
   });
@@ -30,11 +34,7 @@ class IconListTile extends StatelessWidget {
           padding: const EdgeInsets.only(right: 12.0),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minWidth: 70,
-                maxWidth: 70,
-              maxHeight: 70,
-              minHeight: 70
-            ),
+                minWidth: 70, maxWidth: 70, maxHeight: 70, minHeight: 70),
             child: Icon(
               iconData,
               color: color,
@@ -50,11 +50,15 @@ class IconListTile extends StatelessWidget {
               children: [
                 FittedBox(
                   fit: BoxFit.contain,
-                  child: Text(
+                  child: AutoSizeText(
                     title,
+                    minFontSize: 25,
+
+                    maxFontSize: 35,
+                    group: asg,
                     style: GoogleFonts.nunito(
                       color: color,
-                      fontSize: 30,
+                      // fontSize: 30,
                       fontWeight: FontWeight.w800,
                     ),
                   ),

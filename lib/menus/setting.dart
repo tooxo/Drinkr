@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drinkr/menus/licenses.dart';
 import 'package:drinkr/utils/ad.dart';
 import 'package:drinkr/utils/custom_icons.dart';
@@ -42,6 +43,8 @@ class SettingsState extends State<Settings> {
 
   bool spotifyEdit = false;
   ExpandableController spotifyController = ExpandableController();
+
+  AutoSizeGroup asg = AutoSizeGroup();
 
   void onPlaylistChange(Playlist playlist) async {
     await SpotifyStorage.playlistsBox.put(
@@ -153,6 +156,7 @@ class SettingsState extends State<Settings> {
                                 title: "spotifyPlaylists".tr(),
                                 subtitle: "spotifyPlaylistsDescription".tr(),
                                 onTap: () {},
+                                asg: asg,
                                 // iconSize: 55,
                               ),
                             ),
@@ -298,6 +302,7 @@ class SettingsState extends State<Settings> {
                                     iconData: CustomIcons.noAd,
                                     // iconSize: 55,
                                     onTap: () {},
+                                    asg: asg,
                                   ),
                                 ),
                                 collapsed: Center(
@@ -412,6 +417,7 @@ class SettingsState extends State<Settings> {
                               subtitle: "languageSubtitle".tr(),
                               iconData: CustomIcons.translation,
                               onTap: () {},
+                              asg: asg,
                             ),
                           ),
                           collapsed: Center(
@@ -513,6 +519,7 @@ class SettingsState extends State<Settings> {
                               subtitle: "restorePurchasesDescription".tr(),
                               iconData: CustomIcons.refresh,
                               onTap: () {},
+                              asg: asg,
                             ),
                           ),
                           collapsed: Center(
@@ -603,6 +610,7 @@ class SettingsState extends State<Settings> {
                               subtitle: "licensesDescription".tr(),
                               iconData: Icons.info_outline,
                               onTap: () {},
+                              asg: asg,
                             ),
                           ),
                           collapsed: Center(

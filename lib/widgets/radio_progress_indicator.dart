@@ -131,7 +131,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                     ),
                                     group: asg,
                                     textAlign: TextAlign.center,
-                                    minFontSize: 20,
+                                    minFontSize: 12,
                                     maxFontSize: 30,
                                   ),
                                 )
@@ -183,7 +183,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                 ),
                                 group: asg,
                                 textAlign: TextAlign.center,
-                                minFontSize: 15,
+                                minFontSize: 12,
                                 maxFontSize: 30,
                               ),
                             )
@@ -238,7 +238,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                     ),
                                     group: asg,
                                     textAlign: TextAlign.center,
-                                    minFontSize: 20,
+                                    minFontSize: 12,
                                     maxFontSize: 30,
                                   ),
                                 )

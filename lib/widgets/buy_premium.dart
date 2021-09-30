@@ -68,7 +68,7 @@ class BuyPremium extends StatelessWidget {
             subtitle: "buyPremiumDescription".tr(),
             iconData: CustomIcons.gameModeCustom,
             // iconSize: 55,
-            onTap: () {},
+            onTap: () {}, asg: null,
           ),
         ),
         collapsed: Center(
