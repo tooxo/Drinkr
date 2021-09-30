@@ -1,5 +1,9 @@
-include: package:pedantic/analysis_options.1.8.0.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
   exclude:
     - flutter/**
+
+linter:
+  rules:
+    overridden_fields: false

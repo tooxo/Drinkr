@@ -13,29 +13,29 @@ class CustomIcons {
   static const IconData noad =
       IconData(0xe806, fontFamily: 'OtherIcons', fontPackage: _kFontPkg);
 
-  static const IconData dif_high =
+  static const IconData difHigh =
       IconData(0xe800, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
-  static const IconData dif_low =
+  static const IconData difLow =
       IconData(0xe801, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
-  static const IconData dif_med =
+  static const IconData difMed =
       IconData(0xe802, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
   static const IconData shot =
       IconData(0xe805, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
 
-  static const IconData game_mode_standard =
+  static const IconData gameModeStandard =
       IconData(0xe807, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
-  static const IconData game_mode_party =
+  static const IconData gameModeParty =
       IconData(0xe809, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
-  static const IconData game_mode_song =
+  static const IconData gameModeSong =
       IconData(0xe80c, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
-  static const IconData game_mode_custom =
+  static const IconData gameModeCustom =
       IconData(0xe80d, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
-  static const IconData game_mode_quiz =
+  static const IconData gameModeQuiz =
       IconData(0xe810, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);
 
-  static const IconData spotify_outline =
+  static const IconData spotifyOutline =
       IconData(0xe812, fontFamily: 'SettingsIcons', fontPackage: _kFontPkg);
-  static const IconData no_ad =
+  static const IconData noAd =
       IconData(0xe813, fontFamily: 'SettingsIcons', fontPackage: _kFontPkg);
   static const IconData translation =
       IconData(0xe814, fontFamily: 'SettingsIcons', fontPackage: _kFontPkg);

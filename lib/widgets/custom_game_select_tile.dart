@@ -51,7 +51,7 @@ class _CustomGameSelectTileState extends GameSelectTileState {
 
   Future<void> loadSave() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    List<String>? stringList = sp.getStringList(SAVED_CUSTOM_SETTING);
+    List<String>? stringList = sp.getStringList(savedCustomSetting);
     if (stringList == null) return;
     for (String entry in stringList) {
       dynamic jsonObject = JsonDecoder().convert(entry);
@@ -81,7 +81,7 @@ class _CustomGameSelectTileState extends GameSelectTileState {
     SharedPreferences sp = await SharedPreferences.getInstance();
     List<String> stringList = [];
     List<GameType> allGames = GameType.values
-        .where((element) => element != GameType.UNDEFINED)
+        .where((element) => element != GameType.undefined)
         .toList();
     for (GameType type in allGames) {
       stringList.add(
@@ -93,7 +93,7 @@ class _CustomGameSelectTileState extends GameSelectTileState {
         ),
       );
     }
-    await sp.setStringList(SAVED_CUSTOM_SETTING, stringList);
+    await sp.setStringList(savedCustomSetting, stringList);
   }
 
   @override
@@ -114,7 +114,7 @@ class _CustomGameSelectTileState extends GameSelectTileState {
         ),
         for (TypeClass type in GameType.values
             .where((element) =>
-                ![GameType.DARE, GameType.UNDEFINED].contains(element))
+                ![GameType.dare, GameType.undefined].contains(element))
             .map((e) => gameTypeToGameTypeClass(e)))
           GestureDetector(
             onTap: () {

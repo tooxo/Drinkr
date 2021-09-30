@@ -17,11 +17,11 @@ class RadioProgressIndicator extends StatefulWidget {
   static const _kFontFam = 'DifficultyIcons';
   static const String? _kFontPkg = null;
 
-  static const IconData dif_hard =
+  static const IconData difHard =
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData dif_mid =
+  static const IconData difMid =
       IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData dif_easy =
+  static const IconData difEasy =
       IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 
   @override
@@ -113,7 +113,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                   child: FittedBox(
                                     fit: BoxFit.fitWidth,
                                     child: Icon(
-                                      RadioProgressIndicator.dif_easy,
+                                      RadioProgressIndicator.difEasy,
                                       color: value,
                                       size: 60,
                                     ),
@@ -165,7 +165,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Icon(
-                                  RadioProgressIndicator.dif_mid,
+                                  RadioProgressIndicator.difMid,
                                   color: value,
                                   size: 60,
                                 ),
@@ -220,7 +220,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                   child: FittedBox(
                                     fit: BoxFit.fitWidth,
                                     child: Icon(
-                                      RadioProgressIndicator.dif_hard,
+                                      RadioProgressIndicator.difHard,
                                       color: value,
                                       size: 60,
                                     ),

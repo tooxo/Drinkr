@@ -1,7 +1,8 @@
 import 'dart:ui';
 
 import 'package:drinkr/utils/custom_icons.dart';
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:drinkr/utils/purchases.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +12,17 @@ import 'package:progress_state_button/progress_button.dart';
 import 'gradient.dart';
 import 'icon_list_tile.dart';
 
+class ExpandedController extends ExpandableController {}
+
 class BuyPremium extends StatelessWidget {
+  final bool modal;
+
+  BuyPremium({this.modal = false}) {
+    expandableController = ExpandableController(initialExpanded: modal);
+  }
+
+  late final ExpandableController expandableController;
+
   Widget buildListTile(IconData icon, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
@@ -41,8 +52,11 @@ class BuyPremium extends StatelessWidget {
         Color.fromRGBO(253, 187, 45, 1),
       ],
       child: ExpandablePanel(
+        controller: expandableController,
         theme: ExpandableThemeData(
           hasIcon: false,
+          tapHeaderToExpand: !modal,
+          tapBodyToExpand: !modal,
         ),
         header: Padding(
           padding: const EdgeInsets.symmetric(
@@ -52,7 +66,7 @@ class BuyPremium extends StatelessWidget {
           child: IconListTile(
             title: "buyPremium".tr(),
             subtitle: "buyPremiumDescription".tr(),
-            iconData: CustomIcons.game_mode_custom,
+            iconData: CustomIcons.gameModeCustom,
             // iconSize: 55,
             onTap: () {},
           ),
@@ -72,9 +86,9 @@ class BuyPremium extends StatelessWidget {
                 thickness: 1,
               ),
             ),
-            buildListTile(CustomIcons.no_ad, "premiumDisableAds"),
-            buildListTile(CustomIcons.game_mode_song, "premiumAddPlaylists"),
-            buildListTile(CustomIcons.game_mode_custom, "premiumCustom"),
+            buildListTile(CustomIcons.noAd, "premiumDisableAds"),
+            buildListTile(CustomIcons.gameModeSong, "premiumAddPlaylists"),
+            buildListTile(CustomIcons.gameModeCustom, "premiumCustom"),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: Divider(
@@ -83,11 +97,18 @@ class BuyPremium extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8.0,
-              ),
+              padding: modal
+                  ? const EdgeInsets.only(top: 8.0)
+                  : const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                    ),
               child: ProgressButton.icon(
-                onPressed: () => print("purchase"),
+                onPressed: modal
+                    ? () async {
+                        bool simpleSuccess = await Purchases.purchasePremium();
+                        if (simpleSuccess) Navigator.of(context).pop();
+                      }
+                    : Purchases.purchasePremium,
                 state: ButtonState.idle,
                 textStyle: GoogleFonts.nunito(
                   color: Colors.white,
@@ -116,10 +137,12 @@ class BuyPremium extends StatelessWidget {
                 },
               ),
             ),
-            Icon(
-              Icons.arrow_drop_up_rounded,
-              color: Colors.white,
-            ),
+            modal
+                ? Container()
+                : Icon(
+                    Icons.arrow_drop_up_rounded,
+                    color: Colors.white,
+                  ),
           ],
         ),
       ),

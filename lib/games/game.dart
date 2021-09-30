@@ -24,7 +24,7 @@ class BasicGame extends StatefulWidget {
 
   final int drinkingDisplay = 2;
 
-  final GameType type = GameType.UNDEFINED;
+  final GameType type = GameType.undefined;
 
   final DifficultyType difficulty;
 
@@ -41,7 +41,7 @@ class BasicGame extends StatefulWidget {
   @mustCallSuper
   BasicGame(this.selectedPlayer, this.difficulty, this.text) {
     List<dynamic> resp = Drinking.generateRandomAmount(difficulty);
-    this.drinking
+    drinking
       ..add(resp[0])
       ..add(resp[1]);
   }
@@ -74,31 +74,31 @@ class BasicGameState extends State<BasicGame>
 
   String generateMessage() {
     switch (widget.type) {
-      case GameType.NEVER_HAVE_I_EVER:
+      case GameType.neverHaveIEver:
         {
           return "neverHaveIEverExplanation".tr();
         }
-      case GameType.GUESS:
+      case GameType.guess:
         {
           return "guessingExplanation".tr();
         }
-      case GameType.GUESS_THE_SONG:
+      case GameType.guessTheSong:
         {
           return "guessTheSongExplanation".tr();
         }
-      case GameType.OPINION:
+      case GameType.opinion:
         {
           return "wouldYouRatherExplanation".tr();
         }
-      case GameType.QUIZ:
+      case GameType.quiz:
         {
           return "bigBrainQuizExplanation".tr();
         }
-      case GameType.TRUTH:
+      case GameType.truth:
         {
           return "truthOrDareExplanation".tr();
         }
-      case GameType.WHO_WOULD_RATHER:
+      case GameType.whoWouldRather:
         {
           return "whoWouldRatherExplanation".tr();
         }
@@ -279,7 +279,7 @@ class BasicGameState extends State<BasicGame>
           widget.backgroundColor1,
           widget.backgroundColor2,
         ],
-        direction: GradientDirection.HORIZONTAL,
+        direction: GradientDirection.horizontal,
       ),
     );
   }
@@ -321,14 +321,14 @@ class BasicGameState extends State<BasicGame>
                       ),
                     ),
                   ),
-                  this.showSolution
+                  showSolution
                       ? Container()
                       : ShowUpAnimation(
                           child: MaterialButton(
                             elevation: 0,
                             onPressed: () {
                               setState(() {
-                                this.showSolution = true;
+                                showSolution = true;
                                 animationController.forward();
                               });
                             },

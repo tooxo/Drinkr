@@ -15,9 +15,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/navigator.dart';
-import 'package:flutter/src/widgets/pages.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +39,7 @@ class GameController {
   GameController(this.rounds, this.enabledGames, this.players, this.context,
       this.filterAdultQuestions);
 
-  final List<TypeClass<BaseType>> available_games = [
+  final List<TypeClass<BaseType>> availableGames = [
     NeverHaveIEverType(),
     QuizType(),
     OpinionType(),
@@ -56,12 +53,12 @@ class GameController {
   Spotify spotify = Spotify();
 
   List<Game> gamePlan = [];
-  Map<GameType, List> texts = Map<GameType, List>();
-  Map<GameType, int> maxTexts = Map<GameType, int>();
+  Map<GameType, List> texts = <GameType, List>{};
+  Map<GameType, int> maxTexts = <GameType, int>{};
 
   int countOccurrencesOfSpecificGameInMap(GameType gameType) {
     int count = 0;
-    for (Game game in this.gamePlan) {
+    for (Game game in gamePlan) {
       if (game.type == gameType) {
         count++;
       }
@@ -123,10 +120,10 @@ class GameController {
 
   Future<bool> _populateTextsMap() async {
     int selectedModes = (await SharedPreferences.getInstance())
-            .getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ??
-        SettingsState.BOTH;
+            .getInt(SettingsState.settingInclusionOfQuestions) ??
+        SettingsState.both;
     for (GameType gameType in enabledGames) {
-      if (gameType == GameType.GUESS_THE_SONG) {
+      if (gameType == GameType.guessTheSong) {
         if (await checkConnection()) {
           /*List<String> urls = [];
           if (selectedModes == SettingsState.ONLY_INCLUDED ||
@@ -138,7 +135,7 @@ class GameController {
               selectedModes == SettingsState.BOTH) {
             urls.addAll(await getLocalFiles(gameType));
           }*/
-          List<String> urls = SpotifyStorage.playlists_box.values
+          List<String> urls = SpotifyStorage.playlistsBox.values
               .where(
                 (Playlist e) => e.enabled,
               )
@@ -158,16 +155,16 @@ class GameController {
           }
 
           texts[gameType] = await buildSpotify(urls, spotify);
-          List<Song> missingSongs = texts[GameType.GUESS_THE_SONG]!
+          List<Song> missingSongs = texts[GameType.guessTheSong]!
               .where((element) =>
                   element.name == null ||
                   element.id == null ||
                   element.previewUrl == null)
               .map((e) => e as Song)
               .toList();
-          texts[GameType.GUESS_THE_SONG]!
+          texts[GameType.guessTheSong]!
               .removeWhere((element) => missingSongs.contains(element as Song));
-          missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]!
+          missingSongs.map((e) async => texts[GameType.guessTheSong]!
               .add(await spotify.fillMissingPreviewUrls(e)));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -179,38 +176,38 @@ class GameController {
               ),
             ),
           );
-          this.texts[gameType] = [];
+          texts[gameType] = [];
         }
         continue;
       }
 
-      if (gameType == GameType.TRUTH) {
-        texts[GameType.TRUTH] = [];
-        texts[GameType.DARE] = [];
+      if (gameType == GameType.truth) {
+        texts[GameType.truth] = [];
+        texts[GameType.dare] = [];
 
-        if (selectedModes == SettingsState.ONLY_INCLUDED ||
-            selectedModes == SettingsState.BOTH) {
-          texts[GameType.TRUTH]!.addAll(await getIncludedFiles(
-              GameType.TRUTH, context, this.filterAdultQuestions));
-          texts[GameType.DARE]!.addAll(await getIncludedFiles(
-              GameType.DARE, context, this.filterAdultQuestions));
+        if (selectedModes == SettingsState.onlyIncluded ||
+            selectedModes == SettingsState.both) {
+          texts[GameType.truth]!.addAll(await getIncludedFiles(
+              GameType.truth, context, filterAdultQuestions));
+          texts[GameType.dare]!.addAll(await getIncludedFiles(
+              GameType.dare, context, filterAdultQuestions));
         }
-        if (selectedModes == SettingsState.ONLY_CUSTOM ||
-            selectedModes == SettingsState.BOTH) {
-          texts[GameType.TRUTH]!.addAll(await getLocalFiles(GameType.TRUTH));
-          texts[GameType.DARE]!.addAll(await getLocalFiles(GameType.DARE));
+        if (selectedModes == SettingsState.onlyCustom ||
+            selectedModes == SettingsState.both) {
+          texts[GameType.truth]!.addAll(await getLocalFiles(GameType.truth));
+          texts[GameType.dare]!.addAll(await getLocalFiles(GameType.dare));
         }
         continue;
       }
 
       texts[gameType] = [];
-      if (selectedModes == SettingsState.ONLY_INCLUDED ||
-          selectedModes == SettingsState.BOTH) {
+      if (selectedModes == SettingsState.onlyIncluded ||
+          selectedModes == SettingsState.both) {
         texts[gameType]!.addAll(await getIncludedFiles(
-            gameType, context, this.filterAdultQuestions));
+            gameType, context, filterAdultQuestions));
       }
-      if (selectedModes == SettingsState.ONLY_CUSTOM ||
-          selectedModes == SettingsState.BOTH) {
+      if (selectedModes == SettingsState.onlyCustom ||
+          selectedModes == SettingsState.both) {
         texts[gameType]!.addAll(await getLocalFiles(gameType));
       }
     }
@@ -242,8 +239,8 @@ class GameController {
       if (p == null) {
         continue;
       }
-      for (String track_id in p.song_ids) {
-        Song? track = await SpotifyStorage.getFromSpotifyCache(track_id);
+      for (String trackId in p.songIds) {
+        Song? track = await SpotifyStorage.getFromSpotifyCache(trackId);
         if (track != null) {
           if (!response.contains(track)) {
             response.add(track);
@@ -255,16 +252,16 @@ class GameController {
   }
 
   Future<bool> generateNormalPlan() async {
-    List<TypeClass<BaseType>> availableGamesBackup = available_games.toList();
-    while (this.gamePlan.length < rounds) {
+    List<TypeClass<BaseType>> availableGamesBackup = availableGames.toList();
+    while (gamePlan.length < rounds) {
       TypeClass<BaseType> game;
-      if (this.texts.isEmpty) {
+      if (texts.isEmpty) {
         await _populateTextsMap();
       }
-      availableGamesBackup = available_games
+      availableGamesBackup = availableGames
           .where((element) =>
               enabledGames.contains(element.type) &&
-              this.texts[element.type]!.isNotEmpty)
+              texts[element.type]!.isNotEmpty)
           .toList();
       GameType gameType;
       do {
@@ -272,40 +269,40 @@ class GameController {
           return true;
         }
         dynamic aa = availableGamesBackup
-            .where((element) => this.texts[element.type]!.isNotEmpty)
+            .where((element) => texts[element.type]!.isNotEmpty)
             .toList();
         game = aa[Random.secure().nextInt(availableGamesBackup
-            .where((element) => this.texts[element.type]!.isNotEmpty)
+            .where((element) => texts[element.type]!.isNotEmpty)
             .toList()
             .length)];
 
         gameType = game.type;
-        if (game.type == GameType.TRUTH) {
+        if (game.type == GameType.truth) {
           int count = countOccurrencesOfSpecificGameInMap(game.type);
-          if (count == this.maxTexts[game.type] ||
-              count >= maxTexts[GameType.TRUTH]! ||
-              count >= maxTexts[GameType.DARE]!) {
+          if (count == maxTexts[game.type] ||
+              count >= maxTexts[GameType.truth]! ||
+              count >= maxTexts[GameType.dare]!) {
             gameType = GameType
-                .UNDEFINED; // provoke a rerun, because no texts are remaining
+                .undefined; // provoke a rerun, because no texts are remaining
             availableGamesBackup.remove(game);
           }
         } else {
           if (countOccurrencesOfSpecificGameInMap(gameType) ==
-              this.maxTexts[game.type]) {
+              maxTexts[game.type]) {
             gameType = GameType
-                .UNDEFINED; // provoke a rerun, because no texts are remaining
+                .undefined; // provoke a rerun, because no texts are remaining
             availableGamesBackup.remove(game);
           }
         }
       } while ((gameType ==
-                  (this.gamePlan.isNotEmpty
-                      ? this.gamePlan[this.gamePlan.length - 1].type
+                  (gamePlan.isNotEmpty
+                      ? gamePlan[gamePlan.length - 1].type
                       : null) &&
               availableGamesBackup.length > 1) ||
-          gameType == GameType.UNDEFINED);
-      this.gamePlan.add(Game(game.constructorFunction, game.type));
+          gameType == GameType.undefined);
+      gamePlan.add(Game(game.constructorFunction, game.type));
     }
-    return this.gamePlan.isNotEmpty;
+    return gamePlan.isNotEmpty;
   }
 
   BannerAd? bannerAd;
@@ -386,21 +383,21 @@ class GameController {
           await _populateTextsMap();
         }
         dynamic randomlyChosenText;
-        if (game.type == GameType.TRUTH &&
-            texts[GameType.TRUTH]!.isNotEmpty &&
-            texts[GameType.DARE]!.isNotEmpty) {
-          String randomTextTruth = texts[GameType.TRUTH]![
-              Random.secure().nextInt(texts[GameType.TRUTH]!.length)];
+        if (game.type == GameType.truth &&
+            texts[GameType.truth]!.isNotEmpty &&
+            texts[GameType.dare]!.isNotEmpty) {
+          String randomTextTruth = texts[GameType.truth]![
+              Random.secure().nextInt(texts[GameType.truth]!.length)];
 
-          String randomTextDare = texts[GameType.DARE]![
-              Random.secure().nextInt(texts[GameType.DARE]!.length)];
+          String randomTextDare = texts[GameType.dare]![
+              Random.secure().nextInt(texts[GameType.dare]!.length)];
 
-          texts[GameType.TRUTH]!.remove(randomTextTruth);
-          texts[GameType.DARE]!.remove(randomTextDare);
+          texts[GameType.truth]!.remove(randomTextTruth);
+          texts[GameType.dare]!.remove(randomTextDare);
 
           randomlyChosenText =
               json.encode({"truth": randomTextTruth, "dare": randomTextDare});
-        } else if (game.type == GameType.GUESS_THE_SONG) {
+        } else if (game.type == GameType.guessTheSong) {
           try {
             Song randomSong = texts[game.type]![
                 Random.secure().nextInt(texts[game.type]!.length)];
@@ -429,7 +426,7 @@ class GameController {
         try {
           if (randomlyChosenText.toString().trim() == "") throw Exception();
 
-          if (game.type == GameType.TRUTH) {
+          if (game.type == GameType.truth) {
             dynamic jsonEncoded = json.decode(randomlyChosenText);
             if (!jsonEncoded.keys.contains("truth") ||
                 !jsonEncoded.keys.contains("dare")) {

@@ -1,29 +1,23 @@
 class Player {
-  String _name;
+  String name;
 
-  set name(String value) {
-    _name = value;
-  }
-
-  Player(this._name);
-
-  String get name {
-    return this._name;
-  }
+  Player(this.name);
 
   @override
   String toString() {
-    return this.name;
+    return name;
   }
 
   @override
   bool operator ==(other) {
     if (other is Player) {
-      return this.name == other.name;
+      return name == other.name;
     }
     return false;
   }
 
   @override
+  // ignore: unnecessary_overrides
   int get hashCode => super.hashCode;
+
 }

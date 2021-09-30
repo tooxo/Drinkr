@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum GradientDirection { HORIZONTAL, VERTICAL }
+enum GradientDirection { horizontal, vertical }
 
 class ColorGradient extends StatelessWidget {
   final List<Color> colors;
@@ -13,7 +13,7 @@ class ColorGradient extends StatelessWidget {
     required this.colors,
     this.child,
     this.roundness = 0,
-    this.direction = GradientDirection.HORIZONTAL,
+    this.direction = GradientDirection.horizontal,
   }) : super(key: key);
 
   @override
@@ -21,10 +21,10 @@ class ColorGradient extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: direction == GradientDirection.HORIZONTAL
+          begin: direction == GradientDirection.horizontal
               ? Alignment.centerLeft
               : Alignment.topCenter,
-          end: direction == GradientDirection.HORIZONTAL
+          end: direction == GradientDirection.horizontal
               ? Alignment.centerRight
               : Alignment.bottomCenter,
           colors: colors,

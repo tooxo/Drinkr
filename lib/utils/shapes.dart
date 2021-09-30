@@ -41,7 +41,7 @@ class TopShapePainter extends ShapeBorder {
 
   @override
   Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
-    return this.getPath(rect, textDirection: textDirection);
+    return getPath(rect, textDirection: textDirection);
   }
 
   Path getPath(Rect rect, {TextDirection? textDirection}) {
@@ -58,7 +58,7 @@ class TopShapePainter extends ShapeBorder {
 
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    return this.getPath(rect, textDirection: textDirection);
+    return getPath(rect, textDirection: textDirection);
   }
 
   @override
@@ -231,8 +231,8 @@ class DividerPainter extends ShapeBorder {
     double offsetB = (rect.width * sin((degree * pi) / 180.0)) /
         sin(((90 - degree) * pi) / 180.0);
     return Path()
-      ..moveTo(0, this.offsetY)
-      ..lineTo(rect.width, this.offsetY - offsetB);
+      ..moveTo(0, offsetY)
+      ..lineTo(rect.width, offsetY - offsetB);
   }
 
   @override

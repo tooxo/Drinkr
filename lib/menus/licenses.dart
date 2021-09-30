@@ -14,7 +14,7 @@ class Licenses extends StatefulWidget {
 
 class LicensesState extends State<Licenses> {
   List<List<String>> items = [];
-  Map<String, List<List<String>>> itemMap = Map<String, List<List<String>>>();
+  Map<String, List<List<String>>> itemMap = <String, List<List<String>>>{};
 
   void populateItems() async {
     await LicenseRegistry.licenses.forEach((license) {
@@ -205,6 +205,7 @@ class LicensesState extends State<Licenses> {
                           data: ThemeData(
                               textTheme: TextTheme(
                                   subtitle1: TextStyle(color: Colors.white)),
+                              // ignore: deprecated_member_use
                               accentColor: Colors.white,
                               unselectedWidgetColor: Colors.white),
                           child: ExpansionTile(

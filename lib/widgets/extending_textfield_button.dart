@@ -23,10 +23,10 @@ class ExtendingTextFieldButton extends StatefulWidget {
 }
 
 enum CurrentState {
-  IDLE,
-  CHECKING,
-  SUCCESS,
-  FAILURE,
+  idle,
+  checking,
+  success,
+  failure,
 }
 
 class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
@@ -36,7 +36,7 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
 
   String? errorText;
 
-  CurrentState currentState = CurrentState.IDLE;
+  CurrentState currentState = CurrentState.idle;
 
   @override
   void initState() {
@@ -70,18 +70,18 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
 
   Future<bool> check() async {
     setState(() {
-      currentState = CurrentState.CHECKING;
+      currentState = CurrentState.checking;
     });
     String? id = Spotify.getIdFromUrl(textEditingController.text);
 
     if (id == null) {
-      currentState = CurrentState.FAILURE;
+      currentState = CurrentState.failure;
       errorText = "not a spotify playlist url";
       return false;
     }
 
-    if (SpotifyStorage.playlists_box.keys.contains(id)) {
-      currentState = CurrentState.FAILURE;
+    if (SpotifyStorage.playlistsBox.keys.contains(id)) {
+      currentState = CurrentState.failure;
       errorText = "playlist duplicate";
       return false;
     }
@@ -90,7 +90,7 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
         await Spotify.playlistExists("https://open.spotify.com/playlist/$id");
 
     if (!playlistExists) {
-      currentState = CurrentState.FAILURE;
+      currentState = CurrentState.failure;
       errorText = "playlist not found";
       return false;
     }
@@ -132,7 +132,7 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
                 ),
               ),
             ),
-            currentState == CurrentState.SUCCESS
+            currentState == CurrentState.success
                 ? Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 48.0),
@@ -162,7 +162,7 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
                     flex: 1,
                   )
                 : Container(),
-            currentState == CurrentState.FAILURE
+            currentState == CurrentState.failure
                 ? Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 48.0),
@@ -257,7 +257,7 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
                           ),
                         ),
                       ),
-                      currentState == CurrentState.CHECKING
+                      currentState == CurrentState.checking
                           ? Padding(
                               padding: const EdgeInsets.only(left: 9.0),
                               child: Container(
@@ -296,7 +296,7 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
                                       }
                                       await controller.reverse();
                                       setState(() {
-                                        currentState = CurrentState.SUCCESS;
+                                        currentState = CurrentState.success;
                                       });
                                     } else {
                                       await controller.reverse();
@@ -309,7 +309,7 @@ class _ExtendingTextFieldButtonState extends State<ExtendingTextFieldButton>
                                       setState(() {});
                                     } else {
                                       setState(() {
-                                        currentState = CurrentState.IDLE;
+                                        currentState = CurrentState.idle;
                                       });
                                       unawaited(controller.forward());
                                     }

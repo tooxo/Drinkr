@@ -59,13 +59,13 @@ class PlaylistAdapter extends TypeAdapter<Playlist> {
     return Playlist(
       id: fields[0] as String,
       name: fields[1] as String,
-      creator_name: fields[2] as String,
-      image_url: fields[3] as String,
+      creatorName: fields[2] as String,
+      imageUrl: fields[3] as String,
       snapshotId: fields[5] as String,
       lastFetch: fields[6] as DateTime,
       enabled: fields[7] as bool,
       included: fields[8] as bool,
-    )..song_ids = (fields[4] as List).cast<String>();
+    )..songIds = (fields[4] as List).cast<String>();
   }
 
   @override
@@ -77,11 +77,11 @@ class PlaylistAdapter extends TypeAdapter<Playlist> {
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.creator_name)
+      ..write(obj.creatorName)
       ..writeByte(3)
-      ..write(obj.image_url)
+      ..write(obj.imageUrl)
       ..writeByte(4)
-      ..write(obj.song_ids)
+      ..write(obj.songIds)
       ..writeByte(5)
       ..write(obj.snapshotId)
       ..writeByte(6)

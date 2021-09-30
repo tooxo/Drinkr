@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 
@@ -59,7 +58,7 @@ class GameSelectTileState extends State<GameSelectTile> {
     if (!widget.enabled) {
       return;
     }
-    widget.onGameStateChange(CurrentGameState.LOADING);
+    widget.onGameStateChange(CurrentGameState.loading);
     GameController gameController = GameController(
       50,
       widget.enabledGames,
@@ -71,29 +70,29 @@ class GameSelectTileState extends State<GameSelectTile> {
     bool success = await gameController.prepare();
     if (!success) {
       buttonState = ButtonState.fail;
-      widget.onGameStateChange(CurrentGameState.STOPPED);
+      widget.onGameStateChange(CurrentGameState.stopped);
       return;
     } else {
-      widget.onGameStateChange(CurrentGameState.IN_GAME);
+      widget.onGameStateChange(CurrentGameState.inGame);
     }
 
     DifficultyType difficultyType;
     switch (selectedDifficulty) {
       case 0:
-        difficultyType = DifficultyType.EASY;
+        difficultyType = DifficultyType.easy;
         break;
       case 1:
-        difficultyType = DifficultyType.MEDIUM;
+        difficultyType = DifficultyType.medium;
         break;
       case 2:
-        difficultyType = DifficultyType.HARD;
+        difficultyType = DifficultyType.hard;
         break;
       default:
         return;
     }
 
     await gameController.start(difficultyType);
-    widget.onGameStateChange(CurrentGameState.STOPPED);
+    widget.onGameStateChange(CurrentGameState.stopped);
     buttonState = ButtonState.idle;
   }
 
@@ -146,12 +145,12 @@ class GameSelectTileState extends State<GameSelectTile> {
               adultSwitchEnabled() ? () => toggleAdultQuestions(false) : null,
           child: ListTile(
             title: Text(
-              "Include 18+ ?",
+              "includeAdult",
               style: GoogleFonts.nunito(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
-            ),
+            ).tr(),
             trailing: CustomSwitch(
               value: useAdultQuestions && adultSwitchEnabled(),
               enabled: widget.enabled,

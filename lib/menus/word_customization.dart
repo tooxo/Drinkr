@@ -22,7 +22,7 @@ class WordCustomization extends StatefulWidget {
 }
 
 class WordCustomizationState extends State<WordCustomization> {
-  Map<GameType, List<String>> textsToDisplay = Map<GameType, List<String>>();
+  Map<GameType, List<String>> textsToDisplay = <GameType, List<String>>{};
   bool init = false;
   List<GameType> enabledGameTypes = GameType.values;
 
@@ -53,7 +53,7 @@ class WordCustomizationState extends State<WordCustomization> {
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((timeStamp) async {
       // Init the texts to display
-      this.reloadTexts();
+      reloadTexts();
     });
   }
 
@@ -84,7 +84,7 @@ class WordCustomizationState extends State<WordCustomization> {
   }
 
   String? dropdownValue =
-      gameTypeToGameTypeClass(GameType.QUIZ).translatedTitle;
+      gameTypeToGameTypeClass(GameType.quiz).translatedTitle;
   String tf1Value = "";
   String tf2Value = "";
 
@@ -103,7 +103,7 @@ class WordCustomizationState extends State<WordCustomization> {
   }
 
   Future<bool> spotifyCheckerWrapper() async {
-    if (getSelectedType() == GameType.GUESS_THE_SONG) {
+    if (getSelectedType() == GameType.guessTheSong) {
       if (!(await checkConnection())) {
         return true;
       }
@@ -169,123 +169,140 @@ class WordCustomizationState extends State<WordCustomization> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                            child: !init
-                                ? Center(
-                                    child: SpinKitFadingCircle(
-                                      color: Colors.black,
-                                    ),
-                                  )
-                                : textsToDisplay.isEmpty
-                                    ? Text(
-                                        "noCustomTexts",
-                                        style: GoogleFonts.caveatBrush(
-                                            fontSize: 30),
-                                      ).tr()
-                                    : Container(
-                                        height: 0.95 * c.maxHeight +
-                                            distanceOffset -
-                                            3,
-                                        width: c.maxWidth,
-                                        child: ClipPath(
-                                          clipper: BottomClipper(calcDegree),
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: <Widget>[
-                                                Container(
-                                                  color: getColor(),
-                                                  height: distanceOffset,
-                                                ),
-                                                for (GameType type
-                                                    in textsToDisplay.keys)
-                                                  textsToDisplay[type]!
-                                                          .isNotEmpty
-                                                      ? Container(
-                                                          width: c.maxWidth,
-                                                          color:
-                                                              gameTypeToGameTypeClass(
-                                                                      type)
-                                                                  .primaryColor,
-                                                          child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Container(
-                                                                  width: c
-                                                                      .maxWidth,
-                                                                  child: Text(
-                                                                    gameTypeToGameTypeClass(
-                                                                            type)
-                                                                        .translatedTitle,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: GoogleFonts.caveatBrush(
+                          child: !init
+                              ? Center(
+                                  child: SpinKitFadingCircle(
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : textsToDisplay.isEmpty
+                                  ? Text(
+                                      "noCustomTexts",
+                                      style:
+                                          GoogleFonts.caveatBrush(fontSize: 30),
+                                    ).tr()
+                                  : Container(
+                                      height: 0.95 * c.maxHeight +
+                                          distanceOffset -
+                                          3,
+                                      width: c.maxWidth,
+                                      child: ClipPath(
+                                        clipper: BottomClipper(calcDegree),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Container(
+                                                color: getColor(),
+                                                height: distanceOffset,
+                                              ),
+                                              for (GameType type
+                                                  in textsToDisplay.keys)
+                                                textsToDisplay[type]!.isNotEmpty
+                                                    ? Container(
+                                                        width: c.maxWidth,
+                                                        color:
+                                                            gameTypeToGameTypeClass(
+                                                                    type)
+                                                                .primaryColor,
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Container(
+                                                              width: c.maxWidth,
+                                                              child: Text(
+                                                                gameTypeToGameTypeClass(
+                                                                        type)
+                                                                    .translatedTitle,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: GoogleFonts
+                                                                    .caveatBrush(
                                                                         fontSize:
                                                                             60),
-                                                                  ),
-                                                                ),
-                                                                for (String value
-                                                                    in textsToDisplay[
-                                                                        type]!)
-                                                                  Padding(
-                                                                    padding: EdgeInsets.only(
+                                                              ),
+                                                            ),
+                                                            for (String value
+                                                                in textsToDisplay[
+                                                                    type]!)
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
                                                                         left:
                                                                             16,
                                                                         bottom:
                                                                             5),
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Expanded(
-                                                                            flex:
-                                                                                8,
-                                                                            child:
-                                                                                SingleChildScrollView(
-                                                                              scrollDirection: Axis.horizontal,
-                                                                              child: Text(
-                                                                                gameTypeToGameTypeClass(type).hasSolution
-                                                                                    ? value.contains(";")
-                                                                                        ? value.split(";")[0]
-                                                                                        : value
-                                                                                    : value,
-                                                                                textAlign: TextAlign.start,
-                                                                                style: GoogleFonts.caveatBrush(fontSize: 30),
-                                                                              ),
-                                                                            )),
-                                                                        Expanded(
-                                                                            flex:
-                                                                                2,
-                                                                            child: Material(
-                                                                                color: Colors.transparent,
-                                                                                child: Center(
-                                                                                    child: IconButton(
-                                                                                  onPressed: () => this.deleteItem(type, value),
-                                                                                  splashColor: Colors.blue,
-                                                                                  highlightColor: Colors.blue,
-                                                                                  icon: Icon(Icons.delete),
-                                                                                  tooltip: "delete".tr(),
-                                                                                ))))
-                                                                      ],
+                                                                child: Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      flex: 8,
+                                                                      child:
+                                                                          SingleChildScrollView(
+                                                                        scrollDirection:
+                                                                            Axis.horizontal,
+                                                                        child:
+                                                                            Text(
+                                                                          gameTypeToGameTypeClass(type).hasSolution
+                                                                              ? value.contains(";")
+                                                                                  ? value.split(";")[0]
+                                                                                  : value
+                                                                              : value,
+                                                                          textAlign:
+                                                                              TextAlign.start,
+                                                                          style:
+                                                                              GoogleFonts.caveatBrush(fontSize: 30),
+                                                                        ),
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                Divider(
-                                                                  color: Colors
-                                                                      .transparent,
-                                                                )
-                                                              ]))
-                                                      : Container(),
-                                                Container(
-                                                    height: distanceOffset * 2,
-                                                    color: getColor(
-                                                        reverse: true)),
-                                              ],
-                                            ),
+                                                                    Expanded(
+                                                                      flex: 2,
+                                                                      child:
+                                                                          Material(
+                                                                        color: Colors
+                                                                            .transparent,
+                                                                        child:
+                                                                            Center(
+                                                                          child:
+                                                                              IconButton(
+                                                                            onPressed: () =>
+                                                                                deleteItem(type, value),
+                                                                            splashColor:
+                                                                                Colors.blue,
+                                                                            highlightColor:
+                                                                                Colors.blue,
+                                                                            icon:
+                                                                                Icon(Icons.delete),
+                                                                            tooltip:
+                                                                                "delete".tr(),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            Divider(
+                                                              color: Colors
+                                                                  .transparent,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              Container(
+                                                height: distanceOffset * 2,
+                                                color: getColor(reverse: true),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ))
+                                      ),
+                                    ),
+                        )
                       ],
                     ),
                   ),
@@ -337,7 +354,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                         ),
                                         validator: (txt) {
                                           if (getSelectedType() ==
-                                              GameType.GUESS_THE_SONG) {
+                                              GameType.guessTheSong) {
                                             Spotify.getIdFromUrl(txt!) == null
                                                 // ignore: unnecessary_statements
                                                 ? "invalidUrl".tr()
@@ -404,7 +421,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                       items: <String>[
                                         for (GameType type in GameType.values
                                             .where((element) =>
-                                                element != GameType.UNDEFINED))
+                                                element != GameType.undefined))
                                           gameTypeToGameTypeClass(type)
                                               .translatedTitle
                                       ].map((String value) {
@@ -438,11 +455,11 @@ class WordCustomizationState extends State<WordCustomization> {
                                       icon: Icon(buttonEnabled
                                           ? Icons.add
                                           : Icons.cached),
-                                      onPressed: this.buttonEnabled
+                                      onPressed: buttonEnabled
                                           ? () async {
                                               if (getSelectedType() ==
-                                                  GameType.GUESS_THE_SONG) {
-                                                this.buttonEnabled = false;
+                                                  GameType.guessTheSong) {
+                                                buttonEnabled = false;
                                               }
                                               if (_formKeyBig.currentState!
                                                       .validate() &&
@@ -465,7 +482,7 @@ class WordCustomizationState extends State<WordCustomization> {
                                                     getSelectedType());
 
                                                 Navigator.of(context).pop(true);
-                                                this.reloadTexts();
+                                                reloadTexts();
                                               }
                                               buttonEnabled = true;
                                             }

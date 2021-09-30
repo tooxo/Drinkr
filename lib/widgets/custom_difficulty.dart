@@ -34,13 +34,13 @@ class CustomDifficultyState extends State<CustomDifficulty> {
     int sipsB = 0;
 
     if (sipsEnabled) {
-      sipsA = this.startSip;
-      sipsB = this.endSip;
+      sipsA = startSip;
+      sipsB = endSip;
     }
 
     if (shotsEnabled) {
-      shotsA = this.startShot;
-      shotsB = this.endShot;
+      shotsA = startShot;
+      shotsB = endShot;
     }
 
     return DifficultyType(
@@ -48,21 +48,21 @@ class CustomDifficultyState extends State<CustomDifficulty> {
       endShots: shotsB,
       startSips: sipsA,
       endSips: sipsB,
-      name: this.name,
+      name: name,
     );
   }
 
   bool illegal() {
-    if (this.name.isEmpty) {
+    if (name.isEmpty) {
       return true;
     }
-    if (this.sipsEnabled) {
-      if (this.startSip > this.endSip) {
+    if (sipsEnabled) {
+      if (startSip > endSip) {
         return true;
       }
     }
-    if (this.shotsEnabled) {
-      if (this.startShot > this.endShot) {
+    if (shotsEnabled) {
+      if (startShot > endShot) {
         return true;
       }
     }
@@ -181,7 +181,7 @@ class CustomDifficultyState extends State<CustomDifficulty> {
             ),
             border: InputBorder.none,
           ),
-          onChanged: (String newValue) => setState(() => this.name = newValue),
+          onChanged: (String newValue) => setState(() => name = newValue),
         ),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -203,9 +203,9 @@ class CustomDifficultyState extends State<CustomDifficulty> {
                   "Schlück(e)",
                   style: GoogleFonts.nunito(
                     fontSize: 25,
-                    color: this.sipsEnabled
-                        ? this.enabledColor
-                        : this.disabledColor,
+                    color: sipsEnabled
+                        ? enabledColor
+                        : disabledColor,
                   ),
                 ).tr(),
                 Row(
@@ -216,42 +216,42 @@ class CustomDifficultyState extends State<CustomDifficulty> {
                           icon: Icon(
                             Icons.add_circle_outline,
                             size: 30,
-                            color: this.sipsEnabled
-                                ? this.enabledColor
-                                : this.disabledColor,
+                            color: sipsEnabled
+                                ? enabledColor
+                                : disabledColor,
                           ),
                           onPressed:
-                              this.sipsEnabled ? incrementStartSips : null,
+                              sipsEnabled ? incrementStartSips : null,
                         ),
                         Text(
                           "$startSip",
                           style: GoogleFonts.nunito(
                             textStyle: TextStyle(),
                             fontSize: 25,
-                            color: this.sipsEnabled
-                                ? this.enabledColor
-                                : this.disabledColor,
+                            color: sipsEnabled
+                                ? enabledColor
+                                : disabledColor,
                           ),
                         ),
                         IconButton(
                             icon: Icon(
                               Icons.remove_circle_outline,
                               size: 30,
-                              color: this.sipsEnabled
-                                  ? this.enabledColor
-                                  : this.disabledColor,
+                              color: sipsEnabled
+                                  ? enabledColor
+                                  : disabledColor,
                             ),
                             onPressed:
-                                this.sipsEnabled ? decrementStartSips : null),
+                                sipsEnabled ? decrementStartSips : null),
                       ],
                     ),
                     Icon(
                       Icons.remove,
-                      color: this.sipsEnabled
-                          ? this.startSip > this.endSip
+                      color: sipsEnabled
+                          ? startSip > endSip
                               ? Colors.red
-                              : this.enabledColor
-                          : this.disabledColor,
+                              : enabledColor
+                          : disabledColor,
                     ),
                     Column(
                       children: [
@@ -259,32 +259,32 @@ class CustomDifficultyState extends State<CustomDifficulty> {
                             icon: Icon(
                               Icons.add_circle_outline,
                               size: 30,
-                              color: this.sipsEnabled
-                                  ? this.enabledColor
-                                  : this.disabledColor,
+                              color: sipsEnabled
+                                  ? enabledColor
+                                  : disabledColor,
                             ),
                             onPressed:
-                                this.sipsEnabled ? incrementEndSips : null),
+                                sipsEnabled ? incrementEndSips : null),
                         Text(
                           "$endSip",
                           style: GoogleFonts.nunito(
                             textStyle: TextStyle(),
                             fontSize: 25,
-                            color: this.sipsEnabled
-                                ? this.enabledColor
-                                : this.disabledColor,
+                            color: sipsEnabled
+                                ? enabledColor
+                                : disabledColor,
                           ),
                         ),
                         IconButton(
                             icon: Icon(
                               Icons.remove_circle_outline,
                               size: 30,
-                              color: this.sipsEnabled
-                                  ? this.enabledColor
-                                  : this.disabledColor,
+                              color: sipsEnabled
+                                  ? enabledColor
+                                  : disabledColor,
                             ),
                             onPressed:
-                                this.sipsEnabled ? decrementEndSips : null),
+                                sipsEnabled ? decrementEndSips : null),
                       ],
                     ),
                   ],
@@ -310,9 +310,9 @@ class CustomDifficultyState extends State<CustomDifficulty> {
                   style: GoogleFonts.nunito(
                     textStyle: TextStyle(),
                     fontSize: 25,
-                    color: this.shotsEnabled
-                        ? this.enabledColor
-                        : this.disabledColor,
+                    color: shotsEnabled
+                        ? enabledColor
+                        : disabledColor,
                   ),
                 ).tr(),
                 Row(
@@ -323,40 +323,40 @@ class CustomDifficultyState extends State<CustomDifficulty> {
                             icon: Icon(
                               Icons.add_circle_outline,
                               size: 30,
-                              color: this.shotsEnabled
-                                  ? this.enabledColor
-                                  : this.disabledColor,
+                              color: shotsEnabled
+                                  ? enabledColor
+                                  : disabledColor,
                             ),
                             onPressed:
-                                this.shotsEnabled ? incrementStartShots : null),
+                                shotsEnabled ? incrementStartShots : null),
                         Text(
                           "$startShot",
                           style: GoogleFonts.nunito(
                             fontSize: 25,
-                            color: this.shotsEnabled
-                                ? this.enabledColor
-                                : this.disabledColor,
+                            color: shotsEnabled
+                                ? enabledColor
+                                : disabledColor,
                           ),
                         ),
                         IconButton(
                             icon: Icon(
                               Icons.remove_circle_outline,
                               size: 30,
-                              color: this.shotsEnabled
-                                  ? this.enabledColor
-                                  : this.disabledColor,
+                              color: shotsEnabled
+                                  ? enabledColor
+                                  : disabledColor,
                             ),
                             onPressed:
-                                this.shotsEnabled ? decrementStartShots : null),
+                                shotsEnabled ? decrementStartShots : null),
                       ],
                     ),
                     Icon(
                       Icons.remove,
-                      color: this.shotsEnabled
-                          ? this.startShot > this.endShot
+                      color: shotsEnabled
+                          ? startShot > endShot
                               ? Colors.red
-                              : this.enabledColor
-                          : this.disabledColor,
+                              : enabledColor
+                          : disabledColor,
                     ),
                     Column(
                       children: [
@@ -364,32 +364,32 @@ class CustomDifficultyState extends State<CustomDifficulty> {
                             icon: Icon(
                               Icons.add_circle_outline,
                               size: 30,
-                              color: this.shotsEnabled
-                                  ? this.enabledColor
-                                  : this.disabledColor,
+                              color: shotsEnabled
+                                  ? enabledColor
+                                  : disabledColor,
                             ),
                             onPressed:
-                                this.shotsEnabled ? incrementEndShots : null),
+                                shotsEnabled ? incrementEndShots : null),
                         Text(
                           "$endShot",
                           style: GoogleFonts.nunito(
                             textStyle: TextStyle(),
                             fontSize: 25,
-                            color: this.shotsEnabled
-                                ? this.enabledColor
-                                : this.disabledColor,
+                            color: shotsEnabled
+                                ? enabledColor
+                                : disabledColor,
                           ),
                         ),
                         IconButton(
                             icon: Icon(
                               Icons.remove_circle_outline,
                               size: 30,
-                              color: this.shotsEnabled
-                                  ? this.enabledColor
-                                  : this.disabledColor,
+                              color: shotsEnabled
+                                  ? enabledColor
+                                  : disabledColor,
                             ),
                             onPressed:
-                                this.shotsEnabled ? decrementEndShots : null),
+                                shotsEnabled ? decrementEndShots : null),
                       ],
                     ),
                   ],
@@ -402,7 +402,7 @@ class CustomDifficultyState extends State<CustomDifficulty> {
           Padding(
             padding: EdgeInsets.only(left: 20, right: 20, bottom: 50),
             child: GestureDetector(
-              onTap: this.illegal()
+              onTap: illegal()
                   ? null
                   : () => Navigator.pop(context, generateDifficultyType()),
               child: Container(
@@ -411,7 +411,7 @@ class CustomDifficultyState extends State<CustomDifficulty> {
                   height: 50,
                   width: 350.0,
                   decoration: BoxDecoration(
-                    color: this.illegal()
+                    color: illegal()
                         ? Colors.grey.shade700
                         : Colors.deepOrange,
                     boxShadow: [

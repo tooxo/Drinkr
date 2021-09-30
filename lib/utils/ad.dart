@@ -9,17 +9,15 @@ import 'package:progress_state_button/progress_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-const String ADS_SETTING = "SHOULD_SHOW_ADS_SETTINGS";
-const String ADS_SETTINGS_PERMANENT = "DEACTIVATE_ADS_PERMANENTLY";
-const String AD_DIALOG_SETTING = "SHOULD_SHOW_AD_DIALOG_SETTING";
-const String LAST_AD_DISPLAY = "LAST_TIME_AD_WAS_DISPLAYED_STORE";
+const String adSetting = "SHOULD_SHOW_ADS_SETTINGS";
+const String adSettingPermanent = "DEACTIVATE_ADS_PERMANENTLY";
+const String adDialogSetting = "SHOULD_SHOW_AD_DIALOG_SETTING";
+const String lastAdDisplay = "LAST_TIME_AD_WAS_DISPLAYED_STORE";
 
 Future<bool> shouldShowAds() async {
-  if (!ADS_ENABLED) return false;
+  if (!adsEnabled) return false;
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  int lastMillisSinceEpoch = (preferences.getInt(ADS_SETTING) != null
-      ? preferences.getInt(ADS_SETTING)
-      : 0)!;
+  int lastMillisSinceEpoch = preferences.getInt(adSetting) ?? 0;
   DateTime lastDate = DateTime.fromMillisecondsSinceEpoch(lastMillisSinceEpoch);
   DateTime nowDate = DateTime.now();
 
@@ -27,14 +25,14 @@ Future<bool> shouldShowAds() async {
 }
 
 Future<bool> shouldShowAdDialog() async {
-  if (!ADS_ENABLED) return false;
+  if (!adsEnabled) return false;
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (await Purchases.isPremiumPurchased()) {
     return false;
   }
-  if (preferences.getBool(AD_DIALOG_SETTING) ?? true) {
+  if (preferences.getBool(adDialogSetting) ?? true) {
     DateTime millisSinceLastShow = DateTime.fromMillisecondsSinceEpoch(
-        preferences.getInt(LAST_AD_DISPLAY) ?? 0);
+        preferences.getInt(lastAdDisplay) ?? 0);
     DateTime currentTime = DateTime.now();
     if (currentTime.difference(millisSinceLastShow) > Duration(days: 1)) {
       return true;
@@ -110,7 +108,7 @@ void showAdDialog(BuildContext context) async {
               ).tr(),
               onPressed: () async {
                 await (await SharedPreferences.getInstance())
-                    .setBool(AD_DIALOG_SETTING, false);
+                    .setBool(adDialogSetting, false);
                 Navigator.of(context).pop(true);
               },
             )
@@ -121,20 +119,21 @@ void showAdDialog(BuildContext context) async {
 
 Future<void> deactivateAds() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  await preferences.setInt(ADS_SETTING, DateTime.now().millisecondsSinceEpoch);
+  await preferences.setInt(adSetting, DateTime.now().millisecondsSinceEpoch);
 }
 
 Future<void> showInterstitialAd(
   BuildContext buildContext,
   ValueChanged<ButtonState> valueChanged,
 ) async {
-  if (!ADS_ENABLED) return;
+  if (!adsEnabled) return;
 
   valueChanged(ButtonState.loading);
 
   RewardedAd? ad;
   bool rewarded = false;
 
+  // ignore: prefer_function_declarations_over_variables
   OnUserEarnedRewardCallback onUserEarnedRewardCallback = (
     RewardedAd ad,
     RewardItem rewardItem,

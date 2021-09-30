@@ -11,13 +11,18 @@ import 'package:easy_localization/easy_localization.dart';
 import '../utils/player.dart';
 
 class TruthOrDare extends BasicGame {
+  @override
   final String title = "truthOrDare";
 
+  @override
   final Color backgroundColor1 = Color.fromRGBO(112, 13, 129, 1);
+  @override
   final Color backgroundColor2 = Color.fromRGBO(222, 15, 15, 1);
 
-  final GameType type = GameType.TRUTH;
+  @override
+  final GameType type = GameType.truth;
 
+  @override
   final int drinkingDisplay = 1;
 
   TruthOrDare(Player player, DifficultyType difficulty, String text)
@@ -32,6 +37,7 @@ class TruthOrDare extends BasicGame {
 
 class TruthOrDareState extends BasicGameState {
   bool truth = false;
+  @override
   bool showSolution = false;
 
   @override
@@ -48,7 +54,7 @@ class TruthOrDareState extends BasicGameState {
 
   @override
   Widget buildWithoutSolution() {
-    return this.showSolution
+    return showSolution
         ? Padding(
             padding: const EdgeInsets.only(
               left: 32,
@@ -56,7 +62,7 @@ class TruthOrDareState extends BasicGameState {
               top: 10,
             ),
             child: TextWidget(
-              "${widget.selectedPlayer.name} – ${this.truth ? jsonDecode(widget.mainTitle)["truth"] : jsonDecode(widget.mainTitle)["dare"]}",
+              "${widget.selectedPlayer.name} – ${truth ? jsonDecode(widget.mainTitle)["truth"] : jsonDecode(widget.mainTitle)["dare"]}",
               textColor: widget.textColor,
             ),
           )

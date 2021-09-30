@@ -26,11 +26,11 @@ class Playlist with Comparable<Playlist> {
   @HiveField(1)
   String name;
   @HiveField(2)
-  String creator_name;
+  String creatorName;
   @HiveField(3)
-  String image_url;
+  String imageUrl;
   @HiveField(4)
-  List<String> song_ids = [];
+  List<String> songIds = [];
   @HiveField(5)
   String snapshotId;
   @HiveField(6)
@@ -45,8 +45,8 @@ class Playlist with Comparable<Playlist> {
   Playlist({
     required this.id,
     required this.name,
-    required this.creator_name,
-    required this.image_url,
+    required this.creatorName,
+    required this.imageUrl,
     required this.snapshotId,
     required this.lastFetch,
     required this.enabled,
@@ -55,15 +55,15 @@ class Playlist with Comparable<Playlist> {
 
   @override
   int compareTo(Playlist other) {
-    return this.name.toLowerCase().compareTo(other.name.toLowerCase());
+    return name.toLowerCase().compareTo(other.name.toLowerCase());
   }
 }
 
 enum PlaylistUpdateStrategy {
-  TRUST_CACHE,
-  CHECK_FOR_UPDATE_TIMESTAMP,
-  CHECK_FOR_UPDATE_SNAPSHOT_ID,
-  FULL_FETCH
+  trustCache,
+  checkForUpdateTimestamp,
+  checkForUpdateSnapshotId,
+  fullFetch
 }
 
 class Spotify {
@@ -72,13 +72,13 @@ class Spotify {
   String authString =
       "YTU2OWEwZDczMjEwNGYyOTkyYmFiNTA4Y2YyNzhmNzY6MGQ0ZDhhOGQ2NTc0NDVhOThlN2Y3N2FlNmI1MzgyODk=";
 
-  static const String REGEX_PLAYLIST =
+  static const String regexPlaylist =
       r"(https?://)?(open\.|play\.)spotify\.com/(user/.{,32}/)?(playlist)/([A-Za-z0-9]{22})(\?|$)(si=.{22,23})?\s?";
 
-  static const String REGEX_EMBED = r'"preview_url":"([^"]+)"';
+  static const String regexEmbed = r'"preview_url":"([^"]+)"';
 
   String authKey = "";
-  static const REQUEST_TOKEN_URL = "https://accounts.spotify.com/api/token";
+  static const requestTokenUrl = "https://accounts.spotify.com/api/token";
   DateTime? lastKeyRequest;
 
   static final Spotify _instance = Spotify._privateConstructor();
@@ -88,7 +88,7 @@ class Spotify {
   factory Spotify() => _instance;
 
   static String? getIdFromUrl(String url) {
-    RegExp regExp = RegExp(REGEX_PLAYLIST);
+    RegExp regExp = RegExp(regexPlaylist);
     return regExp.firstMatch(url)?.group(5);
   }
 
@@ -97,13 +97,13 @@ class Spotify {
   }
 
   Future<String> generateAuthKey() async {
-    if (this.authKey != "") {
+    if (authKey != "") {
       if (lastKeyRequest!.difference(DateTime.now()).inMinutes < 50) {
-        return this.authKey;
+        return authKey;
       }
     }
     http.Response response = await http.post(
-      Uri.parse(REQUEST_TOKEN_URL),
+      Uri.parse(requestTokenUrl),
       headers: {
         "Authorization": "Basic $authString",
         "Content-Type": "application/x-www-form-urlencoded",
@@ -111,8 +111,8 @@ class Spotify {
       body: "grant_type=client_credentials&undefined=",
     );
     Map<String, dynamic> jsonResponse = json.decode(response.body);
-    this.authKey = jsonResponse["access_token"];
-    this.lastKeyRequest = DateTime.now();
+    authKey = jsonResponse["access_token"];
+    lastKeyRequest = DateTime.now();
     return jsonResponse["access_token"];
   }
 
@@ -124,21 +124,21 @@ class Spotify {
         SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
 
     String token = await generateAuthKey();
-    String info_url = "https://api.spotify.com/v1/playlists/$playlistId/";
+    String infoUrl = "https://api.spotify.com/v1/playlists/$playlistId/";
 
     http.Response infoResponse = await http
-        .get(Uri.parse(info_url), headers: {"Authorization": "Bearer $token"});
+        .get(Uri.parse(infoUrl), headers: {"Authorization": "Bearer $token"});
     if (infoResponse.statusCode != 200) {
       return null;
     }
 
-    Map<String, dynamic> info_json_response = jsonDecode(infoResponse.body);
+    Map<String, dynamic> infoJsonResponse = jsonDecode(infoResponse.body);
     Playlist playlist = Playlist(
       id: playlistId,
-      creator_name: info_json_response["owner"]["id"],
-      image_url: info_json_response["images"][0]["url"],
-      name: info_json_response["name"],
-      snapshotId: info_json_response["snapshot_id"],
+      creatorName: infoJsonResponse["owner"]["id"],
+      imageUrl: infoJsonResponse["images"][0]["url"],
+      name: infoJsonResponse["name"],
+      snapshotId: infoJsonResponse["snapshot_id"],
       lastFetch: DateTime.fromMillisecondsSinceEpoch(0),
       enabled: cachePlaylist?.enabled ?? true,
       included: included,
@@ -149,17 +149,17 @@ class Spotify {
   /// Pulls a playlist from Spotify
   Future<Playlist?> getPlaylist(String playlistId,
       {PlaylistUpdateStrategy updateStrategy =
-          PlaylistUpdateStrategy.CHECK_FOR_UPDATE_TIMESTAMP}) async {
+          PlaylistUpdateStrategy.checkForUpdateTimestamp}) async {
     Playlist? cachePlaylist =
         SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
     if (cachePlaylist != null) {
-      if (updateStrategy == PlaylistUpdateStrategy.TRUST_CACHE &&
+      if (updateStrategy == PlaylistUpdateStrategy.trustCache &&
           cachePlaylist.lastFetch.millisecondsSinceEpoch != 0) {
         return cachePlaylist;
       }
 
       // return if last fetch is closer than 24 hours
-      if (updateStrategy == PlaylistUpdateStrategy.CHECK_FOR_UPDATE_TIMESTAMP) {
+      if (updateStrategy == PlaylistUpdateStrategy.checkForUpdateTimestamp) {
         if (cachePlaylist.lastFetch.difference(DateTime.now()).abs().inHours <
             24) {
           return cachePlaylist;
@@ -168,28 +168,28 @@ class Spotify {
     }
 
     String token = await generateAuthKey();
-    String info_url = "https://api.spotify.com/v1/playlists/$playlistId/";
-    String? url = info_url + "tracks?limit=100&offset=0";
+    String infoUrl = "https://api.spotify.com/v1/playlists/$playlistId/";
+    String? url = infoUrl + "tracks?limit=100&offset=0";
 
     http.Response infoResponse = await http
-        .get(Uri.parse(info_url), headers: {"Authorization": "Bearer $token"});
+        .get(Uri.parse(infoUrl), headers: {"Authorization": "Bearer $token"});
     if (infoResponse.statusCode != 200) {
       return null;
     }
 
-    Map<String, dynamic> info_json_response = jsonDecode(infoResponse.body);
+    Map<String, dynamic> infoJsonResponse = jsonDecode(infoResponse.body);
     Playlist playlist = Playlist(
       id: playlistId,
-      creator_name: info_json_response["owner"]["id"],
-      image_url: info_json_response["images"][0]["url"],
-      name: info_json_response["name"],
-      snapshotId: info_json_response["snapshot_id"],
+      creatorName: infoJsonResponse["owner"]["id"],
+      imageUrl: infoJsonResponse["images"][0]["url"],
+      name: infoJsonResponse["name"],
+      snapshotId: infoJsonResponse["snapshot_id"],
       lastFetch: DateTime.now(),
       enabled: cachePlaylist?.enabled ?? true,
       included: cachePlaylist?.included ?? false,
     );
 
-    if (updateStrategy == PlaylistUpdateStrategy.CHECK_FOR_UPDATE_SNAPSHOT_ID &&
+    if (updateStrategy == PlaylistUpdateStrategy.checkForUpdateSnapshotId &&
         cachePlaylist != null) {
       if (cachePlaylist.snapshotId == playlist.snapshotId) {
         return cachePlaylist;
@@ -223,7 +223,7 @@ class Spotify {
             track["track"]["id"]);
 
         songs.add(song);
-        playlist.song_ids.add(song.id);
+        playlist.songIds.add(song.id);
       }
       url = jsonResponse["next"];
     } while (jsonResponse["next"] != null);
@@ -257,7 +257,7 @@ class Spotify {
 
         /// Extract the preview url via regex
         String? previewUrl =
-            RegExp(REGEX_EMBED).firstMatch(embedResponse.body)!.group(1);
+            RegExp(regexEmbed).firstMatch(embedResponse.body)!.group(1);
         if (previewUrl != null) {
           /// Un-Escape the url
           previewUrl = previewUrl.replaceAll("\\/", "/");

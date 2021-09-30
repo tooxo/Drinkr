@@ -1,6 +1,5 @@
 import 'package:drinkr/utils/custom_icons.dart';
 import 'package:drinkr/utils/player.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -146,7 +145,7 @@ class _NameSelectTileState extends State<NameSelectTile> {
               ),
             ),
           ),
-          !this.focused
+          !focused
               ? Padding(
                   padding: const EdgeInsets.only(
                     left: 8.0,

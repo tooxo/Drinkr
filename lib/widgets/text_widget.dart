@@ -15,9 +15,9 @@ class TextWidget extends StatelessWidget {
       child: ShowUpAnimation(
         delayStart: Duration(seconds: 0),
         child: AutoSizeText(
-          '''$displayedText''',
+          displayedText,
           style: GoogleFonts.nunito(
-              color: this.textColor,
+              color: textColor,
               fontSize: 1000,
               fontWeight: FontWeight.w600),
           maxLines: 5,

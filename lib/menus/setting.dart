@@ -14,6 +14,7 @@ import 'package:drinkr/widgets/custom_radio.dart';
 import 'package:drinkr/widgets/extending_textfield_button.dart';
 import 'package:drinkr/widgets/gradient.dart';
 import 'package:drinkr/widgets/icon_list_tile.dart';
+import 'package:drinkr/widgets/purchasable.dart';
 import 'package:drinkr/widgets/spotify_tile.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -26,31 +27,32 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 
-import 'game_mode.dart';
-
 class Settings extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => SettingsState();
 }
 
 class SettingsState extends State<Settings> {
-  static const String SETTING_INCLUSION_OF_QUESTIONS =
+  static const String settingInclusionOfQuestions =
       "SETTING_INCLUSION_OF_QUESTIONS";
 
-  static const int ONLY_INCLUDED = 0;
-  static const int BOTH = 1;
-  static const int ONLY_CUSTOM = 2;
+  static const int onlyIncluded = 0;
+  static const int both = 1;
+  static const int onlyCustom = 2;
 
   bool spotifyEdit = false;
   ExpandableController spotifyController = ExpandableController();
 
   void onPlaylistChange(Playlist playlist) async {
-    await SpotifyStorage.playlists_box.put(playlist.id, playlist);
+    await SpotifyStorage.playlistsBox.put(
+      playlist.id,
+      playlist,
+    );
     setState(() {});
   }
 
   void onPlaylistDelete(Playlist playlist) async {
-    await SpotifyStorage.playlists_box.delete(playlist.id);
+    await SpotifyStorage.playlistsBox.delete(playlist.id);
     setState(() {});
   }
 
@@ -64,56 +66,18 @@ class SettingsState extends State<Settings> {
 
   late StreamSubscription<BoxEvent> playlistSubscription;
 
-  PurchaseState purchaseState = PurchaseState.AVAILABLE;
-
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
-    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        setState(() {
-          purchaseState = PurchaseState.IN_PROGRESS;
-        });
-      } else {
-        if (purchaseDetails.status == PurchaseStatus.error) {
-          setState(() {
-            purchaseState = PurchaseState.AVAILABLE;
-          });
-        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-            purchaseDetails.status == PurchaseStatus.restored) {
-          setState(() {
-            purchaseState = PurchaseState.DONE;
-          });
-          await Purchases.setPremiumPurchased();
-        }
-        if (purchaseDetails.pendingCompletePurchase) {
-          await InAppPurchase.instance.completePurchase(purchaseDetails);
-        }
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    playlistSubscription = SpotifyStorage.playlists_box.watch().listen(
+    playlistSubscription = SpotifyStorage.playlistsBox.watch().listen(
       (BoxEvent event) {
         setState(() {});
       },
     );
 
-    InAppPurchase.instance.purchaseStream
-        .listen((List<PurchaseDetails> purchaseDetails) {
-      _listenToPurchaseUpdated(purchaseDetails);
-    });
-
-    Purchases.isPremiumPurchased().then(
-      (bool value) => {
-        setState(
-          () {
-            if (purchaseState == PurchaseState.AVAILABLE && value) {
-              purchaseState = PurchaseState.DONE;
-            }
-          },
-        )
+    InAppPurchase.instance.purchaseStream.listen(
+      (List<PurchaseDetails> purchaseDetails) {
+        Purchases.listenToPurchaseUpdated(purchaseDetails, setState);
       },
     );
   }
@@ -166,260 +130,265 @@ class SettingsState extends State<Settings> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 8.0),
-                      child: ColorGradient(
-                        colors: [
-                          Color.fromRGBO(36, 140, 0, 1),
-                          Color.fromRGBO(36, 140, 0, 1),
-                        ],
-                        roundness: 15,
-                        child: ExpandablePanel(
-                          controller: spotifyController,
-                          theme: ExpandableThemeData(
-                            hasIcon: false,
-                            useInkWell: false,
-                          ),
-                          header: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 16,
+                      child: Purchasable(
+                        child: ColorGradient(
+                          colors: [
+                            Color.fromRGBO(36, 140, 0, 1),
+                            Color.fromRGBO(36, 140, 0, 1),
+                          ],
+                          roundness: 15,
+                          child: ExpandablePanel(
+                            controller: spotifyController,
+                            theme: ExpandableThemeData(
+                              hasIcon: false,
+                              useInkWell: false,
                             ),
-                            child: IconListTile(
-                              iconData: CustomIcons.spotify_outline,
-                              title: "spotifyPlaylists".tr(),
-                              subtitle: "spotifyPlaylistsDescription".tr(),
-                              onTap: () {},
-                              // iconSize: 55,
-                            ),
-                          ),
-                          collapsed: GestureDetector(
-                            onTap: () {
-                              spotifyController.toggle();
-                            },
-                            child: Center(
-                              child: Container(
-                                child: Icon(
-                                  Icons.arrow_drop_down_rounded,
-                                  color: Colors.white,
-                                ),
+                            header: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 16,
+                              ),
+                              child: IconListTile(
+                                iconData: CustomIcons.spotifyOutline,
+                                title: "spotifyPlaylists".tr(),
+                                subtitle: "spotifyPlaylistsDescription".tr(),
+                                onTap: () {},
+                                // iconSize: 55,
                               ),
                             ),
-                          ),
-                          expanded: Column(
-                            children: [
-                              Divider(
-                                color: Colors.white,
-                                thickness: 1,
-                                height: 1,
-                              ),
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxHeight: 350,
-                                ),
+                            collapsed: GestureDetector(
+                              onTap: () {
+                                spotifyController.toggle();
+                              },
+                              child: Center(
                                 child: Container(
-                                  color: Color.fromRGBO(36, 140, 0, 1),
-                                  child: SingleChildScrollView(
-                                    physics: BouncingScrollPhysics(),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: FutureBuilder<List<String>>(
-                                        future: getIncludedFiles(
-                                          GameType.GUESS_THE_SONG,
-                                          context,
-                                          false,
+                                  child: Icon(
+                                    Icons.arrow_drop_down_rounded,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            expanded: Column(
+                              children: [
+                                Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                  height: 1,
+                                ),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: 350,
+                                  ),
+                                  child: Container(
+                                    color: Color.fromRGBO(36, 140, 0, 1),
+                                    child: SingleChildScrollView(
+                                      physics: BouncingScrollPhysics(),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: FutureBuilder<List<String>>(
+                                          future: getIncludedFiles(
+                                            GameType.guessTheSong,
+                                            context,
+                                            false,
+                                          ),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<List<String>>
+                                                  snapshot) {
+                                            if (!snapshot.hasData) {
+                                              return Container();
+                                            }
+                                            List<String> ids = snapshot.data!
+                                                .map((e) =>
+                                                    Spotify.getIdFromUrl(e)!)
+                                                .toList();
+                                            List<Playlist> playlists =
+                                                SpotifyStorage
+                                                    .playlistsBox.values
+                                                    .where(
+                                                      (element) =>
+                                                          !element.included ||
+                                                          ids.contains(
+                                                              element.id),
+                                                    )
+                                                    .toList()
+                                                  ..sort();
+                                            return Column(
+                                              children: [
+                                                for (Playlist p in playlists)
+                                                  SpotifyTile(
+                                                    p,
+                                                    onChanged: onPlaylistChange,
+                                                    onDelete: onPlaylistDelete,
+                                                    expanded: spotifyEdit,
+                                                  ),
+                                              ],
+                                            );
+                                          },
                                         ),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<List<String>>
-                                                snapshot) {
-                                          if (!snapshot.hasData) {
-                                            return Container();
-                                          }
-                                          List<String> ids = snapshot.data!
-                                              .map((e) =>
-                                                  Spotify.getIdFromUrl(e)!)
-                                              .toList();
-                                          List<Playlist> playlists =
-                                              SpotifyStorage
-                                                  .playlists_box.values
-                                                  .where(
-                                                    (element) =>
-                                                        !element.included ||
-                                                        ids.contains(
-                                                            element.id),
-                                                  )
-                                                  .toList()
-                                                ..sort();
-                                          return Column(
-                                            children: [
-                                              for (Playlist p in playlists)
-                                                SpotifyTile(
-                                                  p,
-                                                  onChanged: onPlaylistChange,
-                                                  onDelete: onPlaylistDelete,
-                                                  expanded: spotifyEdit,
-                                                ),
-                                            ],
-                                          );
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                  height: 1,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ExtendingTextFieldButton(
+                                        () {
+                                          setState(() {
+                                            spotifyEdit = !spotifyEdit;
+                                          });
+                                        },
+                                        spotifyEdit,
+                                        (Playlist playlist) async {
+                                          await SpotifyStorage.playlistsBox
+                                              .put(playlist.id, playlist);
+                                          setState(() {});
                                         },
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ),
-                              Divider(
-                                color: Colors.white,
-                                thickness: 1,
-                                height: 1,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ExtendingTextFieldButton(
-                                      () {
-                                        setState(() {
-                                          spotifyEdit = !spotifyEdit;
-                                        });
-                                      },
-                                      this.spotifyEdit,
-                                      (Playlist playlist) async {
-                                        await SpotifyStorage.playlists_box
-                                            .put(playlist.id, playlist);
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  spotifyController.toggle();
-                                },
-                                child: Center(
-                                  child: Icon(
-                                    Icons.arrow_drop_up_rounded,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    hasPremium ? Container() : Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      child: ColorGradient(
-                        roundness: 15,
-                        colors: [
-                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                        ],
-                        child: ExpandablePanel(
-                          theme: ExpandableThemeData(
-                            hasIcon: false,
-                          ),
-                          header: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 16,
-                            ),
-                            child: IconListTile(
-                              title: "deactivateAds".tr(),
-                              subtitle: "deactivateAdsDescription".tr(),
-                              iconData: CustomIcons.no_ad,
-                              // iconSize: 55,
-                              onTap: () {},
-                            ),
-                          ),
-                          collapsed: Center(
-                            child: Icon(
-                              Icons.arrow_drop_down_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                          expanded: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 32.0),
-                                child: Divider(
-                                  color: Colors.white,
-                                  thickness: 1,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0,
-                                ),
-                                child: ProgressButton.icon(
-                                  onPressed: () => showInterstitialAd(
-                                      context, onAdButtonStateChange),
-                                  state: adButtonState,
-                                  textStyle: GoogleFonts.nunito(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  iconedButtons: {
-                                    ButtonState.idle: IconedButton(
-                                      color: Colors.black.withOpacity(.4),
-                                      disabledColor:
-                                          Colors.black.withOpacity(.2),
-                                      text: "startGame".tr(),
-                                      icon: Icon(
-                                        Icons.ondemand_video_outlined,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    ButtonState.fail: IconedButton(
-                                      color: Colors.redAccent,
-                                    ),
-                                    ButtonState.loading: IconedButton(
-                                      color: Colors.black.withOpacity(.4),
-                                    ),
-                                    ButtonState.success: IconedButton(
-                                      color: Colors.green,
-                                    )
+                                GestureDetector(
+                                  onTap: () {
+                                    spotifyController.toggle();
                                   },
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.arrow_drop_up_rounded,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              FutureBuilder<bool>(
-                                  future: shouldShowAds(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData || snapshot.data) {
-                                      return Text(
-                                        "deactivateAdsText".tr(),
-                                        style: GoogleFonts.nunito(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      );
-                                    }
-                                    return Center(
-                                      child: Text(
-                                        "adsAlreadyDisabled".tr(),
-                                        style: GoogleFonts.nunito(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    );
-                                  }),
-                              Icon(
-                                Icons.arrow_drop_up_rounded,
-                                color: Colors.white,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
+                    hasPremium
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            child: ColorGradient(
+                              roundness: 15,
+                              colors: [
+                                Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                                Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                              ],
+                              child: ExpandablePanel(
+                                theme: ExpandableThemeData(
+                                  hasIcon: false,
+                                ),
+                                header: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                    vertical: 16,
+                                  ),
+                                  child: IconListTile(
+                                    title: "deactivateAds".tr(),
+                                    subtitle: "deactivateAdsDescription".tr(),
+                                    iconData: CustomIcons.noAd,
+                                    // iconSize: 55,
+                                    onTap: () {},
+                                  ),
+                                ),
+                                collapsed: Center(
+                                  child: Icon(
+                                    Icons.arrow_drop_down_rounded,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                expanded: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 32.0),
+                                      child: Divider(
+                                        color: Colors.white,
+                                        thickness: 1,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                      ),
+                                      child: ProgressButton.icon(
+                                        onPressed: () => showInterstitialAd(
+                                            context, onAdButtonStateChange),
+                                        state: adButtonState,
+                                        textStyle: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        iconedButtons: {
+                                          ButtonState.idle: IconedButton(
+                                            color: Colors.black.withOpacity(.4),
+                                            disabledColor:
+                                                Colors.black.withOpacity(.2),
+                                            text: "startGame".tr(),
+                                            icon: Icon(
+                                              Icons.ondemand_video_outlined,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          ButtonState.fail: IconedButton(
+                                            color: Colors.redAccent,
+                                          ),
+                                          ButtonState.loading: IconedButton(
+                                            color: Colors.black.withOpacity(.4),
+                                          ),
+                                          ButtonState.success: IconedButton(
+                                            color: Colors.green,
+                                          )
+                                        },
+                                      ),
+                                    ),
+                                    FutureBuilder<bool>(
+                                        future: shouldShowAds(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot snapshot) {
+                                          if (!snapshot.hasData ||
+                                              snapshot.data) {
+                                            return Text(
+                                              "deactivateAdsText".tr(),
+                                              style: GoogleFonts.nunito(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            );
+                                          }
+                                          return Center(
+                                            child: Text(
+                                              "adsAlreadyDisabled".tr(),
+                                              style: GoogleFonts.nunito(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          );
+                                        }),
+                                    Icon(
+                                      Icons.arrow_drop_up_rounded,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 8.0),

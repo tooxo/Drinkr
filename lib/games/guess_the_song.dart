@@ -22,14 +22,20 @@ import 'package:audiowaveformFlutter/audiowaveformFlutter.dart';
 import '../utils/player.dart';
 
 class GuessTheSong extends BasicGame {
+  @override
   final bool showSolutionButton = true;
 
+  @override
   final Color backgroundColor1 = Color.fromRGBO(25, 96, 2, 1);
+  @override
   final Color backgroundColor2 = Color.fromRGBO(74, 142, 5, 1.0);
 
-  final GameType type = GameType.GUESS_THE_SONG;
+  @override
+  final GameType type = GameType.guessTheSong;
 
+  @override
   final String title = "guessTheSong";
+  @override
   final int drinkingDisplay = 1;
 
   GuessTheSong(Player player, DifficultyType difficulty, String text)
@@ -47,6 +53,7 @@ class GuessTheSong extends BasicGame {
 
 class GuessTheSongState extends BasicGameState
     with WidgetsBindingObserver, TickerProviderStateMixin {
+  @override
   bool showSolution = false;
   late AudioPlayer audioPlayer;
 
@@ -60,9 +67,9 @@ class GuessTheSongState extends BasicGameState
 
   @override
   void dispose() {
-    this.durationSubscription?.cancel();
-    this.stateSubscription?.cancel();
-    this.audioPlayer.stop();
+    durationSubscription?.cancel();
+    stateSubscription?.cancel();
+    audioPlayer.stop();
     _controller!.dispose();
     if (f != null) {
       if (f!.existsSync()) {
@@ -121,14 +128,12 @@ class GuessTheSongState extends BasicGameState
     );
 
     audioPlayer = AudioPlayer();
-    this.durationSubscription =
+    durationSubscription =
         audioPlayer.onAudioPositionChanged.listen((pos) async {
-      if (songDuration == null) {
-        songDuration = await audioPlayer.getDuration();
-      }
+      songDuration ??= await audioPlayer.getDuration();
       _updateBar(pos.inMilliseconds / songDuration!);
     });
-    this.stateSubscription = audioPlayer.onPlayerStateChanged.listen((event) {
+    stateSubscription = audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.COMPLETED) {
         _updateBar(1);
       }
@@ -144,10 +149,10 @@ class GuessTheSongState extends BasicGameState
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  Random _rnd = Random();
+  Random rnd = Random();
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+      length, (_) => _chars.codeUnitAt(rnd.nextInt(_chars.length))));
 
   Future<SoundData> loadVisData() async {
     String randomFileName = getRandomString(32);
@@ -213,7 +218,7 @@ class GuessTheSongState extends BasicGameState
                         ? Icons.replay
                         : _target == 0
                             ? Icons.play_arrow
-                            : this.audioPlayer.state == PlayerState.PAUSED
+                            : audioPlayer.state == PlayerState.PAUSED
                                 ? Icons.play_arrow
                                 : Icons.pause,
                     color: widget.textColor,
