@@ -75,24 +75,26 @@ class LicensesState extends State<Licenses> {
                     child: Column(
                       children: <Widget>[
                         Expanded(
-                            flex: 3,
-                            child: InkWell(
-                                onTap: () {
-                                  currentPremium++;
-                                  if (currentPremium >= 10) {
-                                    Purchases.removePremiumPurchased();
-                                    Fluttertoast.showToast(
-                                        msg: "removed premium",
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: Colors.blueGrey,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0);
-                                  }
-                                },
-                                child:
-                                    Image.asset("assets/image/appicon3.png"))),
+                          flex: 3,
+                          child: InkWell(
+                            onTap: () {
+                              currentPremium++;
+                              if (currentPremium >= 10) {
+                                Purchases.removePremiumPurchased();
+                                Fluttertoast.showToast(
+                                  msg: "removed premium",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.blueGrey,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              }
+                            },
+                            child: Image.asset("assets/image/appicon3.png"),
+                          ),
+                        ),
                         Expanded(
                           flex: 3,
                           child: Padding(
