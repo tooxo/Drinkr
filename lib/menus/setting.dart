@@ -143,425 +143,532 @@ class SettingsState extends State<Settings> {
           color: Colors.white,
         ),
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: BuyPremium(),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: ColorGradient(
-                  colors: [
-                    Color.fromRGBO(36, 140, 0, 1),
-                    Color.fromRGBO(36, 140, 0, 1),
-                  ],
-                  roundness: 15,
-                  child: ExpandablePanel(
-                    controller: spotifyController,
-                    theme: ExpandableThemeData(
-                      hasIcon: false,
-                      useInkWell: false,
-                    ),
-                    header: Padding(
+      body: FutureBuilder<bool>(
+          future: Purchases.isPremiumPurchased(),
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            if (!snapshot.hasData) return Container();
+
+            bool hasPremium = snapshot.data!;
+
+            return SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    hasPremium
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            child: BuyPremium(),
+                          ),
+                    Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 16,
-                      ),
-                      child: IconListTile(
-                        iconData: CustomIcons.spotify_outline,
-                        title: "spotifyPlaylists".tr(),
-                        subtitle: "spotifyPlaylistsDescription".tr(),
-                        onTap: () {},
-                        // iconSize: 55,
-                      ),
-                    ),
-                    collapsed: GestureDetector(
-                      onTap: () {
-                        spotifyController.toggle();
-                      },
-                      child: Center(
-                        child: Container(
-                          child: Icon(
-                            Icons.arrow_drop_down_rounded,
-                            color: Colors.white,
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ColorGradient(
+                        colors: [
+                          Color.fromRGBO(36, 140, 0, 1),
+                          Color.fromRGBO(36, 140, 0, 1),
+                        ],
+                        roundness: 15,
+                        child: ExpandablePanel(
+                          controller: spotifyController,
+                          theme: ExpandableThemeData(
+                            hasIcon: false,
+                            useInkWell: false,
                           ),
-                        ),
-                      ),
-                    ),
-                    expanded: Column(
-                      children: [
-                        Divider(
-                          color: Colors.white,
-                          thickness: 1,
-                          height: 1,
-                        ),
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: 350,
-                          ),
-                          child: Container(
-                            color: Color.fromRGBO(36, 140, 0, 1),
-                            child: SingleChildScrollView(
-                              physics: BouncingScrollPhysics(),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: FutureBuilder<List<String>>(
-                                  future: getIncludedFiles(
-                                    GameType.GUESS_THE_SONG,
-                                    context,
-                                    false,
-                                  ),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<String>> snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return Container();
-                                    }
-                                    List<String> ids = snapshot.data!
-                                        .map((e) => Spotify.getIdFromUrl(e)!)
-                                        .toList();
-                                    List<Playlist> playlists =
-                                        SpotifyStorage.playlists_box.values
-                                            .where(
-                                              (element) =>
-                                                  !element.included ||
-                                                  ids.contains(element.id),
-                                            )
-                                            .toList()
-                                          ..sort();
-                                    return Column(
-                                      children: [
-                                        for (Playlist p in playlists)
-                                          SpotifyTile(
-                                            p,
-                                            onChanged: onPlaylistChange,
-                                            onDelete: onPlaylistDelete,
-                                            expanded: spotifyEdit,
-                                          ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
+                          header: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 16,
+                            ),
+                            child: IconListTile(
+                              iconData: CustomIcons.spotify_outline,
+                              title: "spotifyPlaylists".tr(),
+                              subtitle: "spotifyPlaylistsDescription".tr(),
+                              onTap: () {},
+                              // iconSize: 55,
                             ),
                           ),
-                        ),
-                        Divider(
-                          color: Colors.white,
-                          thickness: 1,
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ExtendingTextFieldButton(
-                                () {
-                                  setState(() {
-                                    spotifyEdit = !spotifyEdit;
-                                  });
-                                },
-                                this.spotifyEdit,
-                                (Playlist playlist) async {
-                                  await SpotifyStorage.playlists_box
-                                      .put(playlist.id, playlist);
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            spotifyController.toggle();
-                          },
-                          child: Center(
-                            child: Icon(
-                              Icons.arrow_drop_up_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: ColorGradient(
-                  roundness: 15,
-                  colors: [
-                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                  ],
-                  child: ExpandablePanel(
-                    theme: ExpandableThemeData(
-                      hasIcon: false,
-                    ),
-                    header: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 16,
-                      ),
-                      child: IconListTile(
-                        title: "deactivateAds".tr(),
-                        subtitle: "deactivateAdsDescription".tr(),
-                        iconData: CustomIcons.no_ad,
-                        // iconSize: 55,
-                        onTap: () {},
-                      ),
-                    ),
-                    collapsed: Center(
-                      child: Icon(
-                        Icons.arrow_drop_down_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                    expanded: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                          child: Divider(
-                            color: Colors.white,
-                            thickness: 1,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 8.0,
-                          ),
-                          child: ProgressButton.icon(
-                            onPressed: () => showInterstitialAd(
-                                context, onAdButtonStateChange),
-                            state: adButtonState,
-                            textStyle: GoogleFonts.nunito(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            iconedButtons: {
-                              ButtonState.idle: IconedButton(
-                                color: Colors.black.withOpacity(.4),
-                                disabledColor: Colors.black.withOpacity(.2),
-                                text: "startGame".tr(),
-                                icon: Icon(
-                                  Icons.ondemand_video_outlined,
+                          collapsed: GestureDetector(
+                            onTap: () {
+                              spotifyController.toggle();
+                            },
+                            child: Center(
+                              child: Container(
+                                child: Icon(
+                                  Icons.arrow_drop_down_rounded,
                                   color: Colors.white,
                                 ),
                               ),
-                              ButtonState.fail: IconedButton(
-                                color: Colors.redAccent,
-                              ),
-                              ButtonState.loading: IconedButton(
-                                color: Colors.black.withOpacity(.4),
-                              ),
-                              ButtonState.success: IconedButton(
-                                color: Colors.green,
-                              )
-                            },
+                            ),
                           ),
-                        ),
-                        FutureBuilder<bool>(
-                            future: shouldShowAds(),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (!snapshot.hasData || snapshot.data) {
-                                return Text(
-                                  "deactivateAdsText".tr(),
-                                  style: GoogleFonts.nunito(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                );
-                              }
-                              return Center(
-                                child: Text(
-                                  "adsAlreadyDisabled".tr(),
-                                  style: GoogleFonts.nunito(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              );
-                            }),
-                        Icon(
-                          Icons.arrow_drop_up_rounded,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: ColorGradient(
-                  roundness: 15,
-                  colors: [
-                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                  ],
-                  child: ExpandablePanel(
-                    theme: ExpandableThemeData(
-                      hasIcon: false,
-                    ),
-                    header: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 16,
-                      ),
-                      child: IconListTile(
-                        title: "language".tr(),
-                        subtitle: "languageSubtitle".tr(),
-                        iconData: CustomIcons.translation,
-                        onTap: () {},
-                      ),
-                    ),
-                    collapsed: Center(
-                      child: Icon(
-                        Icons.arrow_drop_down_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                    expanded: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                          child: Divider(
-                            color: Colors.white,
-                            thickness: 1,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 8,
-                            right: 8,
-                            bottom: 8,
-                          ),
-                          child: Column(
+                          expanded: Column(
                             children: [
-                              for (Locale locale in context.supportedLocales)
-                                GestureDetector(
-                                  onTap: () async {
-                                    await EasyLocalization.of(context)!
-                                        .setLocale(locale);
-                                    unawaited(SpotifyStorage
-                                        .initializePreshippedPlaylists(
-                                            context));
-                                    setState(() {});
-                                  },
-                                  child: ListTile(
-                                    dense: true,
-                                    title: Text(
-                                      LocaleNamesLocalizationsDelegate
-                                          .nativeLocaleNames[locale.toString()]!
-                                          .split(" ")
-                                          .first,
-                                      style: GoogleFonts.nunito(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontSize: 23),
+                              Divider(
+                                color: Colors.white,
+                                thickness: 1,
+                                height: 1,
+                              ),
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxHeight: 350,
+                                ),
+                                child: Container(
+                                  color: Color.fromRGBO(36, 140, 0, 1),
+                                  child: SingleChildScrollView(
+                                    physics: BouncingScrollPhysics(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: FutureBuilder<List<String>>(
+                                        future: getIncludedFiles(
+                                          GameType.GUESS_THE_SONG,
+                                          context,
+                                          false,
+                                        ),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<List<String>>
+                                                snapshot) {
+                                          if (!snapshot.hasData) {
+                                            return Container();
+                                          }
+                                          List<String> ids = snapshot.data!
+                                              .map((e) =>
+                                                  Spotify.getIdFromUrl(e)!)
+                                              .toList();
+                                          List<Playlist> playlists =
+                                              SpotifyStorage
+                                                  .playlists_box.values
+                                                  .where(
+                                                    (element) =>
+                                                        !element.included ||
+                                                        ids.contains(
+                                                            element.id),
+                                                  )
+                                                  .toList()
+                                                ..sort();
+                                          return Column(
+                                            children: [
+                                              for (Playlist p in playlists)
+                                                SpotifyTile(
+                                                  p,
+                                                  onChanged: onPlaylistChange,
+                                                  onDelete: onPlaylistDelete,
+                                                  expanded: spotifyEdit,
+                                                ),
+                                            ],
+                                          );
+                                        },
+                                      ),
                                     ),
-                                    trailing: CustomRadioWidget(
-                                      enabled: true,
-                                      groupValue: context.locale,
-                                      value: locale,
-                                      onChanged: (Locale value) async {
-                                        await EasyLocalization.of(context)!
-                                            .setLocale(locale);
-                                        unawaited(SpotifyStorage
-                                            .initializePreshippedPlaylists(
-                                                context));
+                                  ),
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.white,
+                                thickness: 1,
+                                height: 1,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ExtendingTextFieldButton(
+                                      () {
+                                        setState(() {
+                                          spotifyEdit = !spotifyEdit;
+                                        });
+                                      },
+                                      this.spotifyEdit,
+                                      (Playlist playlist) async {
+                                        await SpotifyStorage.playlists_box
+                                            .put(playlist.id, playlist);
                                         setState(() {});
                                       },
                                     ),
                                   ),
-                                )
+                                ],
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  spotifyController.toggle();
+                                },
+                                child: Center(
+                                  child: Icon(
+                                    Icons.arrow_drop_up_rounded,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        Icon(
-                          Icons.arrow_drop_up_rounded,
-                          color: Colors.white,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: ColorGradient(
-                  roundness: 15,
-                  colors: [
-                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                  ],
-                  child: ExpandablePanel(
-                    theme: ExpandableThemeData(
-                      hasIcon: false,
-                    ),
-                    header: Padding(
+                    hasPremium ? Container() : Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 16,
-                      ),
-                      child: IconListTile(
-                        title: "restorePurchases".tr(),
-                        subtitle: "restorePurchasesDescription".tr(),
-                        iconData: CustomIcons.refresh,
-                        onTap: () {},
-                      ),
-                    ),
-                    collapsed: Center(
-                      child: Icon(
-                        Icons.arrow_drop_down_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                    expanded: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                          child: Divider(
-                            color: Colors.white,
-                            thickness: 1,
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ColorGradient(
+                        roundness: 15,
+                        colors: [
+                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                        ],
+                        child: ExpandablePanel(
+                          theme: ExpandableThemeData(
+                            hasIcon: false,
+                          ),
+                          header: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 16,
+                            ),
+                            child: IconListTile(
+                              title: "deactivateAds".tr(),
+                              subtitle: "deactivateAdsDescription".tr(),
+                              iconData: CustomIcons.no_ad,
+                              // iconSize: 55,
+                              onTap: () {},
+                            ),
+                          ),
+                          collapsed: Center(
+                            child: Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                          expanded: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 32.0),
+                                child: Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0,
+                                ),
+                                child: ProgressButton.icon(
+                                  onPressed: () => showInterstitialAd(
+                                      context, onAdButtonStateChange),
+                                  state: adButtonState,
+                                  textStyle: GoogleFonts.nunito(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  iconedButtons: {
+                                    ButtonState.idle: IconedButton(
+                                      color: Colors.black.withOpacity(.4),
+                                      disabledColor:
+                                          Colors.black.withOpacity(.2),
+                                      text: "startGame".tr(),
+                                      icon: Icon(
+                                        Icons.ondemand_video_outlined,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    ButtonState.fail: IconedButton(
+                                      color: Colors.redAccent,
+                                    ),
+                                    ButtonState.loading: IconedButton(
+                                      color: Colors.black.withOpacity(.4),
+                                    ),
+                                    ButtonState.success: IconedButton(
+                                      color: Colors.green,
+                                    )
+                                  },
+                                ),
+                              ),
+                              FutureBuilder<bool>(
+                                  future: shouldShowAds(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData || snapshot.data) {
+                                      return Text(
+                                        "deactivateAdsText".tr(),
+                                        style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      );
+                                    }
+                                    return Center(
+                                      child: Text(
+                                        "adsAlreadyDisabled".tr(),
+                                        style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    );
+                                  }),
+                              Icon(
+                                Icons.arrow_drop_up_rounded,
+                                color: Colors.white,
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 8,
-                            right: 8,
-                            bottom: 8,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ColorGradient(
+                        roundness: 15,
+                        colors: [
+                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                        ],
+                        child: ExpandablePanel(
+                          theme: ExpandableThemeData(
+                            hasIcon: false,
                           ),
-                          child: Column(
+                          header: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 16,
+                            ),
+                            child: IconListTile(
+                              title: "language".tr(),
+                              subtitle: "languageSubtitle".tr(),
+                              iconData: CustomIcons.translation,
+                              onTap: () {},
+                            ),
+                          ),
+                          collapsed: Center(
+                            child: Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                          expanded: Column(
                             children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 32.0),
+                                child: Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 8,
+                                  right: 8,
+                                  bottom: 8,
+                                ),
+                                child: Column(
+                                  children: [
+                                    for (Locale locale
+                                        in context.supportedLocales)
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await EasyLocalization.of(context)!
+                                              .setLocale(locale);
+                                          unawaited(SpotifyStorage
+                                              .initializePreshippedPlaylists(
+                                                  context));
+                                          setState(() {});
+                                        },
+                                        child: ListTile(
+                                          dense: true,
+                                          title: Text(
+                                            LocaleNamesLocalizationsDelegate
+                                                .nativeLocaleNames[
+                                                    locale.toString()]!
+                                                .split(" ")
+                                                .first,
+                                            style: GoogleFonts.nunito(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontSize: 23),
+                                          ),
+                                          trailing: CustomRadioWidget(
+                                            enabled: true,
+                                            groupValue: context.locale,
+                                            value: locale,
+                                            onChanged: (Locale value) async {
+                                              await EasyLocalization.of(
+                                                      context)!
+                                                  .setLocale(locale);
+                                              unawaited(SpotifyStorage
+                                                  .initializePreshippedPlaylists(
+                                                      context));
+                                              setState(() {});
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                  ],
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_drop_up_rounded,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ColorGradient(
+                        roundness: 15,
+                        colors: [
+                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                        ],
+                        child: ExpandablePanel(
+                          theme: ExpandableThemeData(
+                            hasIcon: false,
+                          ),
+                          header: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 16,
+                            ),
+                            child: IconListTile(
+                              title: "restorePurchases".tr(),
+                              subtitle: "restorePurchasesDescription".tr(),
+                              iconData: CustomIcons.refresh,
+                              onTap: () {},
+                            ),
+                          ),
+                          collapsed: Center(
+                            child: Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                          expanded: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 32.0),
+                                child: Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 8,
+                                  right: 8,
+                                  bottom: 8,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          await InAppPurchase.instance
+                                              .restorePurchases();
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4.0, horizontal: 8),
+                                          child: Text(
+                                            "restore",
+                                            style: GoogleFonts.nunito(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25,
+                                            ),
+                                          ).tr(),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          backgroundColor:
+                                              Colors.black.withOpacity(.4),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_drop_up_rounded,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ColorGradient(
+                        roundness: 15,
+                        colors: [
+                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                        ],
+                        child: ExpandablePanel(
+                          theme: ExpandableThemeData(
+                            hasIcon: false,
+                          ),
+                          header: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 16,
+                            ),
+                            child: IconListTile(
+                              title: "about".tr(),
+                              subtitle: "licensesDescription".tr(),
+                              iconData: Icons.info_outline,
+                              onTap: () {},
+                            ),
+                          ),
+                          collapsed: Center(
+                            child: Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                          expanded: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 32.0),
+                                child: Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextButton(
                                   onPressed: () async {
-                                    await InAppPurchase.instance
-                                        .restorePurchases();
+                                    await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                          return Licenses();
+                                        },
+                                      ),
+                                    );
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 4.0, horizontal: 8),
                                     child: Text(
-                                      "restore",
+                                      "licenses",
                                       style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -578,103 +685,20 @@ class SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ),
+                              Icon(
+                                Icons.arrow_drop_up_rounded,
+                                color: Colors.white,
+                              ),
                             ],
                           ),
                         ),
-                        Icon(
-                          Icons.arrow_drop_up_rounded,
-                          color: Colors.white,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: ColorGradient(
-                  roundness: 15,
-                  colors: [
-                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                    Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
                   ],
-                  child: ExpandablePanel(
-                    theme: ExpandableThemeData(
-                      hasIcon: false,
-                    ),
-                    header: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 16,
-                      ),
-                      child: IconListTile(
-                        title: "about".tr(),
-                        subtitle: "licensesDescription".tr(),
-                        iconData: Icons.info_outline,
-                        onTap: () {},
-                      ),
-                    ),
-                    collapsed: Center(
-                      child: Icon(
-                        Icons.arrow_drop_down_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                    expanded: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                          child: Divider(
-                            color: Colors.white,
-                            thickness: 1,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton(
-                            onPressed: () async {
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                    return Licenses();
-                                  },
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 8),
-                              child: Text(
-                                "licenses",
-                                style: GoogleFonts.nunito(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                ),
-                              ).tr(),
-                            ),
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.black.withOpacity(.4),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_drop_up_rounded,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
     );
   }
 }
