@@ -79,18 +79,7 @@ class LicensesState extends State<Licenses> {
                             child: InkWell(
                                 onTap: () {
                                   currentPremium++;
-                                  if (currentPremium > 3 &&
-                                      currentPremium < 10) {
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            "removing premium in ${10 - currentPremium}",
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: Colors.blueGrey,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0);
-                                  } else if (currentPremium >= 10) {
+                                  if (currentPremium >= 10) {
                                     Purchases.removePremiumPurchased();
                                     Fluttertoast.showToast(
                                         msg: "removed premium",
