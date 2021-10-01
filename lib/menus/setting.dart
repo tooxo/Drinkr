@@ -331,7 +331,7 @@ class SettingsState extends State<Settings> {
                                         state: adButtonState,
                                         textStyle: GoogleFonts.nunito(
                                           color: Colors.white,
-                                          fontSize: 25,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         iconedButtons: {
@@ -561,7 +561,7 @@ class SettingsState extends State<Settings> {
                                             style: GoogleFonts.nunito(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 25,
+                                              fontSize: 20,
                                             ),
                                           ).tr(),
                                         ),
@@ -649,7 +649,7 @@ class SettingsState extends State<Settings> {
                                       style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 25,
+                                        fontSize: 20,
                                       ),
                                     ).tr(),
                                   ),

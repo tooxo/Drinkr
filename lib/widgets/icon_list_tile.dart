@@ -53,7 +53,6 @@ class IconListTile extends StatelessWidget {
                   child: AutoSizeText(
                     title,
                     minFontSize: 25,
-
                     maxFontSize: 35,
                     group: asg,
                     style: GoogleFonts.nunito(

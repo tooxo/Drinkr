@@ -13,14 +13,14 @@ class CustomIcons {
   static const IconData noad =
       IconData(0xe806, fontFamily: 'OtherIcons', fontPackage: _kFontPkg);
 
-  static const IconData difHigh =
-      IconData(0xe800, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
-  static const IconData difLow =
-      IconData(0xe801, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
-  static const IconData difMed =
-      IconData(0xe802, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
+  static const IconData difficultyHard =
+      IconData(0xe813, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
+  static const IconData difficultyEasy =
+      IconData(0xe814, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
+  static const IconData difficultyMedium =
+      IconData(0xe815, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
   static const IconData shot =
-      IconData(0xe805, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
+      IconData(0xe816, fontFamily: 'AlcoholIcons', fontPackage: _kFontPkg);
 
   static const IconData gameModeStandard =
       IconData(0xe807, fontFamily: 'GameModeIcons', fontPackage: _kFontPkg);

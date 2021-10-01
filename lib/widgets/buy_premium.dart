@@ -112,7 +112,7 @@ class BuyPremium extends StatelessWidget {
                 state: ButtonState.idle,
                 textStyle: GoogleFonts.nunito(
                   color: Colors.white,
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
                 iconedButtons: {

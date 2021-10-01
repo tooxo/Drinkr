@@ -203,8 +203,8 @@ class GameController {
       texts[gameType] = [];
       if (selectedModes == SettingsState.onlyIncluded ||
           selectedModes == SettingsState.both) {
-        texts[gameType]!.addAll(await getIncludedFiles(
-            gameType, context, filterAdultQuestions));
+        texts[gameType]!.addAll(
+            await getIncludedFiles(gameType, context, filterAdultQuestions));
       }
       if (selectedModes == SettingsState.onlyCustom ||
           selectedModes == SettingsState.both) {
@@ -309,10 +309,17 @@ class GameController {
   OverlayEntry? adOverlayEntry;
 
   Future<void> _fulfillNormalPlan(DifficultyType difficulty) async {
-    unawaited(SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]));
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent));
+    unawaited(
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]),
+    );
+
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+      ),
+    );
+
     unawaited(
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []));
 
@@ -330,16 +337,18 @@ class GameController {
         if (adOverlayEntry == null) {
           adOverlayEntry = OverlayEntry(builder: (BuildContext context) {
             if (bannerAd == null) return Container();
-            return Align(
-              alignment: Alignment.bottomCenter,
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  width: bannerAd!.size.width.toDouble(),
-                  height: 80,
-                  child: Center(
-                    child: AdWidget(
-                      ad: bannerAd!,
+            return SafeArea(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    width: bannerAd!.size.width.toDouble(),
+                    height: 80,
+                    child: Center(
+                      child: AdWidget(
+                        ad: bannerAd!,
+                      ),
                     ),
                   ),
                 ),

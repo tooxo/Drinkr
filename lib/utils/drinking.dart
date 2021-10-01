@@ -41,9 +41,6 @@ class DrinkingDisplay extends StatelessWidget {
   final int amount;
   final Color tintColor;
 
-  static const IconData beerOutline =
-      IconData(0xe800, fontFamily: 'Icons', fontPackage: null);
-
   const DrinkingDisplay(this.isShot, this.amount, this.tintColor);
 
   @override
@@ -60,15 +57,10 @@ class DrinkingDisplay extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 8, 8, 8.0),
-          child: FittedBox(
-            child: Icon(
-              isShot ? CustomIcons.shot : beerOutline,
-              size: 5000,
-              color: tintColor,
-            ),
-          ),
+        Icon(
+          isShot ? CustomIcons.shot : CustomIcons.difficultyEasy,
+          size: 40,
+          color: tintColor,
         )
       ],
     );

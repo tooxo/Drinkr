@@ -13,7 +13,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 const bool adsEnabled =
-    bool.fromEnvironment("ADS_ENABLED", defaultValue: false);
+bool.fromEnvironment("ADS_ENABLED", defaultValue: false);
 
 void main() async {
   checkAdVariables();
@@ -23,7 +23,7 @@ void main() async {
     final licenseGFont = await rootBundle.loadString("assets/licenses/OFL.txt");
     yield LicenseEntryWithLineBreaks(['google_fonts'], licenseGFont);
     final licenseIcon =
-        await rootBundle.loadString("assets/licenses/flaticon.txt");
+    await rootBundle.loadString("assets/licenses/flaticon.txt");
     yield LicenseEntryWithLineBreaks(["icons (flaticon)"], licenseIcon);
   });
   await Hive.initFlutter("storage");
@@ -49,6 +49,7 @@ void main() async {
     path: 'assets/i18n',
     fallbackLocale: Locale('en', 'US'),
     useOnlyLangCode: true,
+
     // preloaderColor: Color.fromRGBO(255, 111, 0, 1),
     child: MyApp(),
   ));

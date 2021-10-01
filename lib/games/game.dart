@@ -419,12 +419,12 @@ class BasicGameState extends State<BasicGame>
                               content: Text(
                                 generateMessage(),
                                 style: GoogleFonts.nunito(
-                                    color: widget.textColor,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w700),
+                                  color: widget.textColor,
+                                  fontSize: 25,
+                                  // fontWeight: FontWeight.w700,
+                                ),
                               ),
                               actions: <Widget>[
-                                // usually buttons at the bottom of the dialog
                                 TextButton(
                                   child: Text(
                                     "close",
@@ -499,10 +499,14 @@ class BasicGameState extends State<BasicGame>
     return WillPopScope(
       onWillPop: () => displayExitDialogWrapper(context),
       child: Scaffold(
-        appBar: buildAppBar(),
-        extendBodyBehindAppBar: true,
-        extendBody: true,
-        body: ColorGradient(
+          appBar: buildAppBar(),
+          // extendBodyBehindAppBar: true,
+          // extendBody: true,
+          drawerScrimColor: Colors.green,
+          extendBody: true,
+          extendBodyBehindAppBar: true,
+          backgroundColor: Colors.green,
+          body: ColorGradient(
             colors: [
               widget.backgroundColor1,
               widget.backgroundColor2,
@@ -520,9 +524,7 @@ class BasicGameState extends State<BasicGame>
                 ],
               ),
             ),
-          )
-
-      ),
+          )),
     );
   }
 }

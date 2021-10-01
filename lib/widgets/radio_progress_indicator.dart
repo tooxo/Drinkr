@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:drinkr/utils/custom_icons.dart';
 import 'package:drinkr/widgets/custom_radio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,13 +17,6 @@ class RadioProgressIndicator extends StatefulWidget {
 
   static const _kFontFam = 'DifficultyIcons';
   static const String? _kFontPkg = null;
-
-  static const IconData difHard =
-      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData difMid =
-      IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData difEasy =
-      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 
   @override
   State<StatefulWidget> createState() => _RadioProgressIndicatorState();
@@ -113,7 +107,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                   child: FittedBox(
                                     fit: BoxFit.fitWidth,
                                     child: Icon(
-                                      RadioProgressIndicator.difEasy,
+                                      CustomIcons.difficultyEasy,
                                       color: value,
                                       size: 60,
                                     ),
@@ -165,7 +159,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Icon(
-                                  RadioProgressIndicator.difMid,
+                                  CustomIcons.difficultyMedium,
                                   color: value,
                                   size: 60,
                                 ),
@@ -220,7 +214,7 @@ class _RadioProgressIndicatorState extends State<RadioProgressIndicator>
                                   child: FittedBox(
                                     fit: BoxFit.fitWidth,
                                     child: Icon(
-                                      RadioProgressIndicator.difHard,
+                                      CustomIcons.difficultyHard,
                                       color: value,
                                       size: 60,
                                     ),
