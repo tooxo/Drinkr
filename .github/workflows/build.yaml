@@ -150,7 +150,7 @@ jobs:
         id: sign_appapk
         with:
           releaseDirectory: .
-          signingts.APPKeyBase64: ${{ secrets.SIGNING_KEY }}
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         env:
@@ -192,6 +192,7 @@ jobs:
         uses: apple-actions/upload-testflight-build@v1
         with:
           app-path: 'drinkr-app-release.ipa'
+          app-type: "ios"
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
