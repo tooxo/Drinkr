@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 
-enum GradientDirection { HORIZONTAL, VERTICAL }
+enum GradientDirection { horizontal, vertical }
 
-class TwoColorGradient extends StatelessWidget {
-  final Color color1;
-  final Color color2;
-  final Widget child;
+class ColorGradient extends StatelessWidget {
+  final List<Color> colors;
+  final Widget? child;
   final GradientDirection direction;
   final double roundness;
 
-  const TwoColorGradient(
-      {Key key,
-      this.color1,
-      this.color2,
-      this.child,
-      this.roundness = 0,
-      this.direction = GradientDirection.HORIZONTAL})
-      : super(key: key);
+  const ColorGradient({
+    Key? key,
+    required this.colors,
+    this.child,
+    this.roundness = 0,
+    this.direction = GradientDirection.horizontal,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: direction == GradientDirection.HORIZONTAL
-                ? Alignment.centerLeft
-                : Alignment.topCenter,
-            end: direction == GradientDirection.HORIZONTAL
-                ? Alignment.centerRight
-                : Alignment.bottomCenter,
-            colors: <Color>[color1, color2],
-            tileMode: TileMode.mirror),
+          begin: direction == GradientDirection.horizontal
+              ? Alignment.centerLeft
+              : Alignment.topCenter,
+          end: direction == GradientDirection.horizontal
+              ? Alignment.centerRight
+              : Alignment.bottomCenter,
+          colors: colors,
+          tileMode: TileMode.mirror,
+        ),
         borderRadius: BorderRadius.all(Radius.circular(roundness)),
       ),
       child: child,

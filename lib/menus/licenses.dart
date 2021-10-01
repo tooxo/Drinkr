@@ -1,6 +1,8 @@
+import 'package:drinkr/utils/purchases.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,7 +14,7 @@ class Licenses extends StatefulWidget {
 
 class LicensesState extends State<Licenses> {
   List<List<String>> items = [];
-  Map<String, List<List<String>>> itemMap = Map<String, List<List<String>>>();
+  Map<String, List<List<String>>> itemMap = <String, List<List<String>>>{};
 
   void populateItems() async {
     await LicenseRegistry.licenses.forEach((license) {
@@ -22,7 +24,7 @@ class LicensesState extends State<Licenses> {
         if (!itemMap.containsKey(package)) {
           itemMap[package] = [];
         }
-        itemMap[package].add(
+        itemMap[package]!.add(
             license.paragraphs.map((paragraph) => paragraph.text).toList());
       }
     });
@@ -42,6 +44,8 @@ class LicensesState extends State<Licenses> {
 
   ScrollController controller = ScrollController();
 
+  int currentPremium = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +54,7 @@ class LicensesState extends State<Licenses> {
         centerTitle: true,
         backgroundColor: Color.fromRGBO(21, 21, 21, 1),
         title: Text(
-          "Über uns/Lizensen",
+          "about",
           style: GoogleFonts.nunito(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
         ).tr(),
@@ -71,8 +75,26 @@ class LicensesState extends State<Licenses> {
                     child: Column(
                       children: <Widget>[
                         Expanded(
-                            flex: 3,
-                            child: Image.asset("assets/image/cutebeer.png")),
+                          flex: 3,
+                          child: InkWell(
+                            onTap: () {
+                              currentPremium++;
+                              if (currentPremium >= 10) {
+                                Purchases.removePremiumPurchased();
+                                Fluttertoast.showToast(
+                                  msg: "removed premium",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.blueGrey,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              }
+                            },
+                            child: Image.asset("assets/image/appicon3.png"),
+                          ),
+                        ),
                         Expanded(
                           flex: 3,
                           child: Padding(
@@ -80,7 +102,7 @@ class LicensesState extends State<Licenses> {
                             child: Column(
                               children: <Widget>[
                                 Text(
-                                  "Drinkr",
+                                  "Drinkr.",
                                   style: GoogleFonts.nunito(
                                       color: Colors.white,
                                       fontSize: 30,
@@ -183,6 +205,7 @@ class LicensesState extends State<Licenses> {
                           data: ThemeData(
                               textTheme: TextTheme(
                                   subtitle1: TextStyle(color: Colors.white)),
+                              // ignore: deprecated_member_use
                               accentColor: Colors.white,
                               unselectedWidgetColor: Colors.white),
                           child: ExpansionTile(
@@ -197,7 +220,7 @@ class LicensesState extends State<Licenses> {
                                 child: Column(
                                   children: <Widget>[
                                     for (List<String> version
-                                        in itemMap[package])
+                                        in itemMap[package]!)
                                       ExpansionTile(
                                         title: Text(
                                             version[0].length > 50

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -39,11 +40,11 @@ class TopShapePainter extends ShapeBorder {
   TopShapePainter(this.degrees);
 
   @override
-  Path getInnerPath(Rect rect, {TextDirection textDirection}) {
-    return this.getPath(rect, textDirection: textDirection);
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
+    return getPath(rect, textDirection: textDirection);
   }
 
-  Path getPath(Rect rect, {TextDirection textDirection}) {
+  Path getPath(Rect rect, {TextDirection? textDirection}) {
     double offsetB = (rect.width * sin((degrees * pi) / 180.0)) /
         sin(((90 - degrees) * pi) / 180.0);
 
@@ -56,12 +57,12 @@ class TopShapePainter extends ShapeBorder {
   }
 
   @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
-    return this.getPath(rect, textDirection: textDirection);
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    return getPath(rect, textDirection: textDirection);
   }
 
   @override
-  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
     Paint paint = Paint()
       ..color = Colors.transparent
       ..style = PaintingStyle.stroke
@@ -161,7 +162,7 @@ class MiddleShapePainter extends ShapeBorder {
 
   MiddleShapePainter(this.offsetY, this.degrees);
 
-  Path getPath(Rect rect, {TextDirection textDirection}) {
+  Path getPath(Rect rect, {TextDirection? textDirection}) {
     double offsetB = (rect.width * sin((degrees * pi) / 180.0)) /
         sin(((90 - degrees) * pi) / 180.0);
     return Path()
@@ -173,7 +174,7 @@ class MiddleShapePainter extends ShapeBorder {
   }
 
   @override
-  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
     Paint paint = Paint()
       ..color = Colors.transparent
       ..style = PaintingStyle.stroke
@@ -185,12 +186,12 @@ class MiddleShapePainter extends ShapeBorder {
   EdgeInsetsGeometry get dimensions => EdgeInsets.all(0);
 
   @override
-  Path getInnerPath(Rect rect, {TextDirection textDirection}) {
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
     return getPath(rect);
   }
 
   @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     return getPath(rect);
   }
 
@@ -205,7 +206,7 @@ class BottomShapePainter extends MiddleShapePainter {
   BottomShapePainter(double offsetY, double degrees) : super(offsetY, degrees);
 
   @override
-  Path getPath(Rect rect, {TextDirection textDirection}) {
+  Path getPath(Rect rect, {TextDirection? textDirection}) {
     double offsetB = (rect.width * sin((degrees * pi) / 180.0)) /
         sin(((90 - degrees) * pi) / 180.0);
     return Path()
@@ -230,22 +231,22 @@ class DividerPainter extends ShapeBorder {
     double offsetB = (rect.width * sin((degree * pi) / 180.0)) /
         sin(((90 - degree) * pi) / 180.0);
     return Path()
-      ..moveTo(0, this.offsetY)
-      ..lineTo(rect.width, this.offsetY - offsetB);
+      ..moveTo(0, offsetY)
+      ..lineTo(rect.width, offsetY - offsetB);
   }
 
   @override
-  Path getInnerPath(Rect rect, {TextDirection textDirection}) {
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
     return getPath(rect);
   }
 
   @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     return getPath(rect);
   }
 
   @override
-  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
     Paint paint = Paint()
       ..color = Colors.black
       ..style = PaintingStyle.stroke

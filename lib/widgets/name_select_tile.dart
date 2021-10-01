@@ -1,55 +1,194 @@
+import 'package:drinkr/utils/custom_icons.dart';
+import 'package:drinkr/utils/player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
-class NameSelectTile extends StatelessWidget {
-  final String playerName;
-  final dynamic deleteFunc;
+class NameSelectTile extends StatefulWidget {
+  final Player? player;
+  final Function() onDelete;
+  final Function(String) onNameChange;
+  final Function(String) onPlayerAdd;
+  final FocusNode? focusNode;
 
-  const NameSelectTile({Key key, this.playerName, this.deleteFunc})
-      : super(key: key);
+  NameSelectTile({
+    required this.player,
+    required this.onDelete,
+    required this.onNameChange,
+    required this.onPlayerAdd,
+    this.focusNode,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _NameSelectTileState();
+}
+
+class _NameSelectTileState extends State<NameSelectTile> {
+  late TextEditingController controller;
+  late FocusNode focusNode;
+
+  @override
+  void initState() {
+    controller = TextEditingController(text: widget.player?.name);
+    focusNode = widget.focusNode ?? FocusNode();
+    focusNode.addListener(
+      () {
+        if (focused && !focusNode.hasFocus) {
+          // lost focus
+          onCompletion(controller.text);
+        }
+        focused = focusNode.hasFocus;
+        if (mounted) {
+          setState(() {});
+        }
+      },
+    );
+    super.initState();
+  }
+
+  void onCompletion(String sub) {
+    if (widget.player == null) {
+      if (sub.trim() != "") {
+        controller.clear();
+        print("player added");
+        widget.onPlayerAdd(sub.trim());
+      }
+    } else {
+      if (sub.trim() == "") {
+        widget.onDelete();
+      } else {
+        widget.onNameChange(sub);
+      }
+    }
+  }
+
+  void onSubmit(String sub) {
+    onCompletion(sub);
+    if (widget.player == null) {}
+  }
+
+  void onNameChange(String newName) {
+    if (widget.player != null) {
+      // widget.onNameChange(newName);
+    }
+  }
+
+  void onNameChangeCompleted(String newName) {}
+
+  @override
+  void dispose() {
+    if (widget.focusNode == null) {
+      focusNode.dispose();
+    }
+    super.dispose();
+  }
+
+  bool focused = false;
+
+  Widget buildInnerAdd() {
+    return InkWell(
+      borderRadius: BorderRadius.circular(30),
+      onTap: () {
+        focused = true;
+        focusNode.requestFocus();
+        setState(() {});
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        child: Center(
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildInner(BuildContext context) {
+    if (widget.player == null && !focused) {
+      return buildInnerAdd();
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: TextField(
+              focusNode: focusNode,
+              controller: controller,
+              textInputAction: widget.player != null
+                  ? TextInputAction.done
+                  : TextInputAction.next,
+              onChanged: onNameChange,
+              onSubmitted: onSubmit,
+              onEditingComplete: widget.player != null ? null : () {},
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                counterText: "",
+                isDense: true,
+              ),
+              maxLines: 1,
+              maxLength: 16,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              style: GoogleFonts.nunito(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          !focused
+              ? Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8.0,
+                  ),
+                  child: GestureDetector(
+                    onTap: widget.onDelete,
+                    child: Icon(
+                      CustomIcons.trash,
+                      size: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : Container(),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(
-              color: Colors.deepOrange,
-              width: 3,
-            )),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 4,
-                child: Text(
-                  playerName,
-                  maxLines: 1,
-                  style: GoogleFonts.nunito(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: IconButton(
-                  onPressed: deleteFunc,
-                  padding: EdgeInsets.all(0),
-                  icon: Icon(
-                    Icons.highlight_off_outlined,
-                    size: 35,
-                    color: Colors.deepOrange,
-                  ),
-                ),
-              )
-            ],
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: Card(
+        color: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            30,
           ),
         ),
+        elevation: 0,
+        child: AnimatedContainer(
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.white, width: 1),
+              borderRadius: BorderRadius.circular(30),
+              color: focused
+                  ? Colors.white.withOpacity(.3)
+                  : Colors.white.withOpacity(.15),
+            ),
+            duration: Duration(
+              milliseconds: 300,
+            ),
+            child: buildInner(context)),
       ),
     );
   }

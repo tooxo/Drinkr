@@ -1,17 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<String> get _localPath async {
   return (await getApplicationDocumentsDirectory()).path;
-}
-
-class SupportedLanguages {
-  static const Locale de = Locale.fromSubtags(languageCode: "de");
-  static const Locale en = Locale.fromSubtags(languageCode: "en");
 }
 
 class InvalidTypeException implements Exception {}
@@ -52,7 +47,7 @@ Future<String> _loadLocalFile(String path) async {
 /// Locale [locale] and returns them in a line by line list.
 /// The [context] is required to receive local files.
 Future<List<String>> getIncludedFiles(
-    GameType type, BuildContext context) async {
+    GameType type, BuildContext context, bool filterAdult) async {
   String gameType = gameTypeToGameTypeClass(type).filePrefix;
 
   Locale currentLocale = Localizations.localeOf(context);
@@ -63,6 +58,7 @@ Future<List<String>> getIncludedFiles(
   List<String> matchingFilenames = (await _parseManifest(context))
       .keys
       .where((element) => element.startsWith(path))
+      .where((element) => !(element.contains("adult") && filterAdult))
       .toList();
   List<String> returnValue = [];
   for (String fileName in matchingFilenames) {
@@ -96,11 +92,12 @@ Future<List<String>> getLocalFiles(GameType type) async {
 }
 
 /// Count the texts in all files from Locale [locale] with enabled games [enabledGames]
-Future<int> getNumberOfTexts(
-    List<GameType> enabledGames, BuildContext context) async {
+Future<int> getNumberOfTexts(List<GameType> enabledGames, BuildContext context,
+    bool filterAdultQuestions) async {
   int returnValue = 0;
   for (GameType type in enabledGames) {
-    returnValue += (await getIncludedFiles(type, context)).length;
+    returnValue +=
+        (await getIncludedFiles(type, context, filterAdultQuestions)).length;
   }
   return returnValue;
 }

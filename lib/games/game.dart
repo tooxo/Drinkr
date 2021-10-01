@@ -1,14 +1,15 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:Drinkr/utils/drinking.dart';
-import 'package:Drinkr/widgets/gradient.dart';
-import 'package:Drinkr/widgets/text_widget.dart';
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/utils/difficulty.dart';
+import 'package:drinkr/utils/drinking.dart';
+import 'package:drinkr/widgets/gradient.dart';
+import 'package:drinkr/widgets/text_widget.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overlay_dialog/overlay_dialog.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../utils/player.dart';
@@ -17,15 +18,15 @@ class BasicGame extends StatefulWidget {
   final String title = "Test Title";
 
   final Color textColor = Colors.white;
-  final Color buttonColor = Color.fromRGBO(0, 0, 0, .3);
+  final Color buttonColor = Color.fromRGBO(0, 0, 0, .4);
   final Color backgroundColor1 = Colors.blue;
   final Color backgroundColor2 = Colors.orange;
 
   final int drinkingDisplay = 2;
 
-  final GameType type = GameType.UNDEFINED;
+  final GameType type = GameType.undefined;
 
-  final int difficulty;
+  final DifficultyType difficulty;
 
   final bool showSolutionButton = false;
 
@@ -40,7 +41,9 @@ class BasicGame extends StatefulWidget {
   @mustCallSuper
   BasicGame(this.selectedPlayer, this.difficulty, this.text) {
     List<dynamic> resp = Drinking.generateRandomAmount(difficulty);
-    this.drinking..add(resp[0])..add(resp[1]);
+    drinking
+      ..add(resp[0])
+      ..add(resp[1]);
   }
 
   @override
@@ -51,8 +54,8 @@ class BasicGameState extends State<BasicGame>
     with SingleTickerProviderStateMixin {
   bool showSolution = false;
 
-  AnimationController animationController;
-  Animation<double> animation;
+  late AnimationController animationController;
+  late Animation<double> animation;
 
   @override
   void initState() {
@@ -63,33 +66,39 @@ class BasicGameState extends State<BasicGame>
         CurvedAnimation(parent: animationController, curve: Curves.easeIn);
   }
 
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
   String generateMessage() {
     switch (widget.type) {
-      case GameType.NEVER_HAVE_I_EVER:
+      case GameType.neverHaveIEver:
         {
           return "neverHaveIEverExplanation".tr();
         }
-      case GameType.GUESS:
+      case GameType.guess:
         {
           return "guessingExplanation".tr();
         }
-      case GameType.GUESS_THE_SONG:
+      case GameType.guessTheSong:
         {
           return "guessTheSongExplanation".tr();
         }
-      case GameType.OPINION:
+      case GameType.opinion:
         {
           return "wouldYouRatherExplanation".tr();
         }
-      case GameType.QUIZ:
+      case GameType.quiz:
         {
           return "bigBrainQuizExplanation".tr();
         }
-      case GameType.TRUTH:
+      case GameType.truth:
         {
           return "truthOrDareExplanation".tr();
         }
-      case GameType.WHO_WOULD_RATHER:
+      case GameType.whoWouldRather:
         {
           return "whoWouldRatherExplanation".tr();
         }
@@ -99,6 +108,67 @@ class BasicGameState extends State<BasicGame>
   }
 
   void displayExitDialog(BuildContext context) {
+    DialogHelper().show(
+      context,
+      DialogWidget.custom(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: AlertDialog(
+            backgroundColor: Color.fromRGBO(
+                (widget.backgroundColor1.red + widget.backgroundColor2.red) ~/
+                    2,
+                (widget.backgroundColor1.green +
+                        widget.backgroundColor2.green) ~/
+                    2,
+                (widget.backgroundColor1.blue + widget.backgroundColor2.blue) ~/
+                    2,
+                1),
+            title: Text(
+              "exitTitle",
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(color: widget.textColor),
+                fontWeight: FontWeight.w800,
+                fontSize: 30,
+              ),
+            ).tr(),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            content: Text(
+              "exitDescription",
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(color: widget.textColor),
+                fontSize: 25,
+              ),
+            ).tr(),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              TextButton(
+                child: Text(
+                  "exit",
+                  style:
+                      GoogleFonts.nunito(color: widget.textColor, fontSize: 20),
+                ).tr(),
+                onPressed: () {
+                  DialogHelper().hide(context);
+                  Navigator.of(context).pop(true);
+                },
+              ),
+              TextButton(
+                child: Text("goOn".tr(),
+                    style: GoogleFonts.nunito(
+                        color: widget.textColor, fontSize: 20)),
+                onPressed: () {
+                  DialogHelper().hide(context);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void displayExitDialog2(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -161,7 +231,11 @@ class BasicGameState extends State<BasicGame>
 
   Future<bool> displayExitDialogWrapper(BuildContext context) {
     displayExitDialog(context);
-    return Future.value(true);
+    return Future.value(false);
+  }
+
+  String buildTitle() {
+    return widget.title;
   }
 
   AppBar buildAppBar() {
@@ -183,7 +257,7 @@ class BasicGameState extends State<BasicGame>
                   MediaQuery.of(context).viewPadding.left) ==
               0.0
           ? Text(
-              widget.title,
+              buildTitle(),
               style: GoogleFonts.nunito(
                   fontSize: 28,
                   color: widget.textColor,
@@ -192,7 +266,7 @@ class BasicGameState extends State<BasicGame>
             ).tr()
           : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                widget.title,
+                buildTitle(),
                 style: GoogleFonts.nunito(
                     color: widget.textColor,
                     fontSize: 28,
@@ -200,10 +274,12 @@ class BasicGameState extends State<BasicGame>
               ).tr(),
             ]),
       centerTitle: true,
-      flexibleSpace: TwoColorGradient(
-        color1: widget.backgroundColor1,
-        color2: widget.backgroundColor2,
-        direction: GradientDirection.HORIZONTAL,
+      flexibleSpace: ColorGradient(
+        colors: [
+          widget.backgroundColor1,
+          widget.backgroundColor2,
+        ],
+        direction: GradientDirection.horizontal,
       ),
     );
   }
@@ -245,13 +321,14 @@ class BasicGameState extends State<BasicGame>
                       ),
                     ),
                   ),
-                  this.showSolution
+                  showSolution
                       ? Container()
                       : ShowUpAnimation(
                           child: MaterialButton(
+                            elevation: 0,
                             onPressed: () {
                               setState(() {
-                                this.showSolution = true;
+                                showSolution = true;
                                 animationController.forward();
                               });
                             },
@@ -259,15 +336,18 @@ class BasicGameState extends State<BasicGame>
                               borderRadius: BorderRadius.circular(24),
                             ),
                             color: widget.buttonColor,
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: Text(
-                                "gameShowSolution",
-                                style: GoogleFonts.nunito(
-                                    color: widget.textColor,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w600),
-                              ).tr(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Text(
+                                  "gameShowSolution",
+                                  style: GoogleFonts.nunito(
+                                      color: widget.textColor,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600),
+                                ).tr(),
+                              ),
                             ),
                           ),
                         ),
@@ -304,6 +384,7 @@ class BasicGameState extends State<BasicGame>
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 10, 5, 10),
                   child: MaterialButton(
+                    elevation: 0,
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -338,12 +419,12 @@ class BasicGameState extends State<BasicGame>
                               content: Text(
                                 generateMessage(),
                                 style: GoogleFonts.nunito(
-                                    color: widget.textColor,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w700),
+                                  color: widget.textColor,
+                                  fontSize: 25,
+                                  // fontWeight: FontWeight.w700,
+                                ),
                               ),
                               actions: <Widget>[
-                                // usually buttons at the bottom of the dialog
                                 TextButton(
                                   child: Text(
                                     "close",
@@ -385,23 +466,26 @@ class BasicGameState extends State<BasicGame>
           flex: 1,
           child: Padding(
             padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
-            child: MaterialButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              color: widget.buttonColor,
-              //minWidth: 120,
-              height: 5000,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: FittedBox(
-                fit: BoxFit.fitHeight,
-                child: Text(
-                  "next",
-                  style: GoogleFonts.nunito(
-                      color: widget.textColor,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600),
-                ).tr(),
+            child: SizedBox.expand(
+              child: MaterialButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                color: widget.buttonColor,
+                elevation: 0,
+                //minWidth: 120,
+                height: 5000,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Text(
+                    "next",
+                    style: GoogleFonts.nunito(
+                        color: widget.textColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ).tr(),
+                ),
               ),
             ),
           ),
@@ -412,32 +496,35 @@ class BasicGameState extends State<BasicGame>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    SystemChrome.setEnabledSystemUIOverlays([]);
     return WillPopScope(
       onWillPop: () => displayExitDialogWrapper(context),
       child: Scaffold(
-        appBar: buildAppBar(),
-        body: TwoColorGradient(
-          color1: widget.backgroundColor1,
-          color2: widget.backgroundColor2,
-          child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 7,
-                  child: buildTop(),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: buildBottom(),
-                )
-              ],
+          appBar: buildAppBar(),
+          // extendBodyBehindAppBar: true,
+          // extendBody: true,
+          drawerScrimColor: Colors.green,
+          extendBody: true,
+          extendBodyBehindAppBar: true,
+          backgroundColor: Colors.green,
+          body: ColorGradient(
+            colors: [
+              widget.backgroundColor1,
+              widget.backgroundColor2,
+            ],
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: buildTop(),
+                  ),
+                  Container(
+                    height: 80,
+                    child: buildBottom(),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 }

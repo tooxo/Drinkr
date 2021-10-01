@@ -1,28 +1,23 @@
-import 'package:flutter/material.dart';
-
-@immutable
 class Player {
-  final bool gender = true; // == Is Man?
-  final String _name;
+  String name;
 
-  final int difficulty = 0; // Not implemented.
-
-  Player(this._name);
-
-  String get name {
-    return this._name;
-  }
+  Player(this.name);
 
   @override
   String toString() {
-    return this.name;
+    return name;
   }
 
   @override
   bool operator ==(other) {
-    return this.name == other.name;
+    if (other is Player) {
+      return name == other.name;
+    }
+    return false;
   }
 
   @override
+  // ignore: unnecessary_overrides
   int get hashCode => super.hashCode;
+
 }

@@ -1,21 +1,20 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:Drinkr/menus/setting.dart';
-import 'package:Drinkr/utils/ad.dart';
-import 'package:Drinkr/utils/drinking.dart';
-import 'package:Drinkr/utils/file.dart';
-import 'package:Drinkr/utils/networking.dart';
-import 'package:Drinkr/utils/player.dart';
-import 'package:Drinkr/utils/spotify_api.dart';
-import 'package:Drinkr/utils/sqlite.dart';
-import 'package:Drinkr/utils/types.dart';
+import 'package:drinkr/utils/difficulty.dart';
+import 'package:drinkr/menus/setting.dart';
+import 'package:drinkr/utils/ad.dart';
+import 'package:drinkr/utils/drinking.dart';
+import 'package:drinkr/utils/file.dart';
+import 'package:drinkr/utils/networking.dart';
+import 'package:drinkr/utils/player.dart';
+import 'package:drinkr/utils/spotify_api.dart';
+import 'package:drinkr/utils/spotify_storage.dart';
+import 'package:drinkr/utils/types.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/navigator.dart';
-import 'package:flutter/src/widgets/pages.dart';
-import 'package:flutter/src/animation/animation.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,10 +34,12 @@ class GameController {
   final List<GameType> enabledGames;
   final List<Player> players;
   final BuildContext context;
+  final bool filterAdultQuestions;
 
-  GameController(this.rounds, this.enabledGames, this.players, this.context);
+  GameController(this.rounds, this.enabledGames, this.players, this.context,
+      this.filterAdultQuestions);
 
-  final List<TypeClass<BaseType>> available_games = [
+  final List<TypeClass<BaseType>> availableGames = [
     NeverHaveIEverType(),
     QuizType(),
     OpinionType(),
@@ -52,12 +53,12 @@ class GameController {
   Spotify spotify = Spotify();
 
   List<Game> gamePlan = [];
-  Map<GameType, List> texts = Map<GameType, List>();
-  Map<GameType, int> maxTexts = Map<GameType, int>();
+  Map<GameType, List> texts = <GameType, List>{};
+  Map<GameType, int> maxTexts = <GameType, int>{};
 
   int countOccurrencesOfSpecificGameInMap(GameType gameType) {
     int count = 0;
-    for (Game game in this.gamePlan) {
+    for (Game game in gamePlan) {
       if (game.type == gameType) {
         count++;
       }
@@ -86,10 +87,10 @@ class GameController {
     return randomPlayer;
   }
 
-  String populateText(String unpopulated, int difficulty) {
+  String populateText(String unpopulated, DifficultyType difficulty) {
     String raw = unpopulated.toString();
     while (raw.contains("%player")) {
-      raw = unpopulated.replaceFirst("%player", getRandomPlayer().name);
+      raw = raw.replaceFirst("%player", getRandomPlayer().name);
     }
 
     while (raw.contains("%amountshot")) {
@@ -117,220 +118,311 @@ class GameController {
     return raw;
   }
 
-  Future<void> populateTextsMap() async {
+  Future<bool> _populateTextsMap() async {
     int selectedModes = (await SharedPreferences.getInstance())
-            .getInt(SettingsState.SETTING_INCLUSION_OF_QUESTIONS) ??
-        SettingsState.BOTH;
+            .getInt(SettingsState.settingInclusionOfQuestions) ??
+        SettingsState.both;
     for (GameType gameType in enabledGames) {
-      if (gameType == GameType.GUESS_THE_SONG) {
+      if (gameType == GameType.guessTheSong) {
         if (await checkConnection()) {
-          List<String> urls = [];
+          /*List<String> urls = [];
           if (selectedModes == SettingsState.ONLY_INCLUDED ||
               selectedModes == SettingsState.BOTH) {
-            urls.addAll(await getIncludedFiles(gameType, context));
+            urls.addAll(await getIncludedFiles(
+                gameType, context, this.filterAdultQuestions));
           }
           if (selectedModes == SettingsState.ONLY_CUSTOM ||
               selectedModes == SettingsState.BOTH) {
             urls.addAll(await getLocalFiles(gameType));
+          }*/
+          List<String> urls = SpotifyStorage.playlistsBox.values
+              .where(
+                (Playlist e) => e.enabled,
+              )
+              .map(
+                (Playlist e) => e.url,
+              )
+              .toList();
+
+          if (urls.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                "Rate den Song wurde deaktiviert, da alle Playlists "
+                        "in den Einstellungen deaktiviert wurden."
+                    .tr(),
+              ),
+            ));
           }
 
           texts[gameType] = await buildSpotify(urls, spotify);
-          SqLite database = await SqLite().open();
-          List<Song> missingSongs = texts[GameType.GUESS_THE_SONG]
+          List<Song> missingSongs = texts[GameType.guessTheSong]!
               .where((element) =>
-                  (element as Song).name == null ||
-                  (element as Song).id == null ||
-                  (element as Song).previewUrl == null)
+                  element.name == null ||
+                  element.id == null ||
+                  element.previewUrl == null)
+              .map((e) => e as Song)
               .toList();
-          texts[GameType.GUESS_THE_SONG]
+          texts[GameType.guessTheSong]!
               .removeWhere((element) => missingSongs.contains(element as Song));
-          missingSongs.map((e) async => texts[GameType.GUESS_THE_SONG]
-              .add(await spotify.fillMissingPreviewUrls(e, database)));
+          missingSongs.map((e) async => texts[GameType.guessTheSong]!
+              .add(await spotify.fillMissingPreviewUrls(e)));
         } else {
-          await Fluttertoast.showToast(
-              msg: "Rate den Song wurde deaktiviert, da du über keine "
-                  "Internetverbindung verfügst.",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM);
-          this.texts[gameType] = [];
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Rate den Song wurde deaktiviert, da du über keine "
+                        "Internetverbindung verfügst."
+                    .tr(),
+              ),
+            ),
+          );
+          texts[gameType] = [];
         }
         continue;
       }
 
-      if (gameType == GameType.TRUTH) {
-        texts[GameType.TRUTH] = [];
-        texts[GameType.DARE] = [];
+      if (gameType == GameType.truth) {
+        texts[GameType.truth] = [];
+        texts[GameType.dare] = [];
 
-        if (selectedModes == SettingsState.ONLY_INCLUDED ||
-            selectedModes == SettingsState.BOTH) {
-          texts[GameType.TRUTH]
-              .addAll(await getIncludedFiles(GameType.TRUTH, context));
-          texts[GameType.DARE]
-              .addAll(await getIncludedFiles(GameType.DARE, context));
+        if (selectedModes == SettingsState.onlyIncluded ||
+            selectedModes == SettingsState.both) {
+          texts[GameType.truth]!.addAll(await getIncludedFiles(
+              GameType.truth, context, filterAdultQuestions));
+          texts[GameType.dare]!.addAll(await getIncludedFiles(
+              GameType.dare, context, filterAdultQuestions));
         }
-        if (selectedModes == SettingsState.ONLY_CUSTOM ||
-            selectedModes == SettingsState.BOTH) {
-          texts[GameType.TRUTH].addAll(await getLocalFiles(GameType.TRUTH));
-          texts[GameType.DARE].addAll(await getLocalFiles(GameType.DARE));
+        if (selectedModes == SettingsState.onlyCustom ||
+            selectedModes == SettingsState.both) {
+          texts[GameType.truth]!.addAll(await getLocalFiles(GameType.truth));
+          texts[GameType.dare]!.addAll(await getLocalFiles(GameType.dare));
         }
         continue;
       }
 
       texts[gameType] = [];
-      if (selectedModes == SettingsState.ONLY_INCLUDED ||
-          selectedModes == SettingsState.BOTH) {
-        texts[gameType].addAll(await getIncludedFiles(gameType, context));
+      if (selectedModes == SettingsState.onlyIncluded ||
+          selectedModes == SettingsState.both) {
+        texts[gameType]!.addAll(
+            await getIncludedFiles(gameType, context, filterAdultQuestions));
       }
-      if (selectedModes == SettingsState.ONLY_CUSTOM ||
-          selectedModes == SettingsState.BOTH) {
-        texts[gameType].addAll(await getLocalFiles(gameType));
+      if (selectedModes == SettingsState.onlyCustom ||
+          selectedModes == SettingsState.both) {
+        texts[gameType]!.addAll(await getLocalFiles(gameType));
       }
     }
     for (GameType gameType in texts.keys) {
       // Shuffle the items in the list
       // to prevent similar rounds from occurring
-      texts[gameType].shuffle();
-      maxTexts[gameType] = texts[gameType].length;
+      texts[gameType]!.shuffle();
+      maxTexts[gameType] = texts[gameType]!.length;
     }
+
+    int sum = texts.values
+        .map((e) => e.length)
+        .fold(0, (previousValue, element) => previousValue + element);
+    return sum > 0;
   }
 
   Future<List<Song>> buildSpotify(
       List<String> playlistUrls, Spotify spotify) async {
     List<Song> response = [];
-    for (String url in playlistUrls) {
-      String playlistId = Spotify.getIdFromUrl(url);
-      List<Song> playlistResponse = await spotify.getPlaylist(playlistId);
-      for (Song track in playlistResponse) {
-        if (!response.contains(track)) {
-          response.add(track);
+
+    List<Future<Playlist?>> playlistFutures = playlistUrls
+        .map(Spotify.getIdFromUrl)
+        .map((e) => spotify.getPlaylist(e!))
+        .toList();
+
+    List<Playlist?> playlists = await Future.wait(playlistFutures);
+
+    for (Playlist? p in playlists) {
+      if (p == null) {
+        continue;
+      }
+      for (String trackId in p.songIds) {
+        Song? track = await SpotifyStorage.getFromSpotifyCache(trackId);
+        if (track != null) {
+          if (!response.contains(track)) {
+            response.add(track);
+          }
         }
       }
-      // FIXME: reimplement progress bar
-      /*context.setState(() {
-        linearProgress++;
-      });*/
     }
     return response;
   }
 
-  Future<void> generateNormalPlan() async {
-    List<TypeClass<BaseType>> availableGamesBackup = available_games.toList();
-    while (this.gamePlan.length < rounds) {
+  Future<bool> generateNormalPlan() async {
+    List<TypeClass<BaseType>> availableGamesBackup = availableGames.toList();
+    while (gamePlan.length < rounds) {
       TypeClass<BaseType> game;
-      if (this.texts.isEmpty) {
-        await populateTextsMap();
+      if (texts.isEmpty) {
+        await _populateTextsMap();
       }
-      availableGamesBackup = available_games
+      availableGamesBackup = availableGames
           .where((element) =>
               enabledGames.contains(element.type) &&
-              this.texts[element.type].isNotEmpty)
+              texts[element.type]!.isNotEmpty)
           .toList();
       GameType gameType;
       do {
         if (availableGamesBackup.isEmpty) {
-          return;
+          return true;
         }
         dynamic aa = availableGamesBackup
-            .where((element) => this.texts[element.type].isNotEmpty)
+            .where((element) => texts[element.type]!.isNotEmpty)
             .toList();
         game = aa[Random.secure().nextInt(availableGamesBackup
-            .where((element) => this.texts[element.type].isNotEmpty)
+            .where((element) => texts[element.type]!.isNotEmpty)
             .toList()
             .length)];
+
         gameType = game.type;
-        if (game.type == GameType.TRUTH) {
+        if (game.type == GameType.truth) {
           int count = countOccurrencesOfSpecificGameInMap(game.type);
-          if (count == this.maxTexts[game.type] ||
-              count >= maxTexts[GameType.TRUTH] ||
-              count >= maxTexts[GameType.DARE]) {
-            gameType = null; // provoke a rerun, because no texts are remaining
+          if (count == maxTexts[game.type] ||
+              count >= maxTexts[GameType.truth]! ||
+              count >= maxTexts[GameType.dare]!) {
+            gameType = GameType
+                .undefined; // provoke a rerun, because no texts are remaining
             availableGamesBackup.remove(game);
           }
         } else {
           if (countOccurrencesOfSpecificGameInMap(gameType) ==
-              this.maxTexts[game.type]) {
-            gameType = null; // provoke a rerun, because no texts are remaining
+              maxTexts[game.type]) {
+            gameType = GameType
+                .undefined; // provoke a rerun, because no texts are remaining
             availableGamesBackup.remove(game);
           }
         }
       } while ((gameType ==
-                  (this.gamePlan.isNotEmpty
-                      ? this.gamePlan[this.gamePlan.length - 1].type
+                  (gamePlan.isNotEmpty
+                      ? gamePlan[gamePlan.length - 1].type
                       : null) &&
               availableGamesBackup.length > 1) ||
-          gameType == null);
-      this.gamePlan.add(Game(game.constructorFunction, game.type));
+          gameType == GameType.undefined);
+      gamePlan.add(Game(game.constructorFunction, game.type));
     }
+    return gamePlan.isNotEmpty;
   }
 
-  Future<void> fulfillNormalPlan(int difficulty) async {
-    /*
-    setState(() {
-      this.displayState = 3;
-    });
-     */
+  BannerAd? bannerAd;
+  OverlayEntry? adOverlayEntry;
+
+  Future<void> _fulfillNormalPlan(DifficultyType difficulty) async {
+    unawaited(
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]),
+    );
+
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+      ),
+    );
+
+    unawaited(
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []));
+
     bool ads = await shouldShowAds();
 
     if (ads) {
-      /*AdListener listener = AdListener(onAdLoaded: (Ad ad) async {
-        if (bannerAd.size.width <= context.size.width ~/ 2) {
-          if (bannerAd = null) return;
-          if (!mounted) {
-            unawaited(bannerAd.dispose());
-            bannerAd = null;
-          } else {}
+      BannerAdListener listener = BannerAdListener(onAdLoaded: (Ad ad) async {
+        if (bannerAd == null) return;
+        if (bannerAd!.size.width >= context.size!.width ~/ 2) {
+          unawaited(bannerAd!.dispose());
+          bannerAd = null;
         }
+
+        // show the ad
+        if (adOverlayEntry == null) {
+          adOverlayEntry = OverlayEntry(builder: (BuildContext context) {
+            if (bannerAd == null) return Container();
+            return SafeArea(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    width: bannerAd!.size.width.toDouble(),
+                    height: 80,
+                    child: Center(
+                      child: AdWidget(
+                        ad: bannerAd!,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          });
+
+          Overlay.of(context)?.insert(adOverlayEntry!);
+        }
+      }, onAdFailedToLoad: (Ad? ad, LoadAdError lae) {
+        print("loading ad error: " + lae.message);
       });
+
+      const String adId =
+          String.fromEnvironment("BANNER_AD_ID", defaultValue: "");
+
       bannerAd = BannerAd(
-        adUnitId: BannerAd.testAdUnitId,
+        adUnitId: adId == "" ? BannerAd.testAdUnitId : adId,
         size: AdSize.banner,
-        request: targetingInfo,
+        request: AdRequest(
+          keywords: [],
+        ),
         listener: listener,
-      );*/
+      );
+      unawaited(bannerAd!.load());
     }
-    bool shouldContinue = false;
+    late bool shouldContinue;
+
     do {
+      Widget? oldRoute;
+      Widget? newRoute;
+      shouldContinue = false;
+
       if (gamePlan.isEmpty) {
         await generateNormalPlan();
       }
-      bool result;
+      bool? result;
       for (Game game in gamePlan) {
         TypeClass<BaseType> typeClass = gameTypeToGameTypeClass(game.type);
         if (texts.values.where((element) => element.isNotEmpty).isEmpty) {
-          await populateTextsMap();
+          await _populateTextsMap();
         }
         dynamic randomlyChosenText;
-        if (game.type == GameType.TRUTH &&
-            texts[GameType.TRUTH].isNotEmpty &&
-            texts[GameType.DARE].isNotEmpty) {
-          String randomTextTruth = texts[GameType.TRUTH]
-              [Random.secure().nextInt(texts[GameType.TRUTH].length)];
+        if (game.type == GameType.truth &&
+            texts[GameType.truth]!.isNotEmpty &&
+            texts[GameType.dare]!.isNotEmpty) {
+          String randomTextTruth = texts[GameType.truth]![
+              Random.secure().nextInt(texts[GameType.truth]!.length)];
 
-          String randomTextDare = texts[GameType.DARE]
-              [Random.secure().nextInt(texts[GameType.DARE].length)];
+          String randomTextDare = texts[GameType.dare]![
+              Random.secure().nextInt(texts[GameType.dare]!.length)];
 
-          texts[GameType.TRUTH].remove(randomTextTruth);
-          texts[GameType.DARE].remove(randomTextDare);
+          texts[GameType.truth]!.remove(randomTextTruth);
+          texts[GameType.dare]!.remove(randomTextDare);
 
           randomlyChosenText =
               json.encode({"truth": randomTextTruth, "dare": randomTextDare});
-        } else if (game.type == GameType.GUESS_THE_SONG) {
+        } else if (game.type == GameType.guessTheSong) {
           try {
-            Song randomSong = texts[game.type]
-                [Random.secure().nextInt(texts[game.type].length)];
+            Song randomSong = texts[game.type]![
+                Random.secure().nextInt(texts[game.type]!.length)];
 
             randomlyChosenText = json.encode(
                 {"name": randomSong.name, "previewUrl": randomSong.previewUrl});
 
-            texts[game.type].remove(randomSong);
+            texts[game.type]!.remove(randomSong);
           } on IndexError {
             continue;
           }
         } else {
           try {
-            randomlyChosenText = texts[game.type]
-                [Random.secure().nextInt(texts[game.type].length)];
-            texts[game.type].remove(randomlyChosenText);
+            randomlyChosenText = texts[game.type]![
+                Random.secure().nextInt(texts[game.type]!.length)];
+            texts[game.type]!.remove(randomlyChosenText);
           } on IndexError {
             continue;
           }
@@ -343,7 +435,7 @@ class GameController {
         try {
           if (randomlyChosenText.toString().trim() == "") throw Exception();
 
-          if (game.type == GameType.TRUTH) {
+          if (game.type == GameType.truth) {
             dynamic jsonEncoded = json.decode(randomlyChosenText);
             if (!jsonEncoded.keys.contains("truth") ||
                 !jsonEncoded.keys.contains("dare")) {
@@ -362,42 +454,58 @@ class GameController {
             }
           }
         } on Exception catch (_, exc) {
-          printError(exc.toString());
+          print(exc.toString());
           continue;
         }
 
-        Player player;
+        Player? player;
         if (typeClass.singlePlayerActivity) {
           player = getRandomPlayer();
+        } else {
+          player = Player("");
         }
 
         if (typeClass.includesPlayers) {
           randomlyChosenText = populateText(randomlyChosenText, difficulty);
         }
 
+        oldRoute = newRoute;
+        newRoute = game.function(player, difficulty, randomlyChosenText);
+
         result = await Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder: (c, a1, a2) =>
-                game.function(player, difficulty, randomlyChosenText),
-            transitionsBuilder: (c, anim, a2, child) {
-              if (anim.status == AnimationStatus.reverse) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: Offset(0.0, 0),
-                    end: Offset(0.0, -1),
-                  ).animate(a2),
-                  child: child,
-                );
+            pageBuilder: (c, a1, a2) => newRoute!,
+            transitionsBuilder: (BuildContext c, Animation<double> anim,
+                Animation<double> a2, Widget child) {
+              if (oldRoute == null) {
+                return child;
               }
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: Offset(0.0, 1.0),
-                  end: Offset(0.0, 0.0),
-                ).animate(anim),
-                child: child,
+
+              return Transform.scale(
+                scale: anim.value >= .5 ? 1 : 1.025 - anim.value * 0.025,
+                child: Container(
+                  color: Colors.black,
+                  child: Stack(
+                    children: [
+                      anim.value == 1.0
+                          ? Container()
+                          : Opacity(
+                              opacity: 1.0 - anim.value,
+                              child: oldRoute,
+                            ),
+                      Opacity(
+                        opacity: anim.value,
+                        child: child,
+                      ),
+                    ],
+                  ),
+                ),
               );
             },
-            transitionDuration: Duration(milliseconds: 200),
+            transitionDuration: Duration(
+              milliseconds: 500,
+            ),
+            // reverseTransitionDuration: Duration.zero,
           ),
         );
 
@@ -409,7 +517,7 @@ class GameController {
            */
           await Fluttertoast.showToast(msg: "An unexpected Error occured.");
           Navigator.of(context).pop(false);
-          return;
+          break;
         }
         result = result || gamePlan.isEmpty;
         if (result) {
@@ -419,73 +527,101 @@ class GameController {
       if (result == null) {
         // TODO: This occures only if a game launches without loading any texts.
         Navigator.of(context).pop(false);
-        return;
+        break;
       }
       if (!result) {
+        if (ads) {
+          adOverlayEntry?.remove();
+        }
+
+        unawaited(showFullscreenAd(context));
+
         await showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                    title: Text("goOnTitle",
-                        style: GoogleFonts.caveatBrush(
-                          textStyle: TextStyle(color: Colors.black),
-                          fontWeight: FontWeight.w800,
-                          fontSize: 30,
-                        )).tr(),
-                    content: Text(
-                      "goOnDescription",
-                      style: GoogleFonts.caveatBrush(
-                        textStyle: TextStyle(color: Colors.black),
-                        fontSize: 25,
-                      ),
+          context: context,
+          builder: (context) => Container(
+            color: Colors.black,
+            child: AlertDialog(
+                title: Text(
+                  "goOnTitle",
+                  style: GoogleFonts.nunito(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 30,
+                  ),
+                ).tr(),
+                content: Text(
+                  "goOnDescription",
+                  style: GoogleFonts.nunito(
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
+                ).tr(),
+                backgroundColor: Colors.deepOrange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  TextButton(
+                    child: Text(
+                      "exit",
+                      style:
+                          GoogleFonts.nunito(color: Colors.white, fontSize: 20),
                     ).tr(),
-                    backgroundColor: Colors.deepOrange,
-                    actions: <Widget>[
-                      // usually buttons at the bottom of the dialog
-                      TextButton(
-                        child: Text(
-                          "exit",
-                          style: GoogleFonts.caveatBrush(
-                              color: Colors.black, fontSize: 20),
-                        ).tr(),
-                        onPressed: () {
-                          shouldContinue = false;
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        child: Text(
-                          "goOn",
-                          style: GoogleFonts.caveatBrush(
-                              color: Colors.black, fontSize: 20),
-                        ).tr(),
-                        onPressed: () {
-                          shouldContinue = true;
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ]).build(context));
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text(
+                      "goOn",
+                      style:
+                          GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+                    ).tr(),
+                    onPressed: () {
+                      shouldContinue = true;
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ]).build(context),
+          ),
+        );
+        if (adOverlayEntry != null && shouldContinue) {
+          Overlay.of(context)?.insert(adOverlayEntry!);
+        }
       }
     } while (shouldContinue);
 
-    /*if (ads) {
+    if (ads) {
       try {
-        await bannerAd.dispose();
+        adOverlayEntry?.dispose();
+        adOverlayEntry = null;
+
+        await bannerAd?.dispose();
         bannerAd = null;
       } catch (_) {}
-    }*/
+    }
 
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    unawaited(
+      SystemChrome.setPreferredOrientations(
+        [
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ],
+      ),
+    );
 
-    // this.displayState = 1;
-    // setState(() {});
-
-    Navigator.of(context).pop();
+    unawaited(
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: SystemUiOverlay.values),
+    );
   }
 
-  Future<void> start(int difficulty) async {
-    await populateTextsMap();
-    await fulfillNormalPlan(difficulty);
+  Future<bool> prepare() async {
+    return await _populateTextsMap() && await generateNormalPlan();
+  }
+
+  Future<void> start(DifficultyType difficulty) async {
+    await _fulfillNormalPlan(difficulty);
   }
 }
