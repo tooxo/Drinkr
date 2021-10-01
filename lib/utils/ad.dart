@@ -1,5 +1,6 @@
 import 'package:drinkr/main.dart';
 import 'package:drinkr/utils/purchases.dart';
+import 'package:drinkr/widgets/custom_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -8,17 +9,15 @@ import 'package:progress_state_button/progress_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-const String ADS_SETTING = "SHOULD_SHOW_ADS_SETTINGS";
-const String ADS_SETTINGS_PERMANENT = "DEACTIVATE_ADS_PERMANENTLY";
-const String AD_DIALOG_SETTING = "SHOULD_SHOW_AD_DIALOG_SETTING";
-const String LAST_AD_DISPLAY = "LAST_TIME_AD_WAS_DISPLAYED_STORE";
+const String adSetting = "SHOULD_SHOW_ADS_SETTINGS";
+const String adSettingPermanent = "DEACTIVATE_ADS_PERMANENTLY";
+const String adDialogSetting = "SHOULD_SHOW_AD_DIALOG_SETTING";
+const String lastAdDisplay = "LAST_TIME_AD_WAS_DISPLAYED_STORE";
 
 Future<bool> shouldShowAds() async {
-  if (!ADS_ENABLED) return false;
+  if (!adsEnabled) return false;
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  int lastMillisSinceEpoch = (preferences.getInt(ADS_SETTING) != null
-      ? preferences.getInt(ADS_SETTING)
-      : 0)!;
+  int lastMillisSinceEpoch = preferences.getInt(adSetting) ?? 0;
   DateTime lastDate = DateTime.fromMillisecondsSinceEpoch(lastMillisSinceEpoch);
   DateTime nowDate = DateTime.now();
 
@@ -26,14 +25,14 @@ Future<bool> shouldShowAds() async {
 }
 
 Future<bool> shouldShowAdDialog() async {
-  if (!ADS_ENABLED) return false;
+  if (!adsEnabled) return false;
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (await Purchases.isPremiumPurchased()) {
     return false;
   }
-  if (preferences.getBool(AD_DIALOG_SETTING) ?? true) {
+  if (preferences.getBool(adDialogSetting) ?? true) {
     DateTime millisSinceLastShow = DateTime.fromMillisecondsSinceEpoch(
-        preferences.getInt(LAST_AD_DISPLAY) ?? 0);
+        preferences.getInt(lastAdDisplay) ?? 0);
     DateTime currentTime = DateTime.now();
     if (currentTime.difference(millisSinceLastShow) > Duration(days: 1)) {
       return true;
@@ -72,16 +71,16 @@ void showAdDialog(BuildContext context) async {
           backgroundColor: Colors.green.shade600,
           title: Text(
             "mainAdDialogTitle",
-            style: GoogleFonts.caveatBrush(
-              textStyle: TextStyle(color: Colors.black),
+            style: GoogleFonts.nunito(
+              textStyle: TextStyle(color: Colors.white),
               fontWeight: FontWeight.w800,
               fontSize: 30,
             ),
           ).tr(),
           content: Text(
             "mainAdDialogDescription",
-            style: GoogleFonts.caveatBrush(
-              textStyle: TextStyle(color: Colors.black),
+            style: GoogleFonts.nunito(
+              textStyle: TextStyle(color: Colors.white),
               fontSize: 25,
             ),
           ).tr(),
@@ -109,7 +108,7 @@ void showAdDialog(BuildContext context) async {
               ).tr(),
               onPressed: () async {
                 await (await SharedPreferences.getInstance())
-                    .setBool(AD_DIALOG_SETTING, false);
+                    .setBool(adDialogSetting, false);
                 Navigator.of(context).pop(true);
               },
             )
@@ -120,20 +119,21 @@ void showAdDialog(BuildContext context) async {
 
 Future<void> deactivateAds() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  await preferences.setInt(ADS_SETTING, DateTime.now().millisecondsSinceEpoch);
+  await preferences.setInt(adSetting, DateTime.now().millisecondsSinceEpoch);
 }
 
 Future<void> showInterstitialAd(
   BuildContext buildContext,
   ValueChanged<ButtonState> valueChanged,
 ) async {
-  if (!ADS_ENABLED) return;
+  if (!adsEnabled) return;
 
   valueChanged(ButtonState.loading);
 
   RewardedAd? ad;
   bool rewarded = false;
 
+  // ignore: prefer_function_declarations_over_variables
   OnUserEarnedRewardCallback onUserEarnedRewardCallback = (
     RewardedAd ad,
     RewardItem rewardItem,
@@ -154,76 +154,26 @@ Future<void> showInterstitialAd(
             await deactivateAds();
             valueChanged(ButtonState.success);
             await showDialog(
-              context: buildContext,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: Colors.green.shade700,
-                  title: Text(
-                    "adSuccessTitle",
-                    style: GoogleFonts.caveatBrush(
-                      textStyle: TextStyle(color: Colors.black),
-                      fontWeight: FontWeight.w800,
-                      fontSize: 30,
-                    ),
-                  ).tr(),
-                  content: Text(
-                    "adSuccessDescription",
-                    style: GoogleFonts.caveatBrush(
-                      textStyle: TextStyle(color: Colors.black),
-                      fontSize: 25,
-                    ),
-                  ).tr(),
-                  actions: <Widget>[
-// usually buttons at the bottom of the dialog
-                    TextButton(
-                      child: Text(
-                        "close",
-                        style: GoogleFonts.caveatBrush(
-                            color: Colors.black, fontSize: 20),
-                      ).tr(),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
+                context: buildContext,
+                builder: (BuildContext context) => CustomAlert(
+                      titleTranslationKey: "adSuccessTitle",
+                      textTranslationKey: "adSuccessDescription",
+                      backgroundColor: Colors.green.shade700,
+                      textColor: Colors.white,
+                      buttonTextTranslationKey: "close",
+                    ));
             valueChanged(ButtonState.idle);
           } else {
             valueChanged(ButtonState.fail);
             await showDialog(
               context: buildContext,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: Colors.deepOrange,
-                  title: Text("error",
-                      style: GoogleFonts.caveatBrush(
-                        textStyle: TextStyle(color: Colors.black),
-                        fontWeight: FontWeight.w800,
-                        fontSize: 30,
-                      )).tr(),
-                  content: Text(
-                    "adVideoAbortDescription",
-                    style: GoogleFonts.caveatBrush(
-                      textStyle: TextStyle(color: Colors.black),
-                      fontSize: 25,
-                    ),
-                  ).tr(),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text(
-                        "close",
-                        style: GoogleFonts.caveatBrush(
-                            color: Colors.black, fontSize: 20),
-                      ).tr(),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                    ),
-                  ],
-                );
-              },
+              builder: (BuildContext context) => CustomAlert(
+                titleTranslationKey: "error",
+                textTranslationKey: "adVideoAbortDescription",
+                backgroundColor: Colors.deepOrange,
+                textColor: Colors.white,
+                buttonTextTranslationKey: "close",
+              ),
             );
             valueChanged(ButtonState.idle);
           }
@@ -242,45 +192,23 @@ Future<void> showInterstitialAd(
   }, onAdFailedToLoad: (LoadAdError loadAdError) async {
     print("failed to load: ${loadAdError.toString()}");
     valueChanged(ButtonState.fail);
+
     await showDialog(
       context: buildContext,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.deepOrange,
-          title: Text("adsNoVideosTitle",
-              style: GoogleFonts.caveatBrush(
-                textStyle: TextStyle(color: Colors.black),
-                fontWeight: FontWeight.w800,
-                fontSize: 30,
-              )).tr(),
-          content: Text(
-            "adsNoVideosDescription",
-            style: GoogleFonts.caveatBrush(
-              textStyle: TextStyle(color: Colors.black),
-              fontSize: 25,
-            ),
-          ).tr(),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                "close",
-                style: GoogleFonts.caveatBrush(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ).tr(),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
-        );
-      },
+      builder: (BuildContext context) => CustomAlert(
+        titleTranslationKey: "adsNoVideosTitle",
+        textTranslationKey: "adsNoVideosDescription",
+        backgroundColor: Colors.deepOrange,
+        textColor: Colors.white,
+        buttonTextTranslationKey: "close",
+      ),
     );
+
     valueChanged(ButtonState.idle);
   });
 
-  const String adId = String.fromEnvironment("REWARDED_AD_ID", defaultValue: "");
+  const String adId =
+      String.fromEnvironment("REWARDED_AD_ID", defaultValue: "");
 
   await RewardedAd.load(
     adUnitId: adId == "" ? RewardedAd.testAdUnitId : adId,
@@ -297,7 +225,8 @@ Future<void> showFullscreenAd(
   }
 
   InterstitialAd? interstitial;
-  const String adId = String.fromEnvironment("INTERSTITIAL_AD_ID", defaultValue: "");
+  const String adId =
+      String.fromEnvironment("INTERSTITIAL_AD_ID", defaultValue: "");
 
   return await InterstitialAd.load(
     adUnitId: adId == "" ? InterstitialAd.testAdUnitId : adId,

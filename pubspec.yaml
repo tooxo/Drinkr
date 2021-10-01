@@ -25,7 +25,7 @@ dependencies:
   google_fonts: ^2.1.0
   auto_size_text: ^3.0.0-nullsafety.0
   show_up_animation: ^2.0.0
-  audioplayers: ^0.19.1
+  audioplayers: ^0.20.1
   http: ^0.13.3
   connectivity: ^3.0.6
   flutter_spinkit: ^5.0.0
@@ -37,7 +37,7 @@ dependencies:
   draggable_scrollbar: ^0.1.0
   circular_reveal_animation: ^2.0.0
   url_launcher: ^6.0.0-nullsafety.6
-  pedantic: ^1.11.1
+  lints: 1.0.1
   audiowaveformFlutter:
     git:
       url: "https://github.com/tooxo/audioWaveFormFlutter.git"
@@ -47,7 +47,10 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   expandable: ^5.0.1
-  progress_state_button: ^1.0.3
+  # progress_state_button: ^1.0.3
+  progress_state_button:
+    git:
+      url: "https://github.com/tooxo/progress-state-button.git"
   overlay_dialog: ^0.2.0
   flutter_localized_locales: ^2.0.3
   in_app_purchase: ^1.0.8
@@ -57,14 +60,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: any
-  flutter_driver: any
   test: any
   hive_generator: ^1.1.0
   build_runner: ^2.1.0
   dependency_validator: ^3.1.0
-
-dependency_overrides:
-  in_app_purchase_android: '0.1.4+6'
 
 flutter:
   uses-material-design: true

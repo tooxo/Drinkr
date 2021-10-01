@@ -8,12 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'menus/name_select.dart';
-import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-const bool ADS_ENABLED =
+const bool adsEnabled =
     bool.fromEnvironment("ADS_ENABLED", defaultValue: false);
 
 void main() async {
@@ -45,7 +44,7 @@ void main() async {
     supportedLocales: [
       Locale('en', 'US'),
       Locale('de', 'DE'),
-      Locale('es', 'ES'),
+      // Locale('es', 'ES'),
     ],
     path: 'assets/i18n',
     fallbackLocale: Locale('en', 'US'),

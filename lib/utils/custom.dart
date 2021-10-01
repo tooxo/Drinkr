@@ -1,1 +1,1 @@
-const String SAVED_CUSTOM_SETTING = "SAVED_CUSTOM_SETTING";
+const String savedCustomSetting = "SAVED_CUSTOM_SETTING";

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:drinkr/menus/game_mode.dart';
 import 'package:drinkr/menus/setting.dart';
 import 'package:drinkr/utils/ad.dart';
+import 'package:drinkr/utils/purchases.dart';
 import 'package:drinkr/utils/spotify_storage.dart';
 import 'package:drinkr/widgets/animated_grid_plus.dart';
 import 'package:drinkr/widgets/custom_alert.dart';
@@ -35,16 +36,16 @@ class NameSelect extends StatefulWidget {
 class NameSelectState extends State<NameSelect> {
   List<Player> players = [];
 
-  static const PREFS_PLAYERS = "PLAYER_STORE";
+  static const prefsPlayers = "PLAYER_STORE";
 
   Future<void> loadPlayers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    List<String>? playerNames = preferences.getStringList(PREFS_PLAYERS);
+    List<String>? playerNames = preferences.getStringList(prefsPlayers);
     if (playerNames == null) {
       return;
     }
     for (String name in playerNames) {
-      this.players.add(Player(name));
+      players.add(Player(name));
     }
     setState(() {});
   }
@@ -52,10 +53,10 @@ class NameSelectState extends State<NameSelect> {
   Future<void> setPlayers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     List<String> playerNames = <String>[];
-    for (Player p in this.players) {
+    for (Player p in players) {
       playerNames.add(p.toString());
     }
-    await preferences.setStringList(PREFS_PLAYERS, playerNames);
+    await preferences.setStringList(prefsPlayers, playerNames);
   }
 
   @override
@@ -66,6 +67,17 @@ class NameSelectState extends State<NameSelect> {
       (_) => SpotifyStorage.initializePreshippedPlaylists(context),
     );
     checkAdVariables();
+    Purchases.isPremiumPurchased().then(
+      (bool value) => {
+        setState(
+          () {
+            if (Purchases.purchaseState == PurchaseState.available && value) {
+              Purchases.purchaseState = PurchaseState.done;
+            }
+          },
+        )
+      },
+    );
   }
 
   void confirm() {
@@ -126,6 +138,7 @@ class NameSelectState extends State<NameSelect> {
 
   UniqueKey finalKey = UniqueKey();
 
+  @override
   Widget build(BuildContext context) {
     double bottomInset = MediaQuery.of(context).viewInsets.bottom;
     if (bottomInset != 0.0) {

@@ -43,15 +43,15 @@ void main() {
   test("test spotify playlist extraction", () async {
     expect(
       (await Spotify().getPlaylist("37i9dQZEVXbMDoHDwVN2tF",
-              updateStrategy: PlaylistUpdateStrategy.FULL_FETCH))!
-          .song_ids
+              updateStrategy: PlaylistUpdateStrategy.fullFetch))!
+          .songIds
           .length,
       50,
     );
     expect(
       (await Spotify().getPlaylist("3y1DdsLazc9zK1AARQYo7b",
-              updateStrategy: PlaylistUpdateStrategy.FULL_FETCH))!
-          .song_ids
+              updateStrategy: PlaylistUpdateStrategy.fullFetch))!
+          .songIds
           .length,
       200,
     );

@@ -25,21 +25,21 @@ class CustomAlert extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
       child: AlertDialog(
         title: Text(
-          this.titleTranslationKey,
+          titleTranslationKey,
           style: GoogleFonts.nunito(
-            textStyle: TextStyle(color: this.textColor),
+            textStyle: TextStyle(color: textColor),
             fontWeight: FontWeight.w800,
             fontSize: 30,
           ),
         ).tr(),
         content: Text(
-          this.textTranslationKey,
+          textTranslationKey,
           style: GoogleFonts.nunito(
-            textStyle: TextStyle(color: this.textColor),
+            textStyle: TextStyle(color: textColor),
             fontSize: 25,
           ),
         ).tr(),
-        backgroundColor: this.backgroundColor,
+        backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
@@ -47,9 +47,9 @@ class CustomAlert extends StatelessWidget {
           // usually buttons at the bottom of the dialog
           TextButton(
             child: Text(
-              this.buttonTextTranslationKey,
+              buttonTextTranslationKey,
               style: GoogleFonts.nunito(
-                color: this.textColor,
+                color: textColor,
                 fontSize: 20,
               ),
             ).tr(),

@@ -76,13 +76,13 @@ class SpotifyTile extends StatelessWidget {
                                 child: CachedNetworkImage(
                                   width: 48,
                                   height: 48,
-                                  imageUrl: playlist.image_url,
+                                  imageUrl: playlist.imageUrl,
                                 ),
                               ),
                             ),
                           ),
                           subtitle: Text(
-                            playlist.creator_name,
+                            playlist.creatorName,
                             style: GoogleFonts.nunito(
                               color: playlist.enabled
                                   ? Colors.white

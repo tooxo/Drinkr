@@ -110,10 +110,18 @@
   "deactivateAds": "Werbung deaktivieren",
   "deactivateAdsDescription": "schaue ein kurzes Video und deaktiviere die Werbung für eine Stunde",
   "deactivateAdsText": "30-sekündiges Video schauen,\num Werbung für 1h zu deaktivieren",
+  "adsAlreadyDisabled": "Werbung wurde bereits deaktiviert!\nDu kannst aber trotzdem noch ein Video schauen.",
   "languageSubtitle": "wähle deine bevorzugte Sprache aus!",
   "restorePurchases": "Käufe wiederherstellen",
   "restorePurchasesDescription": "stelle deine Käufe wieder her!",
   "restore": "Wiederherstellen",
   "licenses": "Lizenzen",
-  "licensesDescription": "Infos über uns und über die Software, die wir benutzt haben!"
+  "licensesDescription": "Infos über uns und über die Software, die wir benutzt haben!",
+  "buyPremium": "Premium kaufen",
+  "buyPremiumDescription": "erhalte exklusive Vorteile",
+  "premiumDisableAds": "keine Werbung!",
+  "premiumAddPlaylists": "füge eigene Playlists hinzu!",
+  "premiumCustom": "schalte den “Custom” Mode frei",
+  "buy": "Kaufen",
+  "includeAdult": "+18"
 }

@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import '../utils/player.dart';
 
 class WhoWouldRather extends BasicGame {
+  @override
   final String title = "whoWouldRather";
-  final GameType type = GameType.WHO_WOULD_RATHER;
+  @override
+  final GameType type = GameType.whoWouldRather;
 
+  @override
   final Color backgroundColor1 = Color.fromRGBO(57, 13, 129, 1);
+  @override
   final Color backgroundColor2 = Color.fromRGBO(129, 18, 124, 1);
 
+  @override
   final int drinkingDisplay = 1;
 
   WhoWouldRather(Player player, DifficultyType difficulty, String text)

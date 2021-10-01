@@ -9,11 +9,6 @@ Future<String> get _localPath async {
   return (await getApplicationDocumentsDirectory()).path;
 }
 
-class SupportedLanguages {
-  static const Locale de = Locale.fromSubtags(languageCode: "de");
-  static const Locale en = Locale.fromSubtags(languageCode: "en");
-}
-
 class InvalidTypeException implements Exception {}
 
 /// Get a list of all files included in the application files

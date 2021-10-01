@@ -5,6 +5,13 @@ jobs:
     runs-on: macos-11
     env:
       APP_ID: ${{ secrets.APP_ID_IOS }}
+      BANNER_ID: ${{ secrets.BANNER_ID_IOS }}
+      REWARDED_ID: ${{ secrets.REWARDED_ID_IOS }}
+      FULLSCREEN_ID: ${{ secrets.FULLSCREEN_ID_IOS }}
+      BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+      P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+      BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -13,9 +20,32 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
+      # stolen from github actions docs
+      - run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       - run: sed -i .bak "s|ca-app-pub-3940256099942544~3347511713|$APP_ID|g" ios/Runner/Info.plist
       - run: flutter pub get
-      - run: flutter build ios --release --no-codesign
+      - run: flutter build ios --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID"
       - run: mkdir Payload
       - run: mv build/ios/iphoneos/Drinkr.app Payload/Drinkr.app
       - run: zip -r drinkr-app-release.zip ./Payload
@@ -25,6 +55,10 @@ jobs:
         with:
           name: ios_build_artifact
           path: drinkr-app-release.ipa
+      - name: Clean up keychain and provisioning profile
+        run: |
+          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
   build_android_no_ads:
     runs-on: ubuntu-latest
     steps:
@@ -116,7 +150,7 @@ jobs:
         id: sign_appapk
         with:
           releaseDirectory: .
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          signingts.APPKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         env:
@@ -145,6 +179,22 @@ jobs:
           track: beta
           inAppUpdatePriority: 2
           whatsNewDirectory: whatsnew
+  upload_to_apple_testflight:
+    runs-on: macos-11
+    if: github.ref == 'refs/heads/stable'
+    needs: build_ios
+    steps:
+      - name: Download results from build
+        uses: actions/download-artifact@v2
+        with:
+          name: ios_build_artifact
+      - name: 'Upload app to TestFlight'
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-path: 'drinkr-app-release.ipa'
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
   upload_to_github_releases:
     runs-on: ubuntu-latest
     needs: [ sign_android_appbundle, sign_android_apk, build_android_no_ads, build_ios ]

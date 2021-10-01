@@ -6,6 +6,7 @@ import 'package:drinkr/utils/purchases.dart';
 import 'package:drinkr/utils/types.dart';
 import 'package:drinkr/widgets/custom_game_select_tile.dart';
 import 'package:drinkr/widgets/game_select_tile.dart';
+import 'package:drinkr/widgets/purchasable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,28 +16,17 @@ import '../utils/types.dart';
 class GameMode extends StatefulWidget {
   final List<Player> players;
 
-  static const IconData icon_custom =
-      IconData(0xe800, fontFamily: 'GameModeSelectionIcons', fontPackage: null);
-  static const IconData icon_guessthesong =
-      IconData(0xe801, fontFamily: 'GameModeSelectionIcons', fontPackage: null);
-  static const IconData icon_quiz =
-      IconData(0xe802, fontFamily: 'GameModeSelectionIcons', fontPackage: null);
-  static const IconData icon_dirty =
-      IconData(0xe803, fontFamily: 'GameModeSelectionIcons', fontPackage: null);
-  static const IconData icon_party =
-      IconData(0xe804, fontFamily: 'GameModeSelectionIcons', fontPackage: null);
-
   const GameMode(this.players, {Key? key}) : super(key: key);
 
   @override
   GameState createState() => GameState();
 }
 
-enum CurrentGameState { STOPPED, LOADING, IN_GAME }
-enum PurchaseState { AVAILABLE, IN_PROGRESS, DONE }
+enum CurrentGameState { stopped, loading, inGame }
+enum PurchaseState { available, inProgress, done }
 
 class GameState extends State<GameMode> {
-  CurrentGameState gameState = CurrentGameState.STOPPED;
+  CurrentGameState gameState = CurrentGameState.stopped;
 
   StreamSubscription<List<PurchaseDetails>>? _subscription;
 
@@ -46,7 +36,7 @@ class GameState extends State<GameMode> {
     });
   }
 
-  PurchaseState purchaseState = PurchaseState.AVAILABLE;
+  PurchaseState purchaseState = PurchaseState.available;
 
   @override
   void initState() {
@@ -64,8 +54,8 @@ class GameState extends State<GameMode> {
     Purchases.isPremiumPurchased().then(
       (bool value) => {
         setState(() {
-          if (purchaseState == PurchaseState.AVAILABLE && value) {
-            purchaseState = PurchaseState.DONE;
+          if (purchaseState == PurchaseState.available && value) {
+            purchaseState = PurchaseState.done;
           }
         })
       },
@@ -74,24 +64,23 @@ class GameState extends State<GameMode> {
     super.initState();
   }
 
-  static const Set<String> purchaseIds = <String>{'premium'};
-
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    // ignore: avoid_function_literals_in_foreach_calls
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
         setState(() {
-          purchaseState = PurchaseState.IN_PROGRESS;
+          purchaseState = PurchaseState.inProgress;
         });
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
           print("purchase error");
           setState(() {
-            purchaseState = PurchaseState.AVAILABLE;
+            purchaseState = PurchaseState.available;
           });
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           setState(() {
-            purchaseState = PurchaseState.DONE;
+            purchaseState = PurchaseState.done;
           });
           await Purchases.setPremiumPurchased();
         }
@@ -100,24 +89,6 @@ class GameState extends State<GameMode> {
         }
       }
     });
-  }
-
-  void purchase() async {
-    print("starting purchase process");
-    final ProductDetailsResponse response =
-        await InAppPurchase.instance.queryProductDetails(purchaseIds);
-    if (response.notFoundIDs.isNotEmpty) {
-      return;
-    }
-    List<ProductDetails> products = response.productDetails;
-    final PurchaseParam purchaseParam = PurchaseParam(
-      productDetails: products
-          .where(
-            (element) => element.id == "premium",
-          )
-          .first,
-    );
-    await InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
   }
 
   @override
@@ -152,7 +123,7 @@ class GameState extends State<GameMode> {
             children: [
               Divider(),
               GameSelectTile(
-                enabled: gameState == CurrentGameState.STOPPED,
+                enabled: gameState == CurrentGameState.stopped,
                 backgroundColors: [
                   Color.fromRGBO(0xFE, 0x8C, 0x00, 1),
                   Color.fromRGBO(0xF8, 0x36, 0x00, 1)
@@ -161,22 +132,22 @@ class GameState extends State<GameMode> {
                 onGameStateChange: onStateChange,
                 title: "gameModeStandard",
                 subtitle: "gameModeStandardDescription",
-                icon: CustomIcons.game_mode_standard,
+                icon: CustomIcons.gameModeStandard,
                 players: widget.players,
                 enabledGames: [
-                  GameType.WHO_WOULD_RATHER,
-                  GameType.TRUTH,
-                  GameType.NEVER_HAVE_I_EVER,
-                  GameType.OPINION,
-                  GameType.CHALLENGES,
-                  GameType.QUIZ,
-                  GameType.GUESS,
-                  GameType.GUESS_THE_SONG
+                  GameType.whoWouldRather,
+                  GameType.truth,
+                  GameType.neverHaveIEver,
+                  GameType.opinion,
+                  GameType.challenges,
+                  GameType.quiz,
+                  GameType.guess,
+                  GameType.guessTheSong
                 ],
               ),
               Divider(),
               GameSelectTile(
-                enabled: gameState == CurrentGameState.STOPPED,
+                enabled: gameState == CurrentGameState.stopped,
                 backgroundColors: [
                   Color.fromRGBO(255, 27, 24, 1),
                   Color.fromRGBO(241, 61, 180, 1),
@@ -185,20 +156,20 @@ class GameState extends State<GameMode> {
                 onGameStateChange: onStateChange,
                 title: "gameModeParty",
                 subtitle: "gameModePartyDescription",
-                icon: CustomIcons.game_mode_party,
+                icon: CustomIcons.gameModeParty,
                 players: widget.players,
                 enabledGames: [
-                  GameType.DARE,
-                  GameType.TRUTH,
-                  GameType.CHALLENGES,
-                  GameType.NEVER_HAVE_I_EVER,
-                  GameType.OPINION,
-                  GameType.WHO_WOULD_RATHER
+                  GameType.dare,
+                  GameType.truth,
+                  GameType.challenges,
+                  GameType.neverHaveIEver,
+                  GameType.opinion,
+                  GameType.whoWouldRather
                 ],
               ),
               Divider(),
               GameSelectTile(
-                enabled: gameState == CurrentGameState.STOPPED,
+                enabled: gameState == CurrentGameState.stopped,
                 backgroundColors: [
                   Color.fromRGBO(79, 44, 208, 1),
                   Color.fromRGBO(7, 149, 199, 1),
@@ -207,16 +178,16 @@ class GameState extends State<GameMode> {
                 onGameStateChange: onStateChange,
                 title: "gameModeQuiz",
                 subtitle: "gameModeQuizDescription",
-                icon: CustomIcons.game_mode_quiz,
+                icon: CustomIcons.gameModeQuiz,
                 players: widget.players,
                 enabledGames: [
-                  GameType.QUIZ,
-                  GameType.GUESS,
+                  GameType.quiz,
+                  GameType.guess,
                 ],
               ),
               Divider(),
               GameSelectTile(
-                enabled: gameState == CurrentGameState.STOPPED,
+                enabled: gameState == CurrentGameState.stopped,
                 backgroundColors: [
                   Color.fromRGBO(25, 96, 2, 1),
                   Color.fromRGBO(95, 154, 0, 1),
@@ -225,63 +196,30 @@ class GameState extends State<GameMode> {
                 onGameStateChange: onStateChange,
                 title: "gameModeSongGuess",
                 subtitle: "gameModeSongGuessDescription",
-                icon: CustomIcons.game_mode_song,
+                icon: CustomIcons.gameModeSong,
                 players: widget.players,
                 enabledGames: [
-                  GameType.GUESS_THE_SONG,
+                  GameType.guessTheSong,
                 ],
               ),
               Divider(),
-              Builder(builder: (BuildContext context) {
-                bool purchased = purchaseState == PurchaseState.DONE;
-                return GestureDetector(
-                  onTap: !purchased ? purchase : null,
-                  child: AbsorbPointer(
-                    absorbing: !purchased,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        AnimatedOpacity(
-                          opacity: purchased ? 1 : .5,
-                          duration: Duration(milliseconds: 500),
-                          child: CustomGameSelectTile(
-                            title: "gameModeCustom",
-                            subtitle: "gameModeCustomDescription",
-                            icon: CustomIcons.game_mode_custom,
-                            players: widget.players,
-                            enabledGames: enabledGamesCustom,
-                            backgroundColors: [
-                              Color.fromRGBO(131, 58, 180, 1),
-                              Color.fromRGBO(253, 29, 29, 1),
-                              Color.fromRGBO(253, 187, 45, 1),
-                            ],
-                            parentContext: context,
-                            onGameStateChange: onStateChange,
-                            enabled: gameState == CurrentGameState.STOPPED,
-                          ),
-                        ),
-                        purchased
-                            ? Container()
-                            : Positioned(
-                                top: 12,
-                                right: 12,
-                                child: Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.white,
-                                ),
-                              ),
-                        purchaseState == PurchaseState.IN_PROGRESS
-                            ? CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation(
-                                  Colors.white,
-                                ),
-                              )
-                            : Container()
-                      ],
-                    ),
-                  ),
-                );
-              }),
+              Purchasable(
+                child: CustomGameSelectTile(
+                  title: "gameModeCustom",
+                  subtitle: "gameModeCustomDescription",
+                  icon: CustomIcons.gameModeCustom,
+                  players: widget.players,
+                  enabledGames: enabledGamesCustom,
+                  backgroundColors: [
+                    Color.fromRGBO(131, 58, 180, 1),
+                    Color.fromRGBO(253, 29, 29, 1),
+                    Color.fromRGBO(253, 187, 45, 1),
+                  ],
+                  parentContext: context,
+                  onGameStateChange: onStateChange,
+                  enabled: gameState == CurrentGameState.stopped,
+                ),
+              ),
               Divider(),
             ],
           ),
