@@ -12,7 +12,7 @@ jobs:
       P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
       BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-      BUILD_NUMBER: 21${{GITHUB_RUN_NUMBER}}
+      BUILD_NUMBER: 21${{ github.run_id }}
 
     steps:
       - uses: actions/checkout@v2
@@ -64,7 +64,7 @@ jobs:
   build_android_no_ads:
     runs-on: ubuntu-latest
     env:
-      BUILD_NUMBER: 21${{GITHUB_RUN_NUMBER}}
+      BUILD_NUMBER: 21${{ github.run_id }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -95,7 +95,7 @@ jobs:
       BANNER_ID: ${{ secrets.BANNER_ID_ANDROID }}
       REWARDED_ID: ${{ secrets.REWARDED_ID_ANDROID }}
       FULLSCREEN_ID: ${{ secrets.FULLSCREEN_ID_ANDROID }}
-      BUILD_NUMBER: 21${{GITHUB_RUN_NUMBER}}
+      BUILD_NUMBER: 21${{ github.run_id }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
