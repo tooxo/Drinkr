@@ -292,19 +292,19 @@ class SettingsState extends State<Settings> {
                                   hasIcon: false,
                                 ),
                                 header: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0,
-                                    vertical: 16,
-                                  ),
-                                  child: IconListTile(
-                                    title: "deactivateAds".tr(),
-                                    subtitle: "deactivateAdsDescription".tr(),
-                                    iconData: CustomIcons.noAd,
-                                    // iconSize: 55,
-                                    onTap: () {},
-                                    asg: asg,
-                                  ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 16,
                                 ),
+                                child: IconListTile(
+                                  title: "deactivateAds".tr(),
+                                  subtitle: "deactivateAdsDescription".tr(),
+                                  iconData: CustomIcons.noAd,
+                                  // iconSize: 55,
+                                  onTap: () {},
+                                  asg: asg,
+                                ),
+                              ),
                                 collapsed: Center(
                                   child: Icon(
                                     Icons.arrow_drop_down_rounded,

@@ -12,6 +12,8 @@ jobs:
       P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
       BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      BUILD_NUMBER: 21${{GITHUB_RUN_NUMBER}}
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -45,7 +47,7 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       - run: sed -i .bak "s|ca-app-pub-3940256099942544~3347511713|$APP_ID|g" ios/Runner/Info.plist
       - run: flutter pub get
-      - run: flutter build ios --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID"
+      - run: flutter build ios --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID" --build-number="$BUILD_NUMBER"
       - run: mkdir Payload
       - run: mv build/ios/iphoneos/Drinkr.app Payload/Drinkr.app
       - run: zip -r drinkr-app-release.zip ./Payload
@@ -61,6 +63,8 @@ jobs:
           rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
   build_android_no_ads:
     runs-on: ubuntu-latest
+    env:
+      BUILD_NUMBER: 21${{GITHUB_RUN_NUMBER}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -70,8 +74,8 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter build apk --release
-      - run: flutter build appbundle --release
+      - run: flutter build apk --release --build-number="$BUILD_NUMBER"
+      - run: flutter build appbundle --release --build-number="$BUILD_NUMBER"
       - run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/app-release-no-ads.apk
       - run: mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/app-release-no-ads.aab
       - name: Upload result
@@ -91,6 +95,7 @@ jobs:
       BANNER_ID: ${{ secrets.BANNER_ID_ANDROID }}
       REWARDED_ID: ${{ secrets.REWARDED_ID_ANDROID }}
       FULLSCREEN_ID: ${{ secrets.FULLSCREEN_ID_ANDROID }}
+      BUILD_NUMBER: 21${{GITHUB_RUN_NUMBER}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -102,8 +107,8 @@ jobs:
       - run: sed -i "s|ca-app-pub-3940256099942544~3347511713|$APP_ID|g" android/app/src/main/AndroidManifest.xml
       - run: sed -i "s|ca-app-pub-3940256099942544~3347511713|$APP_ID|g" android/app/src/main/res/values/strings.xml
       - run: flutter pub get
-      - run: flutter build apk --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID"
-      - run: flutter build appbundle --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID"
+      - run: flutter build apk --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID" --build-number="$BUILD_NUMBER"
+      - run: flutter build appbundle --release --dart-define "ADS_ENABLED=true" --dart-define "BANNER_AD_ID=$BANNER_ID" --dart-define="REWARDED_AD_ID=$REWARDED_ID" --dart-define="INTERSTITIAL_AD_ID=$FULLSCREEN_ID" --build-number="$BUILD_NUMBER"
       - name: Upload result
         uses: actions/upload-artifact@v2
         with:
