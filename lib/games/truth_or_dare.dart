@@ -99,6 +99,7 @@ class TruthOrDareState extends BasicGameState {
                               child: ShowUpAnimation(
                                 offset: 0,
                                 child: MaterialButton(
+                                  elevation: 0,
                                   height: 120,
                                   color: widget.buttonColor,
                                   onPressed: () {
@@ -129,6 +130,7 @@ class TruthOrDareState extends BasicGameState {
                               child: ShowUpAnimation(
                                 offset: 0,
                                 child: MaterialButton(
+                                  elevation: 0,
                                   height: 120,
                                   color: widget.buttonColor,
                                   onPressed: () {

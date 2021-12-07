@@ -29,14 +29,14 @@ class CustomAlert extends StatelessWidget {
           style: GoogleFonts.nunito(
             textStyle: TextStyle(color: textColor),
             fontWeight: FontWeight.w800,
-            fontSize: 30,
+            fontSize: 25,
           ),
         ).tr(),
         content: Text(
           textTranslationKey,
           style: GoogleFonts.nunito(
             textStyle: TextStyle(color: textColor),
-            fontSize: 25,
+            fontSize: 20,
           ),
         ).tr(),
         backgroundColor: backgroundColor,

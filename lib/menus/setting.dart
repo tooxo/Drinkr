@@ -139,7 +139,7 @@ class SettingsState extends State<Settings> {
                             Color.fromRGBO(36, 140, 0, 1),
                             Color.fromRGBO(36, 140, 0, 1),
                           ],
-                          roundness: 15,
+                          roundness: 30,
                           child: ExpandablePanel(
                             controller: spotifyController,
                             theme: ExpandableThemeData(
@@ -282,7 +282,7 @@ class SettingsState extends State<Settings> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),
                             child: ColorGradient(
-                              roundness: 15,
+                              roundness: 30,
                               colors: [
                                 Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
                                 Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
@@ -292,19 +292,19 @@ class SettingsState extends State<Settings> {
                                   hasIcon: false,
                                 ),
                                 header: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 16,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                    vertical: 16,
+                                  ),
+                                  child: IconListTile(
+                                    title: "deactivateAds".tr(),
+                                    subtitle: "deactivateAdsDescription".tr(),
+                                    iconData: CustomIcons.noAd,
+                                    // iconSize: 55,
+                                    onTap: () {},
+                                    asg: asg,
+                                  ),
                                 ),
-                                child: IconListTile(
-                                  title: "deactivateAds".tr(),
-                                  subtitle: "deactivateAdsDescription".tr(),
-                                  iconData: CustomIcons.noAd,
-                                  // iconSize: 55,
-                                  onTap: () {},
-                                  asg: asg,
-                                ),
-                              ),
                                 collapsed: Center(
                                   child: Icon(
                                     Icons.arrow_drop_down_rounded,
@@ -398,7 +398,7 @@ class SettingsState extends State<Settings> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 8.0),
                       child: ColorGradient(
-                        roundness: 15,
+                        roundness: 30,
                         colors: [
                           Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
                           Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
@@ -496,102 +496,115 @@ class SettingsState extends State<Settings> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      child: ColorGradient(
-                        roundness: 15,
-                        colors: [
-                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                          Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
-                        ],
-                        child: ExpandablePanel(
-                          theme: ExpandableThemeData(
-                            hasIcon: false,
-                          ),
-                          header: Padding(
+                    FutureBuilder(
+                        future: Purchases.isPremiumPurchased(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Container();
+                          }
+                          if (snapshot.data == true) {
+                            return Container();
+                          }
+                          return Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 16,
-                            ),
-                            child: IconListTile(
-                              title: "restorePurchases".tr(),
-                              subtitle: "restorePurchasesDescription".tr(),
-                              iconData: CustomIcons.refresh,
-                              onTap: () {},
-                              asg: asg,
-                            ),
-                          ),
-                          collapsed: Center(
-                            child: Icon(
-                              Icons.arrow_drop_down_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                          expanded: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 32.0),
-                                child: Divider(
-                                  color: Colors.white,
-                                  thickness: 1,
+                                horizontal: 16.0, vertical: 8.0),
+                            child: ColorGradient(
+                              roundness: 30,
+                              colors: [
+                                Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                                Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
+                              ],
+                              child: ExpandablePanel(
+                                theme: ExpandableThemeData(
+                                  hasIcon: false,
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 8,
-                                  right: 8,
-                                  bottom: 8,
+                                header: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                    vertical: 16,
+                                  ),
+                                  child: IconListTile(
+                                    title: "restorePurchases".tr(),
+                                    subtitle:
+                                        "restorePurchasesDescription".tr(),
+                                    iconData: CustomIcons.refresh,
+                                    onTap: () {},
+                                    asg: asg,
+                                  ),
                                 ),
-                                child: Column(
+                                collapsed: Center(
+                                  child: Icon(
+                                    Icons.arrow_drop_down_rounded,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                expanded: Column(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextButton(
-                                        onPressed: () async {
-                                          await InAppPurchase.instance
-                                              .restorePurchases();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4.0, horizontal: 8),
-                                          child: Text(
-                                            "restore",
-                                            style: GoogleFonts.nunito(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                            ),
-                                          ).tr(),
-                                        ),
-                                        style: TextButton.styleFrom(
-                                          backgroundColor:
-                                              Colors.black.withOpacity(.4),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                          ),
-                                        ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 32.0),
+                                      child: Divider(
+                                        color: Colors.white,
+                                        thickness: 1,
                                       ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 8,
+                                        right: 8,
+                                        bottom: 8,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: TextButton(
+                                              onPressed: () async {
+                                                await InAppPurchase.instance
+                                                    .restorePurchases();
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 4.0,
+                                                        horizontal: 8),
+                                                child: Text(
+                                                  "restore",
+                                                  style: GoogleFonts.nunito(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ).tr(),
+                                              ),
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: Colors.black
+                                                    .withOpacity(.4),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_drop_up_rounded,
+                                      color: Colors.white,
                                     ),
                                   ],
                                 ),
                               ),
-                              Icon(
-                                Icons.arrow_drop_up_rounded,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                            ),
+                          );
+                        }),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 8.0),
                       child: ColorGradient(
-                        roundness: 15,
+                        roundness: 30,
                         colors: [
                           Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
                           Color.fromRGBO(0xFF, 0x6B, 0x00, 1),
