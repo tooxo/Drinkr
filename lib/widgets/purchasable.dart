@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 
 class Purchasable extends StatelessWidget {
   final Widget child;
+  final bool showLock;
+  final Alignment alignment;
 
   Purchasable({
     required this.child,
+    this.showLock = true,
+    this.alignment = Alignment.center,
   });
 
   @override
@@ -17,21 +21,21 @@ class Purchasable extends StatelessWidget {
       child: AbsorbPointer(
         absorbing: !purchased,
         child: Stack(
-          alignment: Alignment.center,
+          alignment: alignment,
           children: [
             AnimatedOpacity(
               opacity: purchased ? 1 : .5,
               duration: Duration(milliseconds: 500),
               child: child,
             ),
-            purchased
+            purchased || !showLock
                 ? Container()
                 : Positioned(
                     top: 12,
                     right: 12,
                     child: Icon(
                       Icons.lock_outline,
-                      color: Colors.white,
+                      color: Colors.white.withOpacity(.8),
                     ),
                   ),
             Purchases.purchaseState == PurchaseState.inProgress

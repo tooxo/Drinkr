@@ -58,6 +58,14 @@ class GameSelectTileState extends State<GameSelectTile> {
     if (!widget.enabled) {
       return;
     }
+
+    if (widget.enabledGames.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("tooFewGameModes".tr()),
+      ));
+      return;
+    }
+
     widget.onGameStateChange(CurrentGameState.loading);
     GameController gameController = GameController(
       50,
@@ -125,9 +133,15 @@ class GameSelectTileState extends State<GameSelectTile> {
             thickness: 1,
           ),
         ),
-        for (GameType type in widget.enabledGames)
+        for (String name in widget.enabledGames
+            .map(
+              (e) => e == GameType.truth
+                  ? "\u2022 " + tr("truthOrDare")
+                  : "\u2022 " + gameTypeToGameTypeClass(e).translatedTitle,
+            )
+            .toList())
           Text(
-            "\u2022 " + gameTypeToGameTypeClass(type).translatedTitle,
+            name,
             style: GoogleFonts.nunito(
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
             textAlign: TextAlign.start,
@@ -290,13 +304,12 @@ class GameSelectTileState extends State<GameSelectTile> {
                         ),
                         iconedButtons: {
                           ButtonState.idle: IconedButton(
-                            text: "startGame".tr(),
-                            icon: Icon(Icons.send, color: Colors.white),
-                            color: Colors.black.withOpacity(
-                              .4,
-                            ),
-                            disabledColor: Colors.black.withOpacity(.2)
-                          ),
+                              text: "startGame".tr(),
+                              icon: Icon(Icons.send, color: Colors.white),
+                              color: Colors.black.withOpacity(
+                                .4,
+                              ),
+                              disabledColor: Colors.black.withOpacity(.2)),
                           ButtonState.loading: IconedButton(
                             color: Colors.black.withOpacity(
                               .4,
@@ -314,9 +327,7 @@ class GameSelectTileState extends State<GameSelectTile> {
                             color: Colors.green,
                           )
                         },
-                        onPressed: widget.enabledGames.isNotEmpty
-                            ? () => startGame()
-                            : null,
+                        onPressed: startGame,
                         state: buttonState,
                       ),
                     ),

@@ -123,5 +123,7 @@
   "premiumAddPlaylists": "add your own playlists!",
   "premiumCustom": "unlock the \"Custom\" mode",
   "buy": "Buy",
-  "includeAdult": "18+ Questions?"
+  "includeAdult": "18+ Questions?",
+  "tooFewGameModes": "You need to select at least one game mode.",
+  "addPlaylists": "Add custom playlists"
 }

@@ -7,6 +7,7 @@ import 'package:drinkr/utils/player.dart';
 import 'package:drinkr/utils/types.dart';
 import 'package:drinkr/widgets/custom_switch.dart';
 import 'package:drinkr/widgets/game_select_tile.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -131,7 +132,9 @@ class _CustomGameSelectTileState extends GameSelectTileState {
             child: ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(
-                "\u2022 " + type.translatedTitle,
+                type.type == GameType.truth
+                    ? "\u2022 " + tr("truthOrDare")
+                    : "\u2022 " + type.translatedTitle,
                 style: GoogleFonts.nunito(
                   color: Colors.white,
                   fontSize: 18,

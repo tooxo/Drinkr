@@ -29,6 +29,12 @@ import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 
 class Settings extends StatefulWidget {
+  final bool openSpotify;
+
+  Settings({
+    this.openSpotify = false,
+  });
+
   @override
   State<StatefulWidget> createState() => SettingsState();
 }
@@ -42,7 +48,7 @@ class SettingsState extends State<Settings> {
   static const int onlyCustom = 2;
 
   bool spotifyEdit = false;
-  ExpandableController spotifyController = ExpandableController();
+  late ExpandableController spotifyController;
 
   AutoSizeGroup asg = AutoSizeGroup();
 
@@ -71,6 +77,7 @@ class SettingsState extends State<Settings> {
 
   @override
   void initState() {
+    spotifyController = ExpandableController(initialExpanded: widget.openSpotify);
     super.initState();
     playlistSubscription = SpotifyStorage.playlistsBox.watch().listen(
       (BoxEvent event) {
