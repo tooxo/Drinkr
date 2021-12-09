@@ -74,14 +74,14 @@ class GameController {
     }
 
     List<Player> possiblePlayers =
-        players.where((p) => !lastPickedPlayers.contains(p)).toList();
+    players.where((p) => !lastPickedPlayers.contains(p)).toList();
 
     if (possiblePlayers.isEmpty) {
       possiblePlayers = players;
     }
 
     Player randomPlayer =
-        possiblePlayers[Random.secure().nextInt(possiblePlayers.length)];
+    possiblePlayers[Random.secure().nextInt(possiblePlayers.length)];
 
     lastPickedPlayers.add(randomPlayer);
     return randomPlayer;
@@ -120,7 +120,7 @@ class GameController {
 
   Future<bool> _populateTextsMap() async {
     int selectedModes = (await SharedPreferences.getInstance())
-            .getInt(SettingsState.settingInclusionOfQuestions) ??
+        .getInt(SettingsState.settingInclusionOfQuestions) ??
         SettingsState.both;
     for (GameType gameType in enabledGames) {
       if (gameType == GameType.guessTheSong) {
@@ -138,17 +138,17 @@ class GameController {
           List<String> urls = SpotifyStorage.playlistsBox.values
               .where(
                 (Playlist e) => e.enabled,
-              )
+          )
               .map(
                 (Playlist e) => e.url,
-              )
+          )
               .toList();
 
           if (urls.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
                 "Rate den Song wurde deaktiviert, da alle Playlists "
-                        "in den Einstellungen deaktiviert wurden."
+                    "in den Einstellungen deaktiviert wurden."
                     .tr(),
               ),
             ));
@@ -157,21 +157,29 @@ class GameController {
           texts[gameType] = await buildSpotify(urls, spotify);
           List<Song> missingSongs = texts[GameType.guessTheSong]!
               .where((element) =>
-                  element.name == null ||
-                  element.id == null ||
-                  element.previewUrl == null)
+          element.name == null ||
+              element.id == null ||
+              element.previewUrl == null)
               .map((e) => e as Song)
               .toList();
           texts[GameType.guessTheSong]!
               .removeWhere((element) => missingSongs.contains(element as Song));
-          missingSongs.map((e) async => texts[GameType.guessTheSong]!
-              .add(await spotify.fillMissingPreviewUrls(e)));
+          Future.wait(missingSongs.map((e) async {
+            return spotify
+                .fillMissingPreviewUrls(e)
+                .then(
+                    (Song? value) =>
+                {
+                  if (value != null) texts[GameType.guessTheSong]!.add(value)
+                }
+            );
+          }));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
                 "Rate den Song wurde deaktiviert, da du über keine "
-                        "Internetverbindung verfügst."
+                    "Internetverbindung verfügst."
                     .tr(),
               ),
             ),
@@ -224,8 +232,8 @@ class GameController {
     return sum > 0;
   }
 
-  Future<List<Song>> buildSpotify(
-      List<String> playlistUrls, Spotify spotify) async {
+  Future<List<Song>> buildSpotify(List<String> playlistUrls,
+      Spotify spotify) async {
     List<Song> response = [];
 
     List<Future<Playlist?>> playlistFutures = playlistUrls
@@ -260,8 +268,8 @@ class GameController {
       }
       availableGamesBackup = availableGames
           .where((element) =>
-              enabledGames.contains(element.type) &&
-              texts[element.type]!.isNotEmpty)
+      enabledGames.contains(element.type) &&
+          texts[element.type]!.isNotEmpty)
           .toList();
       GameType gameType;
       do {
@@ -295,10 +303,10 @@ class GameController {
           }
         }
       } while ((gameType ==
-                  (gamePlan.isNotEmpty
-                      ? gamePlan[gamePlan.length - 1].type
-                      : null) &&
-              availableGamesBackup.length > 1) ||
+          (gamePlan.isNotEmpty
+              ? gamePlan[gamePlan.length - 1].type
+              : null) &&
+          availableGamesBackup.length > 1) ||
           gameType == GameType.undefined);
       gamePlan.add(Game(game.constructorFunction, game.type));
     }
@@ -363,7 +371,7 @@ class GameController {
       });
 
       const String adId =
-          String.fromEnvironment("BANNER_AD_ID", defaultValue: "");
+      String.fromEnvironment("BANNER_AD_ID", defaultValue: "");
 
       bannerAd = BannerAd(
         adUnitId: adId == "" ? BannerAd.testAdUnitId : adId,
@@ -388,7 +396,9 @@ class GameController {
       bool? result;
       for (Game game in gamePlan) {
         TypeClass<BaseType> typeClass = gameTypeToGameTypeClass(game.type);
-        if (texts.values.where((element) => element.isNotEmpty).isEmpty) {
+        if (texts.values
+            .where((element) => element.isNotEmpty)
+            .isEmpty) {
           await _populateTextsMap();
         }
         dynamic randomlyChosenText;
@@ -396,10 +406,10 @@ class GameController {
             texts[GameType.truth]!.isNotEmpty &&
             texts[GameType.dare]!.isNotEmpty) {
           String randomTextTruth = texts[GameType.truth]![
-              Random.secure().nextInt(texts[GameType.truth]!.length)];
+          Random.secure().nextInt(texts[GameType.truth]!.length)];
 
           String randomTextDare = texts[GameType.dare]![
-              Random.secure().nextInt(texts[GameType.dare]!.length)];
+          Random.secure().nextInt(texts[GameType.dare]!.length)];
 
           texts[GameType.truth]!.remove(randomTextTruth);
           texts[GameType.dare]!.remove(randomTextDare);
@@ -409,7 +419,7 @@ class GameController {
         } else if (game.type == GameType.guessTheSong) {
           try {
             Song randomSong = texts[game.type]![
-                Random.secure().nextInt(texts[game.type]!.length)];
+            Random.secure().nextInt(texts[game.type]!.length)];
 
             randomlyChosenText = json.encode(
                 {"name": randomSong.name, "previewUrl": randomSong.previewUrl});
@@ -421,7 +431,7 @@ class GameController {
         } else {
           try {
             randomlyChosenText = texts[game.type]![
-                Random.secure().nextInt(texts[game.type]!.length)];
+            Random.secure().nextInt(texts[game.type]!.length)];
             texts[game.type]!.remove(randomlyChosenText);
           } on IndexError {
             continue;
@@ -490,9 +500,9 @@ class GameController {
                       anim.value == 1.0
                           ? Container()
                           : Opacity(
-                              opacity: 1.0 - anim.value,
-                              child: oldRoute,
-                            ),
+                        opacity: 1.0 - anim.value,
+                        child: oldRoute,
+                      ),
                       Opacity(
                         opacity: anim.value,
                         child: child,
@@ -538,53 +548,54 @@ class GameController {
 
         await showDialog(
           context: context,
-          builder: (context) => Container(
-            color: Colors.black,
-            child: AlertDialog(
-                title: Text(
-                  "goOnTitle",
-                  style: GoogleFonts.nunito(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 30,
-                  ),
-                ).tr(),
-                content: Text(
-                  "goOnDescription",
-                  style: GoogleFonts.nunito(
-                    color: Colors.white,
-                    fontSize: 25,
-                  ),
-                ).tr(),
-                backgroundColor: Colors.deepOrange,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                actions: <Widget>[
-                  // usually buttons at the bottom of the dialog
-                  TextButton(
-                    child: Text(
-                      "exit",
-                      style:
-                          GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+          builder: (context) =>
+              Container(
+                color: Colors.black,
+                child: AlertDialog(
+                    title: Text(
+                      "goOnTitle",
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 30,
+                      ),
                     ).tr(),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: Text(
-                      "goOn",
-                      style:
-                          GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+                    content: Text(
+                      "goOnDescription",
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
                     ).tr(),
-                    onPressed: () {
-                      shouldContinue = true;
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ]).build(context),
-          ),
+                    backgroundColor: Colors.deepOrange,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    actions: <Widget>[
+                      // usually buttons at the bottom of the dialog
+                      TextButton(
+                        child: Text(
+                          "exit",
+                          style:
+                          GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+                        ).tr(),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text(
+                          "goOn",
+                          style:
+                          GoogleFonts.nunito(color: Colors.white, fontSize: 20),
+                        ).tr(),
+                        onPressed: () {
+                          shouldContinue = true;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]).build(context),
+              ),
         );
         if (adOverlayEntry != null && shouldContinue) {
           Overlay.of(context)?.insert(adOverlayEntry!);

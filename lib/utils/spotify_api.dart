@@ -149,7 +149,8 @@ class Spotify {
   /// Pulls a playlist from Spotify
   Future<Playlist?> getPlaylist(String playlistId,
       {PlaylistUpdateStrategy updateStrategy =
-          PlaylistUpdateStrategy.checkForUpdateTimestamp}) async {
+          // PlaylistUpdateStrategy.checkForUpdateTimestamp
+          PlaylistUpdateStrategy.fullFetch}) async {
     Playlist? cachePlaylist =
         SpotifyStorage.getPlaylistFromSpotifyCache(playlistId);
     if (cachePlaylist != null) {
@@ -169,7 +170,7 @@ class Spotify {
 
     String token = await generateAuthKey();
     String infoUrl = "https://api.spotify.com/v1/playlists/$playlistId/";
-    String? url = infoUrl + "tracks?limit=100&offset=0";
+    String? url = infoUrl + "tracks?limit=100&offset=0&market=US";
 
     http.Response infoResponse = await http
         .get(Uri.parse(infoUrl), headers: {"Authorization": "Bearer $token"});
@@ -244,7 +245,7 @@ class Spotify {
     Song? fromDatabase =
         useCache ? await SpotifyStorage.getFromSpotifyCache(track.id) : null;
 
-    if (fromDatabase != null) {
+    if (fromDatabase != null && fromDatabase.previewUrl != null) {
       track.previewUrl = fromDatabase.previewUrl;
     } else {
       try {
@@ -255,18 +256,25 @@ class Spotify {
           Uri.parse("https://open.spotify.com/embed/track/$trackId"),
         );
 
+        String body = embedResponse.body;
+        String urlEncodedPart =
+            RegExp(r"(%7B%22\S+%7D)").firstMatch(body)!.group(1)!;
+
+        String urlDecoded = Uri.decodeComponent(urlEncodedPart);
+
         /// Extract the preview url via regex
         String? previewUrl =
-            RegExp(regexEmbed).firstMatch(embedResponse.body)!.group(1);
-        if (previewUrl != null) {
-          /// Un-Escape the url
-          previewUrl = previewUrl.replaceAll("\\/", "/");
-        }
+            RegExp(regexEmbed).firstMatch(urlDecoded)!.group(1)!;
+
+        /// Un-Escape the url
+        previewUrl = previewUrl.replaceAll("\\/", "/");
+
         track.previewUrl = previewUrl;
 
         /// put the newly found url in cache
         if (useCache) unawaited(SpotifyStorage.putBulkInSpotifyCache([track]));
-      } catch (_) {
+      } catch (e) {
+        print("Error: $e");
         return null;
       }
     }
