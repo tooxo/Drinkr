@@ -59,7 +59,7 @@ class DrinkingDisplay extends StatelessWidget {
         ),
         Icon(
           isShot ? CustomIcons.shot : CustomIcons.difficultyEasy,
-          size: 40,
+          size: 30,
           color: tintColor,
         )
       ],

@@ -123,5 +123,7 @@
   "premiumAddPlaylists": "füge eigene Playlists hinzu!",
   "premiumCustom": "schalte den “Custom” Mode frei",
   "buy": "Kaufen",
-  "includeAdult": "+18"
+  "includeAdult": "18+ Fragen?",
+  "tooFewGameModes": "Du musst einen Spielmodus wählen.",
+  "addPlaylists": "Eigene Playlists hinzufügen"
 }

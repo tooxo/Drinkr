@@ -7,6 +7,7 @@ import 'package:drinkr/utils/types.dart';
 import 'package:drinkr/widgets/custom_game_select_tile.dart';
 import 'package:drinkr/widgets/game_select_tile.dart';
 import 'package:drinkr/widgets/purchasable.dart';
+import 'package:drinkr/widgets/spotify_game_select_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -159,7 +160,6 @@ class GameState extends State<GameMode> {
                 icon: CustomIcons.gameModeParty,
                 players: widget.players,
                 enabledGames: [
-                  GameType.dare,
                   GameType.truth,
                   GameType.challenges,
                   GameType.neverHaveIEver,
@@ -186,7 +186,7 @@ class GameState extends State<GameMode> {
                 ],
               ),
               Divider(),
-              GameSelectTile(
+              SpotifyGameSelectTile(
                 enabled: gameState == CurrentGameState.stopped,
                 backgroundColors: [
                   Color.fromRGBO(25, 96, 2, 1),

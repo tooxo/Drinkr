@@ -36,7 +36,7 @@ class SpotifyTile extends StatelessWidget {
                 left: expanded ? 48 + 16 : 8,
                 width: constraints.maxWidth - 8,
                 // height: 70,
-                duration: Duration(milliseconds: 250),
+                duration: Duration(milliseconds: 200),
                 child: Row(
                   children: [
                     Expanded(
@@ -142,7 +142,7 @@ class SpotifyTile extends StatelessWidget {
               ),
               AnimatedPositioned(
                 left: expanded ? 0.0 : -48 - 16,
-                duration: Duration(milliseconds: 250),
+                duration: Duration(milliseconds: 200),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Container(
