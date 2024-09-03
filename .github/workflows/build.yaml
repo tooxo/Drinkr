@@ -125,7 +125,7 @@ jobs:
     needs: build_android
     steps:
       - name: Download results from build
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android_build_artifact_appbundle
       - run: zip --delete app-release.aab "META-INF/*"
@@ -148,7 +148,7 @@ jobs:
     needs: build_android
     steps:
       - name: Download results from build
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android_build_artifact_apk
       - uses: r0adkll/sign-android-release@v1
@@ -171,7 +171,7 @@ jobs:
     needs: sign_android_appbundle
     steps:
       - name: Download results from build
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android_signed_appbundle
       - run: mkdir whatsnew/
@@ -191,7 +191,7 @@ jobs:
     needs: build_ios
     steps:
       - name: Download results from build
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ios_build_artifact
       - name: 'Upload app to TestFlight'
@@ -207,27 +207,27 @@ jobs:
     needs: [ sign_android_appbundle, sign_android_apk, build_android_no_ads, build_ios ]
     steps:
       - name: Download results from build appbundle
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android_signed_appbundle
       - name: Download results from build apk
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android_signed_apk
       - name: Download results from build ios
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ios_build_artifact
       - name: Download results from build apk
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android_build_artifact_apk
       - name: Download results from build noad apk
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android_build_artifact_noad_apk
       - name: Download results from build noad appbundle
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: android_build_artifact_noad_appbundle
       - uses: "marvinpinto/action-automatic-releases@latest"
